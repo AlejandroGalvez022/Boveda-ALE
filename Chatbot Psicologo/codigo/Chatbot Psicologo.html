@@ -1,0 +1,614 @@
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Hanken+Grotesque:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+    body{margin:0;background:#efe7dd;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Hanken Grotesque',system-ui,sans-serif;}
+    @keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes dotBlink{0%,60%,100%{opacity:.25;transform:translateY(0);}30%{opacity:1;transform:translateY(-3px);}}
+    @keyframes blobFloat{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(0,-14px) scale(1.04);}}
+    @keyframes sheetUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+    @keyframes scrimIn{from{opacity:0;}to{opacity:1;}}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes softIn{from{opacity:0;transform:translateY(14px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+    /* mascot */
+    @keyframes mascotFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+    @keyframes mascotBreathe{0%,100%{transform:scale(1);}50%{transform:scale(1.045);}}
+    @keyframes mascotGuide{0%,100%{transform:scale(.72);}25%,50%{transform:scale(1.12);}75%{transform:scale(.72);}}
+    @keyframes blink{0%,90%,100%{transform:scaleY(1);}95%{transform:scaleY(.12);}}
+    @keyframes earTwitch{0%,86%,100%{transform:rotate(0);}90%{transform:rotate(-6deg);}95%{transform:rotate(4deg);}}
+    @keyframes joyBounce{0%,100%{transform:translateY(0) scale(1);}30%{transform:translateY(-15px) scale(1.06);}60%{transform:translateY(0) scale(.98);}}
+    @keyframes sparkleFloat{0%{opacity:0;transform:translateY(5px) scale(.4);}40%{opacity:1;}100%{opacity:0;transform:translateY(-16px) scale(1.1);}}
+    @keyframes breatheGlow{0%,100%{opacity:.3;}25%,50%{opacity:.65;}}
+    ::-webkit-scrollbar{width:0;height:0;}
+    @media (max-width:520px){
+      body{background:#f6efe6 !important;align-items:stretch !important;justify-content:stretch !important;}
+      .device{width:100vw !important;height:100dvh !important;border-radius:0 !important;box-shadow:none !important;}
+      .ios-island,.ios-statusbar,.ios-home{display:none !important;}
+      .app-top{padding-top:max(env(safe-area-inset-top),16px) !important;}
+      .app-bottom{padding-bottom:max(env(safe-area-inset-bottom),14px) !important;}
+      .tabbar{padding-bottom:max(env(safe-area-inset-bottom),10px) !important;}
+    }
+  </style>
+</helmet>
+
+<div class="stage" style="position:relative;">
+<div class="device" style="width:402px;height:874px;border-radius:48px;overflow:hidden;position:relative;background:#f6efe6;box-shadow:0 40px 80px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.12);">
+  <div class="ios-island" style="position:absolute;top:11px;left:50%;transform:translateX(-50%);width:112px;height:33px;border-radius:22px;background:#000;z-index:40;"></div>
+  <div class="ios-statusbar" style="position:absolute;top:0;left:0;right:0;height:50px;padding:17px 30px 0;display:flex;align-items:center;justify-content:space-between;z-index:30;pointer-events:none;font-family:-apple-system,system-ui;">
+    <span style="font-size:16px;font-weight:600;color:#2f2820;">9:41</span>
+    <div style="display:flex;align-items:center;gap:7px;color:#2f2820;">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="7" width="3" height="5" rx=".6" fill="currentColor"/><rect x="5" y="4.5" width="3" height="7.5" rx=".6" fill="currentColor"/><rect x="10" y="2" width="3" height="10" rx=".6" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx=".6" fill="currentColor"/></svg>
+      <svg width="17" height="12" viewBox="0 0 17 12"><path d="M8.5 3C10.8 3 12.9 3.9 14.4 5.4L15.5 4.3C13.7 2.5 11.2 1.3 8.5 1.3 5.8 1.3 3.3 2.5 1.5 4.3L2.6 5.4C4.1 3.9 6.2 3 8.5 3Z" fill="currentColor"/><path d="M8.5 6.6C9.9 6.6 11.1 7.1 12 8L13.1 6.9C11.8 5.7 10.2 4.9 8.5 4.9 6.8 4.9 5.2 5.7 3.9 6.9L5 8C5.9 7.1 7.1 6.6 8.5 6.6Z" fill="currentColor"/><circle cx="8.5" cy="10.3" r="1.4" fill="currentColor"/></svg>
+      <svg width="26" height="13" viewBox="0 0 26 13"><rect x=".5" y=".5" width="22" height="12" rx="3.5" fill="none" stroke="currentColor" stroke-opacity=".4"/><rect x="2" y="2" width="19" height="9" rx="2" fill="currentColor"/><rect x="24" y="4.5" width="2" height="4" rx="1" fill="currentColor" fill-opacity=".5"/></svg>
+    </div>
+  </div>
+  <div class="ios-home" style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:132px;height:5px;border-radius:100px;background:rgba(0,0,0,.26);z-index:60;pointer-events:none;"></div>
+
+  <!-- ============ ONBOARDING ============ -->
+  <sc-if value="{{ showOnboarding }}" hint-placeholder-val="{{ true }}">
+    <div class="app-top app-bottom" data-screen-label="Bienvenida" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 30px 40px;background:radial-gradient(120% 75% at 50% 5%, #f7eee2 0%, #f2e6d6 55%, #ece0d1 100%);position:relative;overflow:hidden;">
+      <div style="position:absolute;top:40px;right:-70px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle at 40% 40%, {{ accentSoft }}, transparent 70%);filter:blur(10px);animation:blobFloat 10s ease-in-out infinite;pointer-events:none;"></div>
+      <div style="position:absolute;bottom:80px;left:-80px;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle at 50% 50%, {{ accentSoft2 }}, transparent 70%);filter:blur(12px);animation:blobFloat 13s ease-in-out infinite reverse;pointer-events:none;"></div>
+
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:2;">
+        <div style="margin-bottom:14px;">{{ mascotOnb }}</div>
+        <h1 style="font-family:'Newsreader',serif;font-weight:500;font-size:36px;line-height:1.1;letter-spacing:-.5px;color:#2f2820;margin:0 0 14px;">Este es {{ botName }}.<br>Estará a tu lado.</h1>
+        <p style="font-size:16px;line-height:1.55;color:#6f6356;margin:0;max-width:290px;text-wrap:pretty;">Un pequeño compañero para respirar, ordenar lo que sientes y hablar cuando lo necesites. A tu ritmo, siempre en calma.</p>
+      </div>
+
+      <div style="position:relative;z-index:2;width:100%;display:flex;flex-direction:column;gap:12px;">
+        <button onClick="{{ startEntry }}" style="border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:17px;font-weight:600;padding:17px;border-radius:18px;cursor:pointer;box-shadow:0 10px 24px {{ accentSoft }};" style-hover="filter:brightness(1.04);">Conocer a {{ botName }}</button>
+        <p style="font-size:11.5px;line-height:1.5;color:#a1937f;margin:2px 0 0;">{{ botName }} es un asistente de IA y no sustituye a la terapia profesional. En una emergencia llama al <strong style="color:#8a6a4a;">112</strong>.</p>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ LOGIN ============ -->
+  <sc-if value="{{ showLogin }}" hint-placeholder-val="{{ false }}">
+    <div class="app-top app-bottom" data-screen-label="Iniciar sesión" style="height:100%;display:flex;flex-direction:column;justify-content:center;padding:60px 30px 40px;background:radial-gradient(120% 75% at 50% 5%, #f7eee2 0%, #f2e6d6 55%, #ece0d1 100%);position:relative;overflow:hidden;">
+      <div style="position:absolute;top:40px;right:-70px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle at 40% 40%, {{ accentSoft }}, transparent 70%);filter:blur(10px);animation:blobFloat 10s ease-in-out infinite;pointer-events:none;"></div>
+      <div style="position:absolute;bottom:80px;left:-80px;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle at 50% 50%, {{ accentSoft2 }}, transparent 70%);filter:blur(12px);animation:blobFloat 13s ease-in-out infinite reverse;pointer-events:none;"></div>
+
+      <div style="position:relative;z-index:2;text-align:center;margin-bottom:26px;">
+        <div style="display:flex;justify-content:center;margin-bottom:16px;">{{ mascotLogin }}</div>
+        <h1 style="font-family:'Newsreader',serif;font-weight:500;font-size:32px;line-height:1.12;letter-spacing:-.5px;color:#2f2820;margin:0 0 8px;">{{ loginTitle }}</h1>
+        <p style="font-size:15px;line-height:1.55;color:#6f6356;margin:0 auto;max-width:290px;">Entra para guardar tus conversaciones, tu ánimo y tu diario en este dispositivo.</p>
+      </div>
+
+      <div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:11px;">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;color:#8a7a66;margin:0 0 6px 3px;">Tu nombre</label>
+          <input ref="{{ loginNameRef }}" defaultValue="{{ loginPrefillName }}" placeholder="¿Cómo te llamas?" style="width:100%;border:1px solid #e3d4c2;background:#fff;border-radius:16px;padding:15px 16px;font-family:inherit;font-size:15px;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};"></input>
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;color:#8a7a66;margin:0 0 6px 3px;">Email <span style="font-weight:400;color:#b3a493;">(opcional)</span></label>
+          <input ref="{{ loginEmailRef }}" defaultValue="{{ loginPrefillEmail }}" type="email" placeholder="tucorreo@ejemplo.com" style="width:100%;border:1px solid #e3d4c2;background:#fff;border-radius:16px;padding:15px 16px;font-family:inherit;font-size:15px;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};"></input>
+        </div>
+        <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12.5px;color:#b5654a;padding-left:3px;">Escribe tu nombre para continuar.</div>
+        </sc-if>
+        <button onClick="{{ doLogin }}" style="margin-top:6px;border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:17px;font-weight:600;padding:16px;border-radius:16px;cursor:pointer;box-shadow:0 10px 24px {{ accentSoft }};" style-hover="filter:brightness(1.04);">Entrar</button>
+        <button onClick="{{ loginGuest }}" style="border:none;background:none;color:#a1937f;font-family:inherit;font-size:13.5px;font-weight:600;padding:6px;cursor:pointer;">Continuar sin cuenta</button>
+        <p style="font-size:11px;line-height:1.5;color:#b3a493;text-align:center;margin:4px 0 0;">Tus datos se guardan solo en este dispositivo. {{ botName }} no sustituye la terapia profesional.</p>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ INICIO (zen) ============ -->
+  <sc-if value="{{ showHome }}" hint-placeholder-val="{{ false }}">
+    <div class="app-top" data-screen-label="Inicio" style="height:100%;display:flex;flex-direction:column;align-items:center;padding:56px 26px 104px;text-align:center;background:radial-gradient(115% 65% at 50% 0%, #f7eee2 0%, #f4ead9 55%, #efe3d2 100%);position:relative;overflow:hidden;">
+      <div style="position:absolute;top:60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 40% 40%, {{ accentSoft2 }}, transparent 70%);filter:blur(12px);animation:blobFloat 12s ease-in-out infinite;pointer-events:none;"></div>
+
+      <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;">
+        <sc-if value="{{ hasStreak }}" hint-placeholder-val="{{ false }}">
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.7);border:1px solid #eaddcb;border-radius:100px;padding:5px 13px;font-size:12.5px;font-weight:600;color:{{ accentDeep }};margin-bottom:14px;">🔥 {{ streakLabel }}</div>
+        </sc-if>
+        <div style="font-size:13.5px;color:#a1937f;font-weight:600;">{{ todayLabel }}</div>
+        <h1 style="font-family:'Newsreader',serif;font-weight:500;font-size:30px;line-height:1.1;color:#2f2820;margin:3px 0 0;">{{ homeGreeting }}</h1>
+      </div>
+
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:2;width:100%;">
+        <div onClick="{{ pokeMascot }}" style="cursor:pointer;user-select:none;">{{ mascotHome }}</div>
+        <p style="font-size:16.5px;line-height:1.45;color:#5f5548;margin:6px 0 0;min-height:24px;max-width:280px;animation:fadeIn .4s ease;">{{ mascotMsg }}</p>
+
+        <div style="margin-top:22px;width:100%;">
+          <div style="font-size:12.5px;color:#9a8c7d;font-weight:600;margin-bottom:12px;">{{ moodQuestion }}</div>
+          <div style="display:flex;gap:10px;justify-content:center;">
+            <sc-for list="{{ moodFaces }}" as="mf" hint-placeholder-count="5">
+              <button onClick="{{ mf.onClick }}" title="{{ mf.label }}" style="{{ mf.style }}">{{ mf.face }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:relative;z-index:2;width:100%;">
+        <button onClick="{{ goChat }}" style="width:100%;border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:17px;font-weight:600;padding:17px;border-radius:18px;cursor:pointer;box-shadow:0 10px 26px {{ accentSoft }};display:flex;align-items:center;justify-content:center;gap:10px;" style-hover="filter:brightness(1.04);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 20.5l1.9-4.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Hablar con {{ botName }}
+        </button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ CHAT ============ -->
+  <sc-if value="{{ showChat }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Chat" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;padding-bottom:calc(80px + env(safe-area-inset-bottom));">
+      <div class="app-top dkbar" style="flex:none;padding:56px 14px 12px;display:flex;align-items:center;gap:11px;background:rgba(248,242,234,.92);backdrop-filter:blur(14px);border-bottom:1px solid #ece0d2;z-index:5;">
+        <div style="width:42px;height:42px;flex:none;display:flex;align-items:center;justify-content:center;">{{ mascotChat }}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:15.5px;font-weight:600;color:#2f2820;line-height:1.2;">{{ botName }}</div>
+          <div style="display:flex;align-items:center;gap:5px;font-size:11.5px;color:#9a8c7d;">
+            <span style="width:7px;height:7px;border-radius:50%;background:#8a6d4f;flex:none;"></span>En línea · {{ practiceShort }}
+          </div>
+        </div>
+        <button onClick="{{ openBooking }}" style="flex:none;border:1px solid {{ accent }};background:rgba(255,255,255,.6);color:{{ accentDeep }};font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 11px;border-radius:12px;cursor:pointer;" style-hover="background:{{ accent }};color:#fff;">Pedir cita</button>
+        <button onClick="{{ openMenu }}" style="flex:none;border:none;background:none;cursor:pointer;padding:6px;color:#7a6c5d;">
+          <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.7" fill="currentColor"/><circle cx="10" cy="10" r="1.7" fill="currentColor"/><circle cx="10" cy="16" r="1.7" fill="currentColor"/></svg>
+        </button>
+      </div>
+
+      <sc-if value="{{ showSafetyBanner }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:none;margin:10px 14px 0;padding:9px 13px;background:#f3ece1;border:1px solid #e7dac9;border-radius:13px;font-size:11.5px;line-height:1.45;color:#8a7a66;">
+          Esto no es un servicio de emergencias. Si estás en crisis, llama al <strong style="color:#7a5a3a;">024</strong> o al <strong style="color:#7a5a3a;">112</strong>.
+        </div>
+      </sc-if>
+
+      <div ref="{{ scrollRef }}" class="dkscroll" style="flex:1;overflow-y:auto;padding:16px 14px 8px;display:flex;flex-direction:column;gap:11px;">
+        <sc-for list="{{ bubbles }}" as="b" hint-placeholder-count="2">
+          <div style="{{ b.rowStyle }}">
+            <div style="{{ b.bubbleStyle }}">{{ b.text }}</div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ isTyping }}" hint-placeholder-val="{{ false }}">
+          <div style="align-self:flex-start;display:flex;gap:4px;padding:13px 16px;background:#fff;border:1px solid #ece0d2;border-radius:18px 18px 18px 5px;">
+            <span style="width:7px;height:7px;border-radius:50%;background:#c3b4a2;animation:dotBlink 1.2s infinite;"></span>
+            <span style="width:7px;height:7px;border-radius:50%;background:#c3b4a2;animation:dotBlink 1.2s infinite .2s;"></span>
+            <span style="width:7px;height:7px;border-radius:50%;background:#c3b4a2;animation:dotBlink 1.2s infinite .4s;"></span>
+          </div>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{ showQuickReplies }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:none;padding:4px 14px 10px;display:flex;gap:8px;flex-wrap:wrap;">
+          <sc-for list="{{ quickReplies }}" as="q" hint-placeholder-count="3">
+            <button onClick="{{ q.onClick }}" style="border:1px solid #e3d4c2;background:#fff;color:#5a4f44;font-family:inherit;font-size:13px;font-weight:500;padding:8px 13px;border-radius:14px;cursor:pointer;" style-hover="border-color:{{ accent }};">{{ q.label }}</button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <div class="dkbar" style="flex:none;padding:8px 14px 12px;background:rgba(248,242,234,.94);backdrop-filter:blur(14px);border-top:1px solid #ece0d2;display:flex;align-items:flex-end;gap:9px;">
+        <textarea ref="{{ inputRef }}" onKeyDown="{{ onInputKey }}" rows="1" placeholder="Escribe lo que necesites…" style="flex:1;resize:none;border:1px solid #e3d4c2;background:#fff;border-radius:20px;padding:12px 16px;font-family:inherit;font-size:15px;line-height:1.35;color:#2f2820;max-height:110px;outline:none;" style-focus="border-color:{{ accent }};"></textarea>
+        <button onClick="{{ handleSend }}" style="flex:none;width:44px;height:44px;border:none;border-radius:50%;background:{{ accent }};color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px {{ accentSoft }};" style-hover="filter:brightness(1.05);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 12L20 4l-4 16-4-7-8-1z" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ CALMA ============ -->
+  <sc-if value="{{ showCalma }}" hint-placeholder-val="{{ false }}">
+    <div class="app-top" data-screen-label="Calma" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;">
+      <div style="flex:1;overflow-y:auto;padding:52px 20px 96px;">
+        <h1 style="font-family:'Newsreader',serif;font-weight:500;font-size:30px;color:#2f2820;margin:0 0 4px;">Calma</h1>
+        <p style="font-size:14px;color:#8a7a66;margin:0 0 22px;">Herramientas para volver a ti.</p>
+
+        <button onClick="{{ goBreathing }}" style="width:100%;text-align:left;cursor:pointer;border:none;background:linear-gradient(140deg, {{ accent }}, {{ accentDeep }});border-radius:24px;padding:22px;margin-bottom:20px;box-shadow:0 12px 26px {{ accentSoft }};position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;animation:softIn .45s ease both;" style-hover="filter:brightness(1.04);transform:translateY(-2px);">
+          <div style="position:absolute;top:-40px;right:-30px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.14);animation:floatSlow 9s ease-in-out infinite;"></div>
+          <div style="position:absolute;bottom:-40px;left:-20px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.08);animation:floatSlow 11s ease-in-out infinite reverse;"></div>
+          <div style="flex:none;z-index:2;">{{ mascotMini }}</div>
+          <div style="position:relative;z-index:2;">
+            <div style="font-size:12px;color:rgba(255,255,255,.85);font-weight:600;text-transform:uppercase;letter-spacing:.8px;">Con {{ botName }}</div>
+            <div style="font-size:21px;font-family:'Newsreader',serif;font-weight:500;color:#fff;margin:4px 0 3px;">Respira conmigo</div>
+            <div style="font-size:13px;color:rgba(255,255,255,.88);">3 min · para soltar la ansiedad</div>
+          </div>
+        </button>
+
+        <div style="font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:#b3a493;margin:0 0 12px;">Para escuchar</div>
+        <div style="display:flex;flex-direction:column;gap:11px;margin-bottom:24px;">
+          <sc-for list="{{ audioResources }}" as="r" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:13px;background:#fff;border:1px solid #ece0d2;border-radius:16px;padding:13px 15px;box-shadow:0 2px 8px rgba(120,90,50,.04);">
+              <span style="width:42px;height:42px;border-radius:12px;background:{{ accentSoft2 }};display:flex;align-items:center;justify-content:center;color:{{ accentDeep }};flex:none;">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path d="M5 3.5v11l9-5.5-9-5.5z"/></svg>
+              </span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:14.5px;font-weight:600;color:#2f2820;">{{ r.title }}</div>
+                <div style="font-size:12px;color:#a1937f;margin-top:2px;">{{ r.meta }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:#b3a493;margin:0 0 12px;">Para leer</div>
+        <div style="display:flex;flex-direction:column;gap:11px;">
+          <sc-for list="{{ readResources }}" as="r" hint-placeholder-count="3">
+            <div style="background:#fff;border:1px solid #ece0d2;border-radius:16px;padding:15px 16px;box-shadow:0 2px 8px rgba(120,90,50,.04);">
+              <div style="font-size:15px;font-weight:600;color:#2f2820;">{{ r.title }}</div>
+              <div style="font-size:13px;color:#8a7a66;line-height:1.45;margin-top:4px;">{{ r.desc }}</div>
+              <div style="font-size:11.5px;color:#b3a493;margin-top:8px;">{{ r.meta }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ RESPIRACIÓN ============ -->
+  <sc-if value="{{ showBreathing }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Respiración" style="height:100%;display:flex;flex-direction:column;background:linear-gradient(165deg, {{ accentDeep }}, {{ accent }});overflow:hidden;position:relative;">
+      <div class="app-top" style="flex:none;padding:56px 18px 0;display:flex;align-items:center;">
+        <button onClick="{{ goJournal }}" style="border:none;background:rgba(255,255,255,.18);cursor:pointer;padding:9px;border-radius:12px;display:flex;color:#fff;">
+          <svg width="11" height="18" viewBox="0 0 11 18" fill="none"><path d="M9.5 1.5L2 9l7.5 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;padding:20px;">
+        <div style="position:relative;width:250px;height:250px;display:flex;align-items:center;justify-content:center;">
+          <div style="{{ breathGlowStyle }}"></div>
+          <div style="position:absolute;width:150px;height:150px;border-radius:50%;border:2px solid rgba(255,255,255,.42);z-index:1;animation:ringPulse 8s ease-out infinite;"></div>
+          <div style="position:absolute;width:150px;height:150px;border-radius:50%;border:2px solid rgba(255,255,255,.3);z-index:1;animation:ringPulse 8s ease-out 4s infinite;"></div>
+          <div style="position:relative;z-index:3;">{{ mascotGuideEl }}</div>
+          <div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);z-index:4;font-family:'Newsreader',serif;font-size:24px;font-weight:500;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.15);">{{ breathPhase }}</div>
+        </div>
+        <div style="text-align:center;max-width:280px;">
+          <p style="font-size:15px;color:rgba(255,255,255,.92);line-height:1.5;margin:0 0 24px;">{{ breathHint }}</p>
+          <button onClick="{{ toggleBreathing }}" style="border:none;background:#fff;color:{{ accentDeep }};font-family:inherit;font-size:16px;font-weight:600;padding:15px 42px;border-radius:16px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.15);">{{ breathBtnLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ DIARIO ============ -->
+  <sc-if value="{{ showJournal }}" hint-placeholder-val="{{ false }}">
+    <div class="app-top" data-screen-label="Diario" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;">
+      <div style="flex:1;overflow-y:auto;padding:52px 20px 96px;">
+        <h1 style="font-family:'Newsreader',serif;font-weight:500;font-size:30px;color:#2f2820;margin:0 0 4px;">Tu diario</h1>
+        <p style="font-size:14px;color:#8a7a66;margin:0 0 20px;">Un espacio privado, solo para ti.</p>
+
+        <div style="background:#fff;border:1px solid #ece0d2;border-radius:20px;padding:16px 18px;margin-bottom:16px;box-shadow:0 2px 10px rgba(120,90,50,.04);animation:softIn .45s ease both;">
+          <div style="font-size:14px;font-weight:600;color:#2f2820;margin-bottom:12px;">{{ moodQuestion }}</div>
+          <div style="display:flex;gap:8px;justify-content:space-between;">
+            <sc-for list="{{ moodFaces }}" as="mf" hint-placeholder-count="5">
+              <button onClick="{{ mf.onClick }}" title="{{ mf.label }}" style="{{ mf.style }}">{{ mf.face }}</button>
+            </sc-for>
+          </div>
+          <button onClick="{{ goBreathing }}" style="margin-top:14px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid #e3d4c2;background:#faf6f0;color:{{ accentDeep }};font-family:inherit;font-size:14px;font-weight:600;padding:12px;border-radius:14px;cursor:pointer;" style-hover="border-color:{{ accent }};">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 8h9a2.5 2.5 0 10-2.5-2.5M3 12h13a2.5 2.5 0 11-2.5 2.5M3 16h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Respira un momento con {{ botName }}
+          </button>
+        </div>
+
+        <sc-if value="{{ hasMoodData }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff;border:1px solid #ece0d2;border-radius:20px;padding:16px 18px;margin-bottom:18px;box-shadow:0 2px 10px rgba(120,90,50,.04);">
+            <div style="font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:#b3a493;margin-bottom:12px;">Tu ánimo esta semana</div>
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:7px;height:64px;">
+              <sc-for list="{{ moodWeek }}" as="d" hint-placeholder-count="7">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;height:100%;justify-content:flex-end;">
+                  <div style="{{ d.barStyle }}"></div>
+                  <span style="font-size:10px;color:{{ d.labelColor }};font-weight:600;">{{ d.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="background:#fff;border:1px solid #ece0d2;border-radius:18px;padding:15px;margin-bottom:20px;box-shadow:0 2px 10px rgba(120,90,50,.04);">
+          <div style="font-size:14px;font-weight:600;color:#2f2820;margin-bottom:10px;">¿Qué quieres soltar hoy?</div>
+          <textarea ref="{{ journalRef }}" rows="4" placeholder="Escribe libremente. Nadie más lo verá." style="width:100%;resize:none;border:1px solid #e3d4c2;background:#faf6f0;border-radius:14px;padding:13px 15px;font-family:inherit;font-size:15px;line-height:1.5;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};"></textarea>
+          <button onClick="{{ addJournal }}" style="margin-top:11px;width:100%;border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:15px;font-weight:600;padding:13px;border-radius:14px;cursor:pointer;">Guardar entrada</button>
+        </div>
+        <sc-if value="{{ noJournal }}" hint-placeholder-val="{{ true }}">
+          <div style="text-align:center;color:#a1937f;font-size:14px;margin-top:20px;">Tus entradas aparecerán aquí, solo para ti.</div>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <sc-for list="{{ journalList }}" as="j" hint-placeholder-count="2">
+            <div style="background:#fff;border:1px solid #ece0d2;border-radius:16px;padding:15px 16px;box-shadow:0 2px 8px rgba(120,90,50,.04);animation:softIn .3s ease;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;">
+                <span style="font-size:12px;color:#a1937f;font-weight:600;">{{ j.date }}</span>
+                <button onClick="{{ j.onDelete }}" style="border:none;background:none;cursor:pointer;padding:2px;color:#c3b4a2;" style-hover="color:#b5654a;">
+                  <svg width="15" height="15" viewBox="0 0 17 17" fill="none"><path d="M3 4.5h11M6.5 4.5V3a1 1 0 011-1h2a1 1 0 011 1v1.5M5 4.5l.6 9a1 1 0 001 .9h3.8a1 1 0 001-.9l.6-9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+              <div style="font-size:14.5px;color:#3a332c;line-height:1.5;white-space:pre-wrap;">{{ j.text }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ PERFIL ============ -->
+  <sc-if value="{{ showPerfil }}" hint-placeholder-val="{{ false }}">
+    <div class="app-top" data-screen-label="Perfil" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;">
+      <div style="flex:1;overflow-y:auto;padding:52px 20px 96px;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px;animation:softIn .4s ease both;">
+          <div style="width:64px;height:64px;flex:none;display:flex;align-items:center;justify-content:center;">{{ mascotProfile }}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:20px;font-weight:600;color:#2f2820;">{{ userDisplayName }}</div>
+            <div style="font-size:13px;color:#a1937f;">{{ userEmailDisplay }}</div>
+          </div>
+          <button onClick="{{ openProfile }}" style="border:1px solid #e3d4c2;background:#fff;color:#6f6356;font-family:inherit;font-size:13px;font-weight:600;padding:9px 14px;border-radius:12px;cursor:pointer;">Editar</button>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-bottom:22px;animation:softIn .5s ease both;">
+          <sc-for list="{{ profileStats }}" as="st" hint-placeholder-count="3">
+            <div style="flex:1;background:#fff;border:1px solid #ece0d2;border-radius:16px;padding:14px 10px;text-align:center;box-shadow:0 2px 8px rgba(120,90,50,.04);">
+              <div style="font-family:'Newsreader',serif;font-size:26px;font-weight:600;color:{{ accentDeep }};">{{ st.value }}</div>
+              <div style="font-size:11.5px;color:#a1937f;margin-top:2px;">{{ st.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="background:#fff;border:1px solid #ece0d2;border-radius:18px;overflow:hidden;box-shadow:0 2px 10px rgba(120,90,50,.04);margin-bottom:18px;animation:softIn .58s ease both;">
+          <sc-for list="{{ profileMenu }}" as="pm" hint-placeholder-count="3">
+            <button onClick="{{ pm.onClick }}" style="width:100%;display:flex;align-items:center;gap:13px;border:none;background:none;cursor:pointer;padding:15px 16px;font-family:inherit;font-size:15px;color:#2f2820;text-align:left;border-bottom:1px solid #f3ece1;" style-hover="background:#faf6f0;">
+              <span style="width:36px;height:36px;border-radius:11px;background:{{ accentSoft2 }};display:flex;align-items:center;justify-content:center;color:{{ accentDeep }};flex:none;">{{ pm.icon }}</span>
+              <span style="flex:1;">{{ pm.label }}</span>
+              <svg width="8" height="14" viewBox="0 0 9 16" fill="none" style="color:#cabfae;"><path d="M1.5 1.5L8 8l-6.5 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </sc-for>
+        </div>
+
+        <button onClick="{{ openBooking }}" style="width:100%;border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:16px;font-weight:600;padding:16px;border-radius:16px;cursor:pointer;box-shadow:0 8px 20px {{ accentSoft }};">Pedir una cita</button>
+        <p style="font-size:11.5px;color:#b3a493;text-align:center;line-height:1.5;margin:16px 0 0;">Tus datos se guardan solo en este dispositivo.<br>{{ botName }} no sustituye la terapia profesional.</p>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ HISTORIAL ============ -->
+  <sc-if value="{{ showHistory }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Historial" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;">
+      <div class="app-top" style="flex:none;padding:56px 18px 14px;display:flex;align-items:center;gap:12px;background:rgba(248,242,234,.92);backdrop-filter:blur(14px);border-bottom:1px solid #ece0d2;">
+        <button onClick="{{ goPerfil }}" style="border:none;background:none;cursor:pointer;padding:4px;display:flex;color:#7a6c5d;">
+          <svg width="11" height="18" viewBox="0 0 11 18" fill="none"><path d="M9.5 1.5L2 9l7.5 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <h2 style="flex:1;margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:24px;color:#2f2820;">Conversaciones</h2>
+        <button onClick="{{ newChat }}" style="border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:13px;font-weight:600;padding:9px 14px;border-radius:13px;cursor:pointer;">Nueva</button>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;">
+        <sc-if value="{{ noHistory }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:60px;text-align:center;color:#a1937f;font-size:15px;">Aún no tienes conversaciones guardadas.</div>
+        </sc-if>
+        <sc-for list="{{ convoList }}" as="cv" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #ece0d2;border-radius:16px;padding:14px 15px;box-shadow:0 2px 8px rgba(120,90,50,.04);">
+            <button onClick="{{ cv.onOpen }}" style="flex:1;min-width:0;border:none;background:none;text-align:left;cursor:pointer;padding:0;">
+              <div style="font-size:15px;font-weight:600;color:#2f2820;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ cv.title }}</div>
+              <div style="font-size:12px;color:#a1937f;margin-top:3px;">{{ cv.meta }}</div>
+            </button>
+            <button onClick="{{ cv.onDelete }}" style="flex:none;border:none;background:none;cursor:pointer;padding:6px;color:#c3b4a2;" style-hover="color:#b5654a;">
+              <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M3 4.5h11M6.5 4.5V3a1 1 0 011-1h2a1 1 0 011 1v1.5M5 4.5l.6 9a1 1 0 001 .9h3.8a1 1 0 001-.9l.6-9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ MIS CITAS ============ -->
+  <sc-if value="{{ showCitas }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Mis citas" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;">
+      <div class="app-top" style="flex:none;padding:56px 18px 14px;display:flex;align-items:center;gap:12px;background:rgba(248,242,234,.92);backdrop-filter:blur(14px);border-bottom:1px solid #ece0d2;">
+        <button onClick="{{ goPerfil }}" style="border:none;background:none;cursor:pointer;padding:4px;display:flex;color:#7a6c5d;">
+          <svg width="11" height="18" viewBox="0 0 11 18" fill="none"><path d="M9.5 1.5L2 9l7.5 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <h2 style="flex:1;margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:24px;color:#2f2820;">Mis citas</h2>
+        <button onClick="{{ openBooking }}" style="border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:13px;font-weight:600;padding:9px 14px;border-radius:13px;cursor:pointer;">Nueva</button>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;">
+        <sc-if value="{{ noCitas }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:60px;text-align:center;color:#a1937f;font-size:15px;">Todavía no has solicitado ninguna cita.</div>
+        </sc-if>
+        <sc-for list="{{ citasList }}" as="ci" hint-placeholder-count="2">
+          <div style="background:#fff;border:1px solid #ece0d2;border-radius:16px;padding:15px 16px;box-shadow:0 2px 8px rgba(120,90,50,.04);">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span style="width:44px;height:44px;border-radius:12px;background:{{ accentSoft2 }};display:flex;flex-direction:column;align-items:center;justify-content:center;color:{{ accentDeep }};flex:none;line-height:1;">
+                <span style="font-size:17px;font-weight:700;">{{ ci.day }}</span>
+                <span style="font-size:10px;text-transform:uppercase;">{{ ci.mon }}</span>
+              </span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:15px;font-weight:600;color:#2f2820;">{{ ci.dateLabel }}</div>
+                <div style="font-size:12.5px;color:#a1937f;margin-top:2px;">{{ ci.slot }} · {{ ci.name }}</div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ RESUMEN ============ -->
+  <sc-if value="{{ showSummary }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Resumen" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;">
+      <div class="app-top" style="flex:none;padding:56px 18px 14px;display:flex;align-items:center;gap:12px;background:rgba(248,242,234,.92);backdrop-filter:blur(14px);border-bottom:1px solid #ece0d2;">
+        <button onClick="{{ goChat }}" style="border:none;background:none;cursor:pointer;padding:4px;display:flex;color:#7a6c5d;">
+          <svg width="11" height="18" viewBox="0 0 11 18" fill="none"><path d="M9.5 1.5L2 9l7.5 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <h2 style="flex:1;margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:23px;color:#2f2820;">Resumen para tu sesión</h2>
+      </div>
+      <div class="app-bottom" style="flex:1;overflow-y:auto;padding:18px;">
+        <p style="font-size:13.5px;color:#8a7a66;line-height:1.5;margin:0 0 16px;">Un resumen de lo que has hablado con {{ botName }}, para compartirlo con tu psicólogo/a antes de la sesión.</p>
+        <sc-if value="{{ summaryLoading }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:10px;color:#a1937f;font-size:14px;padding:30px 0;justify-content:center;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#c3b4a2;animation:dotBlink 1.2s infinite;"></span>
+            <span style="width:8px;height:8px;border-radius:50%;background:#c3b4a2;animation:dotBlink 1.2s infinite .2s;"></span>
+            <span style="width:8px;height:8px;border-radius:50%;background:#c3b4a2;animation:dotBlink 1.2s infinite .4s;"></span>
+            Preparando tu resumen…
+          </div>
+        </sc-if>
+        <sc-if value="{{ summaryReady }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff;border:1px solid #ece0d2;border-radius:18px;padding:18px;font-size:14.5px;line-height:1.6;color:#3a332c;white-space:pre-wrap;box-shadow:0 2px 10px rgba(120,90,50,.04);margin-bottom:16px;">{{ summaryText }}</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="{{ summaryWaHref }}" target="_blank" rel="noopener" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:#fff;font-size:15px;font-weight:600;padding:14px;border-radius:15px;">Enviar por WhatsApp</a>
+            <a href="{{ summaryMailHref }}" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;border:1px solid {{ accent }};color:{{ accentDeep }};font-size:15px;font-weight:600;padding:14px;border-radius:15px;">Enviar por email</a>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ RESERVAR CITA ============ -->
+  <sc-if value="{{ showBooking }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Reservar cita" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;">
+      <div class="app-top" style="flex:none;padding:56px 18px 14px;display:flex;align-items:center;gap:12px;background:rgba(248,242,234,.92);backdrop-filter:blur(14px);border-bottom:1px solid #ece0d2;">
+        <button onClick="{{ closeBooking }}" style="border:none;background:none;cursor:pointer;padding:4px;display:flex;color:#7a6c5d;">
+          <svg width="11" height="18" viewBox="0 0 11 18" fill="none"><path d="M9.5 1.5L2 9l7.5 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <h2 style="flex:1;margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:24px;color:#2f2820;">Reservar cita</h2>
+      </div>
+
+      <div class="app-bottom" style="flex:1;overflow-y:auto;padding:18px 18px 24px;">
+        <sc-if value="{{ bookingNotConfirmed }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="background:{{ accentSoft2 }};border:1px solid {{ accentSoft }};border-radius:16px;padding:14px 16px;margin-bottom:20px;">
+              <div style="font-size:15px;font-weight:600;color:{{ accentDeep }};">Primera toma de contacto · gratis</div>
+              <div style="font-size:13px;color:#6f6356;margin-top:3px;line-height:1.45;">20 min, sin compromiso. Sesión completa: {{ price }}€ · online o presencial.</div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+              <button onClick="{{ prevMonth }}" style="border:1px solid #e3d4c2;background:#fff;border-radius:10px;width:34px;height:34px;cursor:pointer;color:#6f6356;font-size:16px;">‹</button>
+              <span style="font-size:15.5px;font-weight:600;color:#2f2820;text-transform:capitalize;">{{ monthLabel }}</span>
+              <button onClick="{{ nextMonth }}" style="border:1px solid #e3d4c2;background:#fff;border-radius:10px;width:34px;height:34px;cursor:pointer;color:#6f6356;font-size:16px;">›</button>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;">
+              <sc-for list="{{ weekdayLabels }}" as="w" hint-placeholder-count="7">
+                <div style="text-align:center;font-size:11px;font-weight:600;color:#a1937f;padding:4px 0;">{{ w }}</div>
+              </sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;">
+              <sc-for list="{{ calendarCells }}" as="d" hint-placeholder-count="35">
+                <button onClick="{{ d.onClick }}" disabled="{{ d.disabled }}" style="{{ d.style }}">{{ d.label }}</button>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{ dateChosen }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:22px;">
+                <div style="font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#9a8c7d;margin-bottom:10px;">Elige una hora</div>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+                  <sc-for list="{{ slotCells }}" as="s" hint-placeholder-count="8">
+                    <button onClick="{{ s.onClick }}" style="{{ s.style }}">{{ s.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ slotChosen }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:22px;display:flex;flex-direction:column;gap:10px;">
+                <div style="font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#9a8c7d;">Tus datos</div>
+                <input ref="{{ bkNameRef }}" placeholder="Nombre y apellidos" style="border:1px solid #e3d4c2;background:#fff;border-radius:14px;padding:13px 15px;font-family:inherit;font-size:15px;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};">
+                <input ref="{{ bkPhoneRef }}" type="tel" placeholder="Teléfono" style="border:1px solid #e3d4c2;background:#fff;border-radius:14px;padding:13px 15px;font-family:inherit;font-size:15px;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};">
+                <input ref="{{ bkEmailRef }}" type="email" placeholder="Email (opcional)" style="border:1px solid #e3d4c2;background:#fff;border-radius:14px;padding:13px 15px;font-family:inherit;font-size:15px;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};">
+                <sc-if value="{{ bookingError }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size:12.5px;color:#b5654a;">Por favor, indica al menos tu nombre y tu teléfono.</div>
+                </sc-if>
+                <button onClick="{{ confirmBooking }}" style="margin-top:4px;border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:16px;font-weight:600;padding:16px;border-radius:16px;cursor:pointer;box-shadow:0 8px 20px {{ accentSoft }};">Confirmar {{ summaryDateLabel }}</button>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ bookingConfirmed }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:16px;">
+            <div style="margin-bottom:6px;">{{ mascotCelebrate }}</div>
+            <h3 style="font-family:'Newsreader',serif;font-weight:500;font-size:26px;color:#2f2820;margin:0 0 8px;">Solicitud lista</h3>
+            <p style="font-size:15px;color:#6f6356;line-height:1.5;margin:0 0 6px;max-width:280px;">{{ confirmSummary }}</p>
+            <p style="font-size:12.5px;color:#a1937f;line-height:1.5;margin:0 0 22px;max-width:280px;">Envíanosla por WhatsApp o email para que la confirmemos. También puedes guardarla en tu calendario.</p>
+            <div style="width:100%;display:flex;flex-direction:column;gap:10px;max-width:300px;">
+              <a href="{{ waHref }}" target="_blank" rel="noopener" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:#fff;font-size:15px;font-weight:600;padding:15px;border-radius:15px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .3-3.4-.7-2.9-1.2-4.7-4.1-4.8-4.3-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.2.2-.3.4-.1.7.2.3.9 1.4 1.9 2.3 1.3 1.1 2.3 1.5 2.6 1.6.3.1.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2 .9c.3.2.5.2.6.4.1.1.1.7-.1 1.3z"/></svg>
+                Enviar por WhatsApp
+              </a>
+              <a href="{{ mailHref }}" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;border:1px solid {{ accent }};color:{{ accentDeep }};font-size:15px;font-weight:600;padding:15px;border-radius:15px;">Enviar por email</a>
+              <button onClick="{{ downloadIcs }}" style="border:none;background:none;color:#8a7a66;font-family:inherit;font-size:13.5px;font-weight:600;padding:8px;cursor:pointer;text-decoration:underline;">Añadir a mi calendario</button>
+            </div>
+            <button onClick="{{ closeBooking }}" style="margin-top:20px;border:1px solid #e3d4c2;background:#fff;color:#6f6356;font-family:inherit;font-size:14px;font-weight:600;padding:12px 22px;border-radius:14px;cursor:pointer;">Hecho</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ DESKTOP SIDEBAR ============ -->
+  <sc-if value="{{ showTabs }}" hint-placeholder-val="{{ false }}">
+    <div class="dksidebar" style="display:none;position:absolute;left:0;top:0;bottom:0;width:264px;z-index:25;background:#f2ebe0;border-right:1px solid #e6dac9;flex-direction:column;padding:30px 18px 22px;">
+      <div style="display:flex;align-items:center;gap:11px;padding:0 8px 22px;">
+        <div style="width:40px;height:40px;flex:none;display:flex;align-items:center;justify-content:center;">{{ mascotChat }}</div>
+        <div>
+          <div style="font-family:'Newsreader',serif;font-size:19px;font-weight:500;color:#2f2820;line-height:1;">{{ practiceShort }}</div>
+          <div style="font-size:11.5px;color:#a1937f;margin-top:3px;">con {{ botName }}</div>
+        </div>
+      </div>
+      <button onClick="{{ newChat }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:14.5px;font-weight:600;padding:13px;border-radius:14px;cursor:pointer;margin-bottom:18px;box-shadow:0 6px 16px {{ accentSoft }};" style-hover="filter:brightness(1.05);">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Nueva conversación
+      </button>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+          <button onClick="{{ t.onClick }}" style="{{ t.sideStyle }}" style-hover="background:#ece2d3;">
+            {{ t.sideIcon }}
+            {{ t.label }}
+          </button>
+        </sc-for>
+      </div>
+      <div style="margin-top:auto;">
+        <button onClick="{{ openBooking }}" style="width:100%;display:flex;align-items:center;gap:10px;border:1px solid #e3d4c2;background:#fff;color:{{ accentDeep }};font-family:inherit;font-size:13.5px;font-weight:600;padding:12px 14px;border-radius:14px;cursor:pointer;margin-bottom:14px;" style-hover="border-color:{{ accent }};">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M3 9h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Pedir cita
+        </button>
+        <button onClick="{{ goPerfil }}" style="width:100%;display:flex;align-items:center;gap:11px;border:none;background:none;cursor:pointer;padding:8px;border-radius:14px;text-align:left;" style-hover="background:#ece2d3;">
+          <div style="width:36px;height:36px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 35% 30%, {{ accentLight }}, {{ accent }});color:#fff;font-family:'Newsreader',serif;font-size:17px;font-weight:600;">{{ userInitial }}</div>
+          <div style="min-width:0;">
+            <div style="font-size:13.5px;font-weight:600;color:#2f2820;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ userDisplayName }}</div>
+            <div style="font-size:11px;color:#a1937f;">Ver perfil</div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ TAB BAR ============ -->
+  <sc-if value="{{ showTabs }}" hint-placeholder-val="{{ false }}">
+    <div class="tabbar app-bottom dktab" style="position:absolute;left:0;right:0;bottom:0;z-index:20;background:rgba(248,242,234,.94);backdrop-filter:blur(16px);border-top:1px solid #ece0d2;display:flex;padding:10px 8px 26px;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+        <button onClick="{{ t.onClick }}" style="{{ t.btnStyle }}">
+          {{ t.icon }}
+          <span style="font-size:10.5px;font-weight:600;">{{ t.label }}</span>
+        </button>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <!-- ============ SCRIM + SHEETS ============ -->
+  <sc-if value="{{ anySheet }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeSheets }}" style="position:absolute;inset:0;background:rgba(40,30,20,.4);z-index:70;animation:scrimIn .2s ease;"></div>
+  </sc-if>
+
+  <sc-if value="{{ showMenu }}" hint-placeholder-val="{{ false }}">
+    <div class="app-bottom" style="position:absolute;left:0;right:0;bottom:0;z-index:80;background:#fff;border-radius:26px 26px 0 0;padding:14px 16px 30px;box-shadow:0 -14px 40px rgba(0,0,0,.14);animation:sheetUp .28s cubic-bezier(.2,.8,.2,1);">
+      <div style="width:38px;height:4px;border-radius:100px;background:#e3d4c2;margin:0 auto 14px;"></div>
+      <sc-for list="{{ menuItems }}" as="m" hint-placeholder-count="3">
+        <button onClick="{{ m.onClick }}" style="width:100%;display:flex;align-items:center;gap:13px;border:none;background:none;cursor:pointer;padding:14px 8px;font-family:inherit;font-size:15.5px;color:#2f2820;text-align:left;border-bottom:1px solid #f3ece1;" style-hover="background:#faf6f0;">
+          <span style="width:36px;height:36px;border-radius:11px;background:{{ accentSoft2 }};display:flex;align-items:center;justify-content:center;font-size:17px;flex:none;">{{ m.icon }}</span>
+          {{ m.label }}
+        </button>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showSignin }}" hint-placeholder-val="{{ false }}">
+    <div class="app-bottom" style="position:absolute;left:0;right:0;bottom:0;z-index:80;background:#fff;border-radius:26px 26px 0 0;padding:16px 22px 30px;box-shadow:0 -14px 40px rgba(0,0,0,.14);animation:sheetUp .28s cubic-bezier(.2,.8,.2,1);">
+      <div style="width:38px;height:4px;border-radius:100px;background:#e3d4c2;margin:0 auto 12px;"></div>
+      <div style="display:flex;justify-content:center;margin-bottom:6px;">{{ mascotSignin }}</div>
+      <h3 style="font-family:'Newsreader',serif;font-weight:500;font-size:24px;color:#2f2820;margin:0 0 4px;text-align:center;">{{ signinTitle }}</h3>
+      <p style="font-size:13.5px;color:#8a7a66;line-height:1.5;margin:0 0 16px;text-align:center;">Así {{ botName }} puede dirigirse a ti por tu nombre y recordar lo vuestro en este dispositivo.</p>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <input ref="{{ userNameRef }}" placeholder="Tu nombre" style="border:1px solid #e3d4c2;background:#faf6f0;border-radius:14px;padding:14px 15px;font-family:inherit;font-size:15px;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};">
+        <input ref="{{ userEmailRef }}" type="email" placeholder="Email (opcional)" style="border:1px solid #e3d4c2;background:#faf6f0;border-radius:14px;padding:14px 15px;font-family:inherit;font-size:15px;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};">
+        <button onClick="{{ saveUser }}" style="margin-top:4px;border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:16px;font-weight:600;padding:15px;border-radius:15px;cursor:pointer;">{{ signinCta }}</button>
+        <button onClick="{{ skipSignin }}" style="border:none;background:none;color:#a1937f;font-family:inherit;font-size:13.5px;font-weight:600;padding:6px;cursor:pointer;">{{ skipLabel }}</button>
+      </div>
+    </div>
+  </sc-if>
+
+  </div>
+</div>

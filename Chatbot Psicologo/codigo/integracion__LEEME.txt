@@ -1,0 +1,57 @@
+CALMA — WEB + CHATBOT AURA (paquete completo)
+==============================================
+
+Contenido de esta carpeta:
+- index.html         → la WEB (landing) de la consulta, con el mismo estilo.
+- chatbot-aura.html  → la APLICACIÓN del chatbot (un solo archivo, funciona sola).
+- widget.js          → botón flotante para meter el chatbot en OTRA web ya hecha.
+- ejemplo-web.html   → ejemplo de uso del widget en una web externa.
+- LEEME.txt          → este archivo.
+
+La web (index.html) ya lleva el chatbot integrado: botón flotante abajo a la
+derecha + una sección de vista previa. Usa chatbot-aura.html de esta carpeta,
+así que MANTÉN los dos archivos juntos.
+
+
+CÓMO VERLO EN TU ORDENADOR
+--------------------------
+Abre "index.html" con Chrome o Safari (doble clic).
+(Si el chat sale en blanco al abrir con doble clic, es porque el navegador
+bloquea iframes en archivos locales. Se soluciona subiéndolo a tu hosting o
+usando un servidor local. Online funciona perfecto.)
+
+
+CÓMO SUBIRLO A INTERNET (gratis)
+--------------------------------
+Sube TODA esta carpeta a tu hosting (Netlify Drop, Vercel, Hostinger, tu
+dominio...). "index.html" será tu página de inicio. Nada más.
+
+
+¿YA TIENES UNA WEB Y SOLO QUIERES EL CHATBOT?
+---------------------------------------------
+Sube "chatbot-aura.html" y "widget.js" a tu servidor y pega antes de </body>:
+
+  <script src="widget.js"
+          data-src="chatbot-aura.html"
+          data-color="#7c9885"
+          data-title="Habla con Aura"></script>
+
+(ver "ejemplo-web.html").
+
+
+PERSONALIZAR (nombre, precio, WhatsApp, email, color)
+-----------------------------------------------------
+Estos datos viven dentro de los archivos. Para cambiarlos hay que regenerarlos
+desde el proyecto. Dime tus datos reales (WhatsApp y email para recibir las
+citas) y te los dejo listos.
+
+
+SOBRE LA IA
+-----------
+En estos archivos la IA funciona en "modo demo" (respuestas guionizadas),
+porque una IA real necesita una clave secreta que NO puede ir en un archivo
+público. Para IA real online hace falta un pequeño servidor (única parte con
+posible coste). Cuando quieras, te preparo ese paso.
+
+Los datos de cada visitante (conversaciones, ánimo, diario, citas) se guardan
+solo en su navegador (localStorage). No se envían a ningún sitio.

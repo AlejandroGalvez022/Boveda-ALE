@@ -1,0 +1,16 @@
+# Configuración de Netlify para La Brega Estudio
+# Web estática de un solo archivo (index.html) — no necesita build.
+
+[build]
+  publish = "."
+
+# Cabeceras: cachea los assets, no cachea el HTML (para que los cambios se vean al instante)
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

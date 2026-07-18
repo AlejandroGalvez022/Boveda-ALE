@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reuniones · Panel Reload</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Podium Soft para titulos: <link rel="stylesheet" href="https://use.typekit.net/lwb5kom.css"> -->
+<link rel="stylesheet" href="panel.css">
+<style>
+  .mrow{cursor:pointer}
+  .mtitle{font-weight:600;font-size:14px;color:var(--ink)}
+  .msum{font-size:12.5px;color:var(--muted);margin-top:3px;max-width:460px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .avstack{display:flex;align-items:center}
+  .avstack .av{width:28px;height:28px;font-size:10px;margin-left:-8px;border:2px solid var(--card)}
+  .avstack .av:first-child{margin-left:0}
+  .avstack .more{width:28px;height:28px;margin-left:-8px;border:2px solid var(--card);border-radius:50%;background:var(--bg);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+  td.when{color:var(--faint);font-size:12.5px;white-space:nowrap;text-align:right}
+  .live{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:5px 11px;border-radius:var(--pill)}
+  .live i{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .spin{width:15px;height:15px;border:2px solid var(--line-strong);border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite;display:inline-block}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .newflash{animation:flash 1.3s ease}
+  @keyframes flash{0%{background:var(--accent-soft)}100%{background:transparent}}
+  .hidden{display:none}
+  .seclbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin:20px 0 9px;display:flex;align-items:center;gap:8px}
+  .sumbox{font-size:13.5px;color:var(--ink);background:var(--accent-soft);border:1px solid var(--line);border-radius:var(--radius-sm);padding:14px 16px;line-height:1.65}
+  .tchips{display:flex;flex-wrap:wrap;gap:6px}
+  .tchip{font-size:11.5px;font-weight:600;color:var(--muted);background:var(--bg);border:1px solid var(--line-strong);border-radius:var(--pill);padding:4px 11px}
+  .ulist{list-style:none;margin:0;padding:0}
+  .ulist li{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .ulist li:last-child{border-bottom:none}
+  .ulist .bullet{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:7px}
+  .ulist.warn .bullet{background:var(--c-yellow)}
+  .subhd{font-size:12px;font-weight:600;color:var(--muted);margin:14px 0 4px}
+  .task{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .task:last-child{border-bottom:none}
+  .task .who{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .task .who .av{width:26px;height:26px;font-size:10px}
+  .att{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .att:last-child{border-bottom:none}
+  .att .left{display:flex;align-items:center;gap:10px}
+  .att .mins{color:var(--faint);font-size:12px}
+  .estado{font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+  .estado i{width:8px;height:8px;border-radius:50%;display:inline-block}
+  .clima{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;padding:8px 14px;border-radius:var(--pill)}
+  .grid2{display:grid;grid-template-columns:1.6fr 1fr;gap:18px}
+  @media(max-width:1100px){.grid2{grid-template-columns:1fr}}
+  .drop{border:1.5px dashed var(--line-strong);border-radius:var(--radius);padding:18px;text-align:center;color:var(--muted);font-size:13px}
+  .drop b{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <div class="brand"><img class="brand-logo" src="reload-logo.png" alt="Reload Group"></div>
+    <div class="navlbl">Principal</div>
+    <a class="nav" href="index.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span>Resumen</span></a>
+    <a class="nav on" href="reuniones.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg><span>Reuniones</span></a>
+    <a class="nav" href="correo.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg><span>Correo</span></a>
+    <a class="nav" href="clientes.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4z"/></svg><span>Clientes</span></a>
+    <a class="nav" href="informes.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13h2l3 8 4-16 3 8h6"/></svg><span>Informes</span></a>
+    <div class="navlbl">Sistema</div>
+    <a class="nav" href="ajustes.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg><span>Ajustes</span></a>
+    <div class="spacer"></div>
+    <div class="demo-tag">Datos de demostración</div>
+  </aside>
+
+  <main class="main">
+    <div class="top">
+      <div><h1>Reuniones</h1><p class="sub">La IA resume cada reunión, registra quién se unió y extrae las tareas</p></div>
+      <div class="controls">
+        <span class="live"><i></i>IA activa</span>
+        <button class="pill" id="syncBtn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg><span id="syncTxt">Procesar reunión nueva</span></button>
+        <button class="pill primary" id="exportBtn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>Exportar</button>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><p class="lab">Reuniones este mes</p><p class="val" id="kpiTotal">0</p><p class="del">Meet · Zoom</p></div>
+      <div class="kpi"><p class="lab">Horas en reuniones</p><p class="val" id="kpiHoras">0</p><p class="del">Suma del mes</p></div>
+      <div class="kpi"><p class="lab">Tareas abiertas</p><p class="val" id="kpiTareas">0</p><p class="del">Sin completar</p></div>
+      <div class="kpi"><p class="lab">Asistencia media</p><p class="val" id="kpiAsis">0%</p><p class="del">Convocados que entran</p></div>
+    </div>
+
+    <div class="grid2" style="margin-top:20px">
+      <div class="panel">
+        <div class="ph"><h2>Reuniones por semana</h2></div>
+        <div class="chart" style="height:210px"><canvas id="barChart"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><h2>Asistencia</h2></div>
+        <div class="chart" style="height:210px"><canvas id="donutChart"></canvas></div>
+        <div class="legend"><span><i style="background:var(--c-aqua)"></i>Asistieron</span><span><i style="background:var(--c-yellow)"></i>Tarde</span><span><i style="background:var(--c-red)"></i>No vinieron</span></div>
+      </div>
+    </div>
+
+    <div class="toolbar" style="margin-top:22px">
+      <div class="chips" id="chips"></div>
+      <div class="search">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input type="text" id="search" placeholder="Buscar reunión, cliente…">
+      </div>
+    </div>
+
+    <div class="panel" style="padding-top:14px">
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Reunión</th><th>Asistentes</th><th>Tareas</th><th>Duración</th><th class="r">Fecha</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <p id="empty" class="muted hidden" style="text-align:center;padding:32px 0;font-size:14px">No hay reuniones en este filtro.</p>
+    </div>
+
+    <div class="panel" style="margin-top:20px">
+      <div class="ph"><h2>Añadir una reunión</h2></div>
+      <div class="drop">Pega o sube la <b>transcripción</b> de una reunión y la IA genera el resumen, los acuerdos y las tareas.<br><span style="font-size:12px;color:var(--faint)">En producción se conecta a Google Meet o Zoom y entra sola al terminar la llamada.</span></div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="panel.js"></script>
+<script>
+(function(){
+  function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
+  function initials(n){var p=(n||'').replace(/\(.*?\)/g,'').trim().split(/\s+/).filter(Boolean);if(!p.length)return'—';if(p.length===1)return p[0].slice(0,2).toUpperCase();return(p[0][0]+p[1][0]).toUpperCase();}
+  function first(n){return (n||'').replace(/\(.*?\)/g,'').trim().split(/\s+/)[0]||'';}
+
+  var TIPOS={"Cliente":"var(--accent)","Interna":"var(--c-violet)","Evento":"var(--c-aqua)","Proveedor":"var(--c-yellow)"};
+  function colorFor(t){return TIPOS[t]||"var(--faint)";}
+  var CLIMA={ok:['var(--c-aqua)','var(--accent-soft)'],medio:['var(--c-yellow)','var(--accent-soft)'],tenso:['var(--c-red)','var(--accent-soft)']};
+
+  var rows=[
+    {tit:"Kick-off portal de transparencia",cliente:"Ayto. de Firgas",proyecto:"Portal de transparencia",tipo:"Cliente",fecha:"Hoy",dur:52,
+     resumen:"Se define el alcance del portal: publicación de contratos, presupuestos y actas. El Ayuntamiento aportará los contenidos en dos semanas. Primera entrega para septiembre y revisión intermedia en agosto.",
+     temas:["Alcance","Contenidos","Plazos"],
+     asistentes:[{n:"Alejandro Gálvez",m:52,e:"ok"},{n:"Raúl Vega",m:52,e:"ok"},{n:"Ana Suárez (Firgas)",m:48,e:"ok"},{n:"Juan Déniz (Firgas)",m:15,e:"tarde"},{n:"Pilar Rodríguez (Firgas)",m:0,e:"no"}],
+     acuerdos:["El portal publicará contratos, presupuestos y actas de pleno.","Primera entrega prevista para septiembre.","Revisión intermedia a mediados de agosto."],
+     tareas:[{t:"Enviar propuesta formal con alcance y plazos",q:"Alejandro Gálvez",f:"Viernes",cli:false},{t:"Recopilar los contenidos y documentos a publicar",q:"Ana Suárez",f:"En 2 semanas",cli:true},{t:"Preparar estimación de coste de mantenimiento",q:"Raúl Vega",f:"Lunes",cli:false}],
+     pendientes:["El Ayuntamiento debe confirmar qué documentos son públicos."],
+     clima:{txt:"Positivo · institución implicada",kind:"ok"}},
+
+    {tit:"Revisión semanal de proyectos",cliente:"Interna",proyecto:"Varios proyectos",tipo:"Interna",fecha:"Ayer",dur:35,
+     resumen:"Repaso del estado de los proyectos activos. La web de Bodegas Teror va con una semana de retraso por falta de fotos. Se prioriza cerrar el portal de Firgas antes que el mantenimiento.",
+     temas:["Prioridades","Retrasos","Planificación"],
+     asistentes:[{n:"Alejandro Gálvez",m:35,e:"ok"},{n:"Paula Herrera",m:35,e:"ok"},{n:"Raúl Vega",m:30,e:"ok"},{n:"Marta Molina",m:8,e:"tarde"}],
+     acuerdos:["Se prioriza el portal de Firgas sobre mantenimiento.","Bodegas Teror se retrasa una semana por falta de material."],
+     tareas:[{t:"Reclamar las fotos a Bodegas Teror",q:"Paula Herrera",f:"Hoy",cli:false},{t:"Replanificar el calendario de mantenimiento",q:"Alejandro Gálvez",f:"Miércoles",cli:false}],
+     pendientes:["Fijar nueva fecha de entrega de Bodegas Teror."],
+     clima:{txt:"Normal · equipo alineado",kind:"ok"}},
+
+    {tit:"Presentación evento TIC Canarias",cliente:"Eventos Atlántico",proyecto:"Feria TIC Canarias",tipo:"Evento",fecha:"Lun",dur:68,
+     resumen:"Se presenta la propuesta de participación en la feria TIC. Reload tendría un stand y una charla de 20 minutos sobre automatización con IA. Pendiente confirmar coste del stand y ponente.",
+     temas:["Stand","Charla","Material gráfico"],
+     asistentes:[{n:"Raúl Vega",m:68,e:"ok"},{n:"Paula Herrera",m:68,e:"ok"},{n:"Alejandro Gálvez",m:60,e:"ok"},{n:"Nuria Ortega (Atlántico)",m:68,e:"ok"},{n:"Samuel Ojeda",m:22,e:"tarde"},{n:"Hugo Ramos",m:0,e:"no"}],
+     acuerdos:["Reload participará con stand y una charla de 20 minutos.","El tema de la charla será automatización con IA."],
+     tareas:[{t:"Pedir presupuesto del stand a la organización",q:"Paula Herrera",f:"Jueves",cli:false},{t:"Decidir ponente y preparar guion de la charla",q:"Raúl Vega",f:"En 10 días",cli:false},{t:"Diseñar el material gráfico del stand",q:"Marta Molina",f:"Fin de mes",cli:false}],
+     pendientes:["Confirmar el coste del stand.","Decidir quién dará la charla."],
+     clima:{txt:"Positivo · con ganas",kind:"ok"}},
+
+    {tit:"Automatización de albaranes",cliente:"ROP Logística",proyecto:"Automatización de albaranes",tipo:"Cliente",fecha:"Lun",dur:41,
+     resumen:"El cliente explica su proceso manual de envío de albaranes. Usan un ERP propio con exportación a CSV. Se valora conectar n8n al ERP para generar y enviar los albaranes automáticamente.",
+     temas:["ERP","Integración","Piloto"],
+     asistentes:[{n:"Alejandro Gálvez",m:41,e:"ok"},{n:"Javier Ramos (ROP)",m:41,e:"ok"},{n:"Raúl Vega",m:20,e:"tarde"}],
+     acuerdos:["Se conectará n8n al ERP mediante exportación CSV.","Prueba piloto con un solo cliente antes de desplegar."],
+     tareas:[{t:"Facilitar acceso de prueba al ERP",q:"Javier Ramos",f:"Martes",cli:true},{t:"Enviar presupuesto de la automatización",q:"Raúl Vega",f:"Viernes",cli:false}],
+     pendientes:["Confirmar el formato exacto del CSV del ERP."],
+     clima:{txt:"Normal · cliente interesado",kind:"ok"}},
+
+    {tit:"Cierre de campaña Google Ads",cliente:"Ads Canarias",proyecto:"Campaña de anuncios",tipo:"Proveedor",fecha:"Vie",dur:24,
+     resumen:"Repaso de resultados de la campaña de junio. El coste por lead ha bajado un 18%. Se mantiene el presupuesto y se ajustan las palabras clave con peor rendimiento.",
+     temas:["Resultados","Optimización"],
+     asistentes:[{n:"Paula Herrera",m:24,e:"ok"},{n:"Marta Molina",m:24,e:"ok"},{n:"Luis Cabrera (Ads)",m:24,e:"ok"}],
+     acuerdos:["Se mantiene el presupuesto mensual de la campaña.","Se pausan las palabras clave con peor rendimiento."],
+     tareas:[{t:"Enviar informe de resultados de junio",q:"Luis Cabrera",f:"Miércoles",cli:true}],
+     pendientes:[],
+     clima:{txt:"Positivo · buenos resultados",kind:"ok"}}
+  ];
+
+  var incoming=[
+    {tit:"Reunión de arranque · Clínica Vistabella",cliente:"Clínica Vistabella",proyecto:"Recordatorios automáticos",tipo:"Cliente",fecha:"ahora",dur:38,
+     resumen:"La clínica quiere automatizar los recordatorios de cita que hoy envían a mano por WhatsApp. Gestionan la agenda con un software propio. Se propone un piloto de un mes con una sola consulta antes de extenderlo.",
+     temas:["Agenda","WhatsApp","Piloto"],
+     asistentes:[{n:"Alejandro Gálvez",m:38,e:"ok"},{n:"Elena Bravo (Vistabella)",m:38,e:"ok"},{n:"Raúl Vega",m:31,e:"ok"},{n:"Tomás Gil (Vistabella)",m:9,e:"tarde"}],
+     acuerdos:["Piloto de un mes con una sola consulta.","Los recordatorios saldrán 24 h antes de la cita."],
+     tareas:[{t:"Solicitar acceso a la API de su agenda",q:"Alejandro Gálvez",f:"Jueves",cli:false},{t:"Preparar propuesta del piloto",q:"Raúl Vega",f:"Lunes",cli:false},{t:"Confirmar el texto del recordatorio",q:"Elena Bravo",f:"Esta semana",cli:true}],
+     pendientes:["Acceso a la API de la agenda de la clínica."],
+     clima:{txt:"Positivo",kind:"ok"}}
+  ];
+  var nextIn=0, filter="all";
+
+  function allTareas(){var n=0;rows.forEach(function(r){n+=r.tareas.length;});return n;}
+  function updateKpis(){
+    document.getElementById('kpiTotal').textContent=rows.length;
+    var mins=rows.reduce(function(a,r){return a+r.dur;},0);
+    document.getElementById('kpiHoras').textContent=(mins/60).toFixed(1).replace('.',',')+' h';
+    document.getElementById('kpiTareas').textContent=allTareas();
+    var tot=0,ok=0;
+    rows.forEach(function(r){r.asistentes.forEach(function(a){tot++; if(a.e!=='no') ok++;});});
+    document.getElementById('kpiAsis').textContent=tot?Math.round(ok/tot*100)+'%':'0%';
+  }
+
+  function renderChips(){
+    var counts={},order=[];
+    rows.forEach(function(r){ if(!(r.tipo in counts)){counts[r.tipo]=0;order.push(r.tipo);} counts[r.tipo]++; });
+    var el=document.getElementById('chips'); el.innerHTML='';
+    var all=document.createElement('button'); all.className='chip'+(filter==='all'?' on':'');
+    all.innerHTML='Todas <span style="opacity:.6">'+rows.length+'</span>';
+    all.onclick=function(){filter='all';renderChips();renderTable();}; el.appendChild(all);
+    order.forEach(function(c){
+      var b=document.createElement('button'); b.className='chip'+(filter===c?' on':'');
+      b.innerHTML=esc(c)+' <span style="opacity:.6">'+counts[c]+'</span>';
+      b.onclick=function(){filter=c;renderChips();renderTable();}; el.appendChild(b);
+    });
+  }
+
+  function renderTable(flashFirst){
+    var q=(document.getElementById('search').value||'').toLowerCase().trim();
+    var tb=document.getElementById('tbody'); tb.innerHTML=''; var shown=0;
+    rows.forEach(function(r,i){
+      if(filter!=='all'&&r.tipo!==filter) return;
+      if(q && (r.tit+' '+r.cliente+' '+r.proyecto+' '+r.resumen).toLowerCase().indexOf(q)===-1) return;
+      shown++;
+      var tr=document.createElement('tr'); tr.className='mrow'+(flashFirst&&i===0?' newflash':'');
+      var avs=r.asistentes.slice(0,4).map(function(a){return '<div class="av">'+esc(initials(a.n))+'</div>';}).join('');
+      if(r.asistentes.length>4) avs+='<div class="more">+'+(r.asistentes.length-4)+'</div>';
+      var noShow=r.asistentes.filter(function(a){return a.e==='no';}).length;
+      tr.innerHTML=
+        '<td><div class="mtitle">'+esc(r.tit)+'</div><div class="msum">'+esc(r.cliente)+' · '+esc(r.proyecto)+'</div></td>'+
+        '<td><div class="avstack">'+avs+'</div>'+(noShow?'<div class="muted" style="font-size:11.5px;margin-top:5px">'+noShow+' no vinieron</div>':'')+'</td>'+
+        '<td><span class="badge b-ok">'+r.tareas.length+' tareas</span></td>'+
+        '<td class="muted">'+r.dur+' min</td>'+
+        '<td class="when">'+esc(r.fecha)+'</td>';
+      tr.addEventListener('click',function(){openCard(r);});
+      tb.appendChild(tr);
+    });
+    document.getElementById('empty').classList.toggle('hidden', shown!==0);
+    updateKpis();
+  }
+  document.getElementById('search').addEventListener('input',function(){renderTable();});
+
+  function toast(m){var w=document.querySelector('.toast-wrap');if(!w){w=document.createElement('div');w.className='toast-wrap';document.body.appendChild(w);}var t=document.createElement('div');t.className='toast';t.textContent=m;w.appendChild(t);requestAnimationFrame(function(){t.classList.add('in');});setTimeout(function(){t.classList.remove('in');setTimeout(function(){t.remove();},250);},2200);}
+  document.getElementById('exportBtn').onclick=function(){toast('Exportando reuniones a CSV…');};
+
+  function taskRow(t){
+    return '<div class="task"><div>'+esc(t.t)+'<div class="muted" style="font-size:12px;margin-top:2px">Para: '+esc(t.f)+'</div></div>'+
+           '<div class="who"><div class="av">'+esc(initials(t.q))+'</div><span style="font-size:12.5px">'+esc(first(t.q))+'</span></div></div>';
+  }
+
+  function openCard(r){
+    var estado={ok:['var(--c-aqua)','Asistió'],tarde:['var(--c-yellow)','Llegó tarde'],no:['var(--c-red)','No vino']};
+    var temas=(r.temas||[]).map(function(t){return '<span class="tchip">'+esc(t)+'</span>';}).join('');
+    var acu=r.acuerdos.map(function(a){return '<li><span class="bullet"></span><span>'+esc(a)+'</span></li>';}).join('');
+
+    var equipo=r.tareas.filter(function(t){return !t.cli;});
+    var cli=r.tareas.filter(function(t){return t.cli;});
+    var tareasHtml='';
+    if(equipo.length){ tareasHtml+='<div class="subhd">Del equipo</div>'+equipo.map(taskRow).join(''); }
+    if(cli.length){ tareasHtml+='<div class="subhd">Del cliente</div>'+cli.map(taskRow).join(''); }
+
+    var asis=r.asistentes.map(function(a){
+      var e=estado[a.e]||estado.ok;
+      return '<div class="att"><div class="left"><div class="av">'+esc(initials(a.n))+'</div><div><div style="font-weight:600">'+esc(a.n)+'</div><div class="mins">'+(a.e==='no'?'No se unió':a.m+' min conectado')+'</div></div></div>'+
+             '<span class="estado" style="color:'+e[0]+'"><i style="background:'+e[0]+'"></i>'+e[1]+'</span></div>';
+    }).join('');
+
+    var pend = (r.pendientes&&r.pendientes.length)
+      ? '<div class="seclbl">Puntos pendientes</div><ul class="ulist warn">'+r.pendientes.map(function(p){return '<li><span class="bullet"></span><span>'+esc(p)+'</span></li>';}).join('')+'</ul>'
+      : '';
+
+    var ck=(CLIMA[r.clima&&r.clima.kind]||CLIMA.ok);
+    var clima = r.clima ? '<div class="seclbl">Clima de la reunión</div><span class="clima" style="color:'+ck[0]+';background:'+ck[1]+'"><i style="width:9px;height:9px;border-radius:50%;display:inline-block;background:'+ck[0]+'"></i>'+esc(r.clima.txt)+'</span>' : '';
+
+    var ov=document.createElement('div'); ov.className='modal-ov';
+    ov.innerHTML='<div class="modal" style="max-width:700px">'+
+      '<div class="modal-hd"><div><h3>'+esc(r.tit)+'</h3><div class="muted" style="font-size:12.5px;margin-top:3px"><span class="cat" style="font-weight:600"><i style="width:8px;height:8px;border-radius:50%;display:inline-block;background:'+colorFor(r.tipo)+';margin-right:5px"></i></span>'+esc(r.cliente)+' · '+esc(r.proyecto)+' · '+esc(r.fecha)+' · '+r.dur+' min</div></div>'+
+      '<button class="iconbtn" id="cX" aria-label="Cerrar"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button></div>'+
+      '<div class="modal-bd">'+
+        '<div class="seclbl">Resumen de la IA</div><div class="sumbox">'+esc(r.resumen)+'</div>'+
+        (temas?'<div class="seclbl">Temas tratados</div><div class="tchips">'+temas+'</div>':'')+
+        '<div class="seclbl">Acuerdos</div><ul class="ulist">'+acu+'</ul>'+
+        '<div class="seclbl">Tareas · '+r.tareas.length+'</div>'+tareasHtml+
+        pend+
+        '<div class="seclbl">Asistentes · '+r.asistentes.length+'</div>'+asis+
+        clima+
+      '</div>'+
+      '<div class="modal-act"><button class="pill" id="cCopy">Copiar resumen</button><button class="pill primary" id="cSend">Enviar acta al equipo</button></div>'+
+    '</div>';
+    document.body.appendChild(ov);
+    function close(){ov.remove();document.removeEventListener('keydown',onKey);}
+    function onKey(e){if(e.key==='Escape')close();}
+    document.addEventListener('keydown',onKey);
+    ov.addEventListener('click',function(e){if(e.target===ov)close();});
+    ov.querySelector('#cX').onclick=close;
+    ov.querySelector('#cCopy').onclick=function(){try{navigator.clipboard.writeText(r.resumen);}catch(e){}toast('Resumen copiado');};
+    ov.querySelector('#cSend').onclick=function(){toast('En real, el acta se envía por correo al equipo');};
+  }
+
+  var syncBtn=document.getElementById('syncBtn'),syncTxt=document.getElementById('syncTxt'),busy=false;
+  syncBtn.addEventListener('click',async function(){
+    if(busy)return;
+    if(nextIn>=incoming.length){toast('No hay reuniones nuevas por procesar');return;}
+    busy=true;syncBtn.disabled=true;syncTxt.textContent='';
+    syncBtn.insertAdjacentHTML('afterbegin','<span class="spin" id="sp"></span>');
+    await new Promise(function(r){setTimeout(r,1400);});
+    rows.unshift(incoming[nextIn]); nextIn++;
+    filter='all';document.getElementById('search').value='';renderChips();renderTable(true);
+    toast('Reunión procesada · resumen y tareas generados');
+    var sp=document.getElementById('sp');if(sp)sp.remove();
+    syncTxt.textContent='Procesar reunión nueva';syncBtn.disabled=false;busy=false;
+  });
+
+  renderChips(); renderTable();
+
+  var cs=getComputedStyle(document.documentElement),v=function(n){return cs.getPropertyValue(n).trim();};
+  var ink=v('--muted'),grid=v('--line'),blue=v('--c-blue'),aqua=v('--c-aqua'),yellow=v('--c-yellow'),red=v('--c-red'),cardBg=v('--card');
+  Chart.defaults.font.family="'Montserrat', sans-serif";Chart.defaults.font.size=12;Chart.defaults.color=ink;
+  new Chart(document.getElementById('barChart'),{type:'bar',data:{labels:['S1','S2','S3','S4'],datasets:[{data:[4,6,5,8],backgroundColor:blue,borderRadius:5,borderSkipped:'bottom',maxBarThickness:26}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:grid,drawBorder:false},ticks:{color:ink,precision:0}},x:{grid:{display:false,drawBorder:false},ticks:{color:ink}}}}});
+  new Chart(document.getElementById('donutChart'),{type:'doughnut',data:{labels:['Asistieron','Tarde','No vinieron'],datasets:[{data:[16,5,2],backgroundColor:[aqua,yellow,red],borderColor:cardBg,borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,cutout:'64%',plugins:{legend:{display:false}}}});
+})();
+</script>
+</body>
+</html>

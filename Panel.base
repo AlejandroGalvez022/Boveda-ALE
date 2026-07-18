@@ -1,0 +1,32 @@
+filters:
+  and:
+    - 'tipo == "proyecto"'
+
+formulas:
+  estado_icon: 'if(estado == "activo", "🟢", if(estado == "en produccion", "✅", if(estado == "en pausa", "⏸️", if(estado == "demo", "🎨", "💡"))))'
+
+properties:
+  file.name:
+    displayName: "Proyecto"
+  estado:
+    displayName: "Estado"
+  conversaciones:
+    displayName: "Convs."
+  formula.estado_icon:
+    displayName: ""
+
+views:
+  - type: table
+    name: "Por estado"
+    groupBy:
+      property: estado
+      direction: ASC
+    order:
+      - formula.estado_icon
+      - file.name
+      - conversaciones
+  - type: cards
+    name: "Tarjetas"
+    order:
+      - file.name
+      - estado

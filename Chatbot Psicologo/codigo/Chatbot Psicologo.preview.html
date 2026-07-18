@@ -1,0 +1,1032 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Chatbot Psicologo</title></head>
+<body>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Hanken+Grotesque:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+    body{margin:0;background:#efe7dd;display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Hanken Grotesque',system-ui,sans-serif;}
+    @keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes dotBlink{0%,60%,100%{opacity:.25;transform:translateY(0);}30%{opacity:1;transform:translateY(-3px);}}
+    @keyframes blobFloat{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(0,-14px) scale(1.04);}}
+    @keyframes sheetUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+    @keyframes scrimIn{from{opacity:0;}to{opacity:1;}}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes softIn{from{opacity:0;transform:translateY(14px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+    /* mascot */
+    @keyframes mascotFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+    @keyframes mascotBreathe{0%,100%{transform:scale(1);}50%{transform:scale(1.045);}}
+    @keyframes mascotGuide{0%,100%{transform:scale(.72);}25%,50%{transform:scale(1.12);}75%{transform:scale(.72);}}
+    @keyframes blink{0%,90%,100%{transform:scaleY(1);}95%{transform:scaleY(.12);}}
+    @keyframes earTwitch{0%,86%,100%{transform:rotate(0);}90%{transform:rotate(-6deg);}95%{transform:rotate(4deg);}}
+    @keyframes joyBounce{0%,100%{transform:translateY(0) scale(1);}30%{transform:translateY(-15px) scale(1.06);}60%{transform:translateY(0) scale(.98);}}
+    @keyframes sparkleFloat{0%{opacity:0;transform:translateY(5px) scale(.4);}40%{opacity:1;}100%{opacity:0;transform:translateY(-16px) scale(1.1);}}
+    @keyframes breatheGlow{0%,100%{opacity:.3;}25%,50%{opacity:.65;}}
+    ::-webkit-scrollbar{width:0;height:0;}
+    @media (max-width:520px){
+      body{background:#f6efe6 !important;align-items:stretch !important;justify-content:stretch !important;}
+      .device{width:100vw !important;height:100dvh !important;border-radius:0 !important;box-shadow:none !important;}
+      .ios-island,.ios-statusbar,.ios-home{display:none !important;}
+      .app-top{padding-top:max(env(safe-area-inset-top),16px) !important;}
+      .app-bottom{padding-bottom:max(env(safe-area-inset-bottom),14px) !important;}
+      .tabbar{padding-bottom:max(env(safe-area-inset-bottom),10px) !important;}
+    }
+  </style>
+</helmet>
+
+<div class="stage" style="position:relative;">
+<div class="device" style="width:402px;height:874px;border-radius:48px;overflow:hidden;position:relative;background:#f6efe6;box-shadow:0 40px 80px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.12);">
+  <div class="ios-island" style="position:absolute;top:11px;left:50%;transform:translateX(-50%);width:112px;height:33px;border-radius:22px;background:#000;z-index:40;"></div>
+  <div class="ios-statusbar" style="position:absolute;top:0;left:0;right:0;height:50px;padding:17px 30px 0;display:flex;align-items:center;justify-content:space-between;z-index:30;pointer-events:none;font-family:-apple-system,system-ui;">
+    <span style="font-size:16px;font-weight:600;color:#2f2820;">9:41</span>
+    <div style="display:flex;align-items:center;gap:7px;color:#2f2820;">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="7" width="3" height="5" rx=".6" fill="currentColor"/><rect x="5" y="4.5" width="3" height="7.5" rx=".6" fill="currentColor"/><rect x="10" y="2" width="3" height="10" rx=".6" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx=".6" fill="currentColor"/></svg>
+      <svg width="17" height="12" viewBox="0 0 17 12"><path d="M8.5 3C10.8 3 12.9 3.9 14.4 5.4L15.5 4.3C13.7 2.5 11.2 1.3 8.5 1.3 5.8 1.3 3.3 2.5 1.5 4.3L2.6 5.4C4.1 3.9 6.2 3 8.5 3Z" fill="currentColor"/><path d="M8.5 6.6C9.9 6.6 11.1 7.1 12 8L13.1 6.9C11.8 5.7 10.2 4.9 8.5 4.9 6.8 4.9 5.2 5.7 3.9 6.9L5 8C5.9 7.1 7.1 6.6 8.5 6.6Z" fill="currentColor"/><circle cx="8.5" cy="10.3" r="1.4" fill="currentColor"/></svg>
+      <svg width="26" height="13" viewBox="0 0 26 13"><rect x=".5" y=".5" width="22" height="12" rx="3.5" fill="none" stroke="currentColor" stroke-opacity=".4"/><rect x="2" y="2" width="19" height="9" rx="2" fill="currentColor"/><rect x="24" y="4.5" width="2" height="4" rx="1" fill="currentColor" fill-opacity=".5"/></svg>
+    </div>
+  </div>
+  <div class="ios-home" style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:132px;height:5px;border-radius:100px;background:rgba(0,0,0,.26);z-index:60;pointer-events:none;"></div>
+
+  <!-- ============ ONBOARDING ============ -->
+  <sc-if value="{{ showOnboarding }}" hint-placeholder-val="{{ true }}">
+    <div class="app-top app-bottom" data-screen-label="Bienvenida" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 30px 40px;background:radial-gradient(120% 75% at 50% 5%, #f7eee2 0%, #f2e6d6 55%, #ece0d1 100%);position:relative;overflow:hidden;">
+      <div style="position:absolute;top:40px;right:-70px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle at 40% 40%, {{ accentSoft }}, transparent 70%);filter:blur(10px);animation:blobFloat 10s ease-in-out infinite;pointer-events:none;"></div>
+      <div style="position:absolute;bottom:80px;left:-80px;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle at 50% 50%, {{ accentSoft2 }}, transparent 70%);filter:blur(12px);animation:blobFloat 13s ease-in-out infinite reverse;pointer-events:none;"></div>
+
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:2;">
+        <div style="margin-bottom:14px;">{{ mascotOnb }}</div>
+        <h1 style="font-family:'Newsreader',serif;font-weight:500;font-size:36px;line-height:1.1;letter-spacing:-.5px;color:#2f2820;margin:0 0 14px;">Este es {{ botName }}.<br>Estará a tu lado.</h1>
+        <p style="font-size:16px;line-height:1.55;color:#6f6356;margin:0;max-width:290px;text-wrap:pretty;">Un pequeño compañero para respirar, ordenar lo que sientes y hablar cuando lo necesites. A tu ritmo, siempre en calma.</p>
+      </div>
+
+      <div style="position:relative;z-index:2;width:100%;display:flex;flex-direction:column;gap:12px;">
+        <button onClick="{{ startEntry }}" style="border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:17px;font-weight:600;padding:17px;border-radius:18px;cursor:pointer;box-shadow:0 10px 24px {{ accentSoft }};" style-hover="filter:brightness(1.04);">Conocer a {{ botName }}</button>
+        <p style="font-size:11.5px;line-height:1.5;color:#a1937f;margin:2px 0 0;">{{ botName }} es un asistente de IA y no sustituye a la terapia profesional. En una emergencia llama al <strong style="color:#8a6a4a;">112</strong>.</p>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ LOGIN ============ -->
+  <sc-if value="{{ showLogin }}" hint-placeholder-val="{{ false }}">
+    <div class="app-top app-bottom" data-screen-label="Iniciar sesión" style="height:100%;display:flex;flex-direction:column;justify-content:center;padding:60px 30px 40px;background:radial-gradient(120% 75% at 50% 5%, #f7eee2 0%, #f2e6d6 55%, #ece0d1 100%);position:relative;overflow:hidden;">
+      <div style="position:absolute;top:40px;right:-70px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle at 40% 40%, {{ accentSoft }}, transparent 70%);filter:blur(10px);animation:blobFloat 10s ease-in-out infinite;pointer-events:none;"></div>
+      <div style="position:absolute;bottom:80px;left:-80px;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle at 50% 50%, {{ accentSoft2 }}, transparent 70%);filter:blur(12px);animation:blobFloat 13s ease-in-out infinite reverse;pointer-events:none;"></div>
+
+      <div style="position:relative;z-index:2;text-align:center;margin-bottom:26px;">
+        <div style="display:flex;justify-content:center;margin-bottom:16px;">{{ mascotLogin }}</div>
+        <h1 style="font-family:'Newsreader',serif;font-weight:500;font-size:32px;line-height:1.12;letter-spacing:-.5px;color:#2f2820;margin:0 0 8px;">{{ loginTitle }}</h1>
+        <p style="font-size:15px;line-height:1.55;color:#6f6356;margin:0 auto;max-width:290px;">Entra para guardar tus conversaciones, tu ánimo y tu diario en este dispositivo.</p>
+      </div>
+
+      <div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:11px;">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;color:#8a7a66;margin:0 0 6px 3px;">Tu nombre</label>
+          <input ref="{{ loginNameRef }}" defaultValue="{{ loginPrefillName }}" placeholder="¿Cómo te llamas?" style="width:100%;border:1px solid #e3d4c2;background:#fff;border-radius:16px;padding:15px 16px;font-family:inherit;font-size:15px;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};"></input>
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;color:#8a7a66;margin:0 0 6px 3px;">Email <span style="font-weight:400;color:#b3a493;">(opcional)</span></label>
+          <input ref="{{ loginEmailRef }}" defaultValue="{{ loginPrefillEmail }}" type="email" placeholder="tucorreo@ejemplo.com" style="width:100%;border:1px solid #e3d4c2;background:#fff;border-radius:16px;padding:15px 16px;font-family:inherit;font-size:15px;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};"></input>
+        </div>
+        <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12.5px;color:#b5654a;padding-left:3px;">Escribe tu nombre para continuar.</div>
+        </sc-if>
+        <button onClick="{{ doLogin }}" style="margin-top:6px;border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:17px;font-weight:600;padding:16px;border-radius:16px;cursor:pointer;box-shadow:0 10px 24px {{ accentSoft }};" style-hover="filter:brightness(1.04);">Entrar</button>
+        <button onClick="{{ loginGuest }}" style="border:none;background:none;color:#a1937f;font-family:inherit;font-size:13.5px;font-weight:600;padding:6px;cursor:pointer;">Continuar sin cuenta</button>
+        <p style="font-size:11px;line-height:1.5;color:#b3a493;text-align:center;margin:4px 0 0;">Tus datos se guardan solo en este dispositivo. {{ botName }} no sustituye la terapia profesional.</p>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ INICIO (zen) ============ -->
+  <sc-if value="{{ showHome }}" hint-placeholder-val="{{ false }}">
+    <div class="app-top" data-screen-label="Inicio" style="height:100%;display:flex;flex-direction:column;align-items:center;padding:56px 26px 104px;text-align:center;background:radial-gradient(115% 65% at 50% 0%, #f7eee2 0%, #f4ead9 55%, #efe3d2 100%);position:relative;overflow:hidden;">
+      <div style="position:absolute;top:60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle at 40% 40%, {{ accentSoft2 }}, transparent 70%);filter:blur(12px);animation:blobFloat 12s ease-in-out infinite;pointer-events:none;"></div>
+
+      <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;">
+        <sc-if value="{{ hasStreak }}" hint-placeholder-val="{{ false }}">
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.7);border:1px solid #eaddcb;border-radius:100px;padding:5px 13px;font-size:12.5px;font-weight:600;color:{{ accentDeep }};margin-bottom:14px;">🔥 {{ streakLabel }}</div>
+        </sc-if>
+        <div style="font-size:13.5px;color:#a1937f;font-weight:600;">{{ todayLabel }}</div>
+        <h1 style="font-family:'Newsreader',serif;font-weight:500;font-size:30px;line-height:1.1;color:#2f2820;margin:3px 0 0;">{{ homeGreeting }}</h1>
+      </div>
+
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:2;width:100%;">
+        <div onClick="{{ pokeMascot }}" style="cursor:pointer;user-select:none;">{{ mascotHome }}</div>
+        <p style="font-size:16.5px;line-height:1.45;color:#5f5548;margin:6px 0 0;min-height:24px;max-width:280px;animation:fadeIn .4s ease;">{{ mascotMsg }}</p>
+
+        <div style="margin-top:22px;width:100%;">
+          <div style="font-size:12.5px;color:#9a8c7d;font-weight:600;margin-bottom:12px;">{{ moodQuestion }}</div>
+          <div style="display:flex;gap:10px;justify-content:center;">
+            <sc-for list="{{ moodFaces }}" as="mf" hint-placeholder-count="5">
+              <button onClick="{{ mf.onClick }}" title="{{ mf.label }}" style="{{ mf.style }}">{{ mf.face }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:relative;z-index:2;width:100%;">
+        <button onClick="{{ goChat }}" style="width:100%;border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:17px;font-weight:600;padding:17px;border-radius:18px;cursor:pointer;box-shadow:0 10px 26px {{ accentSoft }};display:flex;align-items:center;justify-content:center;gap:10px;" style-hover="filter:brightness(1.04);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 20.5l1.9-4.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Hablar con {{ botName }}
+        </button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ CHAT ============ -->
+  <sc-if value="{{ showChat }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Chat" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;padding-bottom:calc(80px + env(safe-area-inset-bottom));">
+      <div class="app-top dkbar" style="flex:none;padding:56px 14px 12px;display:flex;align-items:center;gap:11px;background:rgba(248,242,234,.92);backdrop-filter:blur(14px);border-bottom:1px solid #ece0d2;z-index:5;">
+        <div style="width:42px;height:42px;flex:none;display:flex;align-items:center;justify-content:center;">{{ mascotChat }}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:15.5px;font-weight:600;color:#2f2820;line-height:1.2;">{{ botName }}</div>
+          <div style="display:flex;align-items:center;gap:5px;font-size:11.5px;color:#9a8c7d;">
+            <span style="width:7px;height:7px;border-radius:50%;background:#8a6d4f;flex:none;"></span>En línea · {{ practiceShort }}
+          </div>
+        </div>
+        <button onClick="{{ openBooking }}" style="flex:none;border:1px solid {{ accent }};background:rgba(255,255,255,.6);color:{{ accentDeep }};font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 11px;border-radius:12px;cursor:pointer;" style-hover="background:{{ accent }};color:#fff;">Pedir cita</button>
+        <button onClick="{{ openMenu }}" style="flex:none;border:none;background:none;cursor:pointer;padding:6px;color:#7a6c5d;">
+          <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.7" fill="currentColor"/><circle cx="10" cy="10" r="1.7" fill="currentColor"/><circle cx="10" cy="16" r="1.7" fill="currentColor"/></svg>
+        </button>
+      </div>
+
+      <sc-if value="{{ showSafetyBanner }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:none;margin:10px 14px 0;padding:9px 13px;background:#f3ece1;border:1px solid #e7dac9;border-radius:13px;font-size:11.5px;line-height:1.45;color:#8a7a66;">
+          Esto no es un servicio de emergencias. Si estás en crisis, llama al <strong style="color:#7a5a3a;">024</strong> o al <strong style="color:#7a5a3a;">112</strong>.
+        </div>
+      </sc-if>
+
+      <div ref="{{ scrollRef }}" class="dkscroll" style="flex:1;overflow-y:auto;padding:16px 14px 8px;display:flex;flex-direction:column;gap:11px;">
+        <sc-for list="{{ bubbles }}" as="b" hint-placeholder-count="2">
+          <div style="{{ b.rowStyle }}">
+            <div style="{{ b.bubbleStyle }}">{{ b.text }}</div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ isTyping }}" hint-placeholder-val="{{ false }}">
+          <div style="align-self:flex-start;display:flex;gap:4px;padding:13px 16px;background:#fff;border:1px solid #ece0d2;border-radius:18px 18px 18px 5px;">
+            <span style="width:7px;height:7px;border-radius:50%;background:#c3b4a2;animation:dotBlink 1.2s infinite;"></span>
+            <span style="width:7px;height:7px;border-radius:50%;background:#c3b4a2;animation:dotBlink 1.2s infinite .2s;"></span>
+            <span style="width:7px;height:7px;border-radius:50%;background:#c3b4a2;animation:dotBlink 1.2s infinite .4s;"></span>
+          </div>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{ showQuickReplies }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:none;padding:4px 14px 10px;display:flex;gap:8px;flex-wrap:wrap;">
+          <sc-for list="{{ quickReplies }}" as="q" hint-placeholder-count="3">
+            <button onClick="{{ q.onClick }}" style="border:1px solid #e3d4c2;background:#fff;color:#5a4f44;font-family:inherit;font-size:13px;font-weight:500;padding:8px 13px;border-radius:14px;cursor:pointer;" style-hover="border-color:{{ accent }};">{{ q.label }}</button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <div class="dkbar" style="flex:none;padding:8px 14px 12px;background:rgba(248,242,234,.94);backdrop-filter:blur(14px);border-top:1px solid #ece0d2;display:flex;align-items:flex-end;gap:9px;">
+        <textarea ref="{{ inputRef }}" onKeyDown="{{ onInputKey }}" rows="1" placeholder="Escribe lo que necesites…" style="flex:1;resize:none;border:1px solid #e3d4c2;background:#fff;border-radius:20px;padding:12px 16px;font-family:inherit;font-size:15px;line-height:1.35;color:#2f2820;max-height:110px;outline:none;" style-focus="border-color:{{ accent }};"></textarea>
+        <button onClick="{{ handleSend }}" style="flex:none;width:44px;height:44px;border:none;border-radius:50%;background:{{ accent }};color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px {{ accentSoft }};" style-hover="filter:brightness(1.05);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 12L20 4l-4 16-4-7-8-1z" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ CALMA ============ -->
+  <sc-if value="{{ showCalma }}" hint-placeholder-val="{{ false }}">
+    <div class="app-top" data-screen-label="Calma" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;">
+      <div style="flex:1;overflow-y:auto;padding:52px 20px 96px;">
+        <h1 style="font-family:'Newsreader',serif;font-weight:500;font-size:30px;color:#2f2820;margin:0 0 4px;">Calma</h1>
+        <p style="font-size:14px;color:#8a7a66;margin:0 0 22px;">Herramientas para volver a ti.</p>
+
+        <button onClick="{{ goBreathing }}" style="width:100%;text-align:left;cursor:pointer;border:none;background:linear-gradient(140deg, {{ accent }}, {{ accentDeep }});border-radius:24px;padding:22px;margin-bottom:20px;box-shadow:0 12px 26px {{ accentSoft }};position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;animation:softIn .45s ease both;" style-hover="filter:brightness(1.04);transform:translateY(-2px);">
+          <div style="position:absolute;top:-40px;right:-30px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.14);animation:floatSlow 9s ease-in-out infinite;"></div>
+          <div style="position:absolute;bottom:-40px;left:-20px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.08);animation:floatSlow 11s ease-in-out infinite reverse;"></div>
+          <div style="flex:none;z-index:2;">{{ mascotMini }}</div>
+          <div style="position:relative;z-index:2;">
+            <div style="font-size:12px;color:rgba(255,255,255,.85);font-weight:600;text-transform:uppercase;letter-spacing:.8px;">Con {{ botName }}</div>
+            <div style="font-size:21px;font-family:'Newsreader',serif;font-weight:500;color:#fff;margin:4px 0 3px;">Respira conmigo</div>
+            <div style="font-size:13px;color:rgba(255,255,255,.88);">3 min · para soltar la ansiedad</div>
+          </div>
+        </button>
+
+        <div style="font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:#b3a493;margin:0 0 12px;">Para escuchar</div>
+        <div style="display:flex;flex-direction:column;gap:11px;margin-bottom:24px;">
+          <sc-for list="{{ audioResources }}" as="r" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:13px;background:#fff;border:1px solid #ece0d2;border-radius:16px;padding:13px 15px;box-shadow:0 2px 8px rgba(120,90,50,.04);">
+              <span style="width:42px;height:42px;border-radius:12px;background:{{ accentSoft2 }};display:flex;align-items:center;justify-content:center;color:{{ accentDeep }};flex:none;">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"><path d="M5 3.5v11l9-5.5-9-5.5z"/></svg>
+              </span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:14.5px;font-weight:600;color:#2f2820;">{{ r.title }}</div>
+                <div style="font-size:12px;color:#a1937f;margin-top:2px;">{{ r.meta }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:#b3a493;margin:0 0 12px;">Para leer</div>
+        <div style="display:flex;flex-direction:column;gap:11px;">
+          <sc-for list="{{ readResources }}" as="r" hint-placeholder-count="3">
+            <div style="background:#fff;border:1px solid #ece0d2;border-radius:16px;padding:15px 16px;box-shadow:0 2px 8px rgba(120,90,50,.04);">
+              <div style="font-size:15px;font-weight:600;color:#2f2820;">{{ r.title }}</div>
+              <div style="font-size:13px;color:#8a7a66;line-height:1.45;margin-top:4px;">{{ r.desc }}</div>
+              <div style="font-size:11.5px;color:#b3a493;margin-top:8px;">{{ r.meta }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ RESPIRACIÓN ============ -->
+  <sc-if value="{{ showBreathing }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Respiración" style="height:100%;display:flex;flex-direction:column;background:linear-gradient(165deg, {{ accentDeep }}, {{ accent }});overflow:hidden;position:relative;">
+      <div class="app-top" style="flex:none;padding:56px 18px 0;display:flex;align-items:center;">
+        <button onClick="{{ goJournal }}" style="border:none;background:rgba(255,255,255,.18);cursor:pointer;padding:9px;border-radius:12px;display:flex;color:#fff;">
+          <svg width="11" height="18" viewBox="0 0 11 18" fill="none"><path d="M9.5 1.5L2 9l7.5 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;padding:20px;">
+        <div style="position:relative;width:250px;height:250px;display:flex;align-items:center;justify-content:center;">
+          <div style="{{ breathGlowStyle }}"></div>
+          <div style="position:absolute;width:150px;height:150px;border-radius:50%;border:2px solid rgba(255,255,255,.42);z-index:1;animation:ringPulse 8s ease-out infinite;"></div>
+          <div style="position:absolute;width:150px;height:150px;border-radius:50%;border:2px solid rgba(255,255,255,.3);z-index:1;animation:ringPulse 8s ease-out 4s infinite;"></div>
+          <div style="position:relative;z-index:3;">{{ mascotGuideEl }}</div>
+          <div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);z-index:4;font-family:'Newsreader',serif;font-size:24px;font-weight:500;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.15);">{{ breathPhase }}</div>
+        </div>
+        <div style="text-align:center;max-width:280px;">
+          <p style="font-size:15px;color:rgba(255,255,255,.92);line-height:1.5;margin:0 0 24px;">{{ breathHint }}</p>
+          <button onClick="{{ toggleBreathing }}" style="border:none;background:#fff;color:{{ accentDeep }};font-family:inherit;font-size:16px;font-weight:600;padding:15px 42px;border-radius:16px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.15);">{{ breathBtnLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ DIARIO ============ -->
+  <sc-if value="{{ showJournal }}" hint-placeholder-val="{{ false }}">
+    <div class="app-top" data-screen-label="Diario" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;">
+      <div style="flex:1;overflow-y:auto;padding:52px 20px 96px;">
+        <h1 style="font-family:'Newsreader',serif;font-weight:500;font-size:30px;color:#2f2820;margin:0 0 4px;">Tu diario</h1>
+        <p style="font-size:14px;color:#8a7a66;margin:0 0 20px;">Un espacio privado, solo para ti.</p>
+
+        <div style="background:#fff;border:1px solid #ece0d2;border-radius:20px;padding:16px 18px;margin-bottom:16px;box-shadow:0 2px 10px rgba(120,90,50,.04);animation:softIn .45s ease both;">
+          <div style="font-size:14px;font-weight:600;color:#2f2820;margin-bottom:12px;">{{ moodQuestion }}</div>
+          <div style="display:flex;gap:8px;justify-content:space-between;">
+            <sc-for list="{{ moodFaces }}" as="mf" hint-placeholder-count="5">
+              <button onClick="{{ mf.onClick }}" title="{{ mf.label }}" style="{{ mf.style }}">{{ mf.face }}</button>
+            </sc-for>
+          </div>
+          <button onClick="{{ goBreathing }}" style="margin-top:14px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid #e3d4c2;background:#faf6f0;color:{{ accentDeep }};font-family:inherit;font-size:14px;font-weight:600;padding:12px;border-radius:14px;cursor:pointer;" style-hover="border-color:{{ accent }};">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 8h9a2.5 2.5 0 10-2.5-2.5M3 12h13a2.5 2.5 0 11-2.5 2.5M3 16h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Respira un momento con {{ botName }}
+          </button>
+        </div>
+
+        <sc-if value="{{ hasMoodData }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff;border:1px solid #ece0d2;border-radius:20px;padding:16px 18px;margin-bottom:18px;box-shadow:0 2px 10px rgba(120,90,50,.04);">
+            <div style="font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:#b3a493;margin-bottom:12px;">Tu ánimo esta semana</div>
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:7px;height:64px;">
+              <sc-for list="{{ moodWeek }}" as="d" hint-placeholder-count="7">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;height:100%;justify-content:flex-end;">
+                  <div style="{{ d.barStyle }}"></div>
+                  <span style="font-size:10px;color:{{ d.labelColor }};font-weight:600;">{{ d.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="background:#fff;border:1px solid #ece0d2;border-radius:18px;padding:15px;margin-bottom:20px;box-shadow:0 2px 10px rgba(120,90,50,.04);">
+          <div style="font-size:14px;font-weight:600;color:#2f2820;margin-bottom:10px;">¿Qué quieres soltar hoy?</div>
+          <textarea ref="{{ journalRef }}" rows="4" placeholder="Escribe libremente. Nadie más lo verá." style="width:100%;resize:none;border:1px solid #e3d4c2;background:#faf6f0;border-radius:14px;padding:13px 15px;font-family:inherit;font-size:15px;line-height:1.5;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};"></textarea>
+          <button onClick="{{ addJournal }}" style="margin-top:11px;width:100%;border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:15px;font-weight:600;padding:13px;border-radius:14px;cursor:pointer;">Guardar entrada</button>
+        </div>
+        <sc-if value="{{ noJournal }}" hint-placeholder-val="{{ true }}">
+          <div style="text-align:center;color:#a1937f;font-size:14px;margin-top:20px;">Tus entradas aparecerán aquí, solo para ti.</div>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <sc-for list="{{ journalList }}" as="j" hint-placeholder-count="2">
+            <div style="background:#fff;border:1px solid #ece0d2;border-radius:16px;padding:15px 16px;box-shadow:0 2px 8px rgba(120,90,50,.04);animation:softIn .3s ease;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;">
+                <span style="font-size:12px;color:#a1937f;font-weight:600;">{{ j.date }}</span>
+                <button onClick="{{ j.onDelete }}" style="border:none;background:none;cursor:pointer;padding:2px;color:#c3b4a2;" style-hover="color:#b5654a;">
+                  <svg width="15" height="15" viewBox="0 0 17 17" fill="none"><path d="M3 4.5h11M6.5 4.5V3a1 1 0 011-1h2a1 1 0 011 1v1.5M5 4.5l.6 9a1 1 0 001 .9h3.8a1 1 0 001-.9l.6-9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+              <div style="font-size:14.5px;color:#3a332c;line-height:1.5;white-space:pre-wrap;">{{ j.text }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ PERFIL ============ -->
+  <sc-if value="{{ showPerfil }}" hint-placeholder-val="{{ false }}">
+    <div class="app-top" data-screen-label="Perfil" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;">
+      <div style="flex:1;overflow-y:auto;padding:52px 20px 96px;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px;animation:softIn .4s ease both;">
+          <div style="width:64px;height:64px;flex:none;display:flex;align-items:center;justify-content:center;">{{ mascotProfile }}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:20px;font-weight:600;color:#2f2820;">{{ userDisplayName }}</div>
+            <div style="font-size:13px;color:#a1937f;">{{ userEmailDisplay }}</div>
+          </div>
+          <button onClick="{{ openProfile }}" style="border:1px solid #e3d4c2;background:#fff;color:#6f6356;font-family:inherit;font-size:13px;font-weight:600;padding:9px 14px;border-radius:12px;cursor:pointer;">Editar</button>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-bottom:22px;animation:softIn .5s ease both;">
+          <sc-for list="{{ profileStats }}" as="st" hint-placeholder-count="3">
+            <div style="flex:1;background:#fff;border:1px solid #ece0d2;border-radius:16px;padding:14px 10px;text-align:center;box-shadow:0 2px 8px rgba(120,90,50,.04);">
+              <div style="font-family:'Newsreader',serif;font-size:26px;font-weight:600;color:{{ accentDeep }};">{{ st.value }}</div>
+              <div style="font-size:11.5px;color:#a1937f;margin-top:2px;">{{ st.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="background:#fff;border:1px solid #ece0d2;border-radius:18px;overflow:hidden;box-shadow:0 2px 10px rgba(120,90,50,.04);margin-bottom:18px;animation:softIn .58s ease both;">
+          <sc-for list="{{ profileMenu }}" as="pm" hint-placeholder-count="3">
+            <button onClick="{{ pm.onClick }}" style="width:100%;display:flex;align-items:center;gap:13px;border:none;background:none;cursor:pointer;padding:15px 16px;font-family:inherit;font-size:15px;color:#2f2820;text-align:left;border-bottom:1px solid #f3ece1;" style-hover="background:#faf6f0;">
+              <span style="width:36px;height:36px;border-radius:11px;background:{{ accentSoft2 }};display:flex;align-items:center;justify-content:center;color:{{ accentDeep }};flex:none;">{{ pm.icon }}</span>
+              <span style="flex:1;">{{ pm.label }}</span>
+              <svg width="8" height="14" viewBox="0 0 9 16" fill="none" style="color:#cabfae;"><path d="M1.5 1.5L8 8l-6.5 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </sc-for>
+        </div>
+
+        <button onClick="{{ openBooking }}" style="width:100%;border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:16px;font-weight:600;padding:16px;border-radius:16px;cursor:pointer;box-shadow:0 8px 20px {{ accentSoft }};">Pedir una cita</button>
+        <p style="font-size:11.5px;color:#b3a493;text-align:center;line-height:1.5;margin:16px 0 0;">Tus datos se guardan solo en este dispositivo.<br>{{ botName }} no sustituye la terapia profesional.</p>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ HISTORIAL ============ -->
+  <sc-if value="{{ showHistory }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Historial" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;">
+      <div class="app-top" style="flex:none;padding:56px 18px 14px;display:flex;align-items:center;gap:12px;background:rgba(248,242,234,.92);backdrop-filter:blur(14px);border-bottom:1px solid #ece0d2;">
+        <button onClick="{{ goPerfil }}" style="border:none;background:none;cursor:pointer;padding:4px;display:flex;color:#7a6c5d;">
+          <svg width="11" height="18" viewBox="0 0 11 18" fill="none"><path d="M9.5 1.5L2 9l7.5 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <h2 style="flex:1;margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:24px;color:#2f2820;">Conversaciones</h2>
+        <button onClick="{{ newChat }}" style="border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:13px;font-weight:600;padding:9px 14px;border-radius:13px;cursor:pointer;">Nueva</button>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;">
+        <sc-if value="{{ noHistory }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:60px;text-align:center;color:#a1937f;font-size:15px;">Aún no tienes conversaciones guardadas.</div>
+        </sc-if>
+        <sc-for list="{{ convoList }}" as="cv" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #ece0d2;border-radius:16px;padding:14px 15px;box-shadow:0 2px 8px rgba(120,90,50,.04);">
+            <button onClick="{{ cv.onOpen }}" style="flex:1;min-width:0;border:none;background:none;text-align:left;cursor:pointer;padding:0;">
+              <div style="font-size:15px;font-weight:600;color:#2f2820;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ cv.title }}</div>
+              <div style="font-size:12px;color:#a1937f;margin-top:3px;">{{ cv.meta }}</div>
+            </button>
+            <button onClick="{{ cv.onDelete }}" style="flex:none;border:none;background:none;cursor:pointer;padding:6px;color:#c3b4a2;" style-hover="color:#b5654a;">
+              <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M3 4.5h11M6.5 4.5V3a1 1 0 011-1h2a1 1 0 011 1v1.5M5 4.5l.6 9a1 1 0 001 .9h3.8a1 1 0 001-.9l.6-9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ MIS CITAS ============ -->
+  <sc-if value="{{ showCitas }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Mis citas" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;">
+      <div class="app-top" style="flex:none;padding:56px 18px 14px;display:flex;align-items:center;gap:12px;background:rgba(248,242,234,.92);backdrop-filter:blur(14px);border-bottom:1px solid #ece0d2;">
+        <button onClick="{{ goPerfil }}" style="border:none;background:none;cursor:pointer;padding:4px;display:flex;color:#7a6c5d;">
+          <svg width="11" height="18" viewBox="0 0 11 18" fill="none"><path d="M9.5 1.5L2 9l7.5 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <h2 style="flex:1;margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:24px;color:#2f2820;">Mis citas</h2>
+        <button onClick="{{ openBooking }}" style="border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:13px;font-weight:600;padding:9px 14px;border-radius:13px;cursor:pointer;">Nueva</button>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;">
+        <sc-if value="{{ noCitas }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:60px;text-align:center;color:#a1937f;font-size:15px;">Todavía no has solicitado ninguna cita.</div>
+        </sc-if>
+        <sc-for list="{{ citasList }}" as="ci" hint-placeholder-count="2">
+          <div style="background:#fff;border:1px solid #ece0d2;border-radius:16px;padding:15px 16px;box-shadow:0 2px 8px rgba(120,90,50,.04);">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span style="width:44px;height:44px;border-radius:12px;background:{{ accentSoft2 }};display:flex;flex-direction:column;align-items:center;justify-content:center;color:{{ accentDeep }};flex:none;line-height:1;">
+                <span style="font-size:17px;font-weight:700;">{{ ci.day }}</span>
+                <span style="font-size:10px;text-transform:uppercase;">{{ ci.mon }}</span>
+              </span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:15px;font-weight:600;color:#2f2820;">{{ ci.dateLabel }}</div>
+                <div style="font-size:12.5px;color:#a1937f;margin-top:2px;">{{ ci.slot }} · {{ ci.name }}</div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ RESUMEN ============ -->
+  <sc-if value="{{ showSummary }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Resumen" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;">
+      <div class="app-top" style="flex:none;padding:56px 18px 14px;display:flex;align-items:center;gap:12px;background:rgba(248,242,234,.92);backdrop-filter:blur(14px);border-bottom:1px solid #ece0d2;">
+        <button onClick="{{ goChat }}" style="border:none;background:none;cursor:pointer;padding:4px;display:flex;color:#7a6c5d;">
+          <svg width="11" height="18" viewBox="0 0 11 18" fill="none"><path d="M9.5 1.5L2 9l7.5 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <h2 style="flex:1;margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:23px;color:#2f2820;">Resumen para tu sesión</h2>
+      </div>
+      <div class="app-bottom" style="flex:1;overflow-y:auto;padding:18px;">
+        <p style="font-size:13.5px;color:#8a7a66;line-height:1.5;margin:0 0 16px;">Un resumen de lo que has hablado con {{ botName }}, para compartirlo con tu psicólogo/a antes de la sesión.</p>
+        <sc-if value="{{ summaryLoading }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:10px;color:#a1937f;font-size:14px;padding:30px 0;justify-content:center;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#c3b4a2;animation:dotBlink 1.2s infinite;"></span>
+            <span style="width:8px;height:8px;border-radius:50%;background:#c3b4a2;animation:dotBlink 1.2s infinite .2s;"></span>
+            <span style="width:8px;height:8px;border-radius:50%;background:#c3b4a2;animation:dotBlink 1.2s infinite .4s;"></span>
+            Preparando tu resumen…
+          </div>
+        </sc-if>
+        <sc-if value="{{ summaryReady }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff;border:1px solid #ece0d2;border-radius:18px;padding:18px;font-size:14.5px;line-height:1.6;color:#3a332c;white-space:pre-wrap;box-shadow:0 2px 10px rgba(120,90,50,.04);margin-bottom:16px;">{{ summaryText }}</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="{{ summaryWaHref }}" target="_blank" rel="noopener" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:#fff;font-size:15px;font-weight:600;padding:14px;border-radius:15px;">Enviar por WhatsApp</a>
+            <a href="{{ summaryMailHref }}" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;border:1px solid {{ accent }};color:{{ accentDeep }};font-size:15px;font-weight:600;padding:14px;border-radius:15px;">Enviar por email</a>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ RESERVAR CITA ============ -->
+  <sc-if value="{{ showBooking }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Reservar cita" style="height:100%;display:flex;flex-direction:column;background:#f6efe6;overflow:hidden;">
+      <div class="app-top" style="flex:none;padding:56px 18px 14px;display:flex;align-items:center;gap:12px;background:rgba(248,242,234,.92);backdrop-filter:blur(14px);border-bottom:1px solid #ece0d2;">
+        <button onClick="{{ closeBooking }}" style="border:none;background:none;cursor:pointer;padding:4px;display:flex;color:#7a6c5d;">
+          <svg width="11" height="18" viewBox="0 0 11 18" fill="none"><path d="M9.5 1.5L2 9l7.5 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <h2 style="flex:1;margin:0;font-family:'Newsreader',serif;font-weight:500;font-size:24px;color:#2f2820;">Reservar cita</h2>
+      </div>
+
+      <div class="app-bottom" style="flex:1;overflow-y:auto;padding:18px 18px 24px;">
+        <sc-if value="{{ bookingNotConfirmed }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="background:{{ accentSoft2 }};border:1px solid {{ accentSoft }};border-radius:16px;padding:14px 16px;margin-bottom:20px;">
+              <div style="font-size:15px;font-weight:600;color:{{ accentDeep }};">Primera toma de contacto · gratis</div>
+              <div style="font-size:13px;color:#6f6356;margin-top:3px;line-height:1.45;">20 min, sin compromiso. Sesión completa: {{ price }}€ · online o presencial.</div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+              <button onClick="{{ prevMonth }}" style="border:1px solid #e3d4c2;background:#fff;border-radius:10px;width:34px;height:34px;cursor:pointer;color:#6f6356;font-size:16px;">‹</button>
+              <span style="font-size:15.5px;font-weight:600;color:#2f2820;text-transform:capitalize;">{{ monthLabel }}</span>
+              <button onClick="{{ nextMonth }}" style="border:1px solid #e3d4c2;background:#fff;border-radius:10px;width:34px;height:34px;cursor:pointer;color:#6f6356;font-size:16px;">›</button>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;">
+              <sc-for list="{{ weekdayLabels }}" as="w" hint-placeholder-count="7">
+                <div style="text-align:center;font-size:11px;font-weight:600;color:#a1937f;padding:4px 0;">{{ w }}</div>
+              </sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;">
+              <sc-for list="{{ calendarCells }}" as="d" hint-placeholder-count="35">
+                <button onClick="{{ d.onClick }}" disabled="{{ d.disabled }}" style="{{ d.style }}">{{ d.label }}</button>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{ dateChosen }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:22px;">
+                <div style="font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#9a8c7d;margin-bottom:10px;">Elige una hora</div>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+                  <sc-for list="{{ slotCells }}" as="s" hint-placeholder-count="8">
+                    <button onClick="{{ s.onClick }}" style="{{ s.style }}">{{ s.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ slotChosen }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:22px;display:flex;flex-direction:column;gap:10px;">
+                <div style="font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#9a8c7d;">Tus datos</div>
+                <input ref="{{ bkNameRef }}" placeholder="Nombre y apellidos" style="border:1px solid #e3d4c2;background:#fff;border-radius:14px;padding:13px 15px;font-family:inherit;font-size:15px;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};">
+                <input ref="{{ bkPhoneRef }}" type="tel" placeholder="Teléfono" style="border:1px solid #e3d4c2;background:#fff;border-radius:14px;padding:13px 15px;font-family:inherit;font-size:15px;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};">
+                <input ref="{{ bkEmailRef }}" type="email" placeholder="Email (opcional)" style="border:1px solid #e3d4c2;background:#fff;border-radius:14px;padding:13px 15px;font-family:inherit;font-size:15px;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};">
+                <sc-if value="{{ bookingError }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size:12.5px;color:#b5654a;">Por favor, indica al menos tu nombre y tu teléfono.</div>
+                </sc-if>
+                <button onClick="{{ confirmBooking }}" style="margin-top:4px;border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:16px;font-weight:600;padding:16px;border-radius:16px;cursor:pointer;box-shadow:0 8px 20px {{ accentSoft }};">Confirmar {{ summaryDateLabel }}</button>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ bookingConfirmed }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:16px;">
+            <div style="margin-bottom:6px;">{{ mascotCelebrate }}</div>
+            <h3 style="font-family:'Newsreader',serif;font-weight:500;font-size:26px;color:#2f2820;margin:0 0 8px;">Solicitud lista</h3>
+            <p style="font-size:15px;color:#6f6356;line-height:1.5;margin:0 0 6px;max-width:280px;">{{ confirmSummary }}</p>
+            <p style="font-size:12.5px;color:#a1937f;line-height:1.5;margin:0 0 22px;max-width:280px;">Envíanosla por WhatsApp o email para que la confirmemos. También puedes guardarla en tu calendario.</p>
+            <div style="width:100%;display:flex;flex-direction:column;gap:10px;max-width:300px;">
+              <a href="{{ waHref }}" target="_blank" rel="noopener" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:#fff;font-size:15px;font-weight:600;padding:15px;border-radius:15px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .3-3.4-.7-2.9-1.2-4.7-4.1-4.8-4.3-.1-.2-1.1-1.5-1.1-2.8 0-1.3.7-2 .9-2.2.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.2.2-.3.4-.1.7.2.3.9 1.4 1.9 2.3 1.3 1.1 2.3 1.5 2.6 1.6.3.1.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2 .9c.3.2.5.2.6.4.1.1.1.7-.1 1.3z"/></svg>
+                Enviar por WhatsApp
+              </a>
+              <a href="{{ mailHref }}" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;border:1px solid {{ accent }};color:{{ accentDeep }};font-size:15px;font-weight:600;padding:15px;border-radius:15px;">Enviar por email</a>
+              <button onClick="{{ downloadIcs }}" style="border:none;background:none;color:#8a7a66;font-family:inherit;font-size:13.5px;font-weight:600;padding:8px;cursor:pointer;text-decoration:underline;">Añadir a mi calendario</button>
+            </div>
+            <button onClick="{{ closeBooking }}" style="margin-top:20px;border:1px solid #e3d4c2;background:#fff;color:#6f6356;font-family:inherit;font-size:14px;font-weight:600;padding:12px 22px;border-radius:14px;cursor:pointer;">Hecho</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ DESKTOP SIDEBAR ============ -->
+  <sc-if value="{{ showTabs }}" hint-placeholder-val="{{ false }}">
+    <div class="dksidebar" style="display:none;position:absolute;left:0;top:0;bottom:0;width:264px;z-index:25;background:#f2ebe0;border-right:1px solid #e6dac9;flex-direction:column;padding:30px 18px 22px;">
+      <div style="display:flex;align-items:center;gap:11px;padding:0 8px 22px;">
+        <div style="width:40px;height:40px;flex:none;display:flex;align-items:center;justify-content:center;">{{ mascotChat }}</div>
+        <div>
+          <div style="font-family:'Newsreader',serif;font-size:19px;font-weight:500;color:#2f2820;line-height:1;">{{ practiceShort }}</div>
+          <div style="font-size:11.5px;color:#a1937f;margin-top:3px;">con {{ botName }}</div>
+        </div>
+      </div>
+      <button onClick="{{ newChat }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:14.5px;font-weight:600;padding:13px;border-radius:14px;cursor:pointer;margin-bottom:18px;box-shadow:0 6px 16px {{ accentSoft }};" style-hover="filter:brightness(1.05);">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Nueva conversación
+      </button>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+          <button onClick="{{ t.onClick }}" style="{{ t.sideStyle }}" style-hover="background:#ece2d3;">
+            {{ t.sideIcon }}
+            {{ t.label }}
+          </button>
+        </sc-for>
+      </div>
+      <div style="margin-top:auto;">
+        <button onClick="{{ openBooking }}" style="width:100%;display:flex;align-items:center;gap:10px;border:1px solid #e3d4c2;background:#fff;color:{{ accentDeep }};font-family:inherit;font-size:13.5px;font-weight:600;padding:12px 14px;border-radius:14px;cursor:pointer;margin-bottom:14px;" style-hover="border-color:{{ accent }};">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M3 9h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Pedir cita
+        </button>
+        <button onClick="{{ goPerfil }}" style="width:100%;display:flex;align-items:center;gap:11px;border:none;background:none;cursor:pointer;padding:8px;border-radius:14px;text-align:left;" style-hover="background:#ece2d3;">
+          <div style="width:36px;height:36px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 35% 30%, {{ accentLight }}, {{ accent }});color:#fff;font-family:'Newsreader',serif;font-size:17px;font-weight:600;">{{ userInitial }}</div>
+          <div style="min-width:0;">
+            <div style="font-size:13.5px;font-weight:600;color:#2f2820;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ userDisplayName }}</div>
+            <div style="font-size:11px;color:#a1937f;">Ver perfil</div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ TAB BAR ============ -->
+  <sc-if value="{{ showTabs }}" hint-placeholder-val="{{ false }}">
+    <div class="tabbar app-bottom dktab" style="position:absolute;left:0;right:0;bottom:0;z-index:20;background:rgba(248,242,234,.94);backdrop-filter:blur(16px);border-top:1px solid #ece0d2;display:flex;padding:10px 8px 26px;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+        <button onClick="{{ t.onClick }}" style="{{ t.btnStyle }}">
+          {{ t.icon }}
+          <span style="font-size:10.5px;font-weight:600;">{{ t.label }}</span>
+        </button>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <!-- ============ SCRIM + SHEETS ============ -->
+  <sc-if value="{{ anySheet }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeSheets }}" style="position:absolute;inset:0;background:rgba(40,30,20,.4);z-index:70;animation:scrimIn .2s ease;"></div>
+  </sc-if>
+
+  <sc-if value="{{ showMenu }}" hint-placeholder-val="{{ false }}">
+    <div class="app-bottom" style="position:absolute;left:0;right:0;bottom:0;z-index:80;background:#fff;border-radius:26px 26px 0 0;padding:14px 16px 30px;box-shadow:0 -14px 40px rgba(0,0,0,.14);animation:sheetUp .28s cubic-bezier(.2,.8,.2,1);">
+      <div style="width:38px;height:4px;border-radius:100px;background:#e3d4c2;margin:0 auto 14px;"></div>
+      <sc-for list="{{ menuItems }}" as="m" hint-placeholder-count="3">
+        <button onClick="{{ m.onClick }}" style="width:100%;display:flex;align-items:center;gap:13px;border:none;background:none;cursor:pointer;padding:14px 8px;font-family:inherit;font-size:15.5px;color:#2f2820;text-align:left;border-bottom:1px solid #f3ece1;" style-hover="background:#faf6f0;">
+          <span style="width:36px;height:36px;border-radius:11px;background:{{ accentSoft2 }};display:flex;align-items:center;justify-content:center;font-size:17px;flex:none;">{{ m.icon }}</span>
+          {{ m.label }}
+        </button>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showSignin }}" hint-placeholder-val="{{ false }}">
+    <div class="app-bottom" style="position:absolute;left:0;right:0;bottom:0;z-index:80;background:#fff;border-radius:26px 26px 0 0;padding:16px 22px 30px;box-shadow:0 -14px 40px rgba(0,0,0,.14);animation:sheetUp .28s cubic-bezier(.2,.8,.2,1);">
+      <div style="width:38px;height:4px;border-radius:100px;background:#e3d4c2;margin:0 auto 12px;"></div>
+      <div style="display:flex;justify-content:center;margin-bottom:6px;">{{ mascotSignin }}</div>
+      <h3 style="font-family:'Newsreader',serif;font-weight:500;font-size:24px;color:#2f2820;margin:0 0 4px;text-align:center;">{{ signinTitle }}</h3>
+      <p style="font-size:13.5px;color:#8a7a66;line-height:1.5;margin:0 0 16px;text-align:center;">Así {{ botName }} puede dirigirse a ti por tu nombre y recordar lo vuestro en este dispositivo.</p>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <input ref="{{ userNameRef }}" placeholder="Tu nombre" style="border:1px solid #e3d4c2;background:#faf6f0;border-radius:14px;padding:14px 15px;font-family:inherit;font-size:15px;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};">
+        <input ref="{{ userEmailRef }}" type="email" placeholder="Email (opcional)" style="border:1px solid #e3d4c2;background:#faf6f0;border-radius:14px;padding:14px 15px;font-family:inherit;font-size:15px;color:#2f2820;outline:none;" style-focus="border-color:{{ accent }};">
+        <button onClick="{{ saveUser }}" style="margin-top:4px;border:none;background:{{ accent }};color:#fff;font-family:inherit;font-size:16px;font-weight:600;padding:15px;border-radius:15px;cursor:pointer;">{{ signinCta }}</button>
+        <button onClick="{{ skipSignin }}" style="border:none;background:none;color:#a1937f;font-family:inherit;font-size:13.5px;font-weight:600;padding:6px;cursor:pointer;">{{ skipLabel }}</button>
+      </div>
+    </div>
+  </sc-if>
+
+  </div>
+</div>
+<script>
+const K_USER = 'aura_user_v1';
+const K_CONVOS = 'aura_convos_v1';
+const K_CURRENT = 'aura_current_v1';
+const K_BOOKINGS = 'aura_bookings_v1';
+const K_MOODS = 'aura_moods_v1';
+const K_JOURNAL = 'aura_journal_v1';
+const K_ONB = 'aura_onboarded_v1';
+const SLOTS = ['10:00', '11:00', '12:00', '13:00', '16:00', '17:00', '18:00', '19:00'];
+const BREATH_STEPS = ['Inhala', 'Mantén', 'Exhala', 'Mantén'];
+const POKE_MSGS = ['Aquí estoy, contigo.', 'Respira. No hay prisa.', 'Me alegra verte hoy.', 'Estoy de tu lado.', 'Paso a paso, ¿vale?', 'Cuidarte también es avanzar.', 'Tómate tu tiempo.'];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const now = new Date();
+    this.state = {
+      screen: 'onboarding',
+      convos: [], currentId: null, typing: false,
+      user: null, moods: {}, journal: [], bookings: [],
+      showMenu: false, showSignin: false, signinMode: 'signin', pendingEnter: false,
+      bkYear: now.getFullYear(), bkMonth: now.getMonth(), bkDateISO: null, bkSlot: null,
+      bkConfirmed: false, bkResult: null, bkError: false, loginError: false,
+      breathing: false, breathIdx: 0,
+      summaryLoading: false, summaryText: '',
+      celebrate: false, pokeIdx: -1,
+    };
+    this.scrollRef = React.createRef();
+    this.inputRef = React.createRef();
+    this.bkNameRef = React.createRef();
+    this.bkPhoneRef = React.createRef();
+    this.bkEmailRef = React.createRef();
+    this.userNameRef = React.createRef();
+    this.userEmailRef = React.createRef();
+    this.journalRef = React.createRef();
+    this.loginNameRef = React.createRef();
+    this.loginEmailRef = React.createRef();
+    this._breathTimer = null;
+    this._celTimer = null;
+  }
+
+  lsGet(k, def) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch (e) { return def; } }
+  lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+  componentDidMount() {
+    try { const p = new URLSearchParams(location.search); if (p.has('full')) document.documentElement.classList.add('embed-full'); } catch (e) {}
+    const onboarded = this.lsGet(K_ONB, false);
+    this.setState({
+      user: this.lsGet(K_USER, null), convos: this.lsGet(K_CONVOS, []), currentId: this.lsGet(K_CURRENT, null),
+      moods: this.lsGet(K_MOODS, {}), journal: this.lsGet(K_JOURNAL, []), bookings: this.lsGet(K_BOOKINGS, []),
+      screen: onboarded ? 'login' : 'onboarding',
+    }, () => { if (this.state.screen === 'chat') this.scrollChatToEnd(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (this.state.screen === 'chat') this.scrollChatToEnd(); });
+  }
+  componentWillUnmount() { if (this._breathTimer) clearInterval(this._breathTimer); if (this._celTimer) clearTimeout(this._celTimer); }
+  scrollChatToEnd() {
+    const go = () => { const el = this.scrollRef.current; if (el) el.scrollTop = el.scrollHeight; };
+    requestAnimationFrame(() => { go(); requestAnimationFrame(go); });
+    setTimeout(go, 60); setTimeout(go, 180); setTimeout(go, 360); setTimeout(go, 650); setTimeout(go, 1000);
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.screen === 'chat' &&
+        (prevState.convos !== this.state.convos || prevState.typing !== this.state.typing || prevState.screen !== 'chat')) {
+      this.scrollChatToEnd();
+    }
+  }
+
+  colors() {
+    const accent = this.props.accent || '#8a6d4f';
+    return {
+      accent,
+      accentDeep: 'color-mix(in oklch, ' + accent + ' 78%, #2f2820)',
+      accentLight: 'color-mix(in oklch, ' + accent + ' 68%, #fff)',
+      accentSoft: 'color-mix(in oklch, ' + accent + ' 30%, transparent)',
+      accentSoft2: 'color-mix(in oklch, ' + accent + ' 15%, transparent)',
+    };
+  }
+  todayISO() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  isoOf(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  firstName() { const u = this.state.user; return (u && u.name) ? u.name.split(' ')[0] : ''; }
+
+  streak() {
+    let d = new Date();
+    if (!this.state.moods[this.isoOf(d)]) d.setDate(d.getDate() - 1);
+    let n = 0;
+    while (this.state.moods[this.isoOf(d)]) { n++; d.setDate(d.getDate() - 1); }
+    return n;
+  }
+
+  greeting() {
+    const name = this.props.botName || 'Aura';
+    const fn = this.firstName();
+    return (fn ? ('Hola ' + fn) : 'Hola') + ', soy ' + name + ' 🌿 Me alegra que estés aquí. Cuéntame, ¿cómo te encuentras hoy? No hay prisa.';
+  }
+  currentConvo() { return this.state.convos.find(c => c.id === this.state.currentId) || null; }
+  mkTitle(msg) { return msg.length > 32 ? msg.slice(0, 32) + '…' : msg; }
+
+  persona() {
+    const name = this.props.botName || 'Aura';
+    const practice = this.props.practiceName || 'Calma';
+    const price = this.props.price || '55';
+    const u = this.state.user;
+    return [
+      'Eres "' + name + '", un asistente conversacional de IA (con forma de pequeño compañero) de la consulta de psicología "' + practice + '".',
+      u && u.name ? ('La persona con la que hablas se llama ' + u.name + '. Puedes dirigirte a ella por su nombre con naturalidad.') : '',
+      'Tu tono es cálido, cercano y humano, en español de España. Hablas de tú, con frases breves (2-4 oraciones), sin jerga clínica ni listas largas. Validas lo que la persona siente antes de sugerir nada. Haces una pregunta abierta a la vez.',
+      'Tus funciones: (1) acompañamiento emocional; (2) un primer cribado suave preguntando con delicadeza por cómo se siente, desde cuándo y con qué intensidad, SIN diagnosticar; (3) información de la consulta.',
+      'Datos de la consulta: sesión individual ' + price + '€; primera toma de contacto gratuita de 20 min; online y presencial; lunes a viernes 9:00-20:00. Para reservar, invita a pulsar "Pedir cita".',
+      'Cuando le vendría bien una sesión, ofrécelo con suavidad.',
+      'SEGURIDAD: ante crisis, ideas de autolesión/suicidio o riesgo, responde con calma y cercanía, anima a contactar ya con un profesional o alguien de confianza, y facilita 024 y 112. No minimices.',
+      'Recuerda con naturalidad, solo si es relevante, que eres una IA y no sustituyes la terapia profesional.'
+    ].filter(Boolean).join(' ');
+  }
+  demoReply(text) {
+    const t = (text || '').toLowerCase();
+    const has = (...ks) => ks.some(k => t.includes(k));
+    if (has('suicid', 'morir', 'no quiero vivir', 'hacerme daño', 'matarme', 'desaparecer')) return 'Gracias por confiarme algo tan difícil. No estás solo/a en esto y tu vida importa. Por favor, contacta ahora mismo con el 024 o el 112, y si puedes, avisa a alguien de confianza para que te acompañe.';
+    if (has('ansie', 'nervios', 'agobi', 'estres', 'estrés', 'angustia', 'panico', 'pánico')) return 'Siento que te encuentres así, la ansiedad agota mucho. Estoy aquí para escucharte. ¿Desde cuándo lo notas y hay algún momento del día en que se hace más fuerte?';
+    if (has('dorm', 'sueño', 'sueno', 'insomnio', 'descans')) return 'Dormir mal lo desgasta todo, lo siento. ¿Te cuesta más conciliar el sueño o te despiertas durante la noche?';
+    if (has('precio', 'cuesta', 'cuánto', 'cuanto', 'tarifa', 'pago', 'cita', 'reserv', 'agend', 'sesión', 'sesion', 'hora')) { const price = this.props.price || '55'; return 'Una sesión individual cuesta ' + price + '€, y puedes empezar con una primera toma de contacto gratuita de 20 min, sin compromiso. Pulsa "Pedir cita" arriba y te reservo un hueco.'; }
+    if (has('triste', 'deprimi', 'vacío', 'vacio', 'solo', 'sola', 'llorar', 'desanim')) return 'Gracias por compartirlo, no es fácil ponerlo en palabras. Estoy aquí contigo. ¿Quieres contarme qué crees que ha hecho que te sientas así?';
+    if (has('gracias', 'mejor', 'me ayuda')) return 'Me alegra mucho leerte. Estoy aquí siempre que lo necesites. ¿Hay algo más que te ronde la cabeza?';
+    if (has('hola', 'buenas', 'hey')) return 'Hola 🌿 Me alegra que te pases por aquí. ¿Cómo estás hoy? Cuéntame lo que quieras, sin prisa.';
+    return 'Te escucho. Cuéntame un poco más sobre cómo te hace sentir eso, para entenderte mejor.';
+  }
+
+  triggerCelebrate(ms) { this.setState({ celebrate: true }); if (this._celTimer) clearTimeout(this._celTimer); this._celTimer = setTimeout(() => this.setState({ celebrate: false }), ms || 1900); }
+
+  // conversations
+  freshConvo() { return { id: 'c' + Date.now(), title: 'Nueva conversación', messages: [{ role: 'bot', text: this.greeting() }], updatedAt: Date.now() }; }
+  goChat = () => { this.setState(s => { if (s.currentId && s.convos.find(c => c.id === s.currentId)) return { screen: 'chat', showMenu: false }; const convo = this.freshConvo(); const convos = [convo, ...s.convos]; this.lsSet(K_CONVOS, convos); this.lsSet(K_CURRENT, convo.id); return { screen: 'chat', currentId: convo.id, convos, showMenu: false }; }, () => this.scrollChatToEnd()); };
+  newChat = () => { this.setState(s => { const convo = this.freshConvo(); const convos = [convo, ...s.convos]; this.lsSet(K_CONVOS, convos); this.lsSet(K_CURRENT, convo.id); return { convos, currentId: convo.id, screen: 'chat', showMenu: false }; }); };
+  openConvo = (id) => { this.lsSet(K_CURRENT, id); this.setState({ currentId: id, screen: 'chat' }, () => this.scrollChatToEnd()); };
+  deleteConvo = (id) => { this.setState(s => { const convos = s.convos.filter(c => c.id !== id); this.lsSet(K_CONVOS, convos); let currentId = s.currentId; if (currentId === id) { currentId = null; this.lsSet(K_CURRENT, null); } return { convos, currentId }; }); };
+
+  async send(text) {
+    const msg = (text || '').trim();
+    if (!msg || this.state.typing) return;
+    let id = this.state.currentId; let convos = this.state.convos.slice(); let base;
+    if (!id || !convos.find(c => c.id === id)) { const convo = this.freshConvo(); id = convo.id; base = convo.messages; convos = [convo, ...convos]; }
+    else base = convos.find(c => c.id === id).messages;
+    const history = [...base, { role: 'user', text: msg }];
+    convos = convos.map(c => c.id === id ? { ...c, messages: history, title: c.title === 'Nueva conversación' ? this.mkTitle(msg) : c.title, updatedAt: Date.now() } : c);
+    this.lsSet(K_CONVOS, convos); this.lsSet(K_CURRENT, id);
+    this.setState({ convos, currentId: id, typing: true, screen: 'chat' });
+    const finish = (replyText) => { this.setState(s => { const cs = s.convos.map(c => c.id === id ? { ...c, messages: [...c.messages, { role: 'bot', text: replyText }], updatedAt: Date.now() } : c); this.lsSet(K_CONVOS, cs); return { convos: cs, typing: false }; }); };
+    const realAI = !!(window.claude && typeof window.claude.complete === 'function');
+    if (!realAI) { const reply = this.demoReply(msg); setTimeout(() => finish(reply), 700 + Math.min(reply.length * 14, 1400)); return; }
+    const apiMessages = [{ role: 'user', content: this.persona() }, { role: 'assistant', content: 'Entendido. Estoy aquí para acompañar con calidez.' }, ...history.map(m => ({ role: m.role === 'bot' ? 'assistant' : 'user', content: m.text }))];
+    try { const reply = await window.claude.complete({ messages: apiMessages }); finish((reply || '').trim() || 'Perdona, me he quedado en blanco. ¿Puedes contármelo de otra forma?'); }
+    catch (e) { finish(this.demoReply(msg)); }
+  }
+  handleSend = () => { const el = this.inputRef.current; if (!el) return; const v = el.value; el.value = ''; el.style.height = 'auto'; this.send(v); };
+  onInputKey = (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); this.handleSend(); } else { const el = e.target; requestAnimationFrame(() => { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 110) + 'px'; }); } };
+
+  // nav
+  goHome = () => this.setState({ screen: 'home', showMenu: false });
+  goCalma = () => this.setState({ screen: 'calma' });
+  goPerfil = () => this.setState({ screen: 'perfil', showMenu: false });
+  goHistory = () => this.setState({ screen: 'history', showMenu: false });
+  goJournal = () => this.setState({ screen: 'journal' });
+  goCitas = () => this.setState({ screen: 'citas' });
+
+  // onboarding / signin
+  startEntry = () => { this.lsSet(K_ONB, true); if (this.state.user && this.state.user.name) this.setState({ screen: 'chat' }); else this.setState({ screen: 'login', loginError: false }); };
+  doLogin = () => {
+    const name = (this.loginNameRef.current && this.loginNameRef.current.value || '').trim();
+    if (!name) { this.setState({ loginError: true }); return; }
+    const email = (this.loginEmailRef.current && this.loginEmailRef.current.value || '').trim();
+    const user = { name, email }; this.lsSet(K_USER, user);
+    this.setState({ user, screen: 'chat', loginError: false }, () => this.scrollChatToEnd());
+  };
+  loginGuest = () => this.setState({ screen: 'chat' }, () => this.scrollChatToEnd());
+  openProfile = () => this.setState({ showSignin: true, signinMode: 'profile', showMenu: false, pendingEnter: false });
+  skipSignin = () => { const go = this.state.pendingEnter; this.setState({ showSignin: false, pendingEnter: false, screen: go ? 'chat' : this.state.screen }); };
+  saveUser = () => { const name = (this.userNameRef.current && this.userNameRef.current.value || '').trim(); const email = (this.userEmailRef.current && this.userEmailRef.current.value || '').trim(); const user = { name, email }; this.lsSet(K_USER, user); const go = this.state.pendingEnter; this.setState({ user, showSignin: false, pendingEnter: false, screen: go ? 'chat' : this.state.screen }); };
+  openMenu = () => this.setState({ showMenu: true });
+  closeSheets = () => this.setState({ showMenu: false, showSignin: false, pendingEnter: false });
+
+  // mascot poke
+  pokeMascot = () => { this.setState(s => ({ pokeIdx: (s.pokeIdx + 1) % POKE_MSGS.length })); this.triggerCelebrate(900); };
+
+  // mood
+  setMood = (v) => { const iso = this.todayISO(); const first = !this.state.moods[iso]; this.setState(s => { const moods = { ...s.moods, [iso]: v }; this.lsSet(K_MOODS, moods); return { moods }; }); if (first || v >= 4) this.triggerCelebrate(1600); };
+
+  // journal
+  addJournal = () => { const el = this.journalRef.current; if (!el) return; const text = el.value.trim(); if (!text) return; el.value = ''; this.setState(s => { const journal = [{ id: 'j' + Date.now(), at: Date.now(), text }, ...s.journal]; this.lsSet(K_JOURNAL, journal); return { journal }; }); this.triggerCelebrate(1600); };
+  deleteJournal = (id) => { this.setState(s => { const journal = s.journal.filter(j => j.id !== id); this.lsSet(K_JOURNAL, journal); return { journal }; }); };
+
+  // breathing
+  goBreathing = () => this.setState({ screen: 'breathing', breathing: false, breathIdx: 0 });
+  toggleBreathing = () => { if (this.state.breathing) { if (this._breathTimer) clearInterval(this._breathTimer); this._breathTimer = null; this.setState({ breathing: false }); } else { this.setState({ breathing: true, breathIdx: 0 }); this._breathTimer = setInterval(() => { this.setState(s => ({ breathIdx: (s.breathIdx + 1) % BREATH_STEPS.length })); }, 4000); } };
+
+  // summary
+  goSummary = async () => {
+    const conv = this.currentConvo();
+    this.setState({ screen: 'summary', showMenu: false, summaryLoading: true, summaryText: '' });
+    const msgs = conv ? conv.messages.filter(m => m.role === 'user') : [];
+    if (!conv || msgs.length === 0) { this.setState({ summaryLoading: false, summaryText: 'Aún no hay suficiente conversación para resumir. Habla un poco con ' + (this.props.botName || 'Aura') + ' y vuelve a intentarlo.' }); return; }
+    const transcript = conv.messages.map(m => (m.role === 'bot' ? (this.props.botName || 'Aura') : 'Persona') + ': ' + m.text).join('\n');
+    const realAI = !!(window.claude && typeof window.claude.complete === 'function');
+    if (realAI) {
+      try { const prompt = 'A partir de esta conversación entre una persona y un asistente de apoyo emocional, redacta un resumen breve y respetuoso en español (máx 120 palabras) que la persona pueda compartir con su psicólogo antes de la sesión. Estructura: 1) Cómo se ha sentido, 2) Temas principales, 3) Qué le gustaría trabajar. No diagnostiques. Escribe en primera persona ("Me he sentido...").\n\nConversación:\n' + transcript; const out = await window.claude.complete(prompt); this.setState({ summaryLoading: false, summaryText: (out || '').trim() || this.demoSummary(conv) }); }
+      catch (e) { this.setState({ summaryLoading: false, summaryText: this.demoSummary(conv) }); }
+    } else { setTimeout(() => this.setState({ summaryLoading: false, summaryText: this.demoSummary(conv) }), 900); }
+  };
+  demoSummary(conv) { const topics = conv.messages.filter(m => m.role === 'user').slice(0, 3).map(m => '· ' + this.mkTitle(m.text)).join('\n'); return 'Cómo me he sentido:\nHe hablado sobre cómo me encuentro últimamente y he podido desahogarme.\n\nTemas principales:\n' + topics + '\n\nMe gustaría trabajar:\nEntender mejor lo que me pasa y encontrar herramientas para el día a día.'; }
+
+  // booking
+  openBooking = () => this.setState({ screen: 'booking', showMenu: false, bkConfirmed: false, bkError: false });
+  closeBooking = () => this.setState({ screen: 'chat', bkConfirmed: false });
+  prevMonth = () => this.setState(s => { const now = new Date(); if (s.bkYear === now.getFullYear() && s.bkMonth === now.getMonth()) return {}; let nm = s.bkMonth - 1, ny = s.bkYear; if (nm < 0) { nm = 11; ny -= 1; } return { bkMonth: nm, bkYear: ny }; });
+  nextMonth = () => this.setState(s => { let nm = s.bkMonth + 1, ny = s.bkYear; if (nm > 11) { nm = 0; ny += 1; } return { bkMonth: nm, bkYear: ny }; });
+  confirmBooking = () => { const name = (this.bkNameRef.current && this.bkNameRef.current.value || '').trim(); const phone = (this.bkPhoneRef.current && this.bkPhoneRef.current.value || '').trim(); const email = (this.bkEmailRef.current && this.bkEmailRef.current.value || '').trim(); if (!name || !phone) { this.setState({ bkError: true }); return; } const iso = this.state.bkDateISO, slot = this.state.bkSlot; const dateLabel = new Date(iso + 'T00:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' }); const result = { name, phone, email, iso, slot, dateLabel }; this.setState(s => { const bookings = [...s.bookings, { ...result, at: Date.now() }]; this.lsSet(K_BOOKINGS, bookings); return { bkConfirmed: true, bkResult: result, bkError: false, bookings }; }); this.triggerCelebrate(2200); };
+  downloadIcs = () => { const b = this.state.bkResult; if (!b) return; const practice = this.props.practiceName || 'Calma'; const dt = b.iso.replace(/-/g, ''); const parts = b.slot.split(':'); const h = parts[0].padStart(2, '0'); const mi = parts[1]; const start = dt + 'T' + h + mi + '00'; const end = dt + 'T' + String(Number(parts[0]) + 1).padStart(2, '0') + mi + '00'; const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//' + practice + '//ES', 'BEGIN:VEVENT', 'UID:' + Date.now() + '@aura', 'DTSTAMP:' + start, 'DTSTART:' + start, 'DTEND:' + end, 'SUMMARY:Cita — ' + practice, 'DESCRIPTION:Primera toma de contacto con ' + practice, 'END:VEVENT', 'END:VCALENDAR'].join('\r\n'); const blob = new Blob([ics], { type: 'text/calendar' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'cita.ics'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1500); };
+  bookingText() { const b = this.state.bkResult; if (!b) return ''; const practice = this.props.practiceName || 'Calma'; return 'Hola, me gustaría reservar una cita en ' + practice + '.\n\nNombre: ' + b.name + '\nFecha: ' + b.dateLabel + ' a las ' + b.slot + '\nTeléfono: ' + b.phone + (b.email ? ('\nEmail: ' + b.email) : ''); }
+  sendTranscript = () => { const conv = this.currentConvo(); if (!conv) return; const to = this.props.contactEmail || ''; const body = conv.messages.map(m => (m.role === 'bot' ? (this.props.botName || 'Aura') : 'Yo') + ': ' + m.text).join('\n\n'); window.location.href = 'mailto:' + encodeURIComponent(to) + '?subject=' + encodeURIComponent('Conversación con ' + (this.props.botName || 'Aura')) + '&body=' + encodeURIComponent(body); this.setState({ showMenu: false }); };
+
+  buildCalendar() {
+    const c = this.colors(); const y = this.state.bkYear, m = this.state.bkMonth; const first = new Date(y, m, 1); const start = (first.getDay() + 6) % 7; const daysInMonth = new Date(y, m + 1, 0).getDate(); const today = new Date(); today.setHours(0, 0, 0, 0); const cells = [];
+    for (let i = 0; i < start; i++) cells.push({ key: 'e' + i, label: '', disabled: true, onClick: null, style: { visibility: 'hidden' } });
+    for (let d = 1; d <= daysInMonth; d++) { const date = new Date(y, m, d); const dow = date.getDay(); const iso = y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0'); const disabled = date < today || dow === 0 || dow === 6; const selected = this.state.bkDateISO === iso; cells.push({ key: iso, label: String(d), disabled, iso, onClick: disabled ? null : (() => this.setState({ bkDateISO: iso, bkSlot: null, bkError: false })), style: { border: selected ? ('1px solid ' + c.accent) : '1px solid transparent', background: selected ? c.accent : (disabled ? 'transparent' : '#fff'), color: selected ? '#fff' : (disabled ? '#cabfae' : '#2f2820'), fontFamily: 'inherit', fontSize: '14px', fontWeight: selected ? '700' : '500', height: '40px', borderRadius: '11px', cursor: disabled ? 'default' : 'pointer', boxShadow: (!disabled && !selected) ? '0 1px 4px rgba(120,90,50,.05)' : 'none' } }); }
+    return cells;
+  }
+  buildSlots() { const c = this.colors(); return SLOTS.map(s => { const sel = this.state.bkSlot === s; return { label: s, onClick: () => this.setState({ bkSlot: s, bkError: false }), style: { border: sel ? ('1px solid ' + c.accent) : '1px solid #e3d4c2', background: sel ? c.accent : '#fff', color: sel ? '#fff' : '#4f463c', fontFamily: 'inherit', fontSize: '14px', fontWeight: sel ? '700' : '500', padding: '11px 0', borderRadius: '12px', cursor: 'pointer' } }; }); }
+
+  icon(name, size) {
+    const h = React.createElement; const s = size || 23;
+    const P = (d) => h('svg', { width: s, height: s, viewBox: '0 0 24 24', fill: 'none' }, h('path', { d, stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' }));
+    switch (name) {
+      case 'home': return P('M3 10.5L12 3l9 7.5M5 9.5V20h14V9.5');
+      case 'chat': return P('M20 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 20.5l1.9-4.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z');
+      case 'wind': return P('M3 8h9a2.5 2.5 0 10-2.5-2.5M3 12h13a2.5 2.5 0 11-2.5 2.5M3 16h7');
+      case 'book': return P('M5 4h11a2 2 0 012 2v14H7a2 2 0 01-2-2V4zM5 18h13');
+      case 'user': return h('svg', { width: s, height: s, viewBox: '0 0 24 24', fill: 'none' }, h('circle', { cx: 12, cy: 8, r: 3.5, stroke: 'currentColor', strokeWidth: 1.8 }), h('path', { d: 'M5 20c0-3.3 3-5.5 7-5.5s7 2.2 7 5.5', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' }));
+      case 'calendar': return h('svg', { width: s, height: s, viewBox: '0 0 24 24', fill: 'none' }, h('rect', { x: 3, y: 5, width: 18, height: 16, rx: 3, stroke: 'currentColor', strokeWidth: 1.8 }), h('path', { d: 'M3 9h18M8 3v4M16 3v4', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' }));
+      case 'clock': return h('svg', { width: s, height: s, viewBox: '0 0 24 24', fill: 'none' }, h('circle', { cx: 12, cy: 12, r: 9, stroke: 'currentColor', strokeWidth: 1.8 }), h('path', { d: 'M12 7v5l3.5 2', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' }));
+      default: return P('M12 3v18');
+    }
+  }
+  moodFaceSvg(v, size) {
+    const h = React.createElement; const s = size || 26;
+    const eye = (cx) => h('circle', { key: 'e' + cx, cx, cy: 10, r: 1.5, fill: 'currentColor' });
+    let mouth;
+    if (v <= 2) mouth = h('path', { d: 'M8.5 17c1-1.4 5-1.4 7 0', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round', fill: 'none' });
+    else if (v === 3) mouth = h('path', { d: 'M9 16h6', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round' });
+    else mouth = h('path', { d: 'M8.5 15c1 1.7 5 1.7 7 0', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round', fill: 'none' });
+    return h('svg', { width: s, height: s, viewBox: '0 0 24 24', fill: 'none' }, eye(9), eye(15), mouth);
+  }
+
+  // ---- SIMPLE ANIMATED ORB ----
+  renderMascot(size, ctx) {
+    ctx = ctx || {};
+    const h = React.createElement;
+    const accent = this.props.accent || '#8a6d4f';
+    const light = 'color-mix(in oklch, ' + accent + ' 60%, #ffffff)';
+    const celebrate = ctx.celebrate; const guide = ctx.guideActive;
+    const px = size + 'px';
+    const innerAnim = celebrate ? 'joyBounce .8s ease-in-out' : (guide ? 'none' : 'mascotBreathe 4.5s ease-in-out infinite');
+    const orbStyle = { width: px, height: px, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(circle at 34% 28%, ' + light + ', ' + accent + ')', boxShadow: '0 12px 36px ' + accent + '55, inset 0 -6px 16px rgba(0,0,0,.09), inset 0 7px 16px rgba(255,255,255,.28)', animation: innerAnim, transformOrigin: 'center' };
+    if (guide) { orbStyle.transform = 'scale(' + (ctx.breathScale || 1) + ')'; orbStyle.transition = 'transform 4s cubic-bezier(.37,0,.24,1), box-shadow 4s ease'; }
+    return h('div', { style: { width: px, height: px, display: 'flex', alignItems: 'center', justifyContent: 'center', animation: ctx.noFloat ? 'none' : 'mascotFloat 6s ease-in-out infinite' } },
+      h('div', { style: orbStyle },
+        h('div', { style: { width: (size * 0.6) + 'px', height: (size * 0.6) + 'px', borderRadius: '50%', background: 'radial-gradient(circle at 40% 35%, rgba(255,255,255,.6), rgba(255,255,255,.1))', animation: guide ? 'none' : 'breatheGlow 4.5s ease-in-out infinite' } })
+      )
+    );
+  }
+
+  renderVals() {
+    const c = this.colors();
+    const name = this.props.botName || 'Aura';
+    const conv = this.currentConvo();
+    const messages = conv ? conv.messages : [];
+    const screen = this.state.screen;
+    const todayMood = this.state.moods[this.todayISO()];
+    const cel = this.state.celebrate;
+
+    const bubbles = messages.map(m => { const user = m.role === 'user'; return { text: m.text, rowStyle: { display: 'flex', justifyContent: user ? 'flex-end' : 'flex-start' }, bubbleStyle: { maxWidth: '80%', padding: '11px 15px', fontSize: '15px', lineHeight: '1.45', whiteSpace: 'pre-wrap', animation: 'msgIn .28s ease both', background: user ? c.accent : '#ffffff', color: user ? '#fff' : '#36302a', border: user ? 'none' : '1px solid #ece0d2', borderRadius: user ? '18px 18px 5px 18px' : '18px 18px 18px 5px', boxShadow: user ? ('0 4px 12px ' + c.accentSoft) : '0 2px 8px rgba(120,90,50,.05)' } }; });
+    const mk = (label, text) => ({ label, onClick: () => this.send(text) });
+    const quickReplies = [mk('Me siento ansioso/a', 'Últimamente me siento muy ansioso y no sé bien por qué.'), mk('Solo necesito hablar', 'Hoy solo necesito hablar un rato, desahogarme.'), mk('¿Cuánto cuesta una sesión?', '¿Cuánto cuesta una sesión y cómo pido cita?')];
+
+    const moodFaces = [1, 2, 3, 4, 5].map(v => {
+      const labels = { 1: 'Muy mal', 2: 'Mal', 3: 'Regular', 4: 'Bien', 5: 'Genial' };
+      const active = todayMood === v;
+      return { label: labels[v], face: this.moodFaceSvg(v, 26), onClick: () => this.setMood(v),
+        style: { width: '48px', height: '48px', borderRadius: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: active ? ('1.5px solid ' + c.accent) : '1.5px solid transparent', background: active ? c.accentSoft2 : 'rgba(255,255,255,.6)', color: active ? c.accentDeep : '#a89a88', cursor: 'pointer', fontFamily: 'inherit', transition: 'all .15s', transform: active ? 'scale(1.08)' : 'scale(1)' } };
+    });
+    const moodWeekArr = [];
+    for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); const iso = this.isoOf(d); const v = this.state.moods[iso]; const wd = ['D', 'L', 'M', 'X', 'J', 'V', 'S'][d.getDay()]; const isToday = i === 0; moodWeekArr.push({ label: wd, labelColor: isToday ? c.accentDeep : '#b3a493', barStyle: { width: '100%', maxWidth: '20px', height: v ? (18 + (v / 5) * 42) + 'px' : '6px', borderRadius: '6px', background: v ? c.accent : '#e7dccd', opacity: v ? (0.45 + (v / 5) * 0.55) : 1, transition: 'height .3s' } }); }
+    const hasMoodData = Object.keys(this.state.moods).length > 0;
+
+    const audioResources = [{ title: 'Meditación para dormir', meta: '12 min · relajación' }, { title: 'Escaneo corporal', meta: '8 min · atención plena' }, { title: 'Calmar la mente acelerada', meta: '6 min · ansiedad' }];
+    const readResources = [{ title: 'Qué es la ansiedad y por qué aparece', desc: 'Entender lo que sientes es el primer paso para manejarlo.', meta: '4 min de lectura' }, { title: '3 formas de cuidar tu descanso', desc: 'Pequeños hábitos que mejoran tu sueño desde esta noche.', meta: '3 min de lectura' }, { title: 'Cómo aprovechar tu primera sesión', desc: 'Ideas para llegar preparado/a y sin nervios a terapia.', meta: '5 min de lectura' }];
+
+    const journalList = this.state.journal.map(j => ({ text: j.text, date: new Date(j.at).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }), onDelete: () => this.deleteJournal(j.id) }));
+    const convoList = this.state.convos.slice().sort((a, b) => b.updatedAt - a.updatedAt).map(cv => { const meta = new Date(cv.updatedAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }) + ' · ' + cv.messages.filter(m => m.role === 'user').length + ' mensajes'; return { title: cv.title, meta, onOpen: () => this.openConvo(cv.id), onDelete: () => this.deleteConvo(cv.id) }; });
+    const citasSorted = this.state.bookings.slice().sort((a, b) => (a.iso < b.iso ? -1 : 1));
+    const citasList = citasSorted.map(bk => { const d = new Date(bk.iso + 'T00:00:00'); return { day: String(d.getDate()), mon: d.toLocaleDateString('es-ES', { month: 'short' }).replace('.', ''), dateLabel: bk.dateLabel.charAt(0).toUpperCase() + bk.dateLabel.slice(1), slot: bk.slot, name: bk.name }; });
+
+    const profileStats = [{ value: String(Object.keys(this.state.moods).length), label: 'días de ánimo' }, { value: String(this.state.convos.length), label: 'conversaciones' }, { value: String(this.state.journal.length), label: 'notas' }];
+    const profileMenu = [{ icon: this.icon('clock', 20), label: 'Mis conversaciones', onClick: this.goHistory }, { icon: this.icon('calendar', 20), label: 'Mis citas', onClick: this.goCitas }, { icon: this.icon('wind', 20), label: 'Recursos y calma', onClick: this.goCalma }];
+    const menuItems = [{ icon: '✏️', label: 'Nueva conversación', onClick: this.newChat }, { icon: '📝', label: 'Resumen para mi psicólogo', onClick: this.goSummary }, { icon: '✉️', label: 'Enviar esta conversación', onClick: this.sendTranscript }];
+
+    const tabDef = [{ id: 'chat', label: 'Hablar', icon: 'chat', onClick: this.goChat }, { id: 'journal', label: 'Diario', icon: 'book', onClick: this.goJournal }, { id: 'perfil', label: 'Perfil', icon: 'user', onClick: this.goPerfil }];
+    const activeTab = (screen === 'breathing') ? 'journal' : (screen === 'calma' ? 'perfil' : screen);
+    const tabs = tabDef.map(t => { const active = activeTab === t.id; return { label: t.label, onClick: t.onClick, icon: this.icon(t.icon, 23), sideIcon: this.icon(t.icon, 21),
+      btnStyle: { flex: 1, border: 'none', background: 'none', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', padding: '4px', color: active ? c.accentDeep : '#b0a291', transform: active ? 'translateY(-3px) scale(1.08)' : 'none', transition: 'transform .28s cubic-bezier(.2,.9,.3,1.3), color .2s' },
+      sideStyle: { width: '100%', display: 'flex', alignItems: 'center', gap: '13px', border: 'none', cursor: 'pointer', padding: '13px 15px', borderRadius: '15px', fontFamily: 'inherit', fontSize: '15px', fontWeight: active ? '600' : '500', textAlign: 'left', color: active ? c.accentDeep : '#6f6356', background: active ? c.accentSoft2 : 'transparent', transition: 'background .2s, color .2s' } }; });
+
+    const monthLabel = new Date(this.state.bkYear, this.state.bkMonth, 1).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+    const b = this.state.bkResult;
+    const summaryDateLabel = this.state.bkDateISO && this.state.bkSlot ? (new Date(this.state.bkDateISO + 'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }) + ' · ' + this.state.bkSlot) : '';
+    const waDigits = (this.props.whatsappNumber || '').replace(/[^0-9]/g, '');
+    const bText = this.bookingText();
+    const waHref = b ? ('https://wa.me/' + waDigits + '?text=' + encodeURIComponent(bText)) : '#';
+    const mailHref = b ? ('mailto:' + encodeURIComponent(this.props.contactEmail || '') + '?subject=' + encodeURIComponent('Nueva solicitud de cita — ' + b.name) + '&body=' + encodeURIComponent(bText)) : '#';
+    const confirmSummary = b ? (b.dateLabel.charAt(0).toUpperCase() + b.dateLabel.slice(1) + ' a las ' + b.slot + '.') : '';
+
+    const sText = this.state.summaryText;
+    const summaryWaHref = 'https://wa.me/' + waDigits + '?text=' + encodeURIComponent('Hola, este es mi resumen antes de la sesión:\n\n' + sText);
+    const summaryMailHref = 'mailto:' + encodeURIComponent(this.props.contactEmail || '') + '?subject=' + encodeURIComponent('Resumen antes de mi sesión') + '&body=' + encodeURIComponent(sText);
+
+    const u = this.state.user;
+    const profile = this.state.signinMode === 'profile';
+    const breathLabels = { 'Inhala': 'Toma aire despacio por la nariz', 'Mantén': 'Sostén el aire con suavidad', 'Exhala': 'Suelta el aire lentamente por la boca' };
+    const breathPhase = this.state.breathing ? BREATH_STEPS[this.state.breathIdx] : 'Respira';
+
+    // mascot message
+    let mascotMsg;
+    if (this.state.pokeIdx >= 0) mascotMsg = POKE_MSGS[this.state.pokeIdx];
+    else if (cel) mascotMsg = '¡Bien hecho! 🌿';
+    else if (todayMood >= 4) mascotMsg = 'Me alegra verte así de bien.';
+    else if (todayMood && todayMood <= 2) mascotMsg = 'Aquí estoy, a tu ritmo.';
+    else if (todayMood === 3) mascotMsg = 'Tranquilo/a, un paso cada vez.';
+    else mascotMsg = 'Hola, ¿cómo te encuentras hoy?';
+
+    const streakN = this.streak();
+
+    return {
+      ...c,
+      practiceName: this.props.practiceName || 'Calma', practiceShort: this.props.practiceName || 'Calma',
+      botName: name,
+      price: this.props.price || '55',
+
+      showOnboarding: screen === 'onboarding', showLogin: screen === 'login', showHome: screen === 'home', showChat: screen === 'chat',
+      loginTitle: (this.state.user && this.state.user.name) ? ('Hola de nuevo, ' + this.state.user.name.split(' ')[0]) : ('Bienvenido/a a ' + (this.props.practiceName || 'Calma')),
+      loginError: this.state.loginError,
+      loginPrefillName: (this.state.user && this.state.user.name) || '',
+      loginPrefillEmail: (this.state.user && this.state.user.email) || '',
+      mascotLogin: this.renderMascot(76, { noShadow: true }),
+      loginNameRef: this.loginNameRef, loginEmailRef: this.loginEmailRef,
+      doLogin: this.doLogin, loginGuest: this.loginGuest,
+      showCalma: screen === 'calma', showPerfil: screen === 'perfil', showBreathing: screen === 'breathing',
+      showJournal: screen === 'journal', showHistory: screen === 'history', showCitas: screen === 'citas',
+      showSummary: screen === 'summary', showBooking: screen === 'booking',
+      showTabs: (screen === 'chat' || screen === 'journal' || screen === 'perfil' || screen === 'calma'),
+      showSafetyBanner: this.props.showSafetyBanner === true,
+
+      // mascots
+      mascotHome: this.renderMascot(186, { mood: todayMood, celebrate: cel }),
+      mascotOnb: this.renderMascot(150, {}),
+      mascotChat: this.renderMascot(40, { mood: todayMood, noFloat: true, noShadow: true }),
+      mascotMini: this.renderMascot(60, { noFloat: true, noShadow: true }),
+      mascotGuideEl: this.renderMascot(150, { guideActive: this.state.breathing, breathScale: (!this.state.breathing ? 1 : ((this.state.breathIdx === 0 || this.state.breathIdx === 1) ? 1.16 : 0.6)), noFloat: true, noShadow: true }),
+      mascotProfile: this.renderMascot(60, { mood: todayMood, noFloat: true, noShadow: true }),
+      mascotSignin: this.renderMascot(90, { noShadow: true }),
+      mascotCelebrate: this.renderMascot(120, { celebrate: true, noFloat: true, noShadow: true }),
+
+      todayLabel: new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' }).replace(/^\w/, ch => ch.toUpperCase()),
+      homeGreeting: this.firstName() ? ('Hola, ' + this.firstName()) : 'Hola',
+      mascotMsg,
+      moodQuestion: todayMood ? '¿Sigue igual tu día?' : '¿Cómo te sientes hoy?',
+      moodFaces, moodWeek: moodWeekArr, hasMoodData,
+      hasStreak: streakN >= 2, streakLabel: streakN + ' días seguidos',
+
+      bubbles, isTyping: this.state.typing, showQuickReplies: messages.length <= 1 && !this.state.typing, quickReplies,
+      audioResources, readResources,
+      journalList, noJournal: this.state.journal.length === 0,
+      convoList, noHistory: this.state.convos.length === 0,
+      citasList, noCitas: this.state.bookings.length === 0,
+      userDisplayName: (u && u.name) ? u.name : 'Invitado/a', userEmailDisplay: (u && u.email) ? u.email : 'Sin correo guardado',
+      userInitial: (u && u.name) ? u.name.trim().charAt(0).toUpperCase() : '·',
+      profileStats, profileMenu,
+
+      breathPhase, breathHint: this.state.breathing ? (breathLabels[breathPhase] || 'Sigue el ritmo de ' + name) : 'Sigue a ' + name + ': crece al inhalar, se calma al exhalar. 4 segundos cada fase.',
+      breathBtnLabel: this.state.breathing ? 'Terminar' : 'Empezar',
+      breathGlowStyle: { position: 'absolute', width: '250px', height: '250px', borderRadius: '50%', background: 'rgba(255,255,255,.4)', filter: 'blur(24px)', animation: this.state.breathing ? 'breatheGlow 16s ease-in-out infinite' : 'none', opacity: 0.35 },
+
+      summaryLoading: this.state.summaryLoading, summaryReady: !this.state.summaryLoading && !!sText, summaryText: sText, summaryWaHref, summaryMailHref,
+
+      weekdayLabels: ['L', 'M', 'X', 'J', 'V', 'S', 'D'], monthLabel,
+      calendarCells: this.buildCalendar(), slotCells: this.buildSlots(),
+      dateChosen: !!this.state.bkDateISO, slotChosen: !!this.state.bkSlot,
+      bookingNotConfirmed: !this.state.bkConfirmed, bookingConfirmed: this.state.bkConfirmed, bookingError: this.state.bkError,
+      summaryDateLabel, confirmSummary, waHref, mailHref,
+
+      anySheet: this.state.showMenu || this.state.showSignin, showMenu: this.state.showMenu, showSignin: this.state.showSignin,
+      menuItems, tabs,
+      signinTitle: profile ? 'Mi perfil' : 'Encantada de conocerte', signinCta: profile ? 'Guardar' : 'Continuar', skipLabel: profile ? 'Cerrar' : 'Ahora no, gracias',
+
+      scrollRef: this.scrollRef, inputRef: this.inputRef, bkNameRef: this.bkNameRef, bkPhoneRef: this.bkPhoneRef, bkEmailRef: this.bkEmailRef, userNameRef: this.userNameRef, userEmailRef: this.userEmailRef, journalRef: this.journalRef,
+
+      handleSend: this.handleSend, onInputKey: this.onInputKey, startEntry: this.startEntry, pokeMascot: this.pokeMascot,
+      goHome: this.goHome, goChat: this.goChat, goCalma: this.goCalma, goPerfil: this.goPerfil,
+      goBreathing: this.goBreathing, goJournal: this.goJournal, goHistory: this.goHistory, goCitas: this.goCitas,
+      toggleBreathing: this.toggleBreathing, addJournal: this.addJournal, goSummary: this.goSummary,
+      openBooking: this.openBooking, closeBooking: this.closeBooking, prevMonth: this.prevMonth, nextMonth: this.nextMonth,
+      confirmBooking: this.confirmBooking, downloadIcs: this.downloadIcs,
+      openMenu: this.openMenu, closeSheets: this.closeSheets, openProfile: this.openProfile, saveUser: this.saveUser, skipSignin: this.skipSignin, newChat: this.newChat,
+    };
+  }
+}
+</script>
+</body></html>

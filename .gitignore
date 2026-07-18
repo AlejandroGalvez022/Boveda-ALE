@@ -1,0 +1,16 @@
+# === Bóveda Ale (personal) — lo que NO se sube ===
+
+# Estado de la interfaz de Obsidian (cambia por dispositivo)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+
+# Temporales de capturas
+_tmp-preview.html
+_wrap.html
+**/_tmp*.html
+
+# Sistema operativo
+Thumbs.db
+Desktop.ini
+.DS_Store
