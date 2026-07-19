@@ -1,23 +1,18 @@
 filters:
   and:
-    - 'tipo == "proyecto"'
-
+    - tipo == "proyecto"
 formulas:
-  estado_icon: 'if(estado == "activo", "🟢", if(estado == "en produccion", "✅", if(estado == "en pausa", "⏸️", if(estado == "demo", "🎨", "💡"))))'
-
+  estado_icon: if(estado == "activo", "🟢", if(estado == "en produccion", "✅", if(estado == "en pausa", "⏸️", if(estado == "demo", "🎨", if(estado == "laboratorio", "🧪", "💡")))))
 properties:
   file.name:
-    displayName: "Proyecto"
+    displayName: Proyecto
   estado:
-    displayName: "Estado"
+    displayName: Estado
   conversaciones:
-    displayName: "Convs."
-  formula.estado_icon:
-    displayName: ""
-
+    displayName: Convs.
 views:
   - type: table
-    name: "Por estado"
+    name: Por estado
     groupBy:
       property: estado
       direction: ASC
@@ -26,7 +21,7 @@ views:
       - file.name
       - conversaciones
   - type: cards
-    name: "Tarjetas"
+    name: Tarjetas
     order:
       - file.name
       - estado

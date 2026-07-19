@@ -1,7 +1,9 @@
 ---
 titulo: Laboratorio web
-tipo: moc
+tipo: proyecto
+estado: laboratorio
 categoria: demos
+conversaciones: 9
 tags: [moc, demos, laboratorio, web, webgl]
 ---
 
