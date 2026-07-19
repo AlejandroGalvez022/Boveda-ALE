@@ -22,6 +22,12 @@ Tu bóveda **por fuera de Reload**: tus clientes propios y tus demos. Separada d
 
 ---
 
+## 🧪 Laboratorio web
+
+- [[Laboratorio web/Laboratorio web|Laboratorio web]] — mis **demos y experimentos** (WebGL, scrollytelling, marca). Archivos guardados y listos para usar de base. ⭐ Lo último: **AZOGUE** (cromo líquido) y la **chaqueta que se infla**.
+
+---
+
 ## 📊 Todos mis proyectos (tabla viva)
 
 ![[Panel.base]]

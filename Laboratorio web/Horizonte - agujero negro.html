@@ -1,0 +1,296 @@
+<style>
+  :root{
+    --bg:#04040A; --ink:#EDF1FA; --muted:#8891A8; --glow:#9FC6FF; --hot:#FFB067; --line:rgba(237,241,250,.14);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg); color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+  .mono{font-family:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+
+  #gl,#fallback{position:fixed; inset:0; width:100%; height:100%; z-index:0; display:block}
+  #fallback{background:
+    radial-gradient(closest-side at 50% 46%, #000 0 12%, rgba(255,150,70,.9) 13%, rgba(255,110,40,.35) 17%, transparent 30%),
+    radial-gradient(60% 50% at 50% 46%, rgba(120,150,255,.18), transparent 70%),
+    radial-gradient(120% 120% at 50% 50%, #0a0a16, #04040a 80%);}
+  .grain{position:fixed; inset:0; z-index:1; pointer-events:none; opacity:.055; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+  .vig{position:fixed; inset:0; z-index:1; pointer-events:none;
+    background:radial-gradient(130% 100% at 50% 46%, transparent 52%, rgba(2,2,6,.72) 100%)}
+
+  main{position:relative; z-index:3}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 clamp(20px,5vw,60px)}
+
+  .top{position:fixed; top:0; left:0; right:0; z-index:6; display:flex; justify-content:space-between; align-items:center;
+    padding:clamp(16px,2.4vw,26px) clamp(20px,5vw,60px); pointer-events:none;
+    font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted)}
+  .top b{color:var(--glow); font-weight:600}
+
+  .hero{min-height:100svh; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:12vh}
+  .glowtext{text-shadow:0 0 34px rgba(120,170,255,.28)}
+  .eyebrow{font-size:clamp(10px,1.5vw,12.5px); letter-spacing:.3em; text-transform:uppercase; color:var(--muted);
+    display:flex; align-items:center; gap:14px}
+  .eyebrow .tick{width:30px;height:1px;background:var(--hot);opacity:.8;display:inline-block}
+  h1{font-weight:200; line-height:.98; letter-spacing:-.025em; text-wrap:balance; margin:.36em 0 0;
+    font-size:clamp(40px,8.6vw,120px)}
+  h1 .word{display:inline-block; will-change:transform,opacity}
+  h1 b{font-weight:500; font-style:italic; color:#fff}
+  .lead{max-width:46ch; margin:1.5em 0 0; font-size:clamp(15px,1.9vw,19px); line-height:1.65; color:var(--ink); opacity:.9}
+  .hint{margin-top:2.2em; font-size:12.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted);
+    display:inline-flex; align-items:center; gap:10px}
+  .hint .rot{display:inline-block; width:12px;height:12px;border-radius:50%;
+    background:conic-gradient(from 0deg, var(--hot), transparent 60%); animation:spin 4s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  section.chapter{min-height:100svh; display:flex; align-items:center; padding:14vh 0}
+  .chapter .card{max-width:44ch; position:relative}
+  .chapter .card::before{content:""; position:absolute; inset:-30px -40px; z-index:-1; border-radius:40px;
+    background:radial-gradient(80% 80% at 20% 40%, rgba(4,4,12,.72), transparent 78%)}
+  .chapter.right{justify-content:flex-end}
+  .chapter.right .card{text-align:right}
+  .chapter.right .card::before{background:radial-gradient(80% 80% at 80% 40%, rgba(4,4,12,.72), transparent 78%)}
+  .kicker{font-size:11px; letter-spacing:.26em; text-transform:uppercase; color:var(--hot); display:flex; align-items:center; gap:12px; margin-bottom:1.4em}
+  .chapter.right .kicker{justify-content:flex-end}
+  .chapter h2{font-weight:200; letter-spacing:-.02em; line-height:1.02; font-size:clamp(30px,5.6vw,60px); margin:0 0 .5em; text-wrap:balance}
+  .chapter h2 b{font-weight:500; color:#fff; font-style:italic}
+  .chapter p{font-size:clamp(15px,1.9vw,18px); line-height:1.7; color:var(--ink); opacity:.86; margin:0}
+  .sym{font-size:12px; letter-spacing:.1em; color:var(--muted); margin-top:1.6em; font-variant-numeric:tabular-nums}
+
+  footer{min-height:70svh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:12vh 0}
+  footer .rule{width:1px; height:70px; background:linear-gradient(var(--hot),transparent); margin-bottom:2.6em}
+  footer .sig{font-weight:200; font-size:clamp(22px,4vw,40px); line-height:1.3; max-width:20ch; letter-spacing:-.01em}
+  footer .by{margin-top:2.4em; font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--muted)}
+  footer .by b{color:var(--glow); font-weight:600}
+
+  .rv{opacity:0; transform:translateY(24px); transition:opacity 1.2s cubic-bezier(.2,.7,.2,1), transform 1.2s cubic-bezier(.2,.7,.2,1)}
+  .rv.in{opacity:1; transform:none}
+
+  .cursor{position:fixed; z-index:30; top:0; left:0; width:26px; height:26px; margin:-13px 0 0 -13px; border-radius:50%;
+    border:1px solid rgba(255,255,255,.6); pointer-events:none; opacity:0; transition:opacity .3s, width .25s, height .25s;
+    mix-blend-mode:difference}
+  body.cur .cursor{opacity:.8}
+  @media (hover:none),(pointer:coarse){.cursor{display:none}}
+
+  @media (prefers-reduced-motion:reduce){
+    .rv{opacity:1; transform:none; transition:none}
+    .hint .rot{animation:none}
+  }
+</style>
+
+<canvas id="gl"></canvas>
+<div id="fallback" hidden></div>
+<div class="vig"></div>
+<div class="grain"></div>
+<div class="cursor"></div>
+
+<div class="top mono">
+  <span>Observatorio · Objeto <b>001</b> / SGR A★</span>
+  <span>17ʰ45ᵐ · −29°00′ · en vivo</span>
+</div>
+
+<main>
+  <header class="hero wrap">
+    <div class="eyebrow mono rv glowtext"><span class="tick"></span>Sagitario A★ — 26.000 años luz — 4,3 millones de masas solares</div>
+    <h1 class="glowtext" id="title" aria-label="Aquí, hasta la luz da media vuelta."></h1>
+    <p class="lead rv">El borde de un agujero negro. La gravedad curva el espacio hasta que nada —ni la luz— puede volver. Lo que ves rodeándolo <b style="color:#fff;font-style:italic;font-weight:500">no está detrás</b>: es luz doblada alrededor del abismo.</p>
+    <div class="hint rv"><span class="rot"></span> Mueve el cursor para orbitarlo</div>
+  </header>
+
+  <section class="chapter wrap">
+    <div class="card rv">
+      <div class="kicker mono"><span class="tick" style="width:24px;height:1px;background:var(--hot);display:inline-block"></span>El horizonte de sucesos</div>
+      <h2>La última frontera es una <b>puerta de un solo sentido.</b></h2>
+      <p>Cruzas el horizonte y ninguna señal tuya vuelve jamás: ni una palabra, ni un destello, ni un adiós. No es un muro. Es el punto donde todos los caminos, incluso los de la luz, apuntan hacia dentro.</p>
+      <div class="sym mono">R<sub>s</sub> = 2GM / c²</div>
+    </div>
+  </section>
+
+  <section class="chapter right wrap">
+    <div class="card rv">
+      <div class="kicker mono">Dilatación del tiempo<span class="tick" style="width:24px;height:1px;background:var(--hot);display:inline-block"></span></div>
+      <h2>Para quien mira desde fuera, <b>te congelas</b> en el borde.</h2>
+      <p>El tiempo se estira cerca de la masa. Alguien que te viera caer no te vería caer nunca: te vería quedarte, cada vez más rojo, más tenue, más quieto. Para ti, en cambio, el universo entero se aceleraría hacia su final.</p>
+    </div>
+  </section>
+
+  <section class="chapter wrap">
+    <div class="card rv">
+      <div class="kicker mono"><span class="tick" style="width:24px;height:1px;background:var(--hot);display:inline-block"></span>El anillo de Einstein</div>
+      <h2>Ves cosas que <b>deberían ser invisibles.</b></h2>
+      <p>La luz de las estrellas de detrás no viaja recta: rodea el agujero y te llega curvada, dibujando un halo. El propio abismo se convierte en una lente que te enseña lo que tiene escondido a su espalda.</p>
+    </div>
+  </section>
+
+  <footer class="wrap">
+    <div class="rule rv"></div>
+    <p class="sig glowtext rv">Una pieza sobre lo único que ni la luz puede contarte.</p>
+    <div class="by mono rv">Renderizado en vivo · hecho por <b>Claude</b> para Alejandro · 2026</div>
+  </footer>
+</main>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var glc=document.getElementById("gl");
+  var small = Math.min(innerWidth,innerHeight) < 720;
+  var STEPS = small?70:118;
+  var RSCALE = small?0.7:Math.min(1.4, (window.devicePixelRatio||1));
+
+  var FRAG =
+  "precision highp float;\n#define STEPS "+STEPS+"\n"+[
+  "uniform vec2 R; uniform float T; uniform vec2 CAM; uniform float EXPO;",
+  "float hash(vec3 p){p=fract(p*0.3183099+0.1);p*=17.0;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}",
+  "float noise(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.0-2.0*f);",
+    "return mix(mix(mix(hash(i+vec3(0.,0.,0.)),hash(i+vec3(1.,0.,0.)),f.x),",
+    "mix(hash(i+vec3(0.,1.,0.)),hash(i+vec3(1.,1.,0.)),f.x),f.y),",
+    "mix(mix(hash(i+vec3(0.,0.,1.)),hash(i+vec3(1.,0.,1.)),f.x),",
+    "mix(hash(i+vec3(0.,1.,1.)),hash(i+vec3(1.,1.,1.)),f.x),f.y),f.z);}",
+  "float fbm(vec3 p){float v=0.,a=0.5;for(int i=0;i<5;i++){v+=a*noise(p);p*=2.03;a*=0.5;}return v;}",
+  "mat3 rotY(float a){float c=cos(a),s=sin(a);return mat3(c,0.,s,0.,1.,0.,-s,0.,c);}",
+  "mat3 rotX(float a){float c=cos(a),s=sin(a);return mat3(1.,0.,0.,0.,c,-s,0.,s,c);}",
+  "vec3 aces(vec3 x){return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14),0.0,1.0);}",
+  "vec3 stars(vec3 d){",
+    "float neb=fbm(d*2.6+7.0); float neb2=fbm(d*6.0-3.0);",
+    "vec3 col=mix(vec3(0.010,0.012,0.028),vec3(0.05,0.045,0.11),neb);",
+    "col+=vec3(0.10,0.06,0.14)*pow(neb2,2.0)*0.5;",
+    "vec3 id=floor(d*260.0); float h=hash(id);",
+    "float s=pow(h,190.0)*2.2; float tw=0.7+0.3*sin(T*2.0+h*60.0);",
+    "vec3 sc=mix(vec3(1.0),vec3(0.7,0.8,1.2),hash(id+3.3));",
+    "col+=sc*s*tw;",
+    "return col;}",
+  "vec3 disk(vec3 h,float rr,float rin,float rout,vec3 dir){",
+    "float ang=atan(h.z,h.x); float rot=T*1.1/pow(rr,1.5);",
+    "float turb=fbm(vec3(cos(ang+rot)*rr,sin(ang+rot)*rr,rr*0.7)*1.15+T*0.15);",
+    "float t=clamp((rout-rr)/(rout-rin),0.0,1.0);",
+    "vec3 cool=vec3(0.75,0.16,0.05), mid=vec3(1.15,0.6,0.22), hot=vec3(0.85,0.9,1.25);",
+    "vec3 c=mix(cool,mid,smoothstep(0.0,0.55,t)); c=mix(c,hot,smoothstep(0.55,1.0,t));",
+    "float edge=smoothstep(rin,rin+0.35,rr)*smoothstep(rout,rout-1.2,rr);",
+    "float bright=(0.35+turb)*pow(t,1.3)*edge*3.4;",
+    "vec3 tang=normalize(cross(vec3(0.,1.,0.),h));",
+    "float dopp=1.0+0.55*dot(tang,-dir);",
+    "return c*bright*dopp;}",
+  "void main(){",
+    "vec2 uv=(gl_FragCoord.xy-0.5*R)/R.y;",
+    "float yaw=CAM.x, pitch=CAM.y;",
+    "mat3 cam=rotY(yaw)*rotX(pitch);",
+    "vec3 ro=cam*vec3(0.0,0.0,9.2);",
+    "vec3 fwd=normalize(-ro); vec3 rgt=normalize(cross(vec3(0.,1.,0.),fwd)); vec3 up=cross(fwd,rgt);",
+    "vec3 dir=normalize(fwd*1.5+uv.x*rgt+uv.y*up);",
+    "vec3 pos=ro; vec3 col=vec3(0.0); float trans=1.0; bool cap=false;",
+    "float rin=2.7, rout=8.2, Rs=1.05, GM=0.95;",
+    "for(int i=0;i<STEPS;i++){",
+      "float r=length(pos);",
+      "if(r<Rs){cap=true;break;}",
+      "if(r>17.0 && dot(pos,dir)>0.0){break;}",
+      "float dt=clamp(0.14*r,0.07,0.6);",
+      "vec3 g=-pos/r*(GM/(r*r));",
+      "vec3 ndir=normalize(dir+g*dt);",
+      "vec3 npos=pos+ndir*dt;",
+      "if(pos.y*npos.y<0.0){",
+        "float k=pos.y/(pos.y-npos.y); vec3 hit=mix(pos,npos,k); float rr=length(hit.xz);",
+        "if(rr>rin&&rr<rout){ col+=disk(hit,rr,rin,rout,ndir)*trans; trans*=0.82; }",
+      "}",
+      "dir=ndir; pos=npos;",
+    "}",
+    "if(!cap){ col+=stars(dir)*trans; }",
+    "col*=EXPO;",
+    "float vig=1.0-0.32*pow(length(uv*vec2(R.x/R.y,1.0))*0.85,2.0);",
+    "col*=vig;",
+    "col=aces(col*1.15); col=pow(col,vec3(0.4545));",
+    "col+=(hash(vec3(gl_FragCoord.xy,T))-0.5)*0.03;",
+    "gl_FragColor=vec4(col,1.0);",
+  "}"].join("\n");
+
+  var VERT="attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}";
+  var gl=null, prog=null, U={};
+  function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);
+    return gl.getShaderParameter(o,gl.COMPILE_STATUS)?o:null;}
+  function init(){
+    try{ gl=glc.getContext("webgl")||glc.getContext("experimental-webgl"); }catch(e){ gl=null; }
+    if(!gl) return false;
+    var v=sh(gl.VERTEX_SHADER,VERT), f=sh(gl.FRAGMENT_SHADER,FRAG); if(!v||!f) return false;
+    prog=gl.createProgram(); gl.attachShader(prog,v); gl.attachShader(prog,f); gl.linkProgram(prog);
+    if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) return false;
+    gl.useProgram(prog);
+    var b=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+    var loc=gl.getAttribLocation(prog,"p"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+    U.R=gl.getUniformLocation(prog,"R"); U.T=gl.getUniformLocation(prog,"T");
+    U.CAM=gl.getUniformLocation(prog,"CAM"); U.EXPO=gl.getUniformLocation(prog,"EXPO");
+    return true;
+  }
+  function resize(){
+    var w=innerWidth,h=innerHeight;
+    glc.width=Math.floor(w*RSCALE); glc.height=Math.floor(h*RSCALE);
+    glc.style.width=w+"px"; glc.style.height=h+"px";
+    if(gl) gl.viewport(0,0,glc.width,glc.height);
+  }
+  var rt; addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(resize,150);});
+
+  /* puntero -> orbita */
+  var tX=0,tY=0.14, mX=0,mY=0.14, autoYaw=0, cx=innerWidth/2, cy=innerHeight/2;
+  var cur=document.querySelector(".cursor");
+  function pointer(x,y){ tX=(x/innerWidth-0.5)*2.0; tY=0.14+(y/innerHeight-0.5)*-1.0;
+    tY=Math.max(-0.35,Math.min(0.95,tY)); document.body.classList.add("cur"); cx=x; cy=y; }
+  addEventListener("mousemove",function(e){pointer(e.clientX,e.clientY);},{passive:true});
+  addEventListener("touchmove",function(e){var t=e.touches[0]; if(t)pointer(t.clientX,t.clientY);},{passive:true});
+
+  var t0=Date.now(), expo=0;
+  function loop(){
+    var t=(Date.now()-t0)/1000;
+    autoYaw += 0.0016;
+    mX += (tX-mX)*0.055; mY += (tY-mY)*0.055;
+    expo += ( (reduce?1.0:1.0) - expo)*0.03;   // fundido de entrada
+    if(cur){ cur.style.transform="translate("+cx+"px,"+cy+"px)"; }
+    if(gl){
+      gl.uniform2f(U.R,glc.width,glc.height);
+      gl.uniform1f(U.T,t);
+      gl.uniform2f(U.CAM, autoYaw+mX, mY);
+      gl.uniform1f(U.EXPO, 0.15+expo*0.95);
+      gl.drawArrays(gl.TRIANGLES,0,3);
+    }
+    requestAnimationFrame(loop);
+  }
+
+  /* titulo kinético */
+  function buildTitle(){
+    var el=document.getElementById("title");
+    var parts=[["Aquí, hasta la luz",false],["da ",false],["media vuelta.",true]];
+    // render: primera linea, salto, segunda
+    var lines=[["Aquí,","hasta","la","luz"],["da","media","vuelta."]];
+    el.innerHTML="";
+    var idx=0;
+    lines.forEach(function(words,li){
+      var line=document.createElement("span"); line.style.display="block";
+      words.forEach(function(w,wi){
+        var s=document.createElement("span"); s.className="word";
+        if(li===1 && (w==="media"||w==="vuelta.")) { var bb=document.createElement("b"); bb.textContent=w; s.appendChild(bb); }
+        else s.textContent=w;
+        s.style.opacity="0"; s.style.transform="translateY(0.4em)";
+        line.appendChild(s); if(wi<words.length-1) line.appendChild(document.createTextNode(" "));
+        if(!reduce){ (function(sp,d){ setTimeout(function(){ sp.style.transition="opacity 1s ease, transform 1.1s cubic-bezier(.2,.7,.2,1)"; sp.style.opacity="1"; sp.style.transform="none"; }, 400+d*110); })(s,idx); }
+        else { s.style.opacity="1"; s.style.transform="none"; }
+        idx++;
+      });
+      el.appendChild(line);
+    });
+  }
+
+  function reveals(){
+    var els=document.querySelectorAll(".rv");
+    if(reduce||!("IntersectionObserver" in window)){ els.forEach(function(e){e.classList.add("in");}); return; }
+    var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target);}});},{threshold:.16});
+    els.forEach(function(e){io.observe(e);});
+    setTimeout(function(){els.forEach(function(e){if(e.getBoundingClientRect().top<innerHeight)e.classList.add("in");});},50);
+  }
+
+  var ok=false; try{ ok=init(); }catch(e){ ok=false; }
+  if(!ok){ document.getElementById("fallback").hidden=false; glc.style.display="none"; }
+  resize(); buildTitle(); reveals();
+  if(reduce){ if(gl){ gl.uniform2f(U.R,glc.width,glc.height); gl.uniform1f(U.T,1.4); gl.uniform2f(U.CAM,0.5,0.16); gl.uniform1f(U.EXPO,1.05); gl.drawArrays(gl.TRIANGLES,0,3);} }
+  else if(gl){ requestAnimationFrame(loop); }
+  addEventListener("error",function(){ document.body.style.background="var(--bg)"; });
+})();
+</script>

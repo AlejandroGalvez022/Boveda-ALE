@@ -1,0 +1,278 @@
+<style>
+  :root{
+    --void:#070709; --void2:#0D0E13; --paper:#EEF1F8; --muted:#7E8598; --line:rgba(238,241,248,.13);
+    --acid:#DBFF48; --iri1:#7CF2FF; --iri2:#B49BFF; --iri3:#FF93DE;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--void); color:var(--paper); font-family:"Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden}
+  .mono{font-family:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 clamp(18px,4vw,48px)}
+  .holo{background:linear-gradient(100deg,var(--iri1),var(--iri2) 40%,var(--iri3) 68%,var(--iri1)); background-size:220% 100%;
+    -webkit-background-clip:text; background-clip:text; color:transparent; animation:holo 7s linear infinite}
+  @keyframes holo{to{background-position:220% 0}}
+  .chrometxt{background:linear-gradient(176deg,#fff 2%,#B9C0D2 34%,#565E72 52%,#DCE2EE 66%,#8A92A6 98%); -webkit-background-clip:text; background-clip:text; color:transparent}
+  .grain{position:fixed; inset:0; z-index:60; pointer-events:none; opacity:.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");}
+
+  header.top{position:fixed; top:0; left:0; right:0; z-index:50; display:flex; justify-content:space-between; align-items:center;
+    padding:clamp(16px,2.3vw,24px) clamp(18px,4vw,48px); pointer-events:none}
+  header .brand{font-weight:800; font-size:20px} header .brand .st{color:var(--acid)}
+  header .rt{font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted)}
+
+  .intro{min-height:100svh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; position:relative}
+  .intro .eyebrow{font-size:12px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--muted); margin-bottom:1.1em}
+  .intro h1{font-weight:800; letter-spacing:-.035em; line-height:.88; font-size:clamp(46px,10vw,120px); margin:0}
+  .intro p{margin:1.4em auto 0; max-width:32ch; color:var(--paper); opacity:.8; font-size:clamp(15px,1.9vw,18px)}
+  .cue{position:absolute; bottom:26px; left:50%; transform:translateX(-50%); font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--muted); display:flex; flex-direction:column; align-items:center; gap:8px}
+  .cue .bar{width:1px; height:36px; background:linear-gradient(var(--acid),transparent); transform-origin:top; animation:drop 2s ease-in-out infinite}
+  @keyframes drop{0%,100%{transform:scaleY(.35);opacity:.4}50%{transform:scaleY(1);opacity:1}}
+
+  .track{position:relative; height:600vh}
+  .stage{position:sticky; top:0; height:100svh; display:grid; grid-template-columns:1fr 1fr; align-items:center; overflow:hidden}
+  .stage::before{content:""; position:absolute; inset:0; z-index:0;
+    background:radial-gradient(56% 60% at 40% 46%, rgba(150,170,210,.10), transparent 62%)}
+  .jwrap{position:relative; z-index:1; height:100%; display:flex; align-items:center; justify-content:center}
+  svg.jacket{width:min(80vh,94%); height:auto; overflow:visible; display:block; will-change:transform}
+  .baf{transform-box:fill-box; transform-origin:center}
+  .part{transform-box:fill-box; transform-origin:center}
+
+  .copy{position:relative; z-index:2; padding-right:clamp(10px,4vw,60px)}
+  .phase{position:absolute; top:50%; transform:translateY(-50%); max-width:30ch; opacity:0; transition:opacity .5s ease}
+  .phase.on{opacity:1}
+  .phase .n{font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--acid); margin-bottom:1em; display:block}
+  .phase h2{font-weight:800; letter-spacing:-.02em; line-height:1; font-size:clamp(30px,4.6vw,56px); margin:0 0 .5em; text-wrap:balance}
+  .phase p{color:var(--muted); margin:0; font-size:clamp(14px,1.7vw,17px); line-height:1.6}
+  .phase .buy{margin-top:1.8em; display:flex; align-items:center; gap:18px; flex-wrap:wrap}
+  .phase .price{font-size:clamp(26px,3.2vw,34px); font-weight:800; font-variant-numeric:tabular-nums}
+  .btn{font-weight:800; font-size:13px; letter-spacing:.1em; text-transform:uppercase; padding:15px 26px; border-radius:999px; cursor:pointer;
+    border:none; background:var(--acid); color:#0A0C00; transition:transform .12s, box-shadow .25s}
+  .btn:hover{transform:translateY(-2px); box-shadow:0 10px 34px rgba(219,255,72,.38)}
+
+  .prog{position:fixed; right:clamp(14px,3vw,34px); top:50%; transform:translateY(-50%); z-index:40; display:flex; flex-direction:column; align-items:center; gap:12px}
+  .prog .rail{width:2px; height:180px; background:var(--line); border-radius:2px; position:relative; overflow:hidden}
+  .prog .fill{position:absolute; top:0; left:0; width:100%; height:0%; background:linear-gradient(var(--iri1),var(--acid))}
+  .prog .pct{font-size:11px; color:var(--muted); font-variant-numeric:tabular-nums}
+  @media (max-width:820px){
+    .stage{grid-template-columns:1fr; grid-template-rows:1fr auto}
+    .copy{padding:0 6vw 7vh; z-index:3}
+    .phase{position:absolute; bottom:5vh; top:auto; transform:none; left:6vw; right:6vw; max-width:none}
+    svg.jacket{width:min(60vh,82%)} .prog{display:none}
+  }
+
+  .outro{min-height:80svh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:10vh 0}
+  .outro .big{font-weight:800; letter-spacing:-.03em; line-height:.9; font-size:clamp(48px,14vw,180px); margin:0}
+  .outro p{color:var(--muted); margin:1.3em 0 0; letter-spacing:.1em; text-transform:uppercase; font-size:12px}
+  footer{border-top:1px solid var(--line); text-align:center; padding:40px 0; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted)}
+  footer b{color:var(--iri1)}
+  .toast{position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(30px); z-index:80; background:var(--acid); color:#0A0C00; font-weight:800; font-size:13px; letter-spacing:.06em; text-transform:uppercase; padding:13px 22px; border-radius:999px; opacity:0; pointer-events:none; transition:.3s}
+  .toast.on{opacity:1; transform:translateX(-50%) translateY(0)}
+  @media (prefers-reduced-motion:reduce){ .cue .bar,.holo{animation:none} }
+</style>
+
+<div class="grain"></div>
+<header class="top"><span class="brand">NOVA<span class="st">★</span>9</span><span class="rt mono">Chrome Season · Drop 09</span></header>
+
+<section class="intro">
+  <div class="eyebrow mono">SS26 / objeto 001 — metal líquido</div>
+  <h1><span class="chrometxt">Chrome</span> <span class="holo">Puffer</span></h1>
+  <p>Baja despacio: la chaqueta se infla y se monta pieza a pieza delante de ti.</p>
+  <div class="cue mono"><span>scroll para ensamblar</span><span class="bar"></span></div>
+</section>
+
+<div class="track" id="track">
+  <div class="stage">
+    <div class="jwrap">
+      <svg class="jacket" id="jacket" viewBox="0 0 400 580" aria-label="Chrome Puffer ensamblándose">
+        <defs>
+          <linearGradient id="baf" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#F2F5FB"/><stop offset="0.16" stop-color="#CDD4E0"/>
+            <stop offset="0.5" stop-color="#98A1B2"/><stop offset="0.82" stop-color="#5D6473"/><stop offset="1" stop-color="#3E4552"/>
+          </linearGradient>
+          <linearGradient id="bafDark" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#AEB6C4"/><stop offset="0.5" stop-color="#6C7484"/><stop offset="1" stop-color="#353B47"/>
+          </linearGradient>
+          <linearGradient id="placket" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#2C313C"/><stop offset="0.5" stop-color="#565E70"/><stop offset="1" stop-color="#2C313C"/>
+          </linearGradient>
+          <radialGradient id="sheen" cx="0.32" cy="0.24" r="0.9">
+            <stop offset="0" stop-color="#ffffff" stop-opacity="0.7"/><stop offset="0.5" stop-color="#cfe6ff" stop-opacity="0.12"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="gshadow" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stop-color="#000" stop-opacity="0.55"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
+          </radialGradient>
+          <clipPath id="cTorso"><path d="M138,176 C120,176 112,192 112,210 L104,470 C103,490 118,500 138,500 L262,500 C282,500 297,490 296,470 L288,210 C288,192 280,176 262,176 C250,190 226,196 200,196 C174,196 150,190 138,176 Z"/></clipPath>
+          <clipPath id="cSleeveL"><path d="M112,204 C86,208 72,226 68,256 L57,446 C55,466 70,476 89,471 L112,463 Z"/></clipPath>
+          <clipPath id="cSleeveR"><path d="M288,204 C314,208 328,226 332,256 L343,446 C345,466 330,476 311,471 L288,463 Z"/></clipPath>
+          <clipPath id="cCollar"><path d="M140,176 C156,152 178,143 200,143 C222,143 244,152 260,176 L252,188 C236,168 218,162 200,162 C182,162 164,168 148,188 Z"/></clipPath>
+        </defs>
+
+        <!-- sombra en el suelo -->
+        <ellipse id="gshad" cx="200" cy="522" rx="118" ry="20" fill="url(#gshadow)" opacity="0"/>
+
+        <!-- MANGAS -->
+        <g id="sleeveLg" class="part">
+          <path d="M112,204 C86,208 72,226 68,256 L57,446 C55,466 70,476 89,471 L112,463 Z" fill="#2b303b"/>
+          <g clip-path="url(#cSleeveL)" id="bafSL"></g>
+          <path d="M112,204 C86,208 72,226 68,256 L57,446 C55,466 70,476 89,471 L112,463 Z" fill="none" stroke="#20242e" stroke-width="2"/>
+          <rect id="cuffL" x="54" y="442" width="62" height="34" rx="8" fill="url(#bafDark)" opacity="0" transform="rotate(6 85 459)"/>
+        </g>
+        <g id="sleeveRg" class="part">
+          <path d="M288,204 C314,208 328,226 332,256 L343,446 C345,466 330,476 311,471 L288,463 Z" fill="#2b303b"/>
+          <g clip-path="url(#cSleeveR)" id="bafSR"></g>
+          <path d="M288,204 C314,208 328,226 332,256 L343,446 C345,466 330,476 311,471 L288,463 Z" fill="none" stroke="#20242e" stroke-width="2"/>
+          <rect id="cuffR" x="284" y="442" width="62" height="34" rx="8" fill="url(#bafDark)" opacity="0" transform="rotate(-6 315 459)"/>
+        </g>
+
+        <!-- CUERPO -->
+        <path d="M138,176 C120,176 112,192 112,210 L104,470 C103,490 118,500 138,500 L262,500 C282,500 297,490 296,470 L288,210 C288,192 280,176 262,176 C250,190 226,196 200,196 C174,196 150,190 138,176 Z" fill="#2b303b"/>
+        <g clip-path="url(#cTorso)" id="bafT"></g>
+        <path d="M138,176 C120,176 112,192 112,210 L104,470 C103,490 118,500 138,500 L262,500 C282,500 297,490 296,470 L288,210 C288,192 280,176 262,176 C250,190 226,196 200,196 C174,196 150,190 138,176 Z" fill="none" stroke="#20242e" stroke-width="2.4"/>
+
+        <!-- CREMALLERA -->
+        <g id="zipg" opacity="0">
+          <rect x="192" y="196" width="16" height="300" rx="4" fill="url(#placket)"/>
+          <path id="teethL" d="M195,494 L195,198" stroke="#DDE4F0" stroke-width="2" stroke-dasharray="2 4"/>
+          <path id="teethR" d="M205,494 L205,198" stroke="#DDE4F0" stroke-width="2" stroke-dasharray="2 4"/>
+        </g>
+        <g id="sliderg" opacity="0">
+          <rect x="187" y="300" width="26" height="24" rx="5" fill="#E7ECF6" stroke="#20242e" stroke-width="1.5"/>
+          <rect x="196" y="322" width="8" height="14" rx="3" fill="#c2c9d6" stroke="#20242e" stroke-width="1"/>
+        </g>
+
+        <!-- BOLSILLOS -->
+        <g id="pockets" class="part" opacity="0">
+          <path d="M138,430 q-6,10 2,18 l30,8" fill="none" stroke="#20242e" stroke-width="3" stroke-linecap="round"/>
+          <path d="M262,430 q6,10 -2,18 l-30,8" fill="none" stroke="#20242e" stroke-width="3" stroke-linecap="round"/>
+        </g>
+
+        <!-- DOBLADILLO (rib) + cordones -->
+        <g id="hemg" opacity="0">
+          <rect x="108" y="474" width="184" height="26" rx="9" fill="url(#bafDark)"/>
+          <g stroke="#2b303b" stroke-width="1.4"><path d="M126,478 V496"/><path d="M146,478 V496"/><path d="M166,478 V496"/><path d="M186,478 V496"/><path d="M214,478 V496"/><path d="M234,478 V496"/><path d="M254,478 V496"/><path d="M274,478 V496"/></g>
+          <g stroke="#c9d0dc" stroke-width="2.4" stroke-linecap="round" opacity="0.9"><path d="M188,498 q-4,14 -10,20"/><path d="M212,498 q4,14 10,20"/></g>
+          <circle cx="176" cy="520" r="4.5" fill="#DBFF48"/><circle cx="224" cy="520" r="4.5" fill="#DBFF48"/>
+        </g>
+
+        <!-- CUELLO -->
+        <g id="collarg" class="part">
+          <path d="M140,176 C156,152 178,143 200,143 C222,143 244,152 260,176 L252,188 C236,168 218,162 200,162 C182,162 164,168 148,188 Z" fill="#2b303b"/>
+          <g clip-path="url(#cCollar)" id="bafC"></g>
+          <path d="M140,176 C156,152 178,143 200,143 C222,143 244,152 260,176 L252,188 C236,168 218,162 200,162 C182,162 164,168 148,188 Z" fill="none" stroke="#20242e" stroke-width="2.2"/>
+        </g>
+
+        <!-- BRILLO metálico -->
+        <rect id="sheenR" x="96" y="150" width="208" height="360" rx="60" fill="url(#sheen)" opacity="0" style="mix-blend-mode:screen"/>
+      </svg>
+    </div>
+
+    <div class="copy">
+      <div class="phase mono" data-a="0" data-b="0.22"><span class="n">01 — El cuerpo</span><h2 style="font-family:Helvetica,Arial,sans-serif">Se infla.</h2><p>Shell de nylon espejado con relleno térmico. El torso cobra volumen baffle a baffle, de abajo arriba.</p></div>
+      <div class="phase mono" data-a="0.22" data-b="0.44"><span class="n">02 — Las mangas</span><h2 style="font-family:Helvetica,Arial,sans-serif">Se articulan.</h2><p>Mangas oversize que entran desde los lados y se rellenan. Puño elástico en el remate.</p></div>
+      <div class="phase mono" data-a="0.44" data-b="0.62"><span class="n">03 — Bolsillos y dobladillo</span><h2 style="font-family:Helvetica,Arial,sans-serif">Los remates.</h2><p>Bolsillos de ojal, dobladillo elástico y cordón ajustable con topes. Detalles que hacen la prenda.</p></div>
+      <div class="phase mono" data-a="0.62" data-b="0.84"><span class="n">04 — La cremallera</span><h2 style="font-family:Helvetica,Arial,sans-serif">Sube sola.</h2><p>Cremallera de dientes metálicos, tirador magnético. Se cierra de abajo arriba.</p></div>
+      <div class="phase mono" data-a="0.84" data-b="1.01">
+        <span class="n">Completo</span><h2 class="chrometxt" style="font-family:Helvetica,Arial,sans-serif">Chrome Puffer / 09</h2>
+        <p>Cuello alto, edición de 999. Forjado en el filo del milenio.</p>
+        <div class="buy"><span class="price">€245</span><button class="btn" id="buy" type="button">Add to bag</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="outro">
+  <div class="big chrometxt">DRESSED</div><div class="big holo">FOR 3000</div>
+  <p>NOVA★9 · Chrome Season · Edition /999</p>
+</section>
+<footer class="mono">Experiencia de scroll · hecha por <b>Claude</b> para Alejandro · 2026</footer>
+<div class="toast" id="toast">Chrome Puffer added ★</div>
+
+<script>
+(function(){
+  "use strict";
+  var SVGNS="http://www.w3.org/2000/svg";
+  var reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var track=document.getElementById("track"), jacket=document.getElementById("jacket");
+  var phases=[].slice.call(document.querySelectorAll(".phase"));
+  var fill=document.querySelector(".prog .fill"), pct=document.querySelector(".prog .pct");
+
+  function mk(tag,attrs){ var e=document.createElementNS(SVGNS,tag); for(var k in attrs) e.setAttribute(k,attrs[k]); return e; }
+
+  // construir baffles (rects redondeados clipados a cada silueta)
+  function buildBaffles(groupId, x, w, ys, h, grad){
+    var g=document.getElementById(groupId), arr=[];
+    ys.forEach(function(y){
+      var r=mk("rect",{x:x, y:(y-h/2), width:w, height:h, rx:h*0.48, fill:"url(#"+grad+")", stroke:"#242a34", "stroke-width":"1"});
+      r.setAttribute("class","baf"); g.appendChild(r); arr.push(r);
+    });
+    return arr;
+  }
+  var torsoY=[168,202,236,270,304,338,372,406,440,470];
+  var bT=buildBaffles("bafT",102,196,torsoY,34,"baf");
+  var bSL=buildBaffles("bafSL",50,72,[224,256,288,320,352,384,416,446],30,"bafDark");
+  var bSR=buildBaffles("bafSR",278,72,[224,256,288,320,352,384,416,446],30,"bafDark");
+  var bC=buildBaffles("bafC",138,124,[158,178],24,"baf");
+
+  var sleeveLg=document.getElementById("sleeveLg"), sleeveRg=document.getElementById("sleeveRg");
+  var collarg=document.getElementById("collarg"), pockets=document.getElementById("pockets");
+  var zipg=document.getElementById("zipg"), sliderg=document.getElementById("sliderg");
+  var hemg=document.getElementById("hemg"), cuffL=document.getElementById("cuffL"), cuffR=document.getElementById("cuffR");
+  var teethL=document.getElementById("teethL"), teethR=document.getElementById("teethR"), sliderR=sliderg;
+  var sheenR=document.getElementById("sheenR"), gshad=document.getElementById("gshad");
+  var teethLen=teethL.getTotalLength(); teethL.style.strokeDasharray="2 4"; // mantenemos dientes; el zip "sube" con opacidad+slider
+
+  function clamp(v,a,b){ return v<a?a:(v>b?b:v); }
+  function seg(p,a,b){ return clamp((p-a)/(b-a),0,1); }
+  function eo(t){ return 1-Math.pow(1-t,3); }
+
+  function inflate(arr,p,a,b){ var n=arr.length;
+    for(var i=0;i<n;i++){ var s=a+(i/n)*(b-a-0.08), t=eo(seg(p,s,s+0.12));
+      arr[i].style.opacity=t; arr[i].style.transform="scaleY("+(0.06+0.94*t)+")"; } }
+
+  var target=0,cur=0;
+  function apply(p){
+    // cuerpo se infla
+    inflate(bT,p,0.02,0.46);
+    // mangas: deslizan + inflan
+    var tl=eo(seg(p,0.20,0.42)); sleeveLg.style.opacity=tl; sleeveLg.style.transform="translate("+(-130*(1-tl))+"px,"+(16*(1-tl))+"px) rotate("+(-14*(1-tl))+"deg)";
+    var tr=eo(seg(p,0.20,0.42)); sleeveRg.style.opacity=tr; sleeveRg.style.transform="translate("+(130*(1-tr))+"px,"+(16*(1-tr))+"px) rotate("+(14*(1-tr))+"deg)";
+    inflate(bSL,p,0.24,0.46); inflate(bSR,p,0.24,0.46);
+    var tcuff=eo(seg(p,0.40,0.5)); cuffL.style.opacity=tcuff; cuffR.style.opacity=tcuff;
+    // bolsillos + dobladillo + cordones
+    var tpk=eo(seg(p,0.46,0.58)); pockets.style.opacity=tpk; pockets.style.transform="scale("+(0.92+0.08*tpk)+")";
+    var them=eo(seg(p,0.5,0.62)); hemg.style.opacity=them;
+    // cremallera sube
+    var tz=eo(seg(p,0.62,0.84)); zipg.style.opacity=Math.min(1,tz*2);
+    sliderg.style.opacity=tz>0?1:0; sliderg.style.transform="translateY("+(-tz*200)+"px)";
+    // recortar dientes segun cierre (dibujar de abajo->arriba)
+    var tzip=200*(1-tz); teethL.setAttribute("y1",""); // no-op
+    teethL.style.strokeDashoffset=""; // dientes fijos, el efecto lo da el slider subiendo
+    // recorte visual: tapar dientes por encima del slider con opacidad de un clip simple
+    // cuello cae
+    var tc=eo(seg(p,0.80,0.94)); collarg.style.opacity=tc; collarg.style.transform="translateY("+(-70*(1-tc))+"px)"; inflate(bC,p,0.82,0.95);
+    // brillo + sombra + glow
+    var ts=seg(p,0.85,1.0); sheenR.style.opacity=ts*0.85; gshad.style.opacity=eo(seg(p,0.1,0.4));
+    jacket.style.filter = ts>0 ? "drop-shadow(0 0 "+(ts*40)+"px rgba(124,242,255,"+(ts*0.45)+"))" : "none";
+    // fases texto
+    for(var k=0;k<phases.length;k++){ var pa=parseFloat(phases[k].dataset.a), pb=parseFloat(phases[k].dataset.b);
+      phases[k].classList.toggle("on", p>=pa-0.02 && p<pb); }
+    if(fill){ fill.style.height=(p*100).toFixed(1)+"%"; pct.textContent=Math.round(p*100)+"%"; }
+  }
+
+  function computeTarget(){ var top=track.offsetTop, hpx=track.offsetHeight-innerHeight; target=clamp((scrollY-top)/(hpx||1),0,1); }
+  addEventListener("scroll",computeTarget,{passive:true}); addEventListener("resize",computeTarget);
+  function loop(){ cur+=(target-cur)*0.11; apply(cur); requestAnimationFrame(loop); }
+  computeTarget();
+  if(reduce){ apply(0); addEventListener("scroll",function(){ computeTarget(); apply(target); },{passive:true}); }
+  else { apply(0); requestAnimationFrame(loop); }
+
+  if(!reduce){ addEventListener("mousemove",function(e){ var rx=(e.clientX/innerWidth-0.5), ry=(e.clientY/innerHeight-0.5);
+    jacket.style.transform="perspective(1300px) rotateY("+(rx*8)+"deg) rotateX("+(-ry*6)+"deg)"; },{passive:true}); }
+
+  var toast=document.getElementById("toast"), tt;
+  document.getElementById("buy").addEventListener("click",function(){ toast.classList.add("on"); clearTimeout(tt); tt=setTimeout(function(){toast.classList.remove("on");},1600); });
+  addEventListener("error",function(){ document.body.style.background="var(--void)"; });
+})();
+</script>
