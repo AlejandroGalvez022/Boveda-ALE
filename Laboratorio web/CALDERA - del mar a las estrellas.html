@@ -1,0 +1,521 @@
+<title>CALDERA — Del mar a las estrellas</title>
+<style>
+  :root{
+    --noche:#050810; --magma:#FF5A1F; --brasa:#FFB35C; --ceniza:#8C97AD;
+    --ceniza-dim:#5C6678; --estrella:#EAF2FF; --linea:rgba(140,151,173,.18);
+    --display:"Haettenschweiler","Impact","Arial Narrow",sans-serif;
+    --serif:Georgia,"Times New Roman",serif;
+    --mono:"Cascadia Code","Consolas",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--noche);color:var(--estrella);
+    font-family:var(--serif);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit}
+  ::selection{background:rgba(255,90,31,.35);color:#fff}
+
+  /* ---------- WebGL stage ---------- */
+  #gl{position:fixed;inset:0;width:100vw;height:100vh;display:block;z-index:0;
+    background:linear-gradient(180deg,#0A1626 0%,#1E3448 45%,#0E2830 70%,#061018 100%)}
+  .nogl #gl{background:
+    radial-gradient(90% 70% at 50% 100%, #3A1608 0%, #1A0F14 45%, #050810 100%),
+    linear-gradient(180deg,#0A1626,#050810)}
+  #veil{position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(140% 100% at 50% 40%,transparent 45%,rgba(2,4,8,.5) 100%)}
+
+  /* ---------- Intro ---------- */
+  #intro{position:fixed;inset:0;z-index:40;background:var(--noche);
+    display:flex;align-items:center;justify-content:center;
+    transition:opacity 1.2s ease .3s,visibility 0s linear 1.6s}
+  #intro .mk{font-family:var(--mono);font-size:12px;letter-spacing:.55em;
+    text-transform:uppercase;color:var(--ceniza);animation:introin 1.8s ease forwards}
+  #intro.hide{opacity:0;visibility:hidden}
+  @keyframes introin{0%{opacity:0;letter-spacing:1.3em}60%{opacity:.9}100%{opacity:.6;letter-spacing:.55em}}
+
+  /* ---------- HUD ---------- */
+  .hud{position:fixed;z-index:20;pointer-events:none;font-family:var(--mono);
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ceniza-dim)}
+  .hud.tl{top:22px;left:26px}
+  .hud.tr{top:22px;right:26px;text-align:right;line-height:2.0}
+  .hud.bl{bottom:24px;left:26px}
+  .wordmark{font-family:var(--display);font-weight:400;font-size:26px;letter-spacing:.18em;
+    color:var(--estrella);text-transform:uppercase;line-height:1}
+  .wordmark small{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.34em;
+    color:var(--ceniza-dim);margin-top:6px}
+  #tele span{color:var(--estrella);font-variant-numeric:tabular-nums}
+  #tele .mg{color:var(--magma)}
+  .puls{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--magma);
+    margin-right:7px;vertical-align:middle;box-shadow:0 0 10px var(--magma);
+    animation:puls 2.6s ease-in-out infinite}
+  @keyframes puls{0%,100%{opacity:.35}50%{opacity:1}}
+
+  #rail{position:fixed;left:0;right:0;bottom:0;height:2px;z-index:22;background:rgba(140,151,173,.12)}
+  #bar{height:100%;width:0;background:linear-gradient(90deg,#1E6E7A,var(--magma),var(--brasa));
+    box-shadow:0 0 14px rgba(255,90,31,.55)}
+
+  /* ---------- Contenido ---------- */
+  main{position:relative;z-index:10;pointer-events:none}
+  section{min-height:100vh;display:flex;align-items:center;
+    padding:14vh clamp(24px,7vw,110px)}
+  .wrap{width:100%;max-width:1160px;margin:0 auto}
+
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.44em;text-transform:uppercase;
+    color:var(--ceniza);display:flex;align-items:center;gap:14px;margin:0 0 28px}
+  .eyebrow::before{content:"";width:40px;height:1px;background:var(--ceniza-dim)}
+
+  h1{font-family:var(--display);font-weight:400;text-transform:uppercase;
+    font-size:clamp(64px,14vw,210px);line-height:.88;letter-spacing:.015em;margin:0;
+    color:var(--estrella);text-shadow:0 2px 40px rgba(0,0,0,.55);text-wrap:balance}
+  h1 .fuego{color:var(--magma);text-shadow:0 0 60px rgba(255,90,31,.45)}
+  .lede{max-width:46ch;margin:34px 0 0;font-size:clamp(17px,1.6vw,21px);line-height:1.7;
+    color:var(--ceniza);font-style:italic}
+  .lede b{color:var(--estrella);font-style:normal;font-weight:600}
+  .scrollhint{margin-top:54px;font-family:var(--mono);font-size:11px;letter-spacing:.34em;
+    text-transform:uppercase;color:var(--ceniza-dim);display:flex;align-items:center;gap:12px}
+  .scrollhint i{width:1px;height:36px;background:linear-gradient(var(--ceniza-dim),transparent);
+    display:inline-block;animation:drop 2s ease-in-out infinite}
+  @keyframes drop{0%{transform:scaleY(0);transform-origin:top;opacity:.3}
+    50%{transform:scaleY(1);opacity:1}100%{transform:scaleY(0);transform-origin:bottom;opacity:.3}}
+
+  .cap{font-family:var(--mono);font-size:12px;letter-spacing:.4em;text-transform:uppercase;
+    color:var(--magma);margin:0 0 18px}
+  .cap .alt{color:var(--ceniza-dim);letter-spacing:.16em}
+  h2{font-family:var(--display);font-weight:400;text-transform:uppercase;
+    font-size:clamp(44px,7.5vw,110px);line-height:.92;letter-spacing:.015em;margin:0 0 26px;
+    color:var(--estrella);text-shadow:0 2px 30px rgba(0,0,0,.6);max-width:14ch;text-wrap:balance}
+  .body{max-width:46ch;font-size:clamp(17px,1.55vw,20px);line-height:1.75;color:var(--ceniza)}
+  .body b{color:var(--estrella);font-weight:600}
+  .der .body,.der h2,.der .cap{margin-left:auto;text-align:right}
+  .der h2{max-width:12ch}
+
+  .dato{margin-top:30px;display:inline-block;border-left:2px solid var(--magma);
+    padding:6px 0 6px 18px;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;
+    color:var(--ceniza);line-height:1.8}
+  .der .dato{border-left:none;border-right:2px solid var(--magma);padding:6px 18px 6px 0}
+
+  /* CTA */
+  .ctaw{text-align:center;width:100%;max-width:1160px;margin:0 auto}
+  .ctaw h2{margin:0 auto 18px;max-width:22ch}
+  .ctaw .body{margin:0 auto 40px;text-align:center}
+  .cta{pointer-events:auto;display:inline-flex;align-items:center;gap:14px;
+    font-family:var(--mono);font-size:13px;letter-spacing:.22em;text-transform:uppercase;
+    color:#140803;background:linear-gradient(180deg,var(--brasa),var(--magma));
+    padding:18px 34px;border-radius:2px;text-decoration:none;font-weight:700;
+    box-shadow:0 12px 45px rgba(255,90,31,.35);
+    transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+  .cta:hover{transform:translateY(-3px);box-shadow:0 18px 60px rgba(255,90,31,.55)}
+  .cta:focus-visible{outline:2px solid var(--brasa);outline-offset:4px}
+  .cta .arw{transition:transform .3s}
+  .cta:hover .arw{transform:translateY(-4px)}
+  .mailto{pointer-events:auto;display:inline-block;margin-top:28px;font-family:var(--mono);
+    font-size:13px;letter-spacing:.12em;color:var(--ceniza);text-decoration:none;
+    border-bottom:1px solid var(--linea);padding-bottom:3px}
+  .mailto:hover{color:var(--brasa)}
+  footer{position:relative;z-index:10;pointer-events:none;text-align:center;
+    padding:40px 24px 60px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--ceniza-dim)}
+
+  .reveal{opacity:0;transform:translateY(28px);
+    transition:opacity 1.1s cubic-bezier(.2,.8,.2,1),transform 1.1s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}
+
+  @media(max-width:720px){
+    .hud.tr{top:auto;bottom:24px;right:20px;line-height:1.9;font-size:10px}
+    .hud.bl{display:none}
+    .der .body,.der h2,.der .cap{margin-left:0;text-align:left}
+    .der .dato{border-right:none;border-left:2px solid var(--magma);padding:6px 0 6px 18px}
+    section{padding:12vh 22px}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .scrollhint i,.puls{animation:none}
+    .reveal{transition-duration:.001s;transition-delay:0s}
+  }
+</style>
+
+<canvas id="gl" aria-hidden="true"></canvas>
+<div id="veil" aria-hidden="true"></div>
+
+<div id="intro" aria-hidden="true"><div class="mk">CALDERA · 28°N 16°O</div></div>
+
+<header class="hud tl">
+  <div class="wordmark">CALDERA<small>EXPEDICIONES · ISLAS CANARIAS</small></div>
+</header>
+<div class="hud tr" id="tele" aria-hidden="true">
+  <div><span class="puls"></span>EN ASCENSO</div>
+  <div>ALTITUD · <span id="t-alt">0000</span> m</div>
+  <div>TEMP · <span id="t-temp">22</span>°C</div>
+  <div>CAPÍTULO · <span class="mg" id="t-cap">EL MAR</span></div>
+</div>
+<div class="hud bl" aria-hidden="true">28°16′N · 16°38′O · ATLÁNTICO</div>
+
+<main>
+  <!-- HERO · EL MAR -->
+  <section>
+    <div class="wrap">
+      <p class="eyebrow reveal in">EXPEDICIÓN NOCTURNA · DEL MAR A LA CIMA</p>
+      <h1 class="reveal in d1">NACIDA<br>DEL <span class="fuego">FUEGO.</span></h1>
+      <p class="lede reveal in d2">Una isla no se visita. <b>Se asciende.</b> Ven a recorrer
+        3.715 metros en una sola noche: del océano al volcán, del volcán a las estrellas.</p>
+      <div class="scrollhint reveal in d3"><i></i> Baja para zarpar</div>
+    </div>
+  </section>
+
+  <!-- I -->
+  <section>
+    <div class="wrap">
+      <p class="cap reveal">CAPÍTULO I — EL MAR <span class="alt">· 0 m</span></p>
+      <h2 class="reveal d1">Todo empieza en el agua.</h2>
+      <p class="body reveal d2">Amanece sobre el Atlántico y el barco apunta a una sombra
+        en el horizonte. Debajo de la quilla hay <b>tres mil metros de océano</b>;
+        debajo del océano, algo que lleva un millón de años empujando hacia arriba.</p>
+    </div>
+  </section>
+
+  <!-- II -->
+  <section class="der">
+    <div class="wrap">
+      <p class="cap reveal">CAPÍTULO II — EL NACIMIENTO <span class="alt">· 400 m</span></p>
+      <h2 class="reveal d1">Aquí el fondo del mar decidió ser cielo.</h2>
+      <p class="body reveal d2">La isla entera es una erupción con paciencia: capa sobre capa,
+        colada sobre colada, hasta asomar del agua y seguir subiendo. Lo que pisas al
+        desembarcar <b>fue lecho marino</b>. Lo que ves arriba, todavía no ha terminado.</p>
+      <div class="dato reveal d3">EDAD · ~1.000.000 AÑOS<br>ORIGEN · DORSAL VOLCÁNICA</div>
+    </div>
+  </section>
+
+  <!-- III -->
+  <section>
+    <div class="wrap">
+      <p class="cap reveal">CAPÍTULO III — LA LADERA <span class="alt">· 1.900 m</span></p>
+      <h2 class="reveal d1">Pisas ríos que fueron fuego.</h2>
+      <p class="body reveal d2">El sendero cruza el pinar y sale a la lava desnuda: negra,
+        ocre, retorcida como se quedó al enfriarse. Cada paso suena hueco. La guía lo dice
+        sin dramatismo: <b>«esto no está muerto, está dormido»</b>.</p>
+    </div>
+  </section>
+
+  <!-- IV -->
+  <section class="der">
+    <div class="wrap">
+      <p class="cap reveal">CAPÍTULO IV — EL MAR DE NUBES <span class="alt">· 2.700 m</span></p>
+      <h2 class="reveal d1">Las nubes, por una vez, debajo.</h2>
+      <p class="body reveal d2">El alisio empuja las nubes contra la ladera y ahí se quedan,
+        formando un océano blanco a tus pies. Arriba solo quedan <b>tú, la roca y un cielo
+        cada vez más oscuro</b>. Respira: el aire ya es de montaña.</p>
+      <div class="dato reveal d3">HUMEDAD · 12%<br>VISIBILIDAD · &gt;100 KM</div>
+    </div>
+  </section>
+
+  <!-- V -->
+  <section>
+    <div class="wrap">
+      <p class="cap reveal">CAPÍTULO V — LAS ESTRELLAS <span class="alt">· 3.715 m</span></p>
+      <h2 class="reveal d1">Un cielo con ley propia.</h2>
+      <p class="body reveal d2">En la cima ya es noche cerrada y el volcán respira en silencio
+        bajo tus botas. Este cielo está <b>protegido por ley desde 1988</b> — la Ley del Cielo —
+        para que ninguna luz le robe las estrellas. La Vía Láctea, a simple vista.
+        Sin filtros. Sin telescopio. Sin ruido.</p>
+      <div class="dato reveal d3">CALIDAD DEL CIELO · CLASE 1<br>OBSERVATORIOS · 2 EN ACTIVO</div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="ctaw">
+      <p class="cap reveal" style="text-align:center">ÚLTIMO CAPÍTULO — EL TUYO</p>
+      <h2 class="reveal d1">Sube. Respira.<br>Vuelve <span style="color:var(--brasa)">distinto.</span></h2>
+      <p class="body reveal d2">Salidas cada luna nueva. Grupos de doce.
+        Guía vulcanóloga, cena caliente en el refugio y amanecer desde la cima.</p>
+      <div class="reveal d3">
+        <a class="cta" href="mailto:hola@caldera.eco?subject=Ascenso%20nocturno">Reservar ascenso nocturno <span class="arw">↟</span></a>
+        <br><a class="mailto" href="mailto:hola@caldera.eco">hola@caldera.eco</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>CALDERA — Expediciones · Islas Canarias · Demo sin marca real · 2026</footer>
+
+<div id="rail"><div id="bar"></div></div>
+
+<script>
+(function(){
+  "use strict";
+  var canvas=document.getElementById("gl");
+  var gl=canvas.getContext("webgl")||canvas.getContext("experimental-webgl");
+  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var CAPS=[[0,"EL MAR"],[.18,"EL NACIMIENTO"],[.40,"LA LADERA"],[.60,"EL MAR DE NUBES"],[.80,"LAS ESTRELLAS"]];
+
+  function scrollProg(){var m=document.body.scrollHeight-innerHeight;return m>0?Math.min(1,Math.max(0,scrollY/m)):0;}
+  function updateHUD(p){
+    var e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2; /* easeInOutQuad */
+    var alt=Math.round(e*3715);
+    var a=document.getElementById("t-alt");if(a)a.textContent=("0000"+alt).slice(-4);
+    var t=document.getElementById("t-temp");if(t)t.textContent=Math.round(22-e*20);
+    var name=CAPS[0][1];for(var i=0;i<CAPS.length;i++){if(p>=CAPS[i][0])name=CAPS[i][1];}
+    var c=document.getElementById("t-cap");if(c)c.textContent=name;
+    var bar=document.getElementById("bar");if(bar)bar.style.width=(p*100)+"%";
+  }
+  function wireUI(){
+    var io=new IntersectionObserver(function(es){es.forEach(function(en){
+      if(en.isIntersecting)en.target.classList.add("in");});},{threshold:0.18});
+    document.querySelectorAll(".reveal:not(.in)").forEach(function(el){io.observe(el);});
+    addEventListener("scroll",function(){updateHUD(scrollProg());},{passive:true});
+    updateHUD(scrollProg());
+  }
+  function finishIntro(){setTimeout(function(){var i=document.getElementById("intro");if(i)i.classList.add("hide");},1500);}
+
+  if(!gl){document.body.classList.add("nogl");finishIntro();wireUI();return;}
+
+  var VERT="attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}";
+
+  var FRAG=[
+"precision highp float;",
+"uniform vec2 uRes;uniform float uTime;uniform float uScroll;uniform vec2 uMouse;",
+"",
+"float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}",
+"float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);",
+"  return mix(mix(hash(i),hash(i+vec2(1.0,0.0)),f.x),mix(hash(i+vec2(0.0,1.0)),hash(i+vec2(1.0,1.0)),f.x),f.y);}",
+"float fbm(vec2 p){float a=0.5,s=0.0;for(int i=0;i<5;i++){s+=a*noise(p);p=p*2.03+vec2(11.3,7.7);a*=0.5;}return s;}",
+"float ridged(vec2 p){float a=0.55,s=0.0;for(int i=0;i<5;i++){float n=noise(p);n=1.0-abs(n*2.0-1.0);s+=a*n*n;p=p*2.07+vec2(5.2,9.1);a*=0.5;}return s;}",
+"float ks(float s,float a,float b){return smoothstep(a,b,s);}",
+"",
+"float terra(vec2 p){",
+"  float d=length(p);",
+"  float mask=1.0-smoothstep(4.0,26.0,d);",
+"  float h=ridged(p*0.16)*14.0*mask;",
+"  h+=fbm(p*0.9)*0.8*mask;",
+"  h-=(1.0-smoothstep(0.6,2.4,d))*2.0;",   /* cráter en la cumbre */
+"  h-=0.55+(1.0-mask)*2.2;",               /* fondo marino: somero en costa, hondo mar adentro */
+"  return h;",
+"}",
+"",
+"float march(vec3 ro,vec3 rd,out vec3 pos){",
+"  float t=0.08;pos=ro;",
+"  for(int i=0;i<88;i++){",
+"    pos=ro+rd*t;",
+"    float h=pos.y-terra(pos.xz);",
+"    if(h<0.0025*t)return t;",
+"    t+=h*0.5;",
+"    if(t>95.0)break;",
+"  }",
+"  return -1.0;",
+"}",
+"vec3 tnrm(vec2 p,float t){",
+"  float e=0.02+0.004*t;",
+"  return normalize(vec3(terra(p-vec2(e,0.0))-terra(p+vec2(e,0.0)),2.0*e,terra(p-vec2(0.0,e))-terra(p+vec2(0.0,e))));",
+"}",
+"float sombra(vec3 pos,vec3 sd){",
+"  float sh=1.0,ts=0.4;",
+"  for(int i=0;i<12;i++){",
+"    vec3 sp=pos+sd*ts;",
+"    float hh=sp.y-terra(sp.xz);",
+"    sh=min(sh,8.0*hh/ts);",
+"    ts+=0.85;",
+"    if(sh<0.03)break;",
+"  }",
+"  return clamp(sh,0.0,1.0);",
+"}",
+"",
+"vec3 cielo(vec3 rd,vec3 sd,float dia,float noche,float ocaso){",
+"  float h=clamp(rd.y*0.5+0.5,0.0,1.0);",
+"  vec3 diaCol=mix(vec3(0.55,0.70,0.86),vec3(0.10,0.28,0.55),pow(h,0.8));",
+"  vec3 ocasoCol=mix(vec3(0.98,0.45,0.18),vec3(0.10,0.10,0.28),pow(h,0.55));",
+"  vec3 nocheCol=mix(vec3(0.015,0.022,0.05),vec3(0.004,0.006,0.016),pow(h,0.6));",
+"  vec3 col=mix(diaCol,ocasoCol,ocaso);",
+"  col=mix(col,nocheCol,noche);",
+"  float sdot=max(dot(rd,sd),0.0);",
+"  col+=vec3(1.0,0.85,0.6)*pow(sdot,600.0)*4.0*(1.0-noche);",       /* disco */
+"  col+=vec3(1.0,0.6,0.3)*pow(sdot,8.0)*0.35*(dia*0.4+ocaso);",     /* halo */
+"  if(noche>0.02){",
+"    vec3 pp=rd*110.0;",
+"    vec3 id=floor(pp);",
+"    float st=hash(id.xy+vec2(id.z*13.7,id.z*7.1));",
+"    float cc=length(fract(pp)-0.5);",
+"    float star=smoothstep(0.9965,1.0,st)*smoothstep(0.28,0.05,cc);",
+"    star*=0.7+0.3*sin(uTime*2.0+st*40.0);",
+"    col+=vec3(0.9,0.95,1.0)*star*noche*1.4;",
+"    vec3 mwN=normalize(vec3(0.45,0.2,0.87));",
+"    float band=exp(-pow(dot(rd,mwN),2.0)*16.0);",
+"    float neb=fbm(rd.xy*7.0+rd.z*3.0);",
+"    col+=vec3(0.55,0.6,0.8)*(band*0.10+band*neb*0.16)*noche;",
+"  }",
+"  return col;",
+"}",
+"",
+"void main(){",
+"  vec2 uv=(gl_FragCoord.xy*2.0-uRes)/uRes.y;",
+"  float s=uScroll;",
+"",
+"  /* --- sol: amanecer -> dia -> ocaso -> noche --- */",
+"  float el=mix(0.07,0.42,ks(s,0.0,0.35));",
+"  el=mix(el,0.10,ks(s,0.35,0.62));",
+"  el=mix(el,0.015,ks(s,0.62,0.76));",
+"  el=mix(el,-0.24,ks(s,0.76,0.98));",
+"  float az=mix(2.4,3.7,s);",
+"  vec3 sd=normalize(vec3(cos(az)*cos(el),sin(el),sin(az)*cos(el)));",
+"  float noche=1.0-smoothstep(-0.16,0.03,el);",
+"  float dia=smoothstep(0.06,0.30,el);",
+"  float ocaso=clamp(1.0-abs(el-0.03)*11.0,0.0,1.0)*(1.0-noche);",
+"",
+"  /* --- camara: travesia por tramos --- */",
+"  float ang=-0.7+s*2.3+uMouse.x*0.14;",
+"  float rad=mix(30.0,22.0,ks(s,0.0,0.25));",
+"  rad=mix(rad,13.5,ks(s,0.25,0.5));",
+"  rad=mix(rad,8.5,ks(s,0.5,0.75));",
+"  rad=mix(rad,4.8,ks(s,0.75,1.0));",
+"  float cy=mix(1.7,3.2,ks(s,0.0,0.25));",
+"  cy=mix(cy,7.5,ks(s,0.25,0.5));",
+"  cy=mix(cy,12.2,ks(s,0.5,0.75));",
+"  cy=mix(cy,14.6,ks(s,0.75,1.0));",
+"  float ty=mix(3.5,5.0,ks(s,0.0,0.3));",
+"  ty=mix(ty,8.5,ks(s,0.3,0.55));",
+"  ty=mix(ty,12.0,ks(s,0.55,0.8));",
+"  ty=mix(ty,19.5,ks(s,0.8,1.0));",       /* al final mira al cielo */
+"  vec3 ro=vec3(sin(ang)*rad,cy,cos(ang)*rad);",
+"  ro.y=max(ro.y,terra(ro.xz)+0.9);",     /* nunca por debajo del suelo */
+"  vec3 ta=vec3(0.0,ty,0.0);",
+"  vec3 ww=normalize(ta-ro);",
+"  vec3 uu=normalize(cross(vec3(0.0,1.0,0.0),ww));",
+"  vec3 vv=cross(ww,uu);",
+"  vec3 rd=normalize(uv.x*uu+(uv.y+uMouse.y*0.06)*vv+1.55*ww);",
+"",
+"  vec3 fondo=cielo(rd,sd,dia,noche,ocaso);",
+"  vec3 col=fondo;",
+"  float tHit=-1.0;",
+"",
+"  /* --- agua (plano y=0) --- */",
+"  float tw=1e5;",
+"  if(rd.y<-0.001&&ro.y>0.0)tw=-ro.y/rd.y;",
+"",
+"  vec3 pos;",
+"  float tt=march(ro,rd,pos);",
+"",
+"  if(tt>0.0&&(tt<tw||pos.y>0.02)){",
+"    tHit=tt;",
+"    vec3 n=tnrm(pos.xz,tt);",
+"    float alt=pos.y;",
+"    float pend=1.0-n.y;",
+"    vec3 roca=mix(vec3(0.13,0.11,0.10),vec3(0.30,0.24,0.18),fbm(pos.xz*1.4));",
+"    vec3 pinar=vec3(0.10,0.19,0.12);",
+"    vec3 pomez=vec3(0.55,0.48,0.38);",
+"    vec3 alb=roca;",
+"    alb=mix(alb,pinar,smoothstep(1.2,2.6,alt)*(1.0-smoothstep(5.0,7.0,alt))*(1.0-smoothstep(0.35,0.6,pend)));",
+"    alb=mix(alb,pomez,smoothstep(8.5,12.0,alt)*(1.0-smoothstep(0.5,0.75,pend)));",
+"    float sh=el>0.0?sombra(pos+n*0.05,sd):0.0;",
+"    float dif=max(dot(n,sd),0.0)*sh;",
+"    vec3 luzSol=mix(vec3(1.0,0.92,0.8),vec3(1.0,0.55,0.3),ocaso);",
+"    vec3 amb=mix(vec3(0.05,0.08,0.14),vec3(0.015,0.02,0.045),noche);",
+"    col=alb*(amb*1.6+luzSol*dif*1.35*(1.0-noche));",
+"    /* venas de magma: la isla respira de noche */",
+"    float vena=smoothstep(0.72,0.95,ridged(pos.xz*1.15+3.7));",
+"    vena*=smoothstep(5.5,10.5,alt)*noche;",
+"    vena*=0.55+0.45*sin(uTime*1.3+pos.x*0.7+pos.z*0.5);",
+"    col+=vec3(1.0,0.32,0.06)*vena*1.5;",
+"    col+=vec3(1.0,0.5,0.15)*vena*vena*2.0;",
+"  } else if(tw<9e4){",
+"    tHit=tw;",
+"    vec3 wp=ro+rd*tw;",
+"    vec2 wuv=wp.xz*0.7;",
+"    float wn1=fbm(wuv+vec2(uTime*0.14,uTime*0.06));",
+"    float wn2=fbm(wuv*2.3-vec2(uTime*0.10,uTime*0.17));",
+"    vec3 nw=normalize(vec3((wn1-0.5)*0.35+(wn2-0.5)*0.18,1.0,(wn2-0.5)*0.35+(wn1-0.5)*0.18));",
+"    vec3 rrd=reflect(rd,nw);",
+"    rrd.y=abs(rrd.y);",
+"    vec3 refl=cielo(rrd,sd,dia,noche,ocaso);",
+"    float fres=pow(1.0-max(-rd.y,0.0),3.0);",
+"    vec3 hond=mix(vec3(0.03,0.11,0.13),vec3(0.01,0.03,0.05),noche);",
+"    float hterr=terra(wp.xz);",
+"    vec3 somero=mix(vec3(0.06,0.30,0.30),vec3(0.02,0.08,0.09),noche);",
+"    hond=mix(hond,somero,smoothstep(-1.2,-0.1,hterr));",
+"    col=mix(hond,refl,0.25+0.65*fres);",
+"    float espuma=smoothstep(-0.28,-0.04,hterr)*smoothstep(0.45,0.75,noise(wuv*6.0+uTime*0.4));",
+"    col=mix(col,vec3(0.85,0.9,0.92)*(1.0-noche*0.7),espuma*0.8);",
+"    float glint=pow(max(dot(reflect(rd,nw),sd),0.0),140.0)*(1.0-noche);",
+"    col+=vec3(1.0,0.8,0.55)*glint*2.2;",
+"  }",
+"",
+"  /* --- niebla / perspectiva aerea --- */",
+"  if(tHit>0.0){",
+"    float fog=1.0-exp(-tHit*0.013);",
+"    vec3 fogCol=cielo(normalize(vec3(rd.x,abs(rd.y)*0.15+0.03,rd.z)),sd,dia,noche,ocaso);",
+"    col=mix(col,fogCol,fog);",
+"  }",
+"",
+"  /* --- mar de nubes (losa 9.4..10.9) --- */",
+"  float nubAmt=ks(s,0.42,0.62)*(1.0-ks(s,0.93,1.0)*0.4);",
+"  if(nubAmt>0.01){",
+"    float lim=(tHit>0.0)?tHit:95.0;",
+"    float t0=(9.4-ro.y)/rd.y,t1=(10.9-ro.y)/rd.y;",
+"    float ta2=min(t0,t1),tb=max(t0,t1);",
+"    if(rd.y==0.0){ta2=(ro.y>9.4&&ro.y<10.9)?0.0:1e6;tb=ta2+3.0;}",
+"    ta2=max(ta2,0.0);tb=min(tb,lim);",
+"    if(tb>ta2&&ta2<lim){",
+"      float acc=0.0;vec3 nc=vec3(0.0);",
+"      float paso=(tb-ta2)/7.0;",
+"      for(int i=0;i<7;i++){",
+"        float tc=ta2+paso*(float(i)+0.5);",
+"        vec3 cp=ro+rd*tc;",
+"        float perfil=smoothstep(9.4,9.9,cp.y)*(1.0-smoothstep(10.4,10.9,cp.y));",
+"        float den=smoothstep(0.48,0.72,fbm(cp.xz*0.14+vec2(uTime*0.02,0.0)))*perfil;",
+"        float a=den*0.5*nubAmt;",
+"        vec3 cLuz=mix(vec3(0.9,0.92,0.96),vec3(1.0,0.62,0.35),ocaso);",
+"        cLuz=mix(cLuz,vec3(0.10,0.12,0.2),noche);",
+"        nc+=cLuz*a*(1.0-acc);",
+"        acc+=a*(1.0-acc);",
+"      }",
+"      col=col*(1.0-acc)+nc;",
+"    }",
+"  }",
+"",
+"  col=1.0-exp(-col*1.35);",
+"  col=pow(col,vec3(0.4545));",
+"  float vig=smoothstep(1.4,0.4,length(gl_FragCoord.xy/uRes-0.5));",
+"  col*=mix(0.5,1.0,vig);",
+"  float g=hash(gl_FragCoord.xy+fract(uTime)*vec2(17.0,29.0));",
+"  col+=(g-0.5)*0.03;",
+"  gl_FragColor=vec4(col,1.0);",
+"}"].join("\n");
+
+  function sh(type,src){var s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);
+    if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(s));return null;}return s;}
+  var prog=gl.createProgram();
+  var vs=sh(gl.VERTEX_SHADER,VERT),fs=sh(gl.FRAGMENT_SHADER,FRAG);
+  if(!vs||!fs){document.body.classList.add("nogl");finishIntro();wireUI();return;}
+  gl.attachShader(prog,vs);gl.attachShader(prog,fs);gl.linkProgram(prog);
+  if(!gl.getProgramParameter(prog,gl.LINK_STATUS)){document.body.classList.add("nogl");finishIntro();wireUI();return;}
+  gl.useProgram(prog);
+  var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  var loc=gl.getAttribLocation(prog,"p");gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  var uRes=gl.getUniformLocation(prog,"uRes"),uTime=gl.getUniformLocation(prog,"uTime"),
+      uScroll=gl.getUniformLocation(prog,"uScroll"),uMouse=gl.getUniformLocation(prog,"uMouse");
+
+  var DPR=Math.min(window.devicePixelRatio||1,1.15),SCALE=0.85;
+  function resize(){var w=Math.floor(innerWidth*DPR*SCALE),h=Math.floor(innerHeight*DPR*SCALE);
+    if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);}}
+  addEventListener("resize",resize);resize();
+
+  var mx=0,my=0,tmx=0,tmy=0,scr=0,started=performance.now();
+  addEventListener("pointermove",function(e){tmx=(e.clientX/innerWidth)*2-1;tmy=-((e.clientY/innerHeight)*2-1);},{passive:true});
+
+  canvas.addEventListener("webglcontextlost",function(e){e.preventDefault();document.body.classList.add("nogl");},false);
+
+  function frame(now){
+    var tsec=(now-started)/1000;
+    mx+=(tmx-mx)*0.05;my+=(tmy-my)*0.05;
+    var target=scrollProg();scr+=(target-scr)*0.075;
+    gl.uniform2f(uRes,canvas.width,canvas.height);
+    gl.uniform1f(uTime,reduce?10.0:tsec);
+    gl.uniform1f(uScroll,scr);
+    gl.uniform2f(uMouse,reduce?0:mx,reduce?0:my);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+    updateHUD(target);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  finishIntro();
+  wireUI();
+})();
+</script>

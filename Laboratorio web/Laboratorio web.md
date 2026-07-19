@@ -19,6 +19,10 @@ Volver al [[Indice]] · Mis **demos y experimentos web** hechos con Claude. Cada
 
 ## 🖤 Marca y producto (nivel cliente)
 
+### CALDERA — del mar a las estrellas 🌋 *(hecha con Fable 5)*
+Expedición cinematográfica en WebGL: el scroll es un **ascenso real** — océano al amanecer, la isla volcánica creciendo, la ladera de lava, el **mar de nubes por debajo** y la cima de noche con la **Vía Láctea** y venas de magma que respiran. Altímetro en vivo (0 → 3.715 m), hora del día ligada al scroll.
+🌐 https://claude.ai/code/artifact/e7eb3ab4-dedf-4e9c-a078-16fafbd35a33 · 📁 [[CALDERA - del mar a las estrellas.html]]
+
 ### AZOGUE — cromo líquido
 Landing de estudio de marca con un **hero de metal fundido en WebGL** (raymarching): reflejos de estudio reales, dispersión de color en los bordes, gira y se deforma al hacer scroll y sigue el ratón. *La marca "AZOGUE" es placeholder — se cambia por el cliente real.*
 🌐 https://claude.ai/code/artifact/2cacca06-1f1c-4049-acd9-8811b5e609ac · 📁 [[AZOGUE - cromo liquido.html]]
