@@ -19,6 +19,7 @@ Tu bóveda **por fuera de Reload**: tus clientes propios y tus demos. Separada d
 - 🌐 [[La Brega Studio/La Brega Studio|La Brega Studio]] — web para **Raúl Vega**; falta publicarla.
 - 🦷 [[Clinica dental/Clinica dental|Clínica dental]] — mantenimiento web (encargo por cerrar).
 - 🎨 [[Estudio Alisio/Estudio Alisio|Estudio Alisio]] — demo de estudio creativo.
+- 💡 [[Experimentos/Experimentos de diseno|Experimentos de diseño]] — ideas de apps (calendario minimalista iPhone, organizadora de eventos, app con animaciones, app de potencial libre).
 
 ---
 
