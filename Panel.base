@@ -10,6 +10,8 @@ properties:
     displayName: Estado
   conversaciones:
     displayName: Convs.
+  siguiente:
+    displayName: Siguiente
 views:
   - type: table
     name: Por estado
@@ -19,6 +21,7 @@ views:
     order:
       - formula.estado_icon
       - file.name
+      - siguiente
       - conversaciones
     sort:
       - property: conversaciones

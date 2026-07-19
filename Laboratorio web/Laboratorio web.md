@@ -2,6 +2,7 @@
 titulo: Laboratorio web
 tipo: proyecto
 estado: laboratorio
+siguiente: "Seguir anadiendo demos"
 categoria: demos
 conversaciones: 9
 tags: [moc, demos, laboratorio, web, webgl]

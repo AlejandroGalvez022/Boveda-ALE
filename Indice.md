@@ -9,7 +9,7 @@ tags: [indice, moc]
 Tu bóveda **por fuera de Reload**: tus clientes propios y tus demos. Separada del trabajo de la agencia.
 
 > [!tip] Accesos rápidos
-> 📊 Tabla viva de proyectos abajo 👇 · 🏢 El trabajo de Reload va en la **otra bóveda** (RELOAD).
+> 🔧 [[Registro de cambios]] (bitácora) · 📊 Tabla viva de proyectos abajo 👇 · 🏢 El trabajo de Reload va en la **otra bóveda** (RELOAD).
 
 ---
 

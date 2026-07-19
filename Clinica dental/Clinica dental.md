@@ -3,6 +3,7 @@ titulo: Clinica dental
 tipo: proyecto
 categoria: Personal
 estado: idea
+siguiente: "Confirmar con la clienta el alcance y cerrar presupuesto."
 conversaciones: 1
 tags: [proyecto, personal, cliente]
 ---

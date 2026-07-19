@@ -3,6 +3,7 @@ titulo: La Brega Studio
 tipo: proyecto
 categoria: Personal
 estado: activo
+siguiente: "Publicar la web (GitHub + Netlify)"
 tags: [proyecto, web, cliente, propuesta]
 ---
 

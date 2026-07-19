@@ -3,6 +3,7 @@ titulo: Chatbot Psicologo
 tipo: proyecto
 categoria: Personal
 estado: activo
+siguiente: "(sin definir)"
 conversaciones: 2
 tags: [proyecto, diseno]
 ---

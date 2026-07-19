@@ -3,6 +3,7 @@ titulo: Estudio Alisio
 tipo: proyecto
 categoria: Personal
 estado: demo
+siguiente: "(sin definir)"
 tags: [proyecto, demo, personal]
 ---
 

@@ -3,6 +3,7 @@ titulo: Experimentos de diseno
 tipo: proyecto
 categoria: experimentos
 estado: idea
+siguiente: "(sin definir)"
 conversaciones: 4
 tags: [proyecto, diseno]
 ---
