@@ -20,6 +20,11 @@ views:
       - formula.estado_icon
       - file.name
       - conversaciones
+    sort:
+      - property: conversaciones
+        direction: DESC
+      - property: file.name
+        direction: ASC
   - type: cards
     name: Tarjetas
     order:
