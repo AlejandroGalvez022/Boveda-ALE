@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>La Brega Estudio · No hacemos ruido. Hacemos marcas.</title>
+<meta name="description" content="La Brega Estudio — branding y dirección creativa desde Canarias. No hacemos ruido. Hacemos marcas.">
+<meta name="theme-color" content="#0b0b0c">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   LA BREGA ESTUDIO — v2 "RUIDO → SEÑAL"
+   Concepto: la web empieza siendo ruido y se resuelve en señal (su lema).
+   El manifiesto llega maquillado y el scroll lo revela (su campaña).
+   Soles, orbitas y eclipses (su universo) en WebGL escrito a mano.
+   ========================================================================== */
+
+:root{
+  /* --- marca (identicos a la v1: son sus colores) --- */
+  --bg:#0b0b0c; --panel:#141416; --ink:#f4f1ea; --muted:#9a958c; --faint:#5f5b53;
+  --cream:#f4f1ea;
+  --line:rgba(244,241,234,.12); --line-soft:rgba(244,241,234,.06);
+  --accent:#ff5a2e; --green:#63e022; --yellow:#ffd21e; --magenta:#ff2d6b; --violet:#a02bff;
+  --grad:linear-gradient(90deg,#ffd21e,#ff7a1f,#ff2d6b,#a02bff);
+  --grad-ring:conic-gradient(from 200deg,#ffd21e,#ff7a1f,#ff2d6b,#a02bff,#ff2d6b,#ff7a1f,#ffd21e);
+  /* --- tipografia --- */
+  --f:'Archivo',system-ui,-apple-system,Segoe UI,sans-serif;
+  --f-serif:'Instrument Serif',Georgia,serif;
+  --f-mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  /* --- movimiento --- */
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --gutter:clamp(20px,5vw,76px);
+  /* --- estado en vivo (lo escribe el JS) --- */
+  --rev:0;            /* 0..1 revelado del manifiesto */
+  --mx:50%; --my:50%; /* raton dentro de la seccion activa */
+  --vel:0;            /* velocidad de scroll normalizada -1..1 */
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html.js{scroll-behavior:smooth}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--f);background:var(--bg);color:var(--ink);
+  font-size:clamp(15px,1.05vw,17px);line-height:1.5;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+body.locked{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none}
+img{max-width:100%;display:block}
+em{font-family:var(--f-serif);font-style:italic;font-weight:400}
+::selection{background:var(--accent);color:#0b0b0c}
+:focus-visible{outline:2px solid var(--yellow);outline-offset:3px;border-radius:2px}
+
+.wrap{max-width:1440px;margin:0 auto;padding:0 var(--gutter)}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* etiquetas tecnicas: la voz "de estudio" */
+/* align-items:flex-start para que, cuando el texto se parta en dos lineas (movil),
+   el punto siga pegado a la PRIMERA y no se quede flotando en medio */
+.eyebrow{font-family:var(--f-mono);font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:inline-flex;align-items:flex-start;gap:10px}
+.eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:blink 2.4s var(--ease) infinite;flex-shrink:0;margin-top:.42em}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.18}}
+.sec-num{font-family:var(--f-mono);font-size:11.5px;font-weight:700;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.spin{animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- capas globales: grano, barra de progreso, cursor ---------- */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:60;opacity:.055;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.progress{position:fixed;top:0;left:0;height:2.5px;width:0;background:var(--grad);z-index:120;transform-origin:0 50%}
+
+/* El cursor INVIERTE lo que hay debajo: es "revelar" hecho puntero. */
+.cursor,.cursor-dot{position:fixed;top:0;left:0;border-radius:50%;pointer-events:none;z-index:200;will-change:transform}
+.cursor{width:38px;height:38px;border:1.5px solid rgba(244,241,234,.55);mix-blend-mode:difference;
+  transition:width .3s var(--ease-out),height .3s var(--ease-out),background .3s,border-color .3s}
+.cursor::after{content:attr(data-label);position:absolute;inset:0;display:grid;place-items:center;
+  font-family:var(--f-mono);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:#fff;opacity:0;transition:opacity .25s;white-space:nowrap}
+/* al crecer deja de invertir: sobre el verde de Saltimbanqui o el rosa de la
+   ficha, la inversion daba un morado ilegible bajo la palabra. */
+.cursor.grow{width:96px;height:96px;background:var(--ink);border-color:transparent;mix-blend-mode:normal}
+.cursor.grow::after{opacity:1;color:#0b0b0c}
+.cursor-dot{width:6px;height:6px;background:var(--accent)}
+.cursor.grow ~ .cursor-dot{opacity:0}
+body.has-cursor,body.has-cursor a,body.has-cursor button,body.has-cursor .proj{cursor:none}
+@media (hover:none),(pointer:coarse){.cursor,.cursor-dot{display:none}}
+
+/* ---------- insignia (su logo, recreado en CSS) ---------- */
+.badge{border-radius:50%;padding:3px;background:var(--grad-ring);display:inline-grid;place-items:center;line-height:1;flex-shrink:0}
+.badge .in{width:100%;height:100%;border-radius:50%;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:9%}
+.badge b{font-weight:800;text-transform:uppercase;color:#fff;letter-spacing:.01em;line-height:.98}
+.badge .l1{font-size:.86em}.badge .l2{font-size:1.5em;letter-spacing:-.01em}.badge .l3{font-size:.8em}
+
+/* ==========================================================================
+   1. PRELOADER — "el ruido se calla"
+   Estatica de verdad (canvas, pixel a pixel) que baja de amplitud
+   mientras cuenta a 100. Al llegar, silencio: se ve la insignia y sube.
+   ========================================================================== */
+.preloader{display:none}
+.js .preloader{position:fixed;inset:0;z-index:150;background:#0b0b0c;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;
+  transition:transform 1s var(--ease-out);will-change:transform}
+.preloader.done{transform:translateY(-101%)}
+.preloader canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;opacity:.85}
+.pl-in{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center}
+.pl-badge{opacity:0;transform:scale(.9);transition:opacity .5s var(--ease),transform .8s var(--ease-out)}
+.preloader.calm .pl-badge{opacity:1;transform:none}
+.pl-count{font-size:clamp(56px,15vw,180px);font-weight:900;letter-spacing:-.045em;line-height:.9;font-variant-numeric:tabular-nums}
+.pl-say{font-family:var(--f-mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+  min-height:1.2em;transition:color .4s}
+.preloader.calm .pl-say{color:var(--ink)}
+
+/* ==========================================================================
+   2. CABECERA + MENU MOVIL (la v1 no tenia menu en movil)
+   ========================================================================== */
+header{position:fixed;top:0;left:0;width:100%;z-index:110;display:flex;align-items:center;justify-content:space-between;
+  padding:18px var(--gutter);transition:transform .5s var(--ease),padding .45s var(--ease),background .4s,backdrop-filter .4s,border-color .4s;
+  border-bottom:1px solid transparent}
+header.scrolled{background:rgba(11,11,12,.72);backdrop-filter:blur(14px) saturate(1.2);border-bottom-color:var(--line-soft)}
+header.compact{padding-top:9px;padding-bottom:9px}
+header.compact .badge{transform:scale(.8)}
+header .badge{transition:transform .45s var(--ease)}
+.logo{display:flex;align-items:center;gap:9px}
+nav.menu{display:flex;gap:30px;align-items:center}
+nav.menu a{font-size:13.5px;font-weight:600;color:var(--muted);position:relative;transition:color .3s}
+nav.menu a::after{content:"";position:absolute;left:0;bottom:-6px;height:1.5px;width:0;background:var(--grad);transition:width .35s var(--ease)}
+nav.menu a:hover,nav.menu a.here{color:var(--ink)}
+nav.menu a:hover::after,nav.menu a.here::after{width:100%}
+.btn{display:inline-flex;align-items:center;gap:9px;background:var(--ink);color:var(--bg);font-family:inherit;font-size:13.5px;font-weight:700;
+  padding:12px 22px;border-radius:100px;cursor:pointer;transition:background .35s,color .35s;position:relative;overflow:hidden;will-change:transform}
+.btn span.t{position:relative;z-index:2}
+.btn::before{content:"";position:absolute;inset:0;background:var(--grad);transform:translateY(101%);transition:transform .45s var(--ease-out);z-index:1}
+.btn:hover::before{transform:none}
+.btn:hover{color:#0b0b0c}
+.burger{display:none;width:44px;height:44px;align-items:center;justify-content:center;cursor:pointer;position:relative;z-index:2}
+.burger i{display:block;width:22px;height:1.8px;background:var(--ink);position:relative;transition:background .3s}
+.burger i::before,.burger i::after{content:"";position:absolute;left:0;width:22px;height:1.8px;background:var(--ink);transition:transform .4s var(--ease-out)}
+.burger i::before{top:-7px}.burger i::after{top:7px}
+body.nav-open .burger i{background:transparent}
+body.nav-open .burger i::before{transform:translateY(7px) rotate(45deg)}
+body.nav-open .burger i::after{transform:translateY(-7px) rotate(-45deg)}
+@media(max-width:900px){nav.menu{display:none}header .btn{display:none}.burger{display:flex}}
+
+.navfull{position:fixed;inset:0;z-index:105;background:#0b0b0c;display:flex;flex-direction:column;justify-content:center;
+  padding:110px var(--gutter) 40px;clip-path:circle(0% at calc(100% - 44px) 40px);transition:clip-path .8s var(--ease-out);pointer-events:none}
+body.nav-open .navfull{clip-path:circle(150% at calc(100% - 44px) 40px);pointer-events:auto}
+.navfull .nf-sun{position:absolute;right:-30%;bottom:-30%;width:90vw;height:90vw;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#ff7a1f,#ff2d6b 45%,#a02bff 78%,transparent 80%);filter:blur(50px);opacity:.28;pointer-events:none}
+.navfull a.nf-link{font-size:clamp(38px,12vw,80px);font-weight:900;text-transform:uppercase;letter-spacing:-.03em;line-height:1.02;
+  display:block;padding:6px 0;opacity:0;transform:translateY(28px);transition:opacity .6s var(--ease-out),transform .6s var(--ease-out);position:relative;z-index:2}
+body.nav-open .navfull a.nf-link{opacity:1;transform:none}
+body.nav-open .navfull a.nf-link:nth-child(1){transition-delay:.16s}
+body.nav-open .navfull a.nf-link:nth-child(2){transition-delay:.23s}
+body.nav-open .navfull a.nf-link:nth-child(3){transition-delay:.30s}
+body.nav-open .navfull a.nf-link:nth-child(4){transition-delay:.37s}
+.navfull .nf-foot{margin-top:44px;display:flex;gap:20px;flex-wrap:wrap;position:relative;z-index:2;
+  opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease-out) .46s,transform .6s var(--ease-out) .46s}
+body.nav-open .navfull .nf-foot{opacity:1;transform:none}
+.navfull .nf-foot a{font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+/* ==========================================================================
+   3. REVELADOS (fallback sin GSAP)
+   ========================================================================== */
+.js .reveal{opacity:0;transform:translateY(34px);transition:opacity 1s var(--ease-out),transform 1s var(--ease-out)}
+.js .reveal.in{opacity:1;transform:none}
+html.gsap .reveal{transition:none}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}
+
+/* titulares que suben desde una mascara */
+.mask-line{display:block;overflow:hidden}
+.mask-line>span{display:block;will-change:transform}
+.js .mask-line>span{transform:translateY(108%)}
+.js .on .mask-line>span,.js .mask-line.in>span{transform:none;transition:transform 1.05s var(--ease-out)}
+
+/* ==========================================================================
+   4. HERO — el eclipse (WebGL escrito a mano, sin librerias)
+   ========================================================================== */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+  padding-top:130px;padding-bottom:clamp(90px,14vh,120px);overflow:hidden}
+.hero .sky{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hero .sky canvas{width:100%;height:100%;display:block}
+/* respaldo si WebGL falla: el mismo eclipse, en CSS */
+.hero .sky.fallback{background:
+  radial-gradient(46vh 46vh at 68% 46%,transparent 0 30%,rgba(255,210,30,.55) 31%,rgba(255,45,107,.5) 46%,rgba(160,43,255,.34) 62%,transparent 76%),
+  radial-gradient(circle at 68% 46%,#0b0b0c 0 30.5%,transparent 31%)}
+/* velo: garantiza que el texto de la izquierda siempre se lea */
+.hero .veil{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(100deg,rgba(11,11,12,.94) 0%,rgba(11,11,12,.86) 34%,rgba(11,11,12,.36) 62%,rgba(11,11,12,.14) 100%)}
+/* franja de abajo: garantiza que el pie del hero se lea aunque la corona
+   pase justo por ahi al abrirse el eclipse */
+.hero .veil::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;
+  background:linear-gradient(transparent,rgba(11,11,12,.88))}
+.hero .inner{position:relative;z-index:3;will-change:transform}
+.hero h1{font-size:clamp(44px,9.4vw,146px);font-weight:900;line-height:.92;letter-spacing:-.045em;margin:22px 0 0;text-transform:uppercase}
+/* "ruido" va apagado a proposito (es lo que NO hacen), pero tiene que leerse */
+.hero h1 .q{color:var(--muted)}
+.hero-sub{max-width:520px;margin-top:30px;font-size:clamp(16px,1.5vw,20px);color:var(--muted)}
+.js .hero-sub,.js .hero-foot{opacity:0;transform:translateY(20px);transition:opacity 1s var(--ease-out) .5s,transform 1s var(--ease-out) .5s}
+.hero.on .hero-sub,.hero.on .hero-foot{opacity:1;transform:none}
+.hero-foot{position:absolute;left:var(--gutter);right:var(--gutter);bottom:clamp(24px,4vh,38px);
+  display:flex;justify-content:space-between;align-items:flex-end;gap:20px;z-index:3}
+.scrollcue{display:flex;align-items:center;gap:12px;font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.scrollcue .ln{width:56px;height:1px;background:var(--line);position:relative;overflow:hidden;flex-shrink:0}
+.scrollcue .ln::after{content:"";position:absolute;inset:0;background:var(--accent);transform:translateX(-100%);animation:slide 2.2s var(--ease) infinite}
+@keyframes slide{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+.hero-meta{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);text-align:right;line-height:1.9}
+@media(max-width:900px){.hero .veil{background:linear-gradient(180deg,rgba(11,11,12,.9) 0%,rgba(11,11,12,.7) 45%,rgba(11,11,12,.85) 100%)}}
+@media(max-width:620px){.hero-meta{display:none}}
+
+/* ==========================================================================
+   5. MARQUEE — la velocidad y el sentido los manda el scroll
+   ========================================================================== */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0;overflow:hidden;white-space:nowrap;background:var(--bg);position:relative;z-index:4}
+.marquee .track{display:inline-flex;will-change:transform}
+.marquee span{font-size:clamp(22px,4.2vw,54px);font-weight:800;text-transform:uppercase;letter-spacing:-.025em;padding:0 28px;display:inline-flex;align-items:center;gap:28px}
+.marquee span::after{content:"✦";color:var(--accent);font-size:.6em}
+
+/* ==========================================================================
+   6. MANIFIESTO — "El diseño no maquilla. Revela."
+   Dos capas del MISMO texto: arriba el maquillaje (plano, crema, sin vida),
+   debajo lo revelado (degradado de marca). El scroll baja la linea de
+   revelado; el raton abre un circulo que revela alrededor.
+   ========================================================================== */
+.manif{position:relative;padding-top:clamp(110px,18vh,200px);padding-bottom:clamp(90px,14vh,168px);text-align:center;overflow:hidden}
+.manif .sun{margin:0 auto 34px;width:54px;height:54px;color:var(--accent)}
+/* las DOS capas tienen que medir y romper la linea EXACTAMENTE igual:
+   por eso el ancho va en .big (donde 1ch es enorme) y no en .stack. */
+.manif .stack{position:relative;display:block;width:100%}
+.manif .big{font-size:clamp(32px,6.6vw,100px);font-weight:900;line-height:1;letter-spacing:-.035em;text-transform:uppercase;
+  margin:0 auto;max-width:14ch}
+.manif .big em{text-transform:none}
+/* capa 1: maquillada — plana, apagada, sin degradado */
+.manif .mk{color:#7a746b}
+/* el "maquillaje": una pelicula crema que solo queda donde AUN no se ha revelado */
+.manif .mk::after{content:"";position:absolute;inset:-4% -6%;background:var(--cream);opacity:.07;pointer-events:none;
+  mask-image:linear-gradient(#0000 0 calc(var(--rev)*100% - 2%),#000 calc(var(--rev)*100% + 6%));
+  -webkit-mask-image:linear-gradient(#0000 0 calc(var(--rev)*100% - 2%),#000 calc(var(--rev)*100% + 6%))}
+/* capa 2: revelada — encima, recortada por la mascara que mueve el scroll */
+.manif .rv{position:absolute;inset:0;
+  mask-image:linear-gradient(#000 0 calc(var(--rev)*100% - 1.5%),#0000 calc(var(--rev)*100% + 7%)),
+             radial-gradient(circle 150px at var(--mx) var(--my),#000 0 42%,#0000 100%);
+  -webkit-mask-image:linear-gradient(#000 0 calc(var(--rev)*100% - 1.5%),#0000 calc(var(--rev)*100% + 7%)),
+             radial-gradient(circle 150px at var(--mx) var(--my),#000 0 42%,#0000 100%)}
+.manif .rv .big{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+/* la linea del revelador */
+.manif .scan{position:absolute;left:-8%;right:-8%;top:calc(var(--rev)*100%);height:2px;background:var(--grad);
+  opacity:calc(1 - max(0,(var(--rev) - .82))*5.5);box-shadow:0 0 24px 3px rgba(255,90,46,.5);pointer-events:none}
+.manif .lead{max-width:560px;margin:38px auto 0;color:var(--muted);font-size:clamp(16px,1.5vw,19px)}
+.manif .hint{margin-top:18px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+@media (hover:none),(pointer:coarse){
+  .manif .rv{mask-image:linear-gradient(#000 0 calc(var(--rev)*100% - 1.5%),#0000 calc(var(--rev)*100% + 7%));
+             -webkit-mask-image:linear-gradient(#000 0 calc(var(--rev)*100% - 1.5%),#0000 calc(var(--rev)*100% + 7%))}
+  .manif .hint{display:none}
+}
+/* sin JS no hay quien mueva el revelador: se enseña ya revelado */
+html:not(.js) .manif .rv{mask-image:none;-webkit-mask-image:none}
+html:not(.js) .manif .mk{visibility:hidden}
+html:not(.js) .manif .scan,html:not(.js) .manif .hint{display:none}
+
+/* ==========================================================================
+   7. SERVICIOS — lista editorial + ficha que sigue al raton
+   ========================================================================== */
+/* OJO: estas secciones llevan tambien la clase .wrap. Si aqui se pone el atajo
+   `padding: X 0` se BORRA el margen lateral de .wrap y la seccion se va a sangre
+   (los numeros 01..06 quedaban cortados contra el borde). Solo arriba y abajo. */
+.sec-pad{padding-top:clamp(90px,13vh,168px);padding-bottom:clamp(90px,13vh,168px)}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:56px}
+.sec-head h2{font-size:clamp(30px,5.4vw,74px);font-weight:900;letter-spacing:-.035em;line-height:.98;text-transform:uppercase}
+.serv{border-top:1px solid var(--line)}
+/* overflow:hidden es obligatorio: sin el, el barrido escondido (translateY 101%)
+   se ve dentro de la fila de ABAJO y parece que estan todas encendidas. */
+.serv-row{display:grid;grid-template-columns:74px 1fr auto 34px;gap:24px;align-items:center;padding:30px 0;
+  border-bottom:1px solid var(--line);position:relative;isolation:isolate;overflow:hidden}
+.serv-row .n{font-family:var(--f-mono);font-size:12.5px;font-weight:700;color:var(--muted);transition:color .3s}
+.serv-row h3{font-size:clamp(23px,4.2vw,50px);font-weight:800;letter-spacing:-.025em;text-transform:uppercase;
+  transition:transform .45s var(--ease-out),color .3s;position:relative;z-index:2}
+.serv-row p{color:var(--muted);max-width:330px;font-size:14.5px;transition:color .3s}
+.serv-row .go{font-size:20px;color:var(--accent);opacity:0;transform:translateX(-10px);transition:.4s var(--ease-out);font-weight:800}
+/* el barrido de color entra desde abajo, como el boton */
+.serv-row .sweep{position:absolute;inset:0;z-index:-1;background:var(--grad);opacity:.1;transform:translateY(101%);
+  transition:transform .55s var(--ease-out);pointer-events:none}
+.serv-row::before{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:0;background:var(--grad);transition:width .6s var(--ease-out)}
+.serv-row:hover::before,.serv-row:focus-within::before{width:100%}
+.serv-row:hover .sweep,.serv-row:focus-within .sweep{transform:translateY(0)}
+.serv-row:hover h3,.serv-row:focus-within h3{transform:translateX(18px);color:#fff}
+.serv-row:hover .n,.serv-row:focus-within .n{color:var(--accent)}
+.serv-row:hover .go,.serv-row:focus-within .go{opacity:1;transform:none}
+@media(max-width:900px){.serv-row{grid-template-columns:40px 1fr 24px;gap:14px}.serv-row p{display:none}}
+
+/* ficha flotante (solo raton fino) */
+.peek{position:fixed;top:0;left:0;width:250px;height:300px;border-radius:14px;overflow:hidden;pointer-events:none;z-index:90;
+  opacity:0;transform:translate(-50%,-50%) scale(.86);transition:opacity .35s var(--ease-out),transform .5s var(--ease-out);
+  border:1px solid var(--line);will-change:transform}
+.peek.on{opacity:1}
+.peek .pk{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:18px;
+  opacity:0;transition:opacity .3s}
+.peek .pk.on{opacity:1}
+.peek .pk .pn{font-family:var(--f-mono);font-size:11px;font-weight:700;letter-spacing:.14em;color:rgba(11,11,12,.88)}
+.peek .pk .pw{font-size:26px;font-weight:900;line-height:.95;text-transform:uppercase;letter-spacing:-.02em;color:#0b0b0c}
+.peek .pk-1{background:radial-gradient(120% 120% at 25% 15%,#ffd21e,#ff7a1f 70%,#ff5a2e)}
+.peek .pk-2{background:radial-gradient(120% 120% at 25% 15%,#ff7a1f,#ff2d6b 70%,#a02bff)}
+.peek .pk-3{background:radial-gradient(120% 120% at 25% 15%,#ff2d6b,#a02bff 75%,#5a17a8)}
+.peek .pk-4{background:radial-gradient(120% 120% at 25% 15%,#7bf03a,#39c126 70%,#1f8a15)}
+.peek .pk-5{background:radial-gradient(120% 120% at 25% 15%,#f4f1ea,#c9c3b6 75%,#9a958c)}
+.peek .pk-6{background:radial-gradient(120% 120% at 25% 15%,#ffd21e,#63e022 78%,#1f8a15)}
+@media (hover:none),(pointer:coarse){.peek{display:none}}
+
+/* ==========================================================================
+   8. TRABAJO — galeria horizontal anclada (pin + scroll lateral)
+   ========================================================================== */
+.work{position:relative;background:var(--bg)}
+.work .wk-head{padding:clamp(80px,11vh,140px) var(--gutter) 0;max-width:1440px;margin:0 auto}
+.work .stage{height:100svh;display:flex;align-items:center;overflow:hidden;position:relative}
+.work .track{display:flex;gap:clamp(18px,3vw,44px);padding:0 var(--gutter);will-change:transform}
+.work .track .spacer{flex:0 0 clamp(4vw,10vw,18vw)}
+.proj{flex:0 0 min(74vw,780px);cursor:pointer;position:relative}
+/* .art NO se cuelga de .proj: la ficha de proyecto clona esta pieza fuera de la
+   galeria, y si los estilos dependieran de .proj el clon saldria en blanco. */
+.art{position:relative;aspect-ratio:5/3.4;border-radius:18px;overflow:hidden;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);will-change:transform}
+.art .bgp{position:absolute;inset:0;transform:scale(1.04);transition:transform .9s var(--ease-out);will-change:transform}
+.proj:hover .art .bgp{transform:scale(1.11)}
+.art .shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0;transform:scale(1.04);
+  transition:opacity .6s var(--ease),transform .9s var(--ease-out)}
+.art.has-shot .shot{opacity:1}
+.art.has-shot .pt{opacity:0}
+.proj:hover .art .shot{transform:scale(1.11)}
+.art .pt{position:relative;z-index:2;font-weight:900;text-transform:uppercase;letter-spacing:-.025em;text-align:center;line-height:.9;
+  transition:opacity .5s,transform .9s var(--ease-out)}
+.proj:hover .art .pt{transform:scale(1.04)}
+.art .tag{position:absolute;top:16px;left:16px;z-index:4;background:rgba(11,11,12,.5);backdrop-filter:blur(8px);border:1px solid var(--line);
+  font-family:var(--f-mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:7px 13px;border-radius:100px;color:#fff}
+.proj .meta{display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;gap:16px}
+.proj .meta h3{font-size:clamp(20px,2.6vw,34px);font-weight:800;letter-spacing:-.025em;text-transform:uppercase}
+.proj .meta .cat{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:right}
+/* al quedar anclada, la cabecera de la seccion se va arriba: este rotulo
+   mantiene el contexto mientras dura el desplazamiento lateral */
+.work .stamp{position:absolute;top:clamp(84px,11vh,120px);left:var(--gutter);z-index:5;display:flex;align-items:center;gap:12px;
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);pointer-events:none}
+.work .stamp b{color:var(--ink);font-weight:700}
+.work .stamp span.dash{width:26px;height:1px;background:var(--grad)}
+.work .rail{position:absolute;left:var(--gutter);right:var(--gutter);bottom:clamp(22px,4vh,40px);display:flex;align-items:center;gap:18px;z-index:5}
+.work .rail .bar{flex:1;height:1.5px;background:var(--line);position:relative;overflow:hidden}
+.work .rail .bar i{position:absolute;inset:0;background:var(--grad);transform-origin:0 50%;transform:scaleX(0)}
+.work .rail .cnt{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);font-variant-numeric:tabular-nums}
+/* arte de cada proyecto: son sus trabajos, recreados con su paleta */
+.a-salti .bgp{background:radial-gradient(120% 120% at 30% 20%,#7bf03a,#39c126 60%,#1f8a15)}
+.a-salti .pt{color:#141210;font-size:clamp(34px,6.4vw,72px);text-shadow:2px 2px 0 rgba(0,0,0,.12)}
+.a-omnia .bgp{background:radial-gradient(60% 70% at 50% 55%,#000 0%,#000 34%,#ff3b1d 55%,#ff9a3d 66%,#63e022 78%,#0b0b0c 92%)}
+.a-omnia .pt{color:#fff;font-size:clamp(38px,7vw,86px)}
+.a-revela{background:#f4f1ea}
+.a-revela .pt{color:#141210;font-size:clamp(20px,2.9vw,34px);font-weight:700}
+.a-revela .pt em{color:#141210}
+.a-revela .pt .rvx{background:#141210;color:#f4f1ea;padding:0 .18em}
+.a-brega .bgp{background:linear-gradient(160deg,#0b0b0c,#1a1a1e)}
+.a-brega .bgp::after{content:"";position:absolute;inset:0;opacity:.5;background-size:120px 120px;
+  background-image:radial-gradient(circle at 20% 30%,#fff 1px,transparent 2px),radial-gradient(circle at 60% 70%,#fff 1px,transparent 2px),radial-gradient(circle at 80% 20%,#fff 1px,transparent 2px),radial-gradient(circle at 40% 85%,#fff 1px,transparent 2px)}
+.a-brega .pt{color:#fff;font-size:clamp(26px,5vw,64px)}
+.a-brega .pt small{display:block;font-size:.4em;color:var(--yellow);letter-spacing:.1em;margin-top:.4em}
+/* La galeria se apila (en vez de ir en horizontal) en DOS casos:
+   1) en movil, y 2) si GSAP no esta — sin el no hay quien mueva la tira y
+   tres de los cuatro proyectos se quedarian inalcanzables dentro del overflow. */
+@media(max-width:900px){
+  .work .stage{height:auto;display:block;padding:0 0 40px}
+  .work .track{flex-direction:column;gap:44px;transform:none!important}
+  .work .track .spacer{display:none}
+  .proj{flex:none;width:100%}
+  .work .rail,.work .stamp{display:none}
+}
+html:not(.gsap) .work .stage{height:auto;display:block;padding:0 0 40px;overflow:visible}
+html:not(.gsap) .work .track{flex-direction:column;gap:44px;transform:none!important}
+html:not(.gsap) .work .track .spacer{display:none}
+html:not(.gsap) .proj{flex:none;width:100%}
+html:not(.gsap) .work .rail,html:not(.gsap) .work .stamp{display:none}
+
+/* ==========================================================================
+   9. FICHA DE PROYECTO — se abre como un eclipse desde donde pulsas
+   ========================================================================== */
+.case{position:fixed;inset:0;z-index:140;background:#0b0b0c;overflow-y:auto;overscroll-behavior:contain;
+  clip-path:circle(0% at var(--cx,50%) var(--cy,50%));transition:clip-path .85s var(--ease-out);pointer-events:none;visibility:hidden}
+.case.open{clip-path:circle(150% at var(--cx,50%) var(--cy,50%));pointer-events:auto;visibility:visible}
+.case .case-in{max-width:1100px;margin:0 auto;padding:clamp(80px,12vh,130px) var(--gutter) clamp(60px,10vh,110px)}
+.case .cs-tag{font-family:var(--f-mono);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.case h2{font-size:clamp(38px,9vw,110px);font-weight:900;letter-spacing:-.045em;line-height:.94;text-transform:uppercase;margin:14px 0 26px}
+.case .cs-body{max-width:620px;color:var(--muted);font-size:clamp(16px,1.5vw,19px)}
+.case .cs-art{margin-top:44px;border-radius:18px;overflow:hidden;border:1px solid var(--line);aspect-ratio:16/9;
+  position:relative;display:flex;align-items:center;justify-content:center}
+/* la misma pieza de la tarjeta, a lo grande y sin la inclinacion del scroll */
+.case .cs-art .art.as-case{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;border:none;border-radius:0;transform:none!important}
+.case .cs-art .art.as-case .tag{display:none}
+.case .cs-art .art.as-case .bgp{transform:scale(1.04)}
+.case .cs-facts{display:flex;gap:34px;flex-wrap:wrap;margin-top:40px;padding-top:26px;border-top:1px solid var(--line)}
+.case .cs-facts div{min-width:130px}
+.case .cs-facts dt{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+.case .cs-facts dd{font-size:15px;font-weight:600}
+.case .cs-note{margin-top:34px;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;color:var(--faint);line-height:1.8}
+.case .cs-close{position:fixed;top:22px;right:var(--gutter);z-index:2;width:52px;height:52px;border-radius:50%;border:1px solid var(--line);
+  display:grid;place-items:center;cursor:pointer;background:rgba(11,11,12,.6);backdrop-filter:blur(10px);transition:background .3s,border-color .3s,transform .3s}
+.case .cs-close:hover{background:var(--accent);border-color:var(--accent);transform:rotate(90deg)}
+.case .cs-close svg{width:18px;height:18px}
+
+/* ==========================================================================
+   10. COMO BREGAMOS
+   ========================================================================== */
+.valores{background:var(--panel);border-radius:26px;padding:clamp(38px,6vw,72px);position:relative;overflow:hidden}
+.valores::before{content:"";position:absolute;right:-14%;top:-40%;width:52%;aspect-ratio:1;border-radius:50%;
+  background:var(--grad-ring);filter:blur(70px);opacity:.16;pointer-events:none}
+.val-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;position:relative;z-index:2}
+@media(max-width:900px){.val-grid{grid-template-columns:1fr;gap:28px}}
+.val h3{font-size:clamp(20px,2.4vw,26px);font-weight:800;text-transform:uppercase;letter-spacing:-.015em;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.val h3 .num{font-family:var(--f-serif);font-style:italic;font-weight:400;color:var(--accent);font-size:1.3em}
+.val p{color:var(--muted);font-size:14.5px}
+
+/* ==========================================================================
+   11. CONTACTO — tipografia enorme que huye del raton
+   ========================================================================== */
+.contacto{text-align:center;padding-top:clamp(100px,16vh,200px);padding-bottom:clamp(100px,16vh,200px);position:relative;overflow:hidden}
+.contacto .sun-bg{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:min(88vw,760px);aspect-ratio:1;border-radius:50%;
+  background:var(--grad-ring);filter:blur(64px);opacity:.2;pointer-events:none;z-index:0}
+.contacto>*{position:relative;z-index:2}
+.contacto .eyebrow{justify-content:center;margin-bottom:26px}
+.contacto h2{font-size:clamp(44px,12.4vw,182px);font-weight:900;letter-spacing:-.055em;line-height:.86;text-transform:uppercase}
+.contacto h2 .ch{display:inline-block;will-change:transform}
+.contacto .mail{display:inline-block;margin-top:40px;font-size:clamp(17px,2.3vw,29px);font-weight:600;
+  border-bottom:2px solid var(--line);padding-bottom:6px;transition:color .3s,border-color .3s}
+.contacto .mail:hover{color:var(--accent);border-color:var(--accent)}
+.contacto .cta{margin-top:46px}
+
+/* ==========================================================================
+   12. PIE
+   ========================================================================== */
+footer{border-top:1px solid var(--line);padding:56px var(--gutter) 40px}
+.foot-in{max-width:1440px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:34px;flex-wrap:wrap}
+.foot-in .soc{display:flex;gap:22px}
+.foot-in .soc a{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);transition:color .3s}
+.foot-in .soc a:hover{color:var(--accent)}
+.foot-in .fine{font-size:13px;color:var(--faint);max-width:280px}
+.to-top{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:color .3s}
+.to-top:hover{color:var(--accent)}
+
+/* ==========================================================================
+   13. MOVIMIENTO REDUCIDO — todo visible, nada se mueve
+   ========================================================================== */
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html.js{scroll-behavior:auto}
+  .js .reveal,.js .hero-sub,.js .hero-foot{opacity:1!important;transform:none!important}
+  .js .mask-line>span{transform:none!important}
+  .manif .rv{mask-image:none;-webkit-mask-image:none}
+  .manif .mk{opacity:0}
+  .manif .scan{display:none}
+  .preloader{display:none!important}
+  .case{transition:none}
+  .navfull{transition:none}
+}
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="cursor" id="cursor" data-label="" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+
+<!-- ===== 1. PRELOADER: el ruido se calla ===== -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <canvas id="noise"></canvas>
+  <div class="pl-in">
+    <span class="badge pl-badge" style="width:104px;height:104px;font-size:12px"><span class="in"><b class="l1">LA</b><b class="l2">BREGA</b><b class="l3">ESTUDIO.</b></span></span>
+    <div class="pl-count"><span class="grad-text" id="plCount">0</span></div>
+    <div class="pl-say" id="plSay">Bajando el ruido…</div>
+  </div>
+</div>
+
+<!-- ===== 2. CABECERA ===== -->
+<header id="header">
+  <a href="#top" class="logo" aria-label="La Brega Estudio — inicio">
+    <span class="badge" style="width:50px;height:50px;font-size:6px"><span class="in"><b class="l1">LA</b><b class="l2">BREGA</b><b class="l3">ESTUDIO.</b></span></span>
+  </a>
+  <nav class="menu" id="menu" aria-label="Principal">
+    <a href="#estudio">Estudio</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#trabajo">Trabajo</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+  <a href="#contacto" class="btn magnetic"><span class="t">Hablemos <span aria-hidden="true">→</span></span></a>
+  <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navfull"><i></i></button>
+</header>
+
+<!-- menú a pantalla completa (móvil) -->
+<div class="navfull" id="navfull" aria-hidden="true">
+  <div class="nf-sun" aria-hidden="true"></div>
+  <a class="nf-link" href="#estudio">Estudio</a>
+  <a class="nf-link" href="#servicios">Servicios</a>
+  <a class="nf-link" href="#trabajo">Trabajo</a>
+  <a class="nf-link" href="#contacto">Contacto</a>
+  <div class="nf-foot">
+    <a href="mailto:somoslabrega@gmail.com">somoslabrega@gmail.com</a>
+    <a href="https://www.instagram.com/labrega_estudio/" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.tiktok.com/@labrega.estudio" target="_blank" rel="noopener">TikTok</a>
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- ===== 3. HERO: el eclipse ===== -->
+  <section class="hero" id="hero">
+    <div class="sky" id="sky" aria-hidden="true"><canvas id="glc"></canvas></div>
+    <div class="veil" aria-hidden="true"></div>
+    <div class="wrap inner">
+      <span class="eyebrow"><i></i>Canarias · Branding &amp; dirección creativa</span>
+      <h1>
+        <span class="mask-line"><span>No hacemos <span class="q">ruido</span>.</span></span>
+        <span class="mask-line"><span>Hacemos <span class="grad-text">marcas</span>.</span></span>
+      </h1>
+      <p class="hero-sub">Somos La Brega. Convertimos ideas en marcas con carácter: estrategia, identidad y dirección de arte para negocios que no quieren pasar desapercibidos.</p>
+    </div>
+    <div class="hero-foot wrap">
+      <div class="scrollcue"><span class="ln"></span>Baja para ver</div>
+      <div class="hero-meta">
+        Estudio independiente<br>
+        Las Palmas de Gran Canaria<br>
+        Est. Canarias · 28°N
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. MARQUEE ===== -->
+  <div class="marquee" id="marquee" aria-hidden="true">
+    <div class="track" id="mqTrack">
+      <span>Branding</span><span>Identidad visual</span><span>Dirección de arte</span><span>Diseño web</span><span>Motion</span><span>Naming</span>
+      <span>Branding</span><span>Identidad visual</span><span>Dirección de arte</span><span>Diseño web</span><span>Motion</span><span>Naming</span>
+    </div>
+  </div>
+
+  <!-- ===== 5. MANIFIESTO: el revelador ===== -->
+  <section class="manif wrap" id="estudio">
+    <svg class="sun spin reveal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M19.8 4.2l-2.1 2.1M6.3 17.7l-2.1 2.1"/></svg>
+    <div class="stack" id="manifStack">
+      <h2 class="big mk" aria-hidden="true">El diseño no <em>maquilla</em>. Revela.</h2>
+      <div class="rv" aria-hidden="true"><p class="big">El diseño no <em>maquilla</em>. Revela.</p></div>
+      <span class="scan" aria-hidden="true"></span>
+      <span class="sr">El diseño no maquilla. Revela.</span>
+    </div>
+    <p class="lead reveal">Un estudio pequeño y canario, obsesionado con el concepto y el detalle. No buscamos que tu marca grite más alto, sino que diga algo que merezca la pena escuchar. Menos humo, más significado.</p>
+    <p class="hint reveal">↑ Baja para revelarlo · o pásale el ratón por encima</p>
+  </section>
+
+  <!-- ===== 6. SERVICIOS ===== -->
+  <section class="sec-pad wrap" id="servicios">
+    <div class="sec-head">
+      <h2 class="reveal">Lo que hacemos</h2>
+      <span class="sec-num reveal">(Servicios / 06)</span>
+    </div>
+    <div class="serv" id="serv">
+      <div class="serv-row reveal" tabindex="0" data-peek="1" data-word="Estrategia"><span class="sweep"></span><span class="n">01</span><h3>Estrategia &amp; naming</h3><p>Posicionamiento, territorio, nombre y tono de voz.</p><span class="go" aria-hidden="true">→</span></div>
+      <div class="serv-row reveal" tabindex="0" data-peek="2" data-word="Identidad"><span class="sweep"></span><span class="n">02</span><h3>Identidad visual</h3><p>Logotipo, sistema gráfico y manual de marca vivo.</p><span class="go" aria-hidden="true">→</span></div>
+      <div class="serv-row reveal" tabindex="0" data-peek="3" data-word="Dirección de arte"><span class="sweep"></span><span class="n">03</span><h3>Dirección de arte</h3><p>El universo visual: fotografía, textura, ritmo.</p><span class="go" aria-hidden="true">→</span></div>
+      <div class="serv-row reveal" tabindex="0" data-peek="4" data-word="Web"><span class="sweep"></span><span class="n">04</span><h3>Diseño &amp; desarrollo web</h3><p>Webs rápidas, bonitas y con personalidad.</p><span class="go" aria-hidden="true">→</span></div>
+      <div class="serv-row reveal" tabindex="0" data-peek="5" data-word="Motion"><span class="sweep"></span><span class="n">05</span><h3>Motion &amp; contenido</h3><p>Que la marca se mueva y llene el feed con criterio.</p><span class="go" aria-hidden="true">→</span></div>
+      <div class="serv-row reveal" tabindex="0" data-peek="6" data-word="Packaging"><span class="sweep"></span><span class="n">06</span><h3>Packaging</h3><p>Que el producto se venda solo desde la estantería.</p><span class="go" aria-hidden="true">→</span></div>
+    </div>
+  </section>
+
+  <!-- ficha flotante de servicios -->
+  <div class="peek" id="peek" aria-hidden="true">
+    <div class="pk pk-1"><span class="pn">01 / Estrategia</span><span class="pw">Saber<br>qué decir</span></div>
+    <div class="pk pk-2"><span class="pn">02 / Identidad</span><span class="pw">La cara<br>de todo</span></div>
+    <div class="pk pk-3"><span class="pn">03 / Dirección</span><span class="pw">El aire<br>que respira</span></div>
+    <div class="pk pk-4"><span class="pn">04 / Web</span><span class="pw">Rápida<br>y con alma</span></div>
+    <div class="pk pk-5"><span class="pn">05 / Motion</span><span class="pw">Que se<br>mueva</span></div>
+    <div class="pk pk-6"><span class="pn">06 / Packaging</span><span class="pw">Que se<br>venda solo</span></div>
+  </div>
+
+  <!-- ===== 7. TRABAJO: galería horizontal anclada ===== -->
+  <section class="work" id="trabajo">
+    <div class="wk-head">
+      <div class="sec-head" style="margin-bottom:0">
+        <h2 class="reveal">Trabajo reciente</h2>
+        <span class="sec-num reveal">(Selección / 04)</span>
+      </div>
+    </div>
+    <div class="stage" id="wkStage">
+      <div class="stamp" aria-hidden="true"><span class="dash"></span><b>Trabajo reciente</b> · Selección</div>
+      <div class="track" id="wkTrack">
+        <article class="proj" data-case="salti">
+          <div class="art a-salti">
+            <img class="shot" src="../img/saltimbanqui.jpg" alt="" loading="lazy" onload="this.closest('.art').classList.add('has-shot')" onerror="this.remove()">
+            <span class="tag">Identidad</span><div class="bgp"></div><div class="pt">Saltim<br>banqui</div>
+          </div>
+          <div class="meta"><h3>Saltimbanqui</h3><span class="cat">Marca &amp; identidad</span></div>
+        </article>
+        <article class="proj" data-case="omnia">
+          <div class="art a-omnia">
+            <img class="shot" src="../img/omnia.jpg" alt="" loading="lazy" onload="this.closest('.art').classList.add('has-shot')" onerror="this.remove()">
+            <span class="tag">Branding + Motion</span><div class="bgp"></div><div class="pt">Omnia</div>
+          </div>
+          <div class="meta"><h3>Omnia</h3><span class="cat">Identidad &amp; dirección de arte</span></div>
+        </article>
+        <article class="proj" data-case="revela">
+          <div class="art a-revela">
+            <img class="shot" src="../img/revela.jpg" alt="" loading="lazy" onload="this.closest('.art').classList.add('has-shot')" onerror="this.remove()">
+            <span class="tag">Campaña</span><div class="bgp"></div><div class="pt">El diseño no<br>maquilla. <span class="rvx">Revela.</span></div>
+          </div>
+          <div class="meta"><h3>Revela</h3><span class="cat">Campaña propia</span></div>
+        </article>
+        <article class="proj" data-case="brega">
+          <div class="art a-brega">
+            <img class="shot" src="../img/dia-de-brega.jpg" alt="" loading="lazy" onload="this.closest('.art').classList.add('has-shot')" onerror="this.remove()">
+            <span class="tag">Social</span><div class="bgp"></div><div class="pt">Día de Brega<small>Día de Canarias</small></div>
+          </div>
+          <div class="meta"><h3>Día de Brega</h3><span class="cat">Contenido &amp; campaña</span></div>
+        </article>
+        <div class="spacer" aria-hidden="true"></div>
+      </div>
+      <div class="rail" aria-hidden="true">
+        <span class="cnt" id="wkCnt">01 / 04</span>
+        <span class="bar"><i id="wkBar"></i></span>
+        <span class="cnt">Arrastra o baja</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. CÓMO BREGAMOS ===== -->
+  <section class="sec-pad wrap">
+    <div class="valores">
+      <div class="sec-head" style="margin-bottom:44px">
+        <h2 class="reveal" style="font-size:clamp(26px,4vw,54px)">Cómo bregamos</h2>
+        <span class="sec-num reveal">(Nuestra forma)</span>
+      </div>
+      <div class="val-grid">
+        <div class="val reveal"><h3><span class="num">01</span> Concepto primero</h3><p>Antes de dibujar nada, entendemos qué quieres decir. La idea manda; lo bonito viene después (y viene).</p></div>
+        <div class="val reveal"><h3><span class="num">02</span> Sin postureo</h3><p>Nada de humo ni palabras raras. Te explicamos todo claro y te enseñamos el proceso por el camino.</p></div>
+        <div class="val reveal"><h3><span class="num">03</span> Cerca de ti</h3><p>Somos pequeños a propósito. Trabajas directamente con quien diseña, no con un intermediario.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 9. CONTACTO ===== -->
+  <section class="contacto wrap" id="contacto">
+    <div class="sun-bg spin" aria-hidden="true"></div>
+    <span class="eyebrow reveal"><i></i>¿Tienes una marca entre manos?</span>
+    <h2 class="reveal" id="ctaTitle">Vamos a <span class="grad-text">bregar</span>.</h2>
+    <a href="mailto:somoslabrega@gmail.com" class="mail reveal">somoslabrega@gmail.com</a>
+    <div class="reveal"><a href="mailto:somoslabrega@gmail.com" class="btn cta magnetic"><span class="t">Cuéntanos tu proyecto <span aria-hidden="true">→</span></span></a></div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot-in">
+    <span class="badge" style="width:96px;height:96px;font-size:11px"><span class="in"><b class="l1">LA</b><b class="l2">BREGA</b><b class="l3">ESTUDIO.</b></span></span>
+    <span class="fine">No hacemos ruido. Hacemos marcas. Estudio de branding desde Canarias 🐤</span>
+    <div class="soc">
+      <a href="https://www.instagram.com/labrega_estudio/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@labrega.estudio" target="_blank" rel="noopener">TikTok</a>
+      <a href="mailto:somoslabrega@gmail.com">Email</a>
+    </div>
+    <span class="to-top" id="toTop" role="button" tabindex="0">Volver arriba ↑</span>
+  </div>
+</footer>
+
+<!-- ===== FICHA DE PROYECTO (se rellena al abrir) ===== -->
+<div class="case" id="case" role="dialog" aria-modal="true" aria-labelledby="csTitle" aria-hidden="true">
+  <button class="cs-close" id="csClose" aria-label="Cerrar proyecto">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <div class="case-in">
+    <span class="cs-tag" id="csTag"></span>
+    <h2 id="csTitle"></h2>
+    <p class="cs-body" id="csBody"></p>
+    <div class="cs-art" id="csArt"></div>
+    <dl class="cs-facts" id="csFacts"></dl>
+    <p class="cs-note">Nota: los textos de esta ficha son una recreación a partir de su feed, para la propuesta. Hay que confirmarlos con Raúl antes de publicar.</p>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* ------------------------------------------------------------------ 0. base */
+var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var fine   = matchMedia('(hover:hover) and (pointer:fine)').matches;
+var isWide = function(){ return window.innerWidth > 900; };
+var $  = function(s,c){ return (c||document).querySelector(s); };
+var $$ = function(s,c){ return [].slice.call((c||document).querySelectorAll(s)); };
+var clamp = function(v,a,b){ return v<a?a:(v>b?b:v); };
+
+/* =====================================================================
+   1. PRELOADER — estatica de verdad que se va callando
+   ===================================================================== */
+var pre=$('#preloader'), plc=$('#plCount'), plSay=$('#plSay'), hero=$('#hero');
+var noiseStop = false;
+
+function startHero(){
+  if(hero) hero.classList.add('on');
+  document.body.classList.remove('locked');
+  if(lenis) lenis.start();
+  revealCheck();
+  introEclipse();
+}
+
+if(reduce){
+  if(pre) pre.style.display='none';
+  startHero();
+} else {
+  document.body.classList.add('locked');
+  /* --- el ruido: canvas pequeno escalado, pixel a pixel --- */
+  (function(){
+    var cv=$('#noise'); if(!cv) return;
+    var ctx=cv.getContext('2d', {alpha:false}); if(!ctx) return;
+    var W=Math.round(window.innerWidth/6), H=Math.round(window.innerHeight/6);
+    cv.width=W; cv.height=H;
+    var img=ctx.createImageData(W,H), d=img.data;
+    var amp=1;                                  // 1 = ruido total, 0 = silencio
+    (function draw(){
+      if(noiseStop) return;
+      for(var i=0;i<d.length;i+=4){
+        var v = 11 + Math.random()*225*amp;      // 11 = el negro de la marca
+        d[i]=v; d[i+1]=v; d[i+2]=v; d[i+3]=255;
+      }
+      ctx.putImageData(img,0,0);
+      requestAnimationFrame(draw);
+    })();
+    window.__setNoise=function(a){ amp=a; };
+  })();
+
+  var frases=['Bajando el ruido…','Quitando el humo…','Buscando la señal…','Silencio.'];
+  var n=0, tick=setInterval(function(){
+    n += Math.floor(Math.random()*9)+4;
+    if(n>=100){ n=100; clearInterval(tick); }
+    if(plc) plc.textContent = n<10 ? '00'+n : (n<100 ? '0'+n : '100');
+    if(window.__setNoise) window.__setNoise(Math.pow(1-n/100, .75));
+    if(plSay){
+      var f = n<35?0 : n<65?1 : n<100?2 : 3;
+      if(plSay.textContent!==frases[f]) plSay.textContent=frases[f];
+    }
+    if(n>=100){
+      if(pre) pre.classList.add('calm');        // silencio: aparece la insignia
+      setTimeout(function(){
+        noiseStop=true;
+        if(pre) pre.classList.add('done');
+        setTimeout(startHero, 380);
+      }, 900);
+    }
+  }, 78);
+  /* red de seguridad: pase lo que pase, a los 4,2 s se entra */
+  setTimeout(function(){
+    if(pre && !pre.classList.contains('done')){ noiseStop=true; pre.classList.add('done'); startHero(); }
+  }, 4200);
+}
+
+/* =====================================================================
+   2. HERO — el eclipse en WebGL, escrito a mano (sin librerias)
+   ===================================================================== */
+var glApi = null;
+(function(){
+  var sky=$('#sky'), cv=$('#glc');
+  if(!sky || !cv) return;
+  function bail(){ sky.classList.add('fallback'); if(cv && cv.parentNode) cv.parentNode.removeChild(cv); }
+  if(reduce) return bail();
+
+  var gl=null;
+  try{ gl = cv.getContext('webgl',{antialias:false,alpha:false,depth:false,powerPreference:'high-performance'}) || cv.getContext('experimental-webgl'); }catch(e){}
+  if(!gl) return bail();
+
+  var VS='attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+  var FS=[
+  'precision highp float;',
+  'uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse;',
+  'uniform vec2 uC; uniform float uR; uniform float uOpen; uniform float uIntro;',
+  'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+  'float vnoise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);',
+  ' return mix(mix(hash(i),hash(i+vec2(1.,0.)),u.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),u.x),u.y);}',
+  'float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*vnoise(p);p*=2.03;a*=.5;}return v;}',
+  'vec3 grad(float t){',
+  ' vec3 g1=vec3(1.,.824,.118), g2=vec3(1.,.478,.122), g3=vec3(1.,.176,.420), g4=vec3(.627,.169,1.);',
+  ' t=clamp(t,0.,1.);',
+  ' if(t<.3333) return mix(g1,g2,t*3.);',
+  ' if(t<.6666) return mix(g2,g3,(t-.3333)*3.);',
+  ' return mix(g3,g4,(t-.6666)*3.);}',
+  'void main(){',
+  ' vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y;',
+  ' vec2 q=p-uC-(uMouse-.5)*.07;',
+  ' float r=length(q); float ang=atan(q.y,q.x);',
+  /* el borde del disco no es un circulo perfecto: respira con ruido */
+  ' float nEdge=fbm(vec2(ang*2.4, r*2.4-uTime*.05));',
+  ' float R=uR*(1.+.055*(nEdge-.5)*2.)*(1.-.16*uOpen);',
+  /* corona */
+  /* la corona crece POCO al abrirse: con +1.5 inundaba media pantalla de color
+     al salir del hero y se comia el pie de la seccion */
+  ' float halo=smoothstep(R*(2.35+.35*uOpen), R, r);',
+  ' halo*=smoothstep(R*.985, R*1.03, r);',
+  ' halo=pow(halo,1.65);',
+  ' float turb=fbm(q*2.6+vec2(uTime*.045,-uTime*.03));',
+  ' halo*=.62+.75*turb;',
+  /* el color lo manda el angulo: es su degradado, en espejo para que cierre */
+  ' vec3 col=grad(abs(ang)/3.14159265);',
+  /* filo del eclipse */
+  ' float ring=smoothstep(.014,0.,abs(r-R));',
+  /* estrellas */
+  ' vec2 sp=p*15.; vec2 sid=floor(sp); float h=hash(sid); float star=0.;',
+  ' if(h>.962){ vec2 sf=fract(sp)-.5; float tw=.5+.5*sin(uTime*1.7+h*60.);',
+  '   star=smoothstep(.10,0.,length(sf))*tw; }',
+  ' vec3 bg=vec3(.043,.043,.047);',
+  ' vec3 c=bg;',
+  ' c+=col*halo*(.9+.3*uOpen);',
+  ' c+=col*ring*1.5;',
+  ' c+=vec3(.95,.93,.88)*star*.45;',
+  ' c+=(hash(gl_FragCoord.xy+uTime*77.)-.5)*.03;',      /* grano */
+  ' c=mix(bg,c,uIntro);',
+  ' gl_FragColor=vec4(c,1.);}'
+  ].join('\n');
+
+  function sh(t,src){ var s=gl.createShader(t); gl.shaderSource(s,src); gl.compileShader(s);
+    if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)) return null; return s; }
+  var vs=sh(gl.VERTEX_SHADER,VS), fs=sh(gl.FRAGMENT_SHADER,FS);
+  if(!vs||!fs) return bail();
+  var pr=gl.createProgram(); gl.attachShader(pr,vs); gl.attachShader(pr,fs); gl.linkProgram(pr);
+  if(!gl.getProgramParameter(pr,gl.LINK_STATUS)) return bail();
+  gl.useProgram(pr);
+
+  var buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  var la=gl.getAttribLocation(pr,'a'); gl.enableVertexAttribArray(la); gl.vertexAttribPointer(la,2,gl.FLOAT,false,0,0);
+
+  var U={}; ['uRes','uTime','uMouse','uC','uR','uOpen','uIntro'].forEach(function(k){ U[k]=gl.getUniformLocation(pr,k); });
+
+  var dpr=Math.min(window.devicePixelRatio||1,1.75);
+  var mouse=[.5,.5], tMouse=[.5,.5], open=0, intro=0, introTarget=0, running=false, visible=true, raf=0;
+
+  function size(){
+    var w=sky.clientWidth||window.innerWidth, h=sky.clientHeight||window.innerHeight;
+    cv.width=Math.max(1,Math.round(w*dpr)); cv.height=Math.max(1,Math.round(h*dpr));
+    gl.viewport(0,0,cv.width,cv.height);
+    gl.uniform2f(U.uRes,cv.width,cv.height);
+    /* el eclipse vive a la derecha en escritorio y arriba-centro en movil */
+    var aspect=cv.width/cv.height;
+    var cxN = isWide()? .72 : .50, cyN = isWide()? .44 : .34;
+    gl.uniform2f(U.uC,(cxN-.5)*aspect, .5-cyN);
+    gl.uniform1f(U.uR, isWide()? .30 : .245);
+  }
+  size();
+  window.addEventListener('resize',size,{passive:true});
+
+  window.addEventListener('mousemove',function(e){ tMouse=[e.clientX/window.innerWidth, 1-e.clientY/window.innerHeight]; },{passive:true});
+
+  var t0=performance.now();
+  function frame(){
+    raf=0; if(!running) return;
+    mouse[0]+=(tMouse[0]-mouse[0])*.05; mouse[1]+=(tMouse[1]-mouse[1])*.05;
+    intro+=(introTarget-intro)*.035;
+    gl.uniform1f(U.uTime,(performance.now()-t0)/1000);
+    gl.uniform2f(U.uMouse,mouse[0],mouse[1]);
+    gl.uniform1f(U.uOpen,open);
+    gl.uniform1f(U.uIntro,intro);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+    raf=requestAnimationFrame(frame);
+  }
+  function play(){ if(!running && visible){ running=true; if(!raf) raf=requestAnimationFrame(frame); } }
+  function stop(){ running=false; if(raf){ cancelAnimationFrame(raf); raf=0; } }
+
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){ visible=es[0].isIntersecting; if(visible) play(); else stop(); },{threshold:0}).observe(sky);
+  }
+  document.addEventListener('visibilitychange',function(){ if(document.hidden) stop(); else play(); });
+
+  glApi={ open:function(v){ open=clamp(v,0,1); }, intro:function(){ introTarget=1; play(); }, play:play };
+  play();                 /* ya dibuja (en negro) mientras carga el preloader */
+})();
+function introEclipse(){ if(glApi) glApi.intro(); }
+if(!glApi){ /* sin WebGL no pasa nada: el .sky lleva el eclipse en CSS */ }
+
+/* =====================================================================
+   3. REVELADOS caseros (respaldo si GSAP no carga)
+   ===================================================================== */
+var revs=$$('.reveal');
+$$('.serv-row').forEach(function(el,i){ el.style.transitionDelay=((i%4)*0.07)+'s'; });
+function inView(el){ var r=el.getBoundingClientRect(); return r.top < innerHeight*0.9 && r.bottom > 0; }
+var gsapActive=false;
+function revealCheck(){
+  if(gsapActive || !revs) return;   /* revs aun no existe si entramos con movimiento reducido */
+  for(var i=0;i<revs.length;i++){ var el=revs[i]; if(!el._s && inView(el)){ el._s=true; el.classList.add('in'); } }
+  $$('.mask-line').forEach(function(el){ if(!el._s && inView(el)){ el._s=true; el.classList.add('in'); } });
+}
+
+/* =====================================================================
+   4. SCROLL: cabecera, barra de progreso, velocidad, seccion activa
+   ===================================================================== */
+var header=$('#header'), progress=$('#progress');
+var lastY=window.scrollY, ticking=false, vel=0, velSmooth=0;
+function onScroll(){
+  var y=window.scrollY, h=document.documentElement.scrollHeight-innerHeight;
+  vel = y-lastY;
+  if(progress) progress.style.transform='scaleX('+(h>0?clamp(y/h,0,1):0)+')';
+  if(header){
+    header.classList.toggle('scrolled', y>40);
+    if(y>140 && y>lastY+2) header.classList.add('compact');
+    else if(y<lastY-2 || y<80) header.classList.remove('compact');
+  }
+  /* el eclipse se abre a medida que dejas el hero */
+  if(glApi && hero){ var hb=hero.getBoundingClientRect(); glApi.open(clamp(-hb.top/Math.max(1,hb.height),0,1)); }
+  if(!gsapActive) manifScroll();
+  revealCheck(); lastY=y; ticking=false;
+}
+addEventListener('scroll',function(){ if(!ticking){ requestAnimationFrame(onScroll); ticking=true; } },{passive:true});
+addEventListener('resize',function(){ revealCheck(); mqMeasure(); },{passive:true});
+onScroll(); revealCheck();
+
+/* seccion activa en el menu */
+if('IntersectionObserver' in window){
+  var links=$$('nav.menu a');
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      links.forEach(function(a){ a.classList.toggle('here', a.getAttribute('href')==='#'+e.target.id); });
+    });
+  },{rootMargin:'-45% 0px -50% 0px'});
+  ['estudio','servicios','trabajo','contacto'].forEach(function(id){ var s=document.getElementById(id); if(s) io.observe(s); });
+}
+
+/* =====================================================================
+   5. LENIS (scroll con inercia) + GSAP ScrollTrigger
+   ===================================================================== */
+var hasGSAP = !!(window.gsap && window.ScrollTrigger);
+gsapActive = hasGSAP && !reduce;
+var lenis=null;
+
+if(window.Lenis && !reduce){
+  try{
+    lenis=new Lenis({lerp:.1, wheelMultiplier:1, smoothWheel:true});
+    if(gsapActive){
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(function(t){ lenis.raf(t*1000); });
+      gsap.ticker.lagSmoothing(0);
+    } else { (function raf(t){ lenis.raf(t); requestAnimationFrame(raf); })(); }
+    /* mientras el preloader esta puesto, el scroll no corre */
+    if(pre && !pre.classList.contains('done')) lenis.stop();
+  }catch(e){ lenis=null; }
+}
+function goTo(target){
+  if(lenis) lenis.scrollTo(target,{offset:-6,duration:1.15});
+  else if(typeof target==='number') scrollTo({top:target,behavior:reduce?'auto':'smooth'});
+  else target.scrollIntoView({behavior:reduce?'auto':'smooth'});
+}
+$$('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var id=a.getAttribute('href'); if(!id||id.length<2) return;
+    var t=document.querySelector(id); if(!t) return;
+    e.preventDefault(); closeNav(); goTo(t);
+  });
+});
+
+/* =====================================================================
+   6. MANIFIESTO — el revelador
+   ===================================================================== */
+var stack=$('#manifStack'), manif=$('.manif');
+function manifScroll(){
+  if(!stack||!manif) return;
+  var r=manif.getBoundingClientRect();
+  /* 0 cuando la seccion entra por abajo, 1 cuando su centro pasa el centro */
+  var p=clamp((innerHeight*0.86 - r.top)/(r.height*0.72),0,1);
+  stack.style.setProperty('--rev',p.toFixed(4));
+}
+if(stack){
+  stack.style.setProperty('--mx','-800px'); stack.style.setProperty('--my','-800px');
+  if(fine){
+    stack.addEventListener('mousemove',function(e){
+      var r=stack.getBoundingClientRect();
+      stack.style.setProperty('--mx',(e.clientX-r.left)+'px');
+      stack.style.setProperty('--my',(e.clientY-r.top)+'px');
+    });
+    stack.addEventListener('mouseleave',function(){
+      stack.style.setProperty('--mx','-800px'); stack.style.setProperty('--my','-800px');
+    });
+  }
+  manifScroll();
+}
+
+/* =====================================================================
+   7. MARQUEE — velocidad y sentido los manda el scroll
+   ===================================================================== */
+var mqTrack=$('#mqTrack'), mqHalf=0, mqX=0;
+function mqMeasure(){ if(mqTrack) mqHalf=mqTrack.scrollWidth/2; }
+mqMeasure();
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ mqMeasure(); if(gsapActive&&window.ScrollTrigger) ScrollTrigger.refresh(); });
+
+/* =====================================================================
+   8. GSAP: revelados, hero con scrub, galeria horizontal anclada
+   ===================================================================== */
+if(gsapActive){
+  document.documentElement.classList.add('gsap');
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.set('.reveal', {autoAlpha:0, y:34});
+  gsap.set('.serv-row', {autoAlpha:0, x:-56, y:0});
+
+  ScrollTrigger.batch('.reveal:not(.serv-row)', {start:'top 88%',
+    onEnter:function(b){ gsap.to(b,{autoAlpha:1,y:0,duration:1,ease:'power3.out',stagger:.09,overwrite:true}); }});
+  ScrollTrigger.batch('.serv-row', {start:'top 88%',
+    onEnter:function(b){ gsap.to(b,{autoAlpha:1,x:0,duration:.9,ease:'power3.out',stagger:.08,overwrite:true}); }});
+
+  /* hero: el contenido sube y se funde al salir */
+  gsap.to('.hero .inner',{yPercent:-16, autoAlpha:.1, ease:'none',
+    scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+
+  /* manifiesto: el revelado ligado al scroll, sin saltos */
+  if(stack){
+    gsap.set(stack,{'--rev':0});
+    gsap.to(stack,{'--rev':1, ease:'none',
+      scrollTrigger:{trigger:'.manif',start:'top 78%',end:'bottom 68%',scrub:.6}});
+  }
+
+  /* TRABAJO: pin + desplazamiento lateral (solo escritorio) */
+  var mm=gsap.matchMedia();
+  mm.add('(min-width:901px)',function(){
+    var track=$('#wkTrack'), stage=$('#wkStage'), bar=$('#wkBar'), cnt=$('#wkCnt');
+    if(!track||!stage) return;
+    var dist=function(){ return Math.max(0, track.scrollWidth - window.innerWidth); };
+    gsap.to(track,{ x:function(){ return -dist(); }, ease:'none',
+      scrollTrigger:{ trigger:stage, start:'top top', end:function(){ return '+='+dist(); },
+        pin:true, scrub:.8, invalidateOnRefresh:true, anticipatePin:1,
+        onUpdate:function(self){
+          if(bar) bar.style.transform='scaleX('+self.progress+')';
+          if(cnt){ var i=clamp(Math.floor(self.progress*3.99)+1,1,4); cnt.textContent='0'+i+' / 04'; }
+        }}});
+  });
+
+  /* las tarjetas se ladean con la velocidad del scroll */
+  var arts=gsap.utils.toArray('.proj .art');
+  if(arts.length){
+    var setSkew=gsap.quickTo(arts,'skewY',{duration:.55,ease:'power3'});
+    var cl=gsap.utils.clamp(-4.5,4.5);
+    ScrollTrigger.create({onUpdate:function(self){ setSkew(cl(self.getVelocity()/-340)); }});
+  }
+
+  ScrollTrigger.refresh();
+  addEventListener('load',function(){ mqMeasure(); ScrollTrigger.refresh(); });
+}
+
+/* =====================================================================
+   9. BUCLE UNICO: cursor, imanes y marquee
+   ===================================================================== */
+var cur=$('#cursor'), dot=$('#cursorDot');
+var mx=innerWidth/2, my=innerHeight/2, cx=mx, cy=my;
+if(fine && !reduce){
+  document.body.classList.add('has-cursor');
+  addEventListener('mousemove',function(e){
+    mx=e.clientX; my=e.clientY;
+    if(dot) dot.style.transform='translate('+(mx-3)+'px,'+(my-3)+'px)';
+  },{passive:true});
+
+  $$('.proj').forEach(function(el){ el.setAttribute('data-cur','Abrir'); });
+  $$('.serv-row').forEach(function(el){ el.setAttribute('data-cur','Ver'); });
+  $$('a,button,.proj,.serv-row').forEach(function(el){
+    el.addEventListener('mouseenter',function(){
+      if(!cur) return; cur.classList.add('grow');
+      cur.setAttribute('data-label', el.getAttribute('data-cur')||'');
+    });
+    el.addEventListener('mouseleave',function(){ if(cur){ cur.classList.remove('grow'); cur.setAttribute('data-label',''); } });
+  });
+  $$('.magnetic').forEach(function(el){
+    el.addEventListener('mousemove',function(e){
+      var r=el.getBoundingClientRect();
+      el.style.transform='translate('+((e.clientX-r.left-r.width/2)*.3)+'px,'+((e.clientY-r.top-r.height/2)*.4)+'px)';
+    });
+    el.addEventListener('mouseleave',function(){ el.style.transform=''; });
+  });
+}
+(function loop(){
+  if(fine && !reduce && cur){
+    cx+=(mx-cx)*.17; cy+=(my-cy)*.17;
+    cur.style.transform='translate('+(cx-19)+'px,'+(cy-19)+'px)';
+  }
+  velSmooth += (vel-velSmooth)*.12; vel*=0.9;
+  if(mqTrack && mqHalf>0 && !reduce){
+    mqX -= (0.55 + clamp(velSmooth*0.22,-9,9));
+    if(mqX<=-mqHalf) mqX+=mqHalf;
+    if(mqX>0) mqX-=mqHalf;
+    mqTrack.style.transform='translateX('+mqX.toFixed(2)+'px)';
+  }
+  requestAnimationFrame(loop);
+})();
+
+/* =====================================================================
+   10. SERVICIOS — la ficha que sigue al raton
+   ===================================================================== */
+(function(){
+  var peek=$('#peek'); if(!peek || !fine || reduce) return;
+  var cards=$$('.pk',peek), px=innerWidth/2, py=innerHeight/2, tx=px, ty=py, on=false;
+  $$('.serv-row').forEach(function(row){
+    var i=parseInt(row.getAttribute('data-peek'),10)-1;
+    row.addEventListener('mouseenter',function(){
+      on=true; peek.classList.add('on');
+      cards.forEach(function(c,j){ c.classList.toggle('on', j===i); });
+    });
+    row.addEventListener('mouseleave',function(){ on=false; peek.classList.remove('on'); });
+  });
+  addEventListener('mousemove',function(e){ tx=e.clientX+150; ty=e.clientY; },{passive:true});
+  (function pk(){
+    px+=(tx-px)*.13; py+=(ty-py)*.13;
+    peek.style.transform='translate(-50%,-50%) translate('+px.toFixed(1)+'px,'+py.toFixed(1)+'px) scale('+(on?1:.86)+')';
+    requestAnimationFrame(pk);
+  })();
+})();
+
+/* =====================================================================
+   11. FICHA DE PROYECTO — se abre como un eclipse desde donde pulsas
+   ===================================================================== */
+var CASES={
+  salti:{ tag:'Identidad · 2025', title:'Saltimbanqui', art:'a-salti',
+    body:'Una marca que da volteretas sin caerse. Verde ácido, tipografía con peso y un sistema que aguanta lo mismo en un cartel que en un perfil de Instagram. El nombre pedía movimiento, así que el logotipo se construyó para poder desmontarse y recomponerse.',
+    facts:[['Servicios','Naming · Identidad'],['Entregable','Manual de marca'],['Año','2025']] },
+  omnia:{ tag:'Branding + Motion · 2025', title:'Omnia', art:'a-omnia',
+    body:'Un eclipse como símbolo: lo que tapa la luz es justo lo que deja verla. La identidad se mueve — el disco se abre y se cierra — y de ahí salen las piezas de motion para redes.',
+    facts:[['Servicios','Identidad · Dirección de arte'],['Entregable','Sistema + motion'],['Año','2025']] },
+  revela:{ tag:'Campaña propia · 2025', title:'Revela', art:'a-revela',
+    body:'“El diseño no maquilla. Revela.” Nuestra propia campaña, y también nuestra forma de trabajar: no tapamos lo que una marca es, lo sacamos a la luz. Crema sobre negro, sin adornos y con una sola idea.',
+    facts:[['Servicios','Concepto · Copy · Arte'],['Entregable','Campaña social'],['Año','2025']] },
+  brega:{ tag:'Contenido & campaña · 30 de mayo', title:'Día de Brega', art:'a-brega',
+    body:'Nuestro Día de Canarias. Amarillo canario sobre cielo negro y un guiño al orgullo de aquí sin caer en la postal. Piezas pensadas para el feed, no para el marco.',
+    facts:[['Servicios','Contenido · Campaña'],['Entregable','Piezas para redes'],['Fecha','30 de mayo']] }
+};
+(function(){
+  var box=$('#case'); if(!box) return;
+  var elTag=$('#csTag'), elTitle=$('#csTitle'), elBody=$('#csBody'), elArt=$('#csArt'), elFacts=$('#csFacts'), btn=$('#csClose');
+  var opener=null;
+
+  function open(key, ev, from){
+    var d=CASES[key]; if(!d) return;
+    opener=from||null;
+    var x = ev? ev.clientX : innerWidth/2, y = ev? ev.clientY : innerHeight/2;
+    box.style.setProperty('--cx',(x/innerWidth*100).toFixed(1)+'%');
+    box.style.setProperty('--cy',(y/innerHeight*100).toFixed(1)+'%');
+    elTag.textContent=d.tag; elTitle.textContent=d.title; elBody.textContent=d.body;
+    /* el arte: el mismo de la tarjeta, a lo grande */
+    var src=from? from.querySelector('.art') : null;
+    elArt.innerHTML='';
+    if(src){ var cl=src.cloneNode(true); cl.classList.add('as-case'); elArt.appendChild(cl); }
+    elFacts.innerHTML=d.facts.map(function(f){ return '<div><dt>'+f[0]+'</dt><dd>'+f[1]+'</dd></div>'; }).join('');
+    box.classList.add('open'); box.setAttribute('aria-hidden','false');
+    document.body.classList.add('locked');
+    if(lenis) lenis.stop();
+    setTimeout(function(){ btn.focus(); },120);
+  }
+  function close(){
+    box.classList.remove('open'); box.setAttribute('aria-hidden','true');
+    document.body.classList.remove('locked');
+    if(lenis) lenis.start();
+    box.scrollTop=0;
+    if(opener && opener.focus) opener.focus();
+  }
+  $$('.proj').forEach(function(p){
+    p.setAttribute('tabindex','0'); p.setAttribute('role','button');
+    p.setAttribute('aria-label','Ver el proyecto '+(p.querySelector('.meta h3')||{}).textContent);
+    p.addEventListener('click',function(e){ open(p.getAttribute('data-case'), e, p); });
+    p.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(p.getAttribute('data-case'), null, p); } });
+  });
+  btn.addEventListener('click',close);
+  addEventListener('keydown',function(e){ if(e.key==='Escape'){ if(box.classList.contains('open')) close(); else closeNav(); } });
+})();
+
+/* =====================================================================
+   12. CONTACTO — las letras se apartan del raton
+   ===================================================================== */
+(function(){
+  var h=$('#ctaTitle'), sec=$('#contacto'); if(!h||!sec) return;
+  var frag=[];
+  [].slice.call(h.childNodes).forEach(function(node){
+    if(node.nodeType===3){
+      node.textContent.split('').forEach(function(ch){
+        if(ch===' '){ frag.push(document.createTextNode(' ')); return; }
+        var s=document.createElement('span'); s.className='ch'; s.textContent=ch; frag.push(s);
+      });
+    } else if(node.nodeType===1){ node.classList.add('ch'); frag.push(node); }
+  });
+  h.innerHTML=''; frag.forEach(function(n){ h.appendChild(n); });
+  if(!fine || reduce) return;
+  var chs=$$('.ch',h);
+  sec.addEventListener('mousemove',function(e){
+    for(var i=0;i<chs.length;i++){
+      var c=chs[i], r=c.getBoundingClientRect();
+      var dx=(r.left+r.width/2)-e.clientX, dy=(r.top+r.height/2)-e.clientY;
+      var d=Math.sqrt(dx*dx+dy*dy), R=190;
+      if(d<R){ var f=(1-d/R)*26; c.style.transform='translate('+(dx/d*f).toFixed(1)+'px,'+(dy/d*f).toFixed(1)+'px)'; }
+      else c.style.transform='';
+    }
+  });
+  sec.addEventListener('mouseleave',function(){ chs.forEach(function(c){ c.style.transform=''; }); });
+})();
+
+/* =====================================================================
+   13. MENU A PANTALLA COMPLETA
+   ===================================================================== */
+var burger=$('#burger'), navfull=$('#navfull');
+function closeNav(){
+  if(!document.body.classList.contains('nav-open')) return;
+  document.body.classList.remove('nav-open','locked');
+  if(burger){ burger.setAttribute('aria-expanded','false'); burger.setAttribute('aria-label','Abrir menú'); }
+  if(navfull) navfull.setAttribute('aria-hidden','true');
+  if(lenis) lenis.start();
+}
+if(burger){
+  burger.addEventListener('click',function(){
+    var open=!document.body.classList.contains('nav-open');
+    document.body.classList.toggle('nav-open',open);
+    document.body.classList.toggle('locked',open);
+    burger.setAttribute('aria-expanded',String(open));
+    burger.setAttribute('aria-label',open?'Cerrar menú':'Abrir menú');
+    if(navfull) navfull.setAttribute('aria-hidden',String(!open));
+    if(lenis){ open? lenis.stop() : lenis.start(); }
+  });
+}
+
+/* volver arriba */
+var tt=$('#toTop');
+if(tt){
+  var up=function(){ goTo(0); };
+  tt.addEventListener('click',up);
+  tt.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); up(); } });
+}
+})();
+</script>
+</body>
+</html>
