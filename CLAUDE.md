@@ -13,7 +13,11 @@ Bóveda de Obsidian con los **proyectos personales** de Alejandro Gálvez (por f
 - La **Bandeja universal** (inbox) está en el repo Reload: `RELOAD/Bandeja.md` — leerla al empezar sesión si está clonado.
 
 ## Reglas de trabajo (memoria de Claude)
-La memoria completa vive en el repo **`Boveda-RELOAD`**, carpeta **`Memoria Claude/`** — si trabajas en esta bóveda desde un ordenador nuevo, léela primero. Resumen crítico:
+La memoria está **repartida en dos**, y hay que leer las dos al arrancar en un ordenador nuevo:
+- **Reglas generales de trabajo** → repo `Boveda-RELOAD`, carpeta `Memoria Claude/`.
+- **Lo personal** (esta bóveda, La Brega, Web Calma, Laboratorio) → **`Memoria Claude/` de este mismo repo**. Va aquí porque en el repo de Reload **solo puede haber cosas de Reload**.
+
+Si tocas una memoria personal, **espeja el cambio en `Ale/Memoria Claude/`** y haz commit+push. Resumen crítico:
 1. **Commit+push automático SIEMPRE** (Claude lo hace, verificando local=remoto; repo `AlejandroGalvez022/Boveda-ALE`).
 2. **PROHIBIDO tocar el repo `MACV7`** (CMS de MAC-IDAFE).
 3. Todo cambio se refleja en el **Panel** y se escribe en **español**, tono directo e informal, con enlaces `[[nota|Texto]]`.
