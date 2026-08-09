@@ -8,5 +8,6 @@ El **resto** de la memoria —las reglas generales de trabajo— está en `Boved
 - [La Brega Estudio](labrega-studio.md) — cliente Raúl Vega: su marca real (ojo: el logo NO es circular), sus proyectos y las **tres versiones** de la web
 - [Web Calma + Aura](web-calma-preview.md) — la web y el chatbot de la psicóloga
 - [Laboratorio web](laboratorio-web-demos.md) — las demos guardadas y para qué sirve cada una
+- [Umbra (producto)](umbra-producto.md) — primer producto para **ingresos pasivos**: eclipse WebGL para marketplaces. La regla: catálogo de 12 piezas, no una
 
 > Al arrancar en un ordenador nuevo: leer **las dos** carpetas `Memoria Claude/` (la de `Boveda-RELOAD` y esta) y aplicarlas como memoria propia.

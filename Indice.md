@@ -16,10 +16,16 @@ Tu bóveda **por fuera de Reload**: tus clientes propios y tus demos. Separada d
 ## 🔥 En marcha
 
 - 🌿 [[Chatbot Psicologo/Chatbot Psicologo|Web Calma + Aura]] — web y chatbot de la **psicóloga** (tu prioridad).
-- 🌐 [[La Brega Studio/La Brega Studio|La Brega Studio]] — web para **Raúl Vega**. ⭐ Lo último: **versión 2 «Ruido → señal»** (eclipse en WebGL, manifiesto que se revela, galería anclada) en `web/v2/`, con la v1 intacta. Falta verla y publicarla.
+- 🌐 [[La Brega Studio/La Brega Studio|La Brega Studio]] — web para **Raúl Vega**. Hay **tres versiones** (v1, v2 y v3) y falta que elijas. ⭐ Lo último: la **v2 con la portada nueva** — el titular se curva alrededor del eclipse y se enciende con su corona — más 10 animaciones de scroll.
 - 🦷 [[Clinica dental/Clinica dental|Clínica dental]] — mantenimiento web (encargo por cerrar).
 - 🎨 [[Estudio Alisio/Estudio Alisio|Estudio Alisio]] — demo de estudio creativo.
 - 💡 [[Experimentos/Experimentos de diseno|Experimentos de diseño]] — ideas de apps (calendario minimalista iPhone, organizadora de eventos, app con animaciones, app de potencial libre).
+
+---
+
+## 💰 Productos (ingresos pasivos)
+
+- 🌑 [[Productos/Umbra/Umbra|Umbra]] — **fondo de eclipse en WebGL** empaquetado para vender en marketplaces. Terminado y verificado (0 fallos). **Es la pieza 1 de 12**: la apuesta es un catálogo, no una pieza suelta.
 
 ---
 

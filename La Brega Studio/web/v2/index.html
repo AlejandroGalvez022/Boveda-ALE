@@ -124,8 +124,15 @@ header{position:fixed;top:0;left:0;width:100%;z-index:110;display:flex;align-ite
   border-bottom:1px solid transparent}
 header.scrolled{background:rgba(11,11,12,.72);backdrop-filter:blur(14px) saturate(1.2);border-bottom-color:var(--line-soft)}
 header.compact{padding-top:9px;padding-bottom:9px}
-header.compact .badge{transform:scale(.8)}
-header .badge{transition:transform .45s var(--ease)}
+/* El anillo de la insignia gira con lo que llevas leido: es el degradado de
+   marca haciendo de indicador de progreso. Se contrarrota el interior para
+   que las letras no den vueltas. La escala del modo compacto va por variable
+   para no pisar el giro (antes las dos peleaban por el mismo transform). */
+header .badge{transform:scale(var(--bs,1)) rotate(var(--br,0deg));transition:transform .45s var(--ease)}
+/* la MISMA transicion que el aro: si el interior contrarrota al instante y el
+   aro va suavizado, las letras se ven girar solas */
+header .badge .in{transform:rotate(calc(-1*var(--br,0deg)));transition:transform .45s var(--ease)}
+header.compact .badge{--bs:.8}
 .logo{display:flex;align-items:center;gap:9px}
 nav.menu{display:flex;gap:30px;align-items:center}
 nav.menu a{font-size:13.5px;font-weight:600;color:var(--muted);position:relative;transition:color .3s}
@@ -199,10 +206,49 @@ html.lenis,html.lenis body{height:auto}
    pase justo por ahi al abrirse el eclipse */
 .hero .veil::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;
   background:linear-gradient(transparent,rgba(11,11,12,.88))}
+/* REFUERZO en la franja donde vive el titular. Su degradado termina en
+   VIOLETA, que es el color menos luminoso de los suyos, y sobre el cielo del
+   eclipse se quedaba en 2,99:1 — justo por debajo del 3 que pide un titular.
+   Se oscurece EL FONDO; su color de marca no se toca. Se apaga hacia la
+   derecha para no ensuciar el eclipse, y se difumina arriba y abajo para que
+   no se vea el borde de la franja. */
+.hero .veil::before{content:"";position:absolute;left:0;right:0;top:12%;height:76%;
+  background:linear-gradient(100deg,rgba(11,11,12,.58) 0%,rgba(11,11,12,.5) 46%,rgba(11,11,12,.22) 72%,transparent 90%);
+  -webkit-mask-image:linear-gradient(transparent,#000 14%,#000 86%,transparent);
+  mask-image:linear-gradient(transparent,#000 14%,#000 86%,transparent)}
 .hero .inner{position:relative;z-index:3;will-change:transform}
 .hero h1{font-size:clamp(44px,9.4vw,146px);font-weight:900;line-height:.92;letter-spacing:-.045em;margin:22px 0 0;text-transform:uppercase}
 /* "ruido" va apagado a proposito (es lo que NO hacen), pero tiene que leerse */
 .hero h1 .q{color:var(--muted)}
+/* Al salir del hero "ruido" SE VA ENTERO —de una pieza, difuminandose— y
+   "marcas" se queda: es el lema hecho scroll.
+   OJO: .mask-line lleva overflow:hidden para el revelado de entrada, y eso
+   recortaria la palabra al irse -> se abre (.unclip) por JS en cuanto el
+   revelado de entrada ya ha terminado. */
+/* LA LENTE — el titular obedece al eclipse: se aparta de el como se dobla la
+   luz al pasar cerca de una masa, y se ENCIENDE con el color que tiene la
+   corona justo detras (calculado con la misma formula que el shader).
+   "ruido" y "marcas" van de una pieza; el resto, letra a letra.
+   El desplazamiento va en `translate`, que es una propiedad APARTE de
+   `transform`: de transform ya tira GSAP para llevarse "ruido", y si
+   compartieran la misma propiedad se pisarian. */
+/* cada palabra, en una caja que no se parte: las letras son inline-block y
+   sin esto la linea podria romper entre dos letras */
+.hero h1 .hw{display:inline-block;white-space:nowrap}
+.hero h1 .q,.hero h1 .grad-text{white-space:nowrap}
+/* Solo se mueve en VERTICAL (y se ladea un pelin). El horizontal es lo unico
+   que no se puede tocar: es lo que separa unas letras de otras, y empujando
+   ahi las palabras se abren y parece que la web esta rota. Curvando en
+   vertical, la linea se dobla alrededor del eclipse y el espaciado que puso
+   la tipografia se queda exactamente como estaba.
+   `translate`, `rotate` y `scale` son propiedades APARTE de `transform`: por
+   eso pueden convivir con GSAP, que usa transform para llevarse "ruido". */
+.hero h1 .hch,.hero h1 .q,.hero h1 .grad-text{
+  display:inline-block;translate:0 var(--ly,0px);rotate:var(--lr,0deg)}
+.hero h1 .hch,.hero h1 .q{text-shadow:0 0 calc(var(--lit,0)*24px) var(--glow,transparent)}
+.hero h1 .hch{color:var(--lc,#f4f1ea)}
+.hero h1 .q{color:var(--lc,#9a958c);will-change:transform,opacity}
+.hero h1 .mask-line.unclip{overflow:visible}
 .hero-sub{max-width:520px;margin-top:30px;font-size:clamp(16px,1.5vw,20px);color:var(--muted)}
 .js .hero-sub,.js .hero-foot{opacity:0;transform:translateY(20px);transition:opacity 1s var(--ease-out) .5s,transform 1s var(--ease-out) .5s}
 .hero.on .hero-sub,.hero.on .hero-foot{opacity:1;transform:none}
@@ -283,6 +329,11 @@ html:not(.js) .manif .scan,html:not(.js) .manif .hint{display:none}
 .serv-row .n{font-family:var(--f-mono);font-size:12.5px;font-weight:700;color:var(--muted);transition:color .3s}
 .serv-row h3{font-size:clamp(23px,4.2vw,50px);font-weight:800;letter-spacing:-.025em;text-transform:uppercase;
   transition:transform .45s var(--ease-out),color .3s;position:relative;z-index:2}
+/* "desintonizado -> sintonizado": cada fila llega con la señal PARTIDA en dos
+   canales de color y converge al entrar. --ds va de 1 a 0 (lo mueve GSAP).
+   Sin GSAP se queda en 0 y no se nota: la fila entra igual. */
+.serv-row{--ds:0}
+.serv-row h3{text-shadow:calc(var(--ds)*-5px) 0 0 rgba(255,45,107,.8),calc(var(--ds)*5px) 0 0 rgba(99,224,34,.65)}
 .serv-row p{color:var(--muted);max-width:330px;font-size:14.5px;transition:color .3s}
 .serv-row .go{font-size:20px;color:var(--accent);opacity:0;transform:translateX(-10px);transition:.4s var(--ease-out);font-weight:800}
 /* el barrido de color entra desde abajo, como el boton */
@@ -327,16 +378,21 @@ html:not(.js) .manif .scan,html:not(.js) .manif .hint{display:none}
    galeria, y si los estilos dependieran de .proj el clon saldria en blanco. */
 .art{position:relative;aspect-ratio:5/3.4;border-radius:18px;overflow:hidden;display:flex;align-items:center;justify-content:center;
   border:1px solid var(--line);will-change:transform}
-.art .bgp{position:absolute;inset:0;transform:scale(1.04);transition:transform .9s var(--ease-out);will-change:transform}
-.proj:hover .art .bgp{transform:scale(1.11)}
-.art .shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0;transform:scale(1.04);
+/* --px es el parallax INTERNO (en %): el arte se mueve dentro de su marco
+   mientras la tarjeta cruza la pantalla, y el rotulo se mueve al reves y mas
+   despacio. Eso es lo que da profundidad. Lo escribe el JS; sin el vale 0. */
+.art .bgp{position:absolute;inset:0;transform:translateX(calc(var(--px,0)*1%)) scale(var(--z,1.06));
+  transition:transform .9s var(--ease-out);will-change:transform}
+.proj:hover .art{--z:1.13}
+.art .shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0;
+  transform:translateX(calc(var(--px,0)*1%)) scale(var(--z,1.06));
   transition:opacity .6s var(--ease),transform .9s var(--ease-out)}
 .art.has-shot .shot{opacity:1}
 .art.has-shot .pt{opacity:0}
-.proj:hover .art .shot{transform:scale(1.11)}
 .art .pt{position:relative;z-index:2;font-weight:900;text-transform:uppercase;letter-spacing:-.025em;text-align:center;line-height:.9;
+  transform:translateX(calc(var(--px,0)*-.45%)) scale(var(--zt,1));
   transition:opacity .5s,transform .9s var(--ease-out)}
-.proj:hover .art .pt{transform:scale(1.04)}
+.proj:hover .art{--zt:1.04}
 .art .tag{position:absolute;top:16px;left:16px;z-index:4;background:rgba(11,11,12,.5);backdrop-filter:blur(8px);border:1px solid var(--line);
   font-family:var(--f-mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:7px 13px;border-radius:100px;color:#fff}
 .proj .meta{display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;gap:16px}
@@ -366,6 +422,17 @@ html:not(.js) .manif .scan,html:not(.js) .manif .hint{display:none}
   background-image:radial-gradient(circle at 20% 30%,#fff 1px,transparent 2px),radial-gradient(circle at 60% 70%,#fff 1px,transparent 2px),radial-gradient(circle at 80% 20%,#fff 1px,transparent 2px),radial-gradient(circle at 40% 85%,#fff 1px,transparent 2px)}
 .a-brega .pt{color:#fff;font-size:clamp(26px,5vw,64px)}
 .a-brega .pt small{display:block;font-size:.4em;color:var(--yellow);letter-spacing:.1em;margin-top:.4em}
+/* PROFUNDIDAD EN LA GALERIA — la version en tarjetas del mismo lema:
+   la tarjeta que tienes en el centro es la SEÑAL (a tamaño, nitida, saturada)
+   y las de los lados se quedan en RUIDO (mas pequeñas, lavadas, apagadas).
+   --foc (0..1) lo escribe el JS mientras dura el anclaje.
+   La escala va en .proj y NO en .art: GSAP ya usa el transform de .art para
+   ladearla con la velocidad del scroll, y se pisarian. */
+@media(min-width:901px){
+  html.gsap .work .track .proj{--foc:1;transform:scale(calc(.888 + .112*var(--foc)))}
+  html.gsap .work .track .proj .art{filter:saturate(calc(.3 + .7*var(--foc))) brightness(calc(.58 + .42*var(--foc)))}
+  html.gsap .work .track .proj .meta{opacity:calc(.3 + .7*var(--foc))}
+}
 /* La galeria se apila (en vez de ir en horizontal) en DOS casos:
    1) en movil, y 2) si GSAP no esta — sin el no hay quien mueva la tira y
    tres de los cuatro proyectos se quedarian inalcanzables dentro del overflow. */
@@ -414,7 +481,8 @@ html:not(.gsap) .work .rail,html:not(.gsap) .work .stamp{display:none}
 .valores{background:var(--panel);border-radius:26px;padding:clamp(38px,6vw,72px);position:relative;overflow:hidden}
 .valores::before{content:"";position:absolute;right:-14%;top:-40%;width:52%;aspect-ratio:1;border-radius:50%;
   background:var(--grad-ring);filter:blur(70px);opacity:.16;pointer-events:none}
-.val-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;position:relative;z-index:2}
+/* perspectiva para que las tres columnas se levanten al entrar (lo mueve GSAP) */
+.val-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;position:relative;z-index:2;perspective:1000px}
 @media(max-width:900px){.val-grid{grid-template-columns:1fr;gap:28px}}
 .val h3{font-size:clamp(20px,2.4vw,26px);font-weight:800;text-transform:uppercase;letter-spacing:-.015em;margin-bottom:12px;display:flex;align-items:center;gap:10px}
 .val h3 .num{font-family:var(--f-serif);font-style:italic;font-weight:400;color:var(--accent);font-size:1.3em}
@@ -424,8 +492,16 @@ html:not(.gsap) .work .rail,html:not(.gsap) .work .stamp{display:none}
    11. CONTACTO — tipografia enorme que huye del raton
    ========================================================================== */
 .contacto{text-align:center;padding-top:clamp(100px,16vh,200px);padding-bottom:clamp(100px,16vh,200px);position:relative;overflow:hidden}
-.contacto .sun-bg{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:min(88vw,760px);aspect-ratio:1;border-radius:50%;
-  background:var(--grad-ring);filter:blur(64px);opacity:.2;pointer-events:none;z-index:0}
+/* El sol del final es el eclipse del principio, ya abierto del todo: crece y
+   se enciende con el scroll (--sun / --sunO los mueve GSAP; sin el se quedan
+   en su valor de siempre y se ve igual que antes).
+   OJO — aqui habia un fallo real: el centrado iba en `transform:translate()`
+   y la clase .spin anima `transform:rotate()`, que lo BORRA. El sol se iba
+   desplazando y volvia de golpe cada 14s. El centrado pasa a la propiedad
+   `translate` y la escala a `scale`, que son independientes del transform. */
+.contacto .sun-bg{position:absolute;left:50%;top:46%;translate:-50% -50%;scale:var(--sun,1);
+  width:min(88vw,760px);aspect-ratio:1;border-radius:50%;
+  background:var(--grad-ring);filter:blur(64px);opacity:var(--sunO,.2);pointer-events:none;z-index:0}
 .contacto>*{position:relative;z-index:2}
 .contacto .eyebrow{justify-content:center;margin-bottom:26px}
 .contacto h2{font-size:clamp(44px,12.4vw,182px);font-weight:900;letter-spacing:-.055em;line-height:.86;text-transform:uppercase}
@@ -558,7 +634,7 @@ footer{border-top:1px solid var(--line);padding:56px var(--gutter) 40px}
   <!-- ===== 6. SERVICIOS ===== -->
   <section class="sec-pad wrap" id="servicios">
     <div class="sec-head">
-      <h2 class="reveal">Lo que hacemos</h2>
+      <h2><span class="mask-line"><span>Lo que hacemos</span></span></h2>
       <span class="sec-num reveal">(Servicios / 06)</span>
     </div>
     <div class="serv" id="serv">
@@ -585,7 +661,7 @@ footer{border-top:1px solid var(--line);padding:56px var(--gutter) 40px}
   <section class="work" id="trabajo">
     <div class="wk-head">
       <div class="sec-head" style="margin-bottom:0">
-        <h2 class="reveal">Trabajo reciente</h2>
+        <h2><span class="mask-line"><span>Trabajo reciente</span></span></h2>
         <span class="sec-num reveal">(Selección / 04)</span>
       </div>
     </div>
@@ -634,7 +710,7 @@ footer{border-top:1px solid var(--line);padding:56px var(--gutter) 40px}
   <section class="sec-pad wrap">
     <div class="valores">
       <div class="sec-head" style="margin-bottom:44px">
-        <h2 class="reveal" style="font-size:clamp(26px,4vw,54px)">Cómo bregamos</h2>
+        <h2 style="font-size:clamp(26px,4vw,54px)"><span class="mask-line"><span>Cómo bregamos</span></span></h2>
         <span class="sec-num reveal">(Nuestra forma)</span>
       </div>
       <div class="val-grid">
@@ -697,6 +773,40 @@ var isWide = function(){ return window.innerWidth > 900; };
 var $  = function(s,c){ return (c||document).querySelector(s); };
 var $$ = function(s,c){ return [].slice.call((c||document).querySelectorAll(s)); };
 var clamp = function(v,a,b){ return v<a?a:(v>b?b:v); };
+/* Cuanto arrastra el raton al eclipse. TIENE QUE SER EL MISMO numero que el
+   .14 del shader: con el se calcula donde esta el disco en pantalla, y de eso
+   depende hacia donde se dobla el titular. */
+var TIRON_RATON = .14;
+
+/* El titular se parte en letras para que cada una pueda obedecer al eclipse.
+   NO se parten dos palabras, y por el mismo motivo: van JUNTAS.
+   - "ruido"  (.q)          -> se va de una pieza, no se desmonta.
+   - "marcas" (.grad-text)  -> ademas lleva el degradado recortado al texto,
+                               y partirla romperia el recorte. */
+(function(){
+  var h1=$('.hero h1'); if(!h1) return;
+  $$('.mask-line>span',h1).forEach(function(linea){
+    [].slice.call(linea.childNodes).forEach(function(n){
+      if(n.nodeType!==3) return;                    /* solo el texto suelto */
+      var frag=document.createDocumentFragment();
+      /* Se parte primero por PALABRAS, y cada palabra va en su propia caja
+         que no rompe. Sin esto la linea podria cortarse ENTRE DOS LETRAS
+         —son inline-block, cada una es un sitio valido para romper— y partir
+         una palabra por la mitad sin guion. */
+      n.textContent.split(/(\s+)/).forEach(function(trozo){
+        if(!trozo) return;
+        if(/^\s+$/.test(trozo)){ frag.appendChild(document.createTextNode(' ')); return; }
+        var pal=document.createElement('span'); pal.className='hw';
+        trozo.split('').forEach(function(c){
+          var s=document.createElement('span'); s.className='hch'; s.textContent=c;
+          pal.appendChild(s);
+        });
+        frag.appendChild(pal);
+      });
+      linea.replaceChild(frag,n);
+    });
+  });
+})();
 
 /* =====================================================================
    1. PRELOADER — estatica de verdad que se va callando
@@ -708,8 +818,14 @@ function startHero(){
   if(hero) hero.classList.add('on');
   document.body.classList.remove('locked');
   if(lenis) lenis.start();
-  revealCheck();
+  revealCheck(); maskCheck();
   introEclipse();
+  /* el titular ya ha subido de su mascara: se abre el recorte para que las
+     letras de "ruido" puedan salir volando fuera de su linea */
+  setTimeout(function(){
+    $$('.hero h1 .mask-line').forEach(function(el){ el.classList.add('unclip'); });
+    lensMeasure();     /* ya estan en su sitio: ahora si se pueden medir */
+  }, 1250);
 }
 
 if(reduce){
@@ -793,7 +909,9 @@ var glApi = null;
   ' return mix(g3,g4,(t-.6666)*3.);}',
   'void main(){',
   ' vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y;',
-  ' vec2 q=p-uC-(uMouse-.5)*.07;',
+  /* OJO: este .14 tiene que ser el MISMO numero que TIRON_RATON en el JS.
+     Es lo que hace que el titular sepa donde esta el disco de verdad. */
+  ' vec2 q=p-uC-(uMouse-.5)*.14;',
   ' float r=length(q); float ang=atan(q.y,q.x);',
   /* el borde del disco no es un circulo perfecto: respira con ruido */
   ' float nEdge=fbm(vec2(ang*2.4, r*2.4-uTime*.05));',
@@ -810,6 +928,21 @@ var glApi = null;
   ' vec3 col=grad(abs(ang)/3.14159265);',
   /* filo del eclipse */
   ' float ring=smoothstep(.014,0.,abs(r-R));',
+  /* ORBITAS: tres aros finos con puntos girando alrededor del disco, cada uno
+     a su velocidad. Su feed esta lleno de diagramas orbitales con numeros
+     romanos; aqui son de verdad y giran. Se apagan al abrirse el eclipse. */
+  ' float orb=0.;',
+  ' for(int k=0;k<3;k++){',
+  '   float fk=float(k);',
+  '   float rr=R*(1.52+fk*.40);',
+  '   float band=smoothstep(.010,0.,abs(r-rr));',
+  '   float a=ang+uTime*(.20-fk*.052);',
+  '   float pts=6.+fk*5.;',
+  '   float ph=abs(fract(a/6.2831853*pts)-.5);',
+  '   float pt=smoothstep(.30,0.,ph);',
+  '   orb += band*(.10+1.15*pow(pt,3.));',
+  ' }',
+  ' orb*=1.-uOpen*.7;',
   /* estrellas */
   ' vec2 sp=p*15.; vec2 sid=floor(sp); float h=hash(sid); float star=0.;',
   ' if(h>.962){ vec2 sf=fract(sp)-.5; float tw=.5+.5*sin(uTime*1.7+h*60.);',
@@ -817,6 +950,7 @@ var glApi = null;
   ' vec3 bg=vec3(.043,.043,.047);',
   ' vec3 c=bg;',
   ' c+=col*halo*(.9+.3*uOpen);',
+  ' c+=col*orb*.55;',
   ' c+=col*ring*1.5;',
   ' c+=vec3(.95,.93,.88)*star*.45;',
   ' c+=(hash(gl_FragCoord.xy+uTime*77.)-.5)*.03;',      /* grano */
@@ -877,34 +1011,180 @@ var glApi = null;
   }
   document.addEventListener('visibilitychange',function(){ if(document.hidden) stop(); else play(); });
 
-  glApi={ open:function(v){ open=clamp(v,0,1); }, intro:function(){ introTarget=1; play(); }, play:play };
+  /* Donde esta el disco AHORA MISMO, en pixeles de pantalla. Lo pregunta el
+     titular para saber hacia donde apartarse. Se calcula con las MISMAS
+     cuentas que el shader (mismo uC, mismo tiron de raton, misma apertura)
+     para que la letra y el dibujo no puedan desincronizarse nunca. */
+  function disc(){
+    var w=sky.clientWidth||window.innerWidth, h=sky.clientHeight||window.innerHeight;
+    if(!h) return null;
+    var aspect=w/h;
+    var cxN=isWide()?.72:.50, cyN=isWide()?.44:.34;
+    var px=(cxN-.5)*aspect + (mouse[0]-.5)*TIRON_RATON;
+    var py=(.5-cyN)        + (mouse[1]-.5)*TIRON_RATON;
+    var box=sky.getBoundingClientRect();
+    /* p.y del shader va hacia ARRIBA; el de la pantalla hacia abajo */
+    return { x:box.left+w/2+px*h, y:box.top+h/2-py*h, r:(isWide()?.30:.245)*h*(1-.16*open) };
+  }
+
+  glApi={ open:function(v){ open=clamp(v,0,1); }, intro:function(){ introTarget=1; play(); }, play:play, disc:disc };
   play();                 /* ya dibuja (en negro) mientras carga el preloader */
 })();
 function introEclipse(){ if(glApi) glApi.intro(); }
-if(!glApi){ /* sin WebGL no pasa nada: el .sky lleva el eclipse en CSS */ }
+/* Sin WebGL el .sky lleva el eclipse en CSS (68% / 46%, radio 46vh): el
+   titular sigue teniendo a que obedecer, solo que sin tiron de raton. */
+function discNow(){
+  if(glApi && glApi.disc) return glApi.disc();
+  var sky=$('#sky'); if(!sky) return null;
+  var b=sky.getBoundingClientRect(); if(!b.height) return null;
+  return { x:b.left+b.width*(isWide()?.68:.50), y:b.top+b.height*(isWide()?.46:.34),
+           r:b.height*(isWide()?.30:.245) };
+}
+
+/* =====================================================================
+   2b. LA LENTE — el eclipse manda sobre el titular
+   ===================================================================== */
+var lensEls=[], lensReady=false;
+/* cuanto puede curvarse una letra, como maximo. Poco a proposito: es una
+   linea que se dobla, no letras sueltas dando saltos. */
+var TOPE_LENTE = 30;
+(function(){
+  var h1=$('.hero h1'); if(!h1) return;
+  lensEls=$$('.hch,.q,.grad-text',h1).map(function(el){
+    /* el color de partida de cada pieza, para poder mezclar hacia la corona
+       sin saltos: crema el titular, apagado "ruido" */
+    var base=el.classList.contains('q') ? [154,149,140] : [244,241,234];
+    return {el:el,cx:0,cy:0,ly:0,lit:-1,base:base};
+  });
+})();
+
+/* Se miden las letras UNA VEZ, con la lente a cero y despues de que el
+   titular haya subido de su mascara: si se midiera antes, estarian 108% mas
+   abajo y todo el efecto saldria descolocado. Se guarda la Y en coordenadas
+   de PAGINA para que el scroll no la estropee. */
+function lensMeasure(){
+  if(!lensEls.length) return;
+  for(var i=0;i<lensEls.length;i++){
+    lensEls[i].el.style.setProperty('--ly','0px');
+    lensEls[i].el.style.setProperty('--lr','0deg');
+  }
+  for(var j=0;j<lensEls.length;j++){
+    var o=lensEls[j], r=o.el.getBoundingClientRect();
+    o.cx=r.left+r.width/2; o.cy=r.top+r.height/2+window.scrollY; o.ly=0;
+  }
+  lensReady=true;
+}
+
+/* El degradado del shader, en JS: la letra se enciende con el MISMO color que
+   tiene la corona detras de ella (el color lo manda el angulo, igual que ahi).
+   Devuelve el color crudo, en [r,g,b]. */
+function coronaCol(t){
+  var g=[[255,210,30],[255,122,31],[255,45,107],[160,43,255]];
+  t=clamp(t,0,1);
+  var i=0,f=0;
+  if(t<1/3){ i=0; f=t*3; } else if(t<2/3){ i=1; f=(t-1/3)*3; } else { i=2; f=(t-2/3)*3; }
+  var a=g[i], b=g[i+1];
+  return [Math.round(a[0]+(b[0]-a[0])*f),Math.round(a[1]+(b[1]-a[1])*f),Math.round(a[2]+(b[2]-a[2])*f)];
+}
+/* Para la LETRA no se usa el color crudo sino una version aclarada hacia el
+   blanco: se sigue viendo de que color la enciende la corona, pero nunca se
+   oscurece — si no, una letra magenta encima de corona magenta desaparece.
+   El resplandor (--glow) si va con el color crudo: eso es luz, suma. */
+function coronaLetra(c){ return [Math.round(c[0]*.4+153),Math.round(c[1]*.4+153),Math.round(c[2]*.4+153)]; }
+
+function lensFrame(){
+  if(reduce || !lensReady || !lensEls.length) return;
+  var y=window.scrollY;
+  /* solo manda mientras la portada esta delante; al bajar suelta las letras
+     para no pelearse con la desintegracion de "ruido" */
+  var fuerza=clamp(1-(y/(innerHeight*0.5)),0,1);
+  var d=fuerza>0 ? discNow() : null;
+  for(var i=0;i<lensEls.length;i++){
+    var o=lensEls[i], ly=0, lr=0, lit=0, col=null;
+    if(d && d.r>0){
+      var vx=o.cx-d.x, vy=(o.cy-y)-d.y;
+      var dist=Math.max(1,Math.sqrt(vx*vx+vy*vy));
+      var k=(d.r*d.r)/(dist*dist);                  /* cae con el cuadrado, como la luz */
+      var push=Math.min(d.r*0.42*k, TOPE_LENTE)*fuerza;
+      /* SOLO la componente vertical: la horizontal es la que abriria las
+         palabras. La linea se curva; el espaciado no se toca. */
+      ly=vy/dist*push;
+      lr=(ly/TOPE_LENTE)*3.5;                       /* se ladea un pelin al curvarse */
+      /* dentro del disco hay SOMBRA: ahi no se enciende nada */
+      if(dist>d.r*0.95) lit=clamp(1-(dist-d.r)/(d.r*1.6),0,1)*fuerza;
+      if(lit>0.04) col=coronaCol(Math.abs(Math.atan2(-vy,vx))/Math.PI);
+    }
+    var movida=Math.abs(ly-o.ly)>0.4;
+    var lucida=Math.abs(lit-o.lit)>0.02;
+    if(movida){
+      o.ly=ly;
+      o.el.style.setProperty('--ly',ly.toFixed(1)+'px');
+      o.el.style.setProperty('--lr',lr.toFixed(2)+'deg');
+    }
+    if(movida || lucida){
+      o.lit=lit;
+      o.el.style.setProperty('--lit',lit.toFixed(2));
+      if(col){
+        /* la letra va del crema de siempre al color (aclarado) de la corona,
+           segun cuanta luz le llegue: asi no hay salto al encenderse */
+        var cl=coronaLetra(col), b=o.base;
+        o.el.style.setProperty('--lc','rgb('
+          +Math.round(b[0]+(cl[0]-b[0])*lit)+','
+          +Math.round(b[1]+(cl[1]-b[1])*lit)+','
+          +Math.round(b[2]+(cl[2]-b[2])*lit)+')');
+        o.el.style.setProperty('--glow','rgba('+col[0]+','+col[1]+','+col[2]+','+(0.6*lit).toFixed(2)+')');
+      } else {
+        o.el.style.removeProperty('--lc'); o.el.style.removeProperty('--glow');
+      }
+    }
+  }
+}
 
 /* =====================================================================
    3. REVELADOS caseros (respaldo si GSAP no carga)
    ===================================================================== */
 var revs=$$('.reveal');
 $$('.serv-row').forEach(function(el,i){ el.style.transitionDelay=((i%4)*0.07)+'s'; });
-function inView(el){ var r=el.getBoundingClientRect(); return r.top < innerHeight*0.9 && r.bottom > 0; }
+/* RED DE SEGURIDAD: basta con que el elemento HAYA LLEGADO, aunque ya te
+   hayas pasado de el. Si solo se contara "esta en pantalla", un scroll a
+   saltos —arrastrar la barra, la tecla Fin, un salto de ancla— se lo salta
+   entre fotogramas y se queda invisible PARA SIEMPRE. Es el mismo fallo que
+   se caza y se arregla en la v3. */
+function inView(el){ return el.getBoundingClientRect().top < innerHeight*0.9; }
 var gsapActive=false;
 function revealCheck(){
   if(gsapActive || !revs) return;   /* revs aun no existe si entramos con movimiento reducido */
   for(var i=0;i<revs.length;i++){ var el=revs[i]; if(!el._s && inView(el)){ el._s=true; el.classList.add('in'); } }
-  $$('.mask-line').forEach(function(el){ if(!el._s && inView(el)){ el._s=true; el.classList.add('in'); } });
+}
+/* Las mascaras de titular las llevamos SIEMPRE nosotros, con GSAP y sin el:
+   es el mismo gesto del titular del hero, reutilizado en cada seccion, y con
+   un solo camino de codigo no puede desincronizarse. */
+var masks=$$('.mask-line');
+function maskCheck(){
+  if(!masks) return;          /* con movimiento reducido se entra antes de que exista */
+  for(var i=0;i<masks.length;i++){
+    var el=masks[i];
+    if(el._m) continue;
+    /* los del hero esperan a que el preloader se levante: si no, suben
+       DETRAS de el y su entrada no llega a verse nunca */
+    if(hero && hero.contains(el) && !hero.classList.contains('on')) continue;
+    if(inView(el)){ el._m=true; el.classList.add('in'); }
+  }
 }
 
 /* =====================================================================
    4. SCROLL: cabecera, barra de progreso, velocidad, seccion activa
    ===================================================================== */
-var header=$('#header'), progress=$('#progress');
+var header=$('#header'), progress=$('#progress'), hBadge=$('header .badge'), grainEl=$('.grain');
 var lastY=window.scrollY, ticking=false, vel=0, velSmooth=0;
 function onScroll(){
   var y=window.scrollY, h=document.documentElement.scrollHeight-innerHeight;
+  var prog = h>0?clamp(y/h,0,1):0;
   vel = y-lastY;
-  if(progress) progress.style.transform='scaleX('+(h>0?clamp(y/h,0,1):0)+')';
+  if(progress) progress.style.transform='scaleX('+prog+')';
+  /* el aro de la insignia gira con lo que llevas leido: hora y media de vuelta
+     de arriba abajo. Es su degradado haciendo de indicador. */
+  if(hBadge) hBadge.style.setProperty('--br',(prog*540).toFixed(1)+'deg');
   if(header){
     header.classList.toggle('scrolled', y>40);
     if(y>140 && y>lastY+2) header.classList.add('compact');
@@ -913,11 +1193,11 @@ function onScroll(){
   /* el eclipse se abre a medida que dejas el hero */
   if(glApi && hero){ var hb=hero.getBoundingClientRect(); glApi.open(clamp(-hb.top/Math.max(1,hb.height),0,1)); }
   if(!gsapActive) manifScroll();
-  revealCheck(); lastY=y; ticking=false;
+  revealCheck(); maskCheck(); lastY=y; ticking=false;
 }
 addEventListener('scroll',function(){ if(!ticking){ requestAnimationFrame(onScroll); ticking=true; } },{passive:true});
-addEventListener('resize',function(){ revealCheck(); mqMeasure(); },{passive:true});
-onScroll(); revealCheck();
+addEventListener('resize',function(){ revealCheck(); maskCheck(); mqMeasure(); if(lensReady) lensMeasure(); },{passive:true});
+onScroll(); revealCheck(); maskCheck();
 
 /* seccion activa en el menu */
 if('IntersectionObserver' in window){
@@ -995,7 +1275,7 @@ if(stack){
 var mqTrack=$('#mqTrack'), mqHalf=0, mqX=0;
 function mqMeasure(){ if(mqTrack) mqHalf=mqTrack.scrollWidth/2; }
 mqMeasure();
-if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ mqMeasure(); if(gsapActive&&window.ScrollTrigger) ScrollTrigger.refresh(); });
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ mqMeasure(); if(lensReady) lensMeasure(); if(gsapActive&&window.ScrollTrigger) ScrollTrigger.refresh(); });
 
 /* =====================================================================
    8. GSAP: revelados, hero con scrub, galeria horizontal anclada
@@ -1005,38 +1285,99 @@ if(gsapActive){
   gsap.registerPlugin(ScrollTrigger);
 
   gsap.set('.reveal', {autoAlpha:0, y:34});
-  gsap.set('.serv-row', {autoAlpha:0, x:-56, y:0});
+  gsap.set('.serv-row', {autoAlpha:0, x:-56, y:0, '--ds':1});
+  gsap.set('.val', {autoAlpha:0, y:58, rotateX:18, transformOrigin:'50% 130%'});
 
-  ScrollTrigger.batch('.reveal:not(.serv-row)', {start:'top 88%',
+  ScrollTrigger.batch('.reveal:not(.serv-row):not(.val)', {start:'top 88%',
     onEnter:function(b){ gsap.to(b,{autoAlpha:1,y:0,duration:1,ease:'power3.out',stagger:.09,overwrite:true}); }});
+  /* servicios: entran ademas DESINTONIZADOS (--ds parte el titular en dos
+     canales de color) y se sintonizan al llegar. Ruido -> señal, otra vez. */
   ScrollTrigger.batch('.serv-row', {start:'top 88%',
-    onEnter:function(b){ gsap.to(b,{autoAlpha:1,x:0,duration:.9,ease:'power3.out',stagger:.08,overwrite:true}); }});
+    onEnter:function(b){ gsap.to(b,{autoAlpha:1,x:0,'--ds':0,duration:1,ease:'power3.out',stagger:.08,overwrite:true}); }});
+  /* "como bregamos": las tres columnas se levantan como cartas que se ponen
+     de pie sobre la mesa (de ahi la perspective del .val-grid). */
+  ScrollTrigger.batch('.val', {start:'top 86%',
+    onEnter:function(b){ gsap.to(b,{autoAlpha:1,y:0,rotateX:0,duration:1.1,ease:'power3.out',stagger:.13,overwrite:true}); }});
 
-  /* hero: el contenido sube y se funde al salir */
-  gsap.to('.hero .inner',{yPercent:-16, autoAlpha:.1, ease:'none',
+  /* hero: el contenido sube y se funde al salir. Se funde MENOS que antes
+     (.34 en vez de .1) porque si no, no se llega a ver como se deshace. */
+  gsap.to('.hero .inner',{yPercent:-14, autoAlpha:.34, ease:'none',
     scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
 
-  /* manifiesto: el revelado ligado al scroll, sin saltos */
+  /* EL LEMA, HECHO SCROLL: al salir del hero, "ruido" SE VA — entero, de una
+     pieza: se aparta, se ladea y se difumina hasta desaparecer— y "hacemos
+     marcas" se queda ahi. No hacemos ruido; hacemos marcas. */
+  var qw=$('.hero h1 .q');
+  if(qw){
+    gsap.set(qw,{filter:'blur(0px)'});
+    gsap.to(qw,{ x:-70, y:26, rotation:-6, scale:.78, autoAlpha:0, filter:'blur(13px)', ease:'none',
+      scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom 62%',scrub:.4} });
+  }
+
+  var mm=gsap.matchMedia();
+
+  /* MANIFIESTO ANCLADO — el revelado deja de pasar "de paso": en escritorio la
+     seccion SE PARA y el revelador baja delante de ti. Es la frase que define
+     al estudio, asi que merece que te detengas a verla.
+     En movil no se ancla (comeria media pantalla de scroll sin ganar nada) y
+     se revela al pasar, como hasta ahora. */
   if(stack){
     gsap.set(stack,{'--rev':0});
-    gsap.to(stack,{'--rev':1, ease:'none',
-      scrollTrigger:{trigger:'.manif',start:'top 78%',end:'bottom 68%',scrub:.6}});
+    mm.add('(min-width:901px)',function(){
+      var t=gsap.to(stack,{'--rev':1, ease:'none',
+        scrollTrigger:{trigger:'.manif',start:'center center',end:'+=88%',
+          pin:true, scrub:.35, anticipatePin:1, invalidateOnRefresh:true}});
+      return function(){ if(t.scrollTrigger) t.scrollTrigger.kill(); t.kill(); };
+    });
+    mm.add('(max-width:900px)',function(){
+      var t=gsap.to(stack,{'--rev':1, ease:'none',
+        scrollTrigger:{trigger:'.manif',start:'top 78%',end:'bottom 68%',scrub:.6}});
+      return function(){ if(t.scrollTrigger) t.scrollTrigger.kill(); t.kill(); };
+    });
   }
 
   /* TRABAJO: pin + desplazamiento lateral (solo escritorio) */
-  var mm=gsap.matchMedia();
   mm.add('(min-width:901px)',function(){
     var track=$('#wkTrack'), stage=$('#wkStage'), bar=$('#wkBar'), cnt=$('#wkCnt');
     if(!track||!stage) return;
+    var projs=$$('.proj',track);
+    /* SEÑAL vs RUIDO, en tarjetas: la que tienes en el centro se ve entera
+       (a tamaño, nitida, saturada) y las de los lados se apagan. Ademas el
+       arte se mueve DENTRO de su marco (--px) al reves que el rotulo, que es
+       lo que convierte la tira en profundidad y no en un carrusel plano. */
+    function focus(){
+      var c=window.innerWidth/2, W=window.innerWidth||1;
+      for(var i=0;i<projs.length;i++){
+        var p=projs[i], r=p.getBoundingClientRect();
+        var off=clamp(((r.left+r.width/2)-c)/W,-1,1);
+        p.style.setProperty('--foc',clamp(1-Math.abs(off)*1.5,0,1).toFixed(3));
+        p.style.setProperty('--px',(off*6).toFixed(2));
+      }
+    }
     var dist=function(){ return Math.max(0, track.scrollWidth - window.innerWidth); };
-    gsap.to(track,{ x:function(){ return -dist(); }, ease:'none',
+    var tw=gsap.to(track,{ x:function(){ return -dist(); }, ease:'none',
       scrollTrigger:{ trigger:stage, start:'top top', end:function(){ return '+='+dist(); },
         pin:true, scrub:.8, invalidateOnRefresh:true, anticipatePin:1,
+        onRefresh:focus, onEnter:focus, onEnterBack:focus,
         onUpdate:function(self){
           if(bar) bar.style.transform='scaleX('+self.progress+')';
           if(cnt){ var i=clamp(Math.floor(self.progress*3.99)+1,1,4); cnt.textContent='0'+i+' / 04'; }
+          focus();
         }}});
+    focus();
+    return function(){
+      if(tw.scrollTrigger) tw.scrollTrigger.kill(); tw.kill();
+      projs.forEach(function(p){ p.style.removeProperty('--foc'); p.style.removeProperty('--px'); });
+    };
   });
+
+  /* CIERRE DEL CIRCULO: el sol del contacto es el eclipse del hero, pero ya
+     abierto del todo. Crece y se enciende segun te acercas al final. */
+  var sunbg=$('.contacto .sun-bg');
+  if(sunbg){
+    gsap.fromTo(sunbg,{'--sun':.5,'--sunO':.04},{'--sun':1.18,'--sunO':.34, ease:'none',
+      scrollTrigger:{trigger:'.contacto',start:'top bottom',end:'bottom bottom',scrub:.6}});
+  }
 
   /* las tarjetas se ladean con la velocidad del scroll */
   var arts=gsap.utils.toArray('.proj .art');
@@ -1080,6 +1421,7 @@ if(fine && !reduce){
   });
 }
 (function loop(){
+  lensFrame();          /* el titular obedeciendo al eclipse */
   if(fine && !reduce && cur){
     cx+=(mx-cx)*.17; cy+=(my-cy)*.17;
     cur.style.transform='translate('+(cx-19)+'px,'+(cy-19)+'px)';
@@ -1089,7 +1431,14 @@ if(fine && !reduce){
     mqX -= (0.55 + clamp(velSmooth*0.22,-9,9));
     if(mqX<=-mqHalf) mqX+=mqHalf;
     if(mqX>0) mqX-=mqHalf;
-    mqTrack.style.transform='translateX('+mqX.toFixed(2)+'px)';
+    /* el marquee se ladea con la velocidad, igual que las tarjetas: es el
+       mismo gesto de la galeria aplicado a la tira de palabras */
+    mqTrack.style.transform='translateX('+mqX.toFixed(2)+'px) skewX('+clamp(velSmooth*-.16,-9,9).toFixed(2)+'deg)';
+  }
+  /* EL GRANO ES EL RUIDO: cuanto mas rapido bajas, mas ruido tiene la pagina;
+     cuando te paras a leer, se calla. El lema aplicado a la web entera. */
+  if(grainEl && !reduce){
+    grainEl.style.opacity=(0.055+clamp(Math.abs(velSmooth)*0.0024,0,0.105)).toFixed(4);
   }
   requestAnimationFrame(loop);
 })();
