@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Haze — three atmospheric WebGL backgrounds. Zero dependencies.</title>
+<meta name="description" content="Caustics, ribbons and liquid chrome, hand-written in one WebGL file. No libraries, no build step, 22 KB.">
+<meta name="theme-color" content="#030a14">
+<style>
+/* ==========================================================================
+   Haze — demo & control room.
+   This page IS the pitch: every knob is a slider away and the code for
+   whatever the buyer builds is one click. Dependency-free, like the product.
+   ========================================================================== */
+:root{
+  --ink:#f2f4f6; --dim:#98a1ab; --faint:#606a76;
+  --line:rgba(242,244,246,.14); --line-soft:rgba(242,244,246,.07);
+  --f:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--f);background:#030a14;color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid #5fe2c8;outline-offset:3px;border-radius:3px}
+
+/* ---------- stage ---------- */
+.stage{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:clamp(24px,5vw,72px);overflow:hidden}
+/* The veil is what keeps the copy readable whatever the buyer picks. */
+.stage .veil{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(3,10,20,.5) 0%,rgba(3,10,20,.15) 34%,rgba(3,10,20,.86) 82%,rgba(3,10,20,.96) 100%)}
+.stage .copy{position:relative;z-index:2;max-width:680px}
+.tagline{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);
+  display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.tagline i{width:6px;height:6px;border-radius:50%;background:#5fe2c8;flex-shrink:0}
+h1{font-size:clamp(52px,10vw,132px);font-weight:800;line-height:.88;letter-spacing:-.055em;margin-bottom:20px}
+.lede{font-size:clamp(16px,1.5vw,19px);color:var(--dim);max-width:52ch}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:100px;cursor:pointer;
+  font-size:14px;font-weight:600;border:1px solid var(--line);background:transparent;
+  transition:background .25s,border-color .25s,color .25s}
+.btn:hover{border-color:var(--ink)}
+.btn.solid{background:var(--ink);color:#030a14;border-color:var(--ink)}
+.btn.solid:hover{background:#fff}
+
+/* motif switch, sitting on the stage itself */
+.motifs{position:absolute;z-index:3;top:clamp(20px,4vw,34px);left:clamp(24px,5vw,72px);
+  display:flex;gap:8px;flex-wrap:wrap}
+.motifs .chip{backdrop-filter:blur(10px);background:rgba(3,10,20,.42)}
+
+/* ---------- control room ---------- */
+.room{position:relative;z-index:2;padding:clamp(40px,7vw,96px) clamp(24px,5vw,72px) 120px;
+  border-top:1px solid var(--line-soft);background:#030a14}
+.room-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:38px}
+h2{font-size:clamp(24px,3.4vw,40px);font-weight:800;letter-spacing:-.03em}
+.hint{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,56px);align-items:start}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+
+.card{border:1px solid var(--line-soft);border-radius:16px;padding:clamp(18px,2.4vw,28px);background:rgba(255,255,255,.015)}
+.card + .card{margin-top:18px}
+.card h3{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);
+  font-weight:700;margin-bottom:20px}
+
+.row{display:grid;grid-template-columns:96px 1fr 54px;align-items:center;gap:14px;margin-bottom:15px}
+.row:last-child{margin-bottom:0}
+.row label{font-size:13.5px;color:var(--dim)}
+.row output{font-family:var(--mono);font-size:12px;text-align:right;font-variant-numeric:tabular-nums}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:2px;background:var(--line);border-radius:2px;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--ink);cursor:pointer;border:0}
+input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--ink);cursor:pointer;border:0}
+
+.swatches{display:flex;gap:10px;flex-wrap:wrap}
+.swatches label{position:relative;width:46px;height:46px;border-radius:11px;overflow:hidden;border:1px solid var(--line);cursor:pointer;flex-shrink:0}
+.swatches input[type=color]{position:absolute;inset:-6px;width:200%;height:200%;border:0;padding:0;background:none;cursor:pointer}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:8px 15px;border-radius:100px;border:1px solid var(--line);font-size:12.5px;font-weight:600;cursor:pointer;
+  background:transparent;transition:background .2s,border-color .2s,color .2s;text-transform:capitalize}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed=true]{background:var(--ink);color:#030a14;border-color:var(--ink)}
+
+pre{font-family:var(--mono);font-size:12.5px;line-height:1.75;color:#d5dae0;background:#061020;border:1px solid var(--line-soft);
+  border-radius:14px;padding:20px;overflow-x:auto;white-space:pre;-webkit-overflow-scrolling:touch}
+pre .k{color:#5fe2c8}.k2{color:#8fb6d8}.k3{color:#c9b06b}
+.copybar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px}
+.copied{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#5fe2c8;opacity:0;transition:opacity .25s}
+.copied.on{opacity:1}
+
+.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:var(--line-soft);
+  border:1px solid var(--line-soft);border-radius:16px;overflow:hidden;margin-top:56px}
+.spec{background:#030a14;padding:24px}
+.spec b{display:block;font-size:clamp(24px,3vw,34px);font-weight:800;letter-spacing:-.03em;margin-bottom:5px}
+.spec span{font-size:13px;color:var(--dim)}
+
+footer{border-top:1px solid var(--line-soft);padding:34px clamp(24px,5vw,72px);
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<section class="stage" id="stage">
+  <div class="veil" aria-hidden="true"></div>
+  <div class="chips motifs" id="motifs"></div>
+  <div class="copy">
+    <p class="tagline"><i></i>WebGL · three motifs · zero dependencies · 22 KB</p>
+    <h1>Haze</h1>
+    <p class="lede">Caustics, ribbons and liquid chrome — hand-written in one WebGL file.
+       Drop in a script tag and a <code>div</code>. It sizes itself, pauses when it scrolls out of
+       view, falls back to CSS where WebGL is missing, and sits still for anyone who asked their
+       system to stop animations.</p>
+    <div class="cta">
+      <button class="btn solid" id="toRoom">Play with it ↓</button>
+      <button class="btn" id="cycle">Next motif</button>
+    </div>
+  </div>
+</section>
+
+<section class="room">
+  <div class="room-head">
+    <h2>Every knob, live.</h2>
+    <span class="hint">The stage above updates as you drag</span>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h3>Motif</h3>
+        <div class="chips" id="motifs2"></div>
+      </div>
+      <div class="card">
+        <h3>Palette</h3>
+        <div class="chips" id="palettes" style="margin-bottom:18px"></div>
+        <div class="swatches" id="swatches"></div>
+      </div>
+      <div class="card">
+        <h3>Form</h3>
+        <div class="row"><label for="r-scale">Scale</label><input type="range" id="r-scale" min="0.35" max="3" step="0.05" value="1"><output id="o-scale"></output></div>
+        <div class="row"><label for="r-energy">Energy</label><input type="range" id="r-energy" min="0" max="1" step="0.01" value="0.5"><output id="o-energy"></output></div>
+        <div class="row"><label for="r-contrast">Contrast</label><input type="range" id="r-contrast" min="0.3" max="2" step="0.02" value="1"><output id="o-contrast"></output></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h3>Motion &amp; texture</h3>
+        <div class="row"><label for="r-speed">Speed</label><input type="range" id="r-speed" min="0" max="3" step="0.05" value="1"><output id="o-speed"></output></div>
+        <div class="row"><label for="r-grain">Grain</label><input type="range" id="r-grain" min="0" max="0.12" step="0.002" value="0.03"><output id="o-grain"></output></div>
+        <div class="row"><label for="r-vignette">Vignette</label><input type="range" id="r-vignette" min="0" max="0.9" step="0.02" value="0.35"><output id="o-vignette"></output></div>
+        <div class="row"><label for="r-mouse">Mouse pull</label><input type="range" id="r-mouse" min="0" max="0.4" step="0.005" value="0.1"><output id="o-mouse"></output></div>
+      </div>
+
+      <div class="card">
+        <div class="copybar">
+          <h3 style="margin:0">Your code</h3>
+          <span class="copied" id="copied">Copied</span>
+        </div>
+        <pre id="code"></pre>
+        <button class="btn" id="copy" style="margin-top:14px">Copy to clipboard</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="specs">
+    <div class="spec"><b>3 motifs</b><span>Caustics, ribbons, liquid chrome.</span></div>
+    <div class="spec"><b>0</b><span>Dependencies. No three.js, no GSAP.</span></div>
+    <div class="spec"><b>1 triangle</b><span>One draw call per frame.</span></div>
+    <div class="spec"><b>Pauses</b><span>Off-screen and on hidden tabs.</span></div>
+  </div>
+</section>
+
+<footer>
+  <span>Haze v1.0.0</span>
+  <span>WebGL · commercial licence</span>
+</footer>
+
+<script src="../dist/haze.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var stage = document.getElementById('stage');
+  var bg = new Haze(stage, { motif: 'caustics', palette: 'lagoon', energy: 0.5 });
+
+  /* Taken here, before anything else: the sliders call paintCode() the moment
+     they are created, and a `var` declared further down would still be
+     undefined at that point. */
+  var codeEl = document.getElementById('code');
+
+  var motif = 'caustics';
+  var palette = 'lagoon';
+
+  /* ---------- motif switches (two rows, kept in sync) ---------- */
+  var motifBoxes = [document.getElementById('motifs'), document.getElementById('motifs2')];
+  function buildMotifs() {
+    motifBoxes.forEach(function (box) {
+      box.innerHTML = '';
+      Haze.motifs.forEach(function (name) {
+        var b = document.createElement('button');
+        b.className = 'chip';
+        b.type = 'button';
+        b.textContent = name;
+        b.dataset.motif = name;
+        b.setAttribute('aria-pressed', String(name === motif));
+        b.addEventListener('click', function () { setMotif(name); });
+        box.appendChild(b);
+      });
+    });
+  }
+  function setMotif(name) {
+    motif = name;
+    bg.motif(name);
+    motifBoxes.forEach(function (box) {
+      [].forEach.call(box.children, function (c) {
+        c.setAttribute('aria-pressed', String(c.dataset.motif === name));
+      });
+    });
+    paintCode();
+  }
+  buildMotifs();
+
+  document.getElementById('cycle').addEventListener('click', function () {
+    var i = Haze.motifs.indexOf(motif);
+    setMotif(Haze.motifs[(i + 1) % Haze.motifs.length]);
+  });
+
+  /* ---------- palettes ---------- */
+  var palBox = document.getElementById('palettes');
+  Object.keys(Haze.palettes).forEach(function (name) {
+    var b = document.createElement('button');
+    b.className = 'chip';
+    b.type = 'button';
+    b.textContent = name;
+    b.setAttribute('aria-pressed', String(name === palette));
+    b.addEventListener('click', function () {
+      palette = name;
+      bg.palette(name);
+      syncSwatches();
+      paintCode();
+      [].forEach.call(palBox.children, function (c) { c.setAttribute('aria-pressed', String(c === b)); });
+    });
+    palBox.appendChild(b);
+  });
+
+  /* ---------- colour pickers ---------- */
+  var swatchBox = document.getElementById('swatches');
+  var pickers = [];
+  for (var i = 0; i < 4; i++) {
+    var lab = document.createElement('label');
+    lab.setAttribute('aria-label', 'Colour ' + (i + 1));
+    var inp = document.createElement('input');
+    inp.type = 'color';
+    inp.dataset.i = String(i);
+    inp.addEventListener('input', function (e) {
+      var cols = bg.o.colors.slice();
+      cols[+e.target.dataset.i] = e.target.value;
+      bg.set({ colors: cols });
+      palette = 'custom';
+      [].forEach.call(palBox.children, function (c) { c.setAttribute('aria-pressed', 'false'); });
+      paintCode();
+    });
+    lab.appendChild(inp);
+    swatchBox.appendChild(lab);
+    pickers.push(inp);
+  }
+  function normHex(v) {
+    if (typeof v !== 'string') return '#000000';
+    var s = v.trim();
+    if (/^#[0-9a-f]{3}$/i.test(s)) return '#' + s[1] + s[1] + s[2] + s[2] + s[3] + s[3];
+    return /^#[0-9a-f]{6}$/i.test(s) ? s : '#000000';
+  }
+  function syncSwatches() {
+    for (var i = 0; i < 4; i++) pickers[i].value = normHex(bg.o.colors[i]);
+  }
+  syncSwatches();
+
+  /* ---------- sliders ---------- */
+  ['scale', 'energy', 'contrast', 'speed', 'grain', 'vignette', 'mouse'].forEach(function (k) {
+    var r = document.getElementById('r-' + k);
+    var o = document.getElementById('o-' + k);
+    if (!r || !o) return;
+    function apply() {
+      var v = +r.value;
+      o.textContent = v.toFixed(k === 'grain' ? 3 : 2);
+      if (k === 'energy') bg.energy(v);
+      else { var t = {}; t[k] = v; bg.set(t); }
+      paintCode();
+    }
+    r.addEventListener('input', apply);
+    apply();
+  });
+
+  /* ---------- the snippet ---------- */
+  function paintCode() {
+    var o = bg.o;
+    var L = [];
+    L.push('&lt;script src="haze.js"&gt;&lt;/script&gt;');
+    L.push('&lt;div id="hero" style="height:100svh"&gt;&lt;/div&gt;');
+    L.push('');
+    L.push('&lt;script&gt;');
+    L.push('new <span class="k">Haze</span>(<span class="k3">"#hero"</span>, {');
+    L.push('  <span class="k2">motif</span>:     <span class="k3">"' + motif + '"</span>,');
+    if (palette !== 'custom') {
+      L.push('  <span class="k2">palette</span>:   <span class="k3">"' + palette + '"</span>,');
+    } else {
+      L.push('  <span class="k2">colors</span>:    [' + o.colors.map(function (c) {
+        return '<span class="k3">"' + normHex(c) + '"</span>';
+      }).join(', ') + '],');
+      L.push('  <span class="k2">background</span>: <span class="k3">"' + normHex(o.background) + '"</span>,');
+    }
+    L.push('  <span class="k2">scale</span>:     ' + (+o.scale).toFixed(2) + ',');
+    L.push('  <span class="k2">energy</span>:    ' + (+o.energy).toFixed(2) + ',');
+    L.push('  <span class="k2">contrast</span>:  ' + (+o.contrast).toFixed(2) + ',');
+    L.push('  <span class="k2">speed</span>:     ' + (+o.speed).toFixed(2) + ',');
+    L.push('  <span class="k2">grain</span>:     ' + (+o.grain).toFixed(3) + ',');
+    L.push('  <span class="k2">vignette</span>:  ' + (+o.vignette).toFixed(2) + ',');
+    L.push('  <span class="k2">mouse</span>:     ' + (+o.mouse).toFixed(3));
+    L.push('});');
+    L.push('&lt;/script&gt;');
+    codeEl.innerHTML = L.join('\n');
+  }
+  paintCode();
+
+  document.getElementById('copy').addEventListener('click', function () {
+    var plain = codeEl.textContent;
+    var done = document.getElementById('copied');
+    var show = function () { done.classList.add('on'); setTimeout(function () { done.classList.remove('on'); }, 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(plain).then(show, fallbackCopy);
+    } else fallbackCopy();
+    function fallbackCopy() {
+      var ta = document.createElement('textarea');
+      ta.value = plain; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); show(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+  });
+
+  document.getElementById('toRoom').addEventListener('click', function () {
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelector('.room').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>

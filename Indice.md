@@ -25,7 +25,8 @@ Tu bóveda **por fuera de Reload**: tus clientes propios y tus demos. Separada d
 
 ## 💰 Productos (ingresos pasivos)
 
-- 🌑 [[Productos/Umbra/Umbra|Umbra]] — **fondo de eclipse en WebGL** empaquetado para vender en marketplaces. Terminado y verificado (0 fallos). **Es la pieza 1 de 12**: la apuesta es un catálogo, no una pieza suelta.
+- 🌫️ [[Productos/Haze/Haze|Haze]] — **tres fondos WebGL** (caustics, ribbons, chrome) empaquetados para vender en marketplaces. Terminado y verificado (0 fallos). **Es la pieza 1 de 12**: la apuesta es un catálogo, no una pieza suelta.
+  > ⚠️ **Regla del catálogo:** lo que se vende **no puede parecerse** a lo entregado a un cliente. El eclipse se queda en La Brega.
 
 ---
 
