@@ -62,6 +62,7 @@ Alejandro pidió *«una versión así de awwwards, **de la oscura**, que es la q
 - **Manifiesto** sobre **su fotografía** de la romería, con «bregar» subrayado por **su marcador amarillo**.
 - **Efemérides** sobre **órbitas SVG que se dibujan**, con números romanos.
 - **Extras**: cursor de retículo náutico, hora de Canarias en vivo, coordenadas, scroll suave propio, menú a pantalla completa.
+- **El motor de animación** (segunda vuelta, tras pedirlo él con la colección *CSS & JS Animations* de Awwwards): **todo el texto sube por líneas enmascaradas** · el **logotipo vuela** desde el preloader hasta la cabecera · las **fotos se destapan con una cortina** · los **rótulos ruedan** al pasar por encima · **botones magnéticos** · las **láminas se giran en 3D** como un atlas abierto · el **hero se va ligado al scroll** · las 8 estrellas del pie entran escalonadas.
 - **Cero dependencias de JS externo.**
 - **Verificada: 0 fallos** en 360 / 390 / 430 / 768 / 1280 / 1440 / 1920. Contraste medido **sobre el píxel pintado** (menú 6,4:1). Aguanta **sin las tipografías**, **sin JavaScript** (la galería se apila y las 5 láminas siguen alcanzables) y con **movimiento reducido**.
 

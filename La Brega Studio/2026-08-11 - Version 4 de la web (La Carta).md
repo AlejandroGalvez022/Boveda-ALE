@@ -62,6 +62,34 @@ Todo cuelga de una sola variable, `--vel`. **Medido, no supuesto:**
 
 **Cero dependencias de JS externo** (ni GSAP ni Lenis). Solo tipografías, y aguanta sin ellas.
 
+## Segunda vuelta: el motor de animación
+
+Alejandro, al verla: *«lo que quería era que tuviera las animaciones que tienen estas webs»*, con la colección **[CSS & JS Animations de Awwwards](https://www.awwwards.com/awwwards/collections/css-js-animations/)** (145 piezas).
+
+Tenía razón: el concepto estaba, pero los revelados eran de lo más básico — todo entraba con un `opacity 0 → 1` y un `translateY(30px)`. Mirando la colección, lo que repiten esas webs **no es un efecto suelto, es un vocabulario**. Se ha montado entero:
+
+| Gesto | Dónde | De qué web sale |
+|---|---|---|
+| **Texto que sube por líneas enmascaradas** | todos los titulares, el manifiesto, los párrafos, los pasos | es *el* gesto común de la colección |
+| **Transición de preloader**: el logotipo **vuela** desde la pantalla de carga hasta su sitio en la cabecera | preloader → hero | Malvah Studio |
+| **Cortina de imagen**: la foto se destapa de abajo arriba y se posa | las 11 imágenes | Faubourg, Akaru |
+| **Rótulos que ruedan**: el texto sube y entra su copia por debajo | menú, redes, pie | Reframed |
+| **Botones magnéticos** | «Hablemos», «Cuéntanos tu proyecto» | clásico de la casa |
+| **3D en la galería**: las láminas de los lados se giran hacia dentro, como un atlas abierto | El taller | Vionaro V8, 12 Brews |
+| **Salida del hero ligada al scroll** (*scrub*): sube, se encoge y se apaga | hero | Villainy, Lusion |
+| **Racimo escalonado** | las 8 estrellas del pie | Alec Tear |
+
+**Cómo funciona el troceado.** El JS parte el texto en palabras conservando `<em>`, `<br>` y los bloques que no se pueden partir (la palabra «bregar» lleva el SVG del marcador dentro), **mide cuál ha caído en cada línea** y las agrupa con su máscara. Se rehace cuando cargan las tipografías y al cambiar de ancho, porque las líneas rompen en otro sitio.
+
+**Medido:** 22 líneas y 111 palabras troceadas · una línea pasa de `translateY(88.3px)` a `none` al entrar · el marcador pinta **4.862 píxeles amarillos** · las 11 cortinas abren · los giros de las láminas van de **+14,91° a −14,92°** con la del centro exactamente a 0°.
+
+### Dos trampas de esta segunda vuelta
+
+- 🔴 **Se perdió el marcador amarillo de «BREGAR».** Su revelado lo disparaba un observador atado a esa palabra; al **rehacer el troceado** cuando cargan las tipografías, ese nodo se vuelve a crear y el observador se queda mirando un nodo suelto. Ahora lo dispara **el propio blockquote**, que nunca se destruye —solo se le cambia el contenido dentro—. Sin JS.
+- 🟡 **En `TROCEAR` no pueden entrar los rótulos con `display:flex`** (`.manif .rotulo`, `.cabecera .lado`, `.contacto .rotulo`): partir en líneas convierte los hijos en bloques y destroza la fila.
+
+Y dos detalles de cuidado: el rótulo duplicado del efecto «rueda» va en `position:absolute` **justo debajo**, no apilado, o la caja mediría dos líneas de alto; y las máscaras llevan `padding-bottom:.1em` con `margin-bottom:-.1em` para que `overflow:hidden` **no se coma las tildes** de «ENSEÑÓ» ni «CÓMO».
+
 ## Fallos reales cazados (y cómo se cazaron)
 
 - 🔴 **Dos `smoothstep` con los bordes al revés en el shader.** `smoothstep(rad, rad-0.16, x)` con `rad = 0` es **comportamiento indefinido** en GLSL: en algunas GPU la pantalla entera se pone blanca. Los dos reescritos como `1.0 - smoothstep(a, b, x)` con `a < b` siempre.
