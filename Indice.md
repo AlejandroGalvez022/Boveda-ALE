@@ -16,7 +16,7 @@ Tu bóveda **por fuera de Reload**: tus clientes propios y tus demos. Separada d
 ## 🔥 En marcha
 
 - 🌿 [[Chatbot Psicologo/Chatbot Psicologo|Web Calma + Aura]] — web y chatbot de la **psicóloga** (tu prioridad).
-- 🌐 [[La Brega Studio/La Brega Studio|La Brega Studio]] — web para **Raúl Vega**. Hay **tres versiones** (v1, v2 y v3) y falta que elijas. ⭐ Lo último: la **v2 con la portada nueva** — el titular se curva alrededor del eclipse y se enciende con su corona — más 10 animaciones de scroll.
+- 🌐 [[La Brega Studio/La Brega Studio|La Brega Studio]] — web para **Raúl Vega**. Hay **cuatro versiones** (v1, v2, v3 y v4) y falta que elijas. ⭐ Lo último: la **v4 «La Carta»** — la oscura llevada a nivel Awwwards: su negro entendido como **lámina impresa**, con la luna en **semitono de puntos** cuyo grano lo manda la velocidad del scroll (*la velocidad hace ruido, la calma revela*).
 - 🦷 [[Clinica dental/Clinica dental|Clínica dental]] — mantenimiento web (encargo por cerrar).
 - 🎨 [[Estudio Alisio/Estudio Alisio|Estudio Alisio]] — demo de estudio creativo.
 - 💡 [[Experimentos/Experimentos de diseno|Experimentos de diseño]] — ideas de apps (calendario minimalista iPhone, organizadora de eventos, app con animaciones, app de potencial libre).
