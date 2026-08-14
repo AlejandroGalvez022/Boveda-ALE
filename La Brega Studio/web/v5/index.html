@@ -699,6 +699,25 @@ html:not(.js) .taller .sello,html:not(.js) .taller .barra{display:none}
 .js .ocho.visto li{opacity:1; scale:1; rotate:0deg}
 .ocho li.viva{color:var(--canario); scale:1.12}
 
+/* --- que respiren -------------------------------------------------------
+   Cada una flota a su ritmo y con su desfase (el periodo depende de --i),
+   asi el grupo esta vivo pero nunca late a la vez, que es lo que lo haria
+   parecer un gif. Arranca solo cuando el bloque ya ha aterrizado.
+   El flotar va en el SVG y el aterrizaje en el LI: si compartieran elemento,
+   la animacion y la transicion se pelearian por la misma propiedad.
+   ------------------------------------------------------------------------ */
+@keyframes ocho-flota{
+  0%,100%{translate:0 0; rotate:0deg}
+  50%    {translate:0 -9px; rotate:7deg}
+}
+.ocho .estrella{animation:ocho-flota calc(6.5s + var(--i) * 1.15s) ease-in-out infinite;
+  animation-delay:calc(var(--i) * -.85s)}
+.js .ocho .estrella{animation-play-state:paused}
+.js .ocho.visto .estrella{animation-play-state:running}
+/* al tocarla se yergue y se enciende */
+.ocho li.viva{rotate:12deg}
+@media (prefers-reduced-motion:reduce){ .ocho .estrella{animation:none} }
+
 /* la linea de las ocho: se enciende la isla de la estrella que tocas */
 .ocho-islas{display:flex; flex-wrap:wrap; justify-content:center; gap:0 clamp(10px,1.6vw,20px);
   margin:clamp(34px,5vw,58px) auto 0; max-width:min(100%,1240px);
@@ -791,6 +810,52 @@ footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
 }
 
 /* ==========================================================================
+   EL SALTO AL CONTACTO — la marca se traga la pagina
+   Seccion alta con la escena ANCLADA dentro: el scroll no se secuestra, se
+   usa de linea de tiempo. Todo lo mueve una sola variable, --p (0 a 1),
+   que pone el JS leyendo cuanto ha recorrido la seccion.
+     0 -> .38   la estrella se acerca (crece y gira)
+   .28 -> .52   entra la plancha amarilla POR DETRAS y cubre la web
+   .50 -> .88   aparecen las otras siete, en negro sobre el amarillo
+   .88 -> 1     se sostiene, y al acabar la seccion cae el contacto
+   ========================================================================== */
+.salto{height:260vh; position:relative; z-index:1}
+.salto-escena{position:sticky; top:0; height:100svh; overflow:hidden;
+  display:grid; place-items:center; isolation:isolate}
+.salto-plancha{position:absolute; inset:0; background:var(--canario); z-index:1;
+  opacity:var(--plancha,0)}
+.salto-nucleo{position:relative; z-index:2; width:min(34vw,300px); aspect-ratio:1;
+  color:var(--canario); fill:currentColor;
+  scale:var(--nucleo,.18); rotate:var(--giro,0deg); will-change:scale,rotate}
+.salto-resto{position:absolute; inset:0; margin:0; padding:0; list-style:none; z-index:3}
+.salto-resto li{position:absolute; left:var(--x); top:var(--y); translate:-50% -50%;
+  color:#0C0C0C; line-height:0;
+  opacity:var(--resto,0); scale:calc(.35 + var(--resto,0) * .65);
+  rotate:calc((1 - var(--resto,0)) * -40deg)}
+.salto-resto .estrella{width:clamp(26px,4.6vw,64px); height:clamp(26px,4.6vw,64px); display:block}
+
+/* Sobre la plancha amarilla el menu (que es color hueso) desaparece: cuando
+   la plancha manda, la cabecera se pinta en negro. */
+/* La cabecera lleva su propio fondo oscuro al hacer scroll; sobre el amarillo
+   eso deja una banda verde oliva y los enlaces ilegibles. Mientras la plancha
+   manda, la cabecera se queda SIN fondo y todo su texto va en negro. Lleva
+   !important a proposito: hay que ganarle a `header.scrolled` y a los colores
+   propios de cada enlace, que son mas especificos. */
+html.en-amarillo header{background:transparent!important; backdrop-filter:none!important;
+  border-bottom-color:rgba(12,12,12,.16)!important}
+html.en-amarillo header,
+html.en-amarillo header a,
+html.en-amarillo header .logo,
+html.en-amarillo .nav-c a.enl{color:#0C0C0C!important}
+html.en-amarillo header .boton{background:#0C0C0C!important; color:var(--canario)!important; border-color:#0C0C0C!important}
+
+/* Sin JS la seccion no tiene sentido (nada mueve --p) y con movimiento
+   reducido tampoco: en los dos casos desaparece y se va directo al contacto. */
+html:not(.js) .salto{display:none}
+@media (prefers-reduced-motion:reduce){ .salto{display:none} }
+
+
+/* ==========================================================================
    AMBITO .de-v3 — LO TRAIDO DE LA V3, TAL CUAL
    Dos secciones enteras de «La Imprenta»: «Como bregamos» (su banda amarilla)
    y el contacto (sello, titular que huye del raton y correo subrayado).
@@ -858,6 +923,20 @@ footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
 
 /* el marcador amarillo del correo. OJO: en la v3 lo destapaba la clase .on;
    aqui el motor de la v5 pone .visto, asi que se engancha a esa. */
+/* EL TRUCO DE LA V3: sobre fondo oscuro el texto marcado va en NEGRO. Asi,
+   mientras el marcador amarillo no ha pasado, el correo no se ve; y cuando
+   pasa, aparece leyendose en negro sobre su amarillo. En la v3 esto lo hacia
+   `.pliego-oscuro .marca{color:#0C0C0C}` y se me quedo fuera al portarlo. */
+.de-v3 .marca-v3{color:var(--tinta)}
+.de-v3 .marca-v3 svg{mix-blend-mode:normal}
+
+/* La entrada, por turnos: su frase —«De pensar y creer; y despues crear»— es
+   lo que hay que dar tiempo a leer, asi que entra DESPUES del rotulo y mas
+   despacio. Los cuatro pasos no llevan retardo: la seccion es alta y cada uno
+   se revela por su cuenta al llegar, que ya los escalona solo. */
+.js .de-v3 .cab{transition:opacity 1.25s var(--salida), transform 1.35s var(--salida)}
+.js .de-v3 .serif{transition:opacity 1.7s var(--salida) .6s, transform 1.8s var(--salida) .6s}
+
 .de-v3 .marca-v3{position:relative; display:inline-block; z-index:0}
 .de-v3 .marca-v3 svg{position:absolute; left:-3%; top:8%; width:106%; height:88%; z-index:-1;
   fill:var(--acento); clip-path:inset(0 100% 0 0);
@@ -1211,6 +1290,29 @@ footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
 </section>
 
 <!-- ===================== 11. CONTACTO ===================== -->
+<!-- ============ EL SALTO AL CONTACTO ============================
+     Idea de Alejandro: al bajar, UNA estrella se acerca; detras entra una
+     plancha amarilla que cubre la web entera; sobre ella aparecen las otras
+     siete; y de ahi se cae al contacto. Es la marca tragandose la pagina.
+     La escena va anclada (sticky) dentro de una seccion alta: el scroll no
+     se secuestra, solo se usa como linea de tiempo.
+     ============================================================== -->
+<section class="salto" id="salto" aria-hidden="true">
+  <div class="salto-escena">
+    <div class="salto-plancha"></div>
+    <svg class="salto-nucleo" viewBox="0 0 100 100"><use href="#s5"/></svg>
+    <ul class="salto-resto">
+      <li style="--i:0; --x:15%; --y:24%"><svg class="estrella"><use href="#s1"/></svg></li>
+      <li style="--i:1; --x:80%; --y:19%"><svg class="estrella"><use href="#s2"/></svg></li>
+      <li style="--i:2; --x:33%; --y:70%"><svg class="estrella"><use href="#s3"/></svg></li>
+      <li style="--i:3; --x:66%; --y:76%"><svg class="estrella"><use href="#s4"/></svg></li>
+      <li style="--i:4; --x:50%; --y:41%"><svg class="estrella"><use href="#s6"/></svg></li>
+      <li style="--i:5; --x:88%; --y:56%"><svg class="estrella"><use href="#s7"/></svg></li>
+      <li style="--i:6; --x:9%;  --y:58%"><svg class="estrella"><use href="#s8"/></svg></li>
+    </ul>
+  </div>
+</section>
+
 <!-- ===================== 11. CONTACTO (EL DE LA V3, TAL CUAL) ===== -->
 <section class="pliego de-v3 contacto-v3" id="contacto">
   <span class="registro al" aria-hidden="true"><span></span></span>
@@ -2283,6 +2385,46 @@ if(abrirMenu){
       ls.forEach(function(s){ s.style.transform = 'none'; });
     });
   });
+})();
+
+
+/* =====================================================================
+   EL SALTO AL CONTACTO
+   Una sola pasada por fotograma: lee cuanto ha recorrido la seccion y
+   reparte ese 0..1 entre las cuatro fases. La escala del nucleo va con
+   una potencia (no lineal) para que la estrella "se venga encima" al
+   final en vez de crecer a ritmo constante.
+   ===================================================================== */
+(function(){
+  var salto = document.querySelector('.salto');
+  if(!salto) return;
+  var escena  = salto.querySelector('.salto-escena');
+  var raiz    = document.documentElement;
+  var enAmarillo = false;
+  function tramo(p, a, b){ return Math.max(0, Math.min(1, (p - a) / (b - a))); }
+  function paso(){
+    var r = salto.getBoundingClientRect();
+    var recorrido = r.height - window.innerHeight;
+    if(r.bottom > -200 && r.top < window.innerHeight + 200 && recorrido > 0){
+      var p = Math.max(0, Math.min(1, -r.top / recorrido));
+      /* la estrella se acerca: potencia 2.2 = casi quieta al principio y
+         encima de ti al final */
+      var n = 0.18 + Math.pow(tramo(p, 0, .40), 2.2) * 26;
+      escena.style.setProperty('--nucleo', n.toFixed(3));
+      escena.style.setProperty('--giro', (p * 120).toFixed(1) + 'deg');
+      var plancha = tramo(p, .28, .52);
+      escena.style.setProperty('--plancha', plancha.toFixed(3));
+      var resto = tramo(p, .50, .88);
+      escena.style.setProperty('--resto', resto.toFixed(3));
+      /* el menu se pinta en negro mientras el amarillo manda */
+      var amarillo = plancha > .55;
+      if(amarillo !== enAmarillo){ enAmarillo = amarillo; raiz.classList.toggle('en-amarillo', amarillo); }
+    } else if(enAmarillo){
+      enAmarillo = false; raiz.classList.remove('en-amarillo');
+    }
+    requestAnimationFrame(paso);
+  }
+  requestAnimationFrame(paso);
 })();
 
 repasar();

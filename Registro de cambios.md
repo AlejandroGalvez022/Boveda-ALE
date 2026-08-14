@@ -11,6 +11,18 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ## 2026-08-14
 
+> [!abstract]+ 🗓️ Sesión 2026-08-14 (tarde-3) — El salto al contacto: la marca se traga la página
+> - **Temas:** [[La Brega Studio/La Brega Studio|La Brega]] **v5** · transición anclada a pantalla completa · el truco del correo · las ocho, vivas.
+> - **Hecho:** (1) **El salto al contacto**, idea suya entera: al bajar, una estrella **se acerca** hasta comerse la pantalla, entra una **plancha amarilla por detrás** que cubre la web, aparecen **las otras siete en negro** sobre ella y de ahí cae el contacto. Escena **anclada** en una sección de 260vh: el scroll no se secuestra, se usa de línea de tiempo. (2) **El correo, en negro** — su truco. (3) La cita de «Cómo bregamos» recupera su turno propio (entra 0,6 s después del rótulo). (4) Las ocho estrellas **flotan**, cada una a su ritmo y con su desfase.
+> - **Un fallo mío al portar:** el correo salía color hueso sobre el amarillo, ilegible. En la v3 la regla es `.pliego-oscuro .marca{color:#0C0C0C}` y **se me quedó fuera**. Él la cazó de un vistazo: *«ponlo en negro como en la v3, para que se lea cuando se subraye de amarillo, ese es el trucaso»*. Y el truco es doble: mientras el marcador no pasa, el correo **no se ve**; aparece **con** el marcador.
+> - **Decisiones:** la escala de la estrella va con **potencia 2,2**, no lineal, para que se venga encima al final en vez de crecer a ritmo constante. La cabecera, que es fija y va en hueso, **se pinta en negro** mientras la plancha manda. Y sin JS o con movimiento reducido **la sección no existe**: nada movería su variable.
+> - **Verificación:** **0 desbordes** en los nueve tramos de la página, a **1440 y a 390**. El salto funciona también en móvil.
+> - **Pendiente:** la **batería completa** (sin JS, sin tipografías, movimiento reducido) y **elegir versión**.
+> - **Lo que aprendí:** **animación y transición no pueden compartir propiedad ni elemento.** El flotar de las estrellas va en el `<svg>` y el aterrizaje en el `<li>` justo por eso. Y una de ritmo: **si un grupo late a la vez, parece un GIF**; lo que lo hace parecer vivo es que cada pieza tenga su periodo y su desfase.
+
+---
+
+
 > [!abstract]+ 🗓️ Sesión 2026-08-14 (tarde-2) — Las ocho islas, y la v3 entra en la v5
 > - **Temas:** [[La Brega Studio/La Brega Studio|La Brega]] **v5** · las 8 estrellas = las 8 islas · portar dos secciones enteras de la v3 · CSS muerto que muerde.
 > - **Hecho:** (1) la entrada de «Cómo bregamos» pasó a ir **por turnos** para que se leyera su lema (luego quedó descartada al traer la de la v3); (2) sección nueva **«Ocho estrellas»**: las ocho juntas, cuatro y cuatro como en su cartel, con los nombres debajo, la frase **«Son ocho porque somos ocho. Ninguna se entiende sola»** con «ocho» subrayado por su marcador, y el gesto de que **al pasar por una estrella se enciende su isla**; (3) **«Cómo bregamos» y el contacto de la v3, traídos tal cual** —la banda amarilla y el sello circular con «ESCRÍBENOS»—, metidos en un ámbito `.de-v3`.

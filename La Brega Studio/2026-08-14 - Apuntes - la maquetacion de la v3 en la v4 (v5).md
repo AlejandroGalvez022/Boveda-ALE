@@ -92,3 +92,39 @@ con «ocho» subrayado por **su marcador amarillo** (el mismo `#brocha` del mani
 - El contacto: las 10 letras de «Escríbenos» troceadas (el efecto del ratón vive), el marcador del correo se destapa y el sello gira.
 - La portada **sin contaminar**: el logotipo sigue a 58 px y su sello sigue existiendo.
 - El menú pasa a **siete** entradas: las islas entran como VI y contacto como VII.
+
+---
+
+## Tercera tanda: el salto al contacto
+
+### El correo, en negro (su truco)
+> «El correo este ponlo en negro como en la v3 XD, para que se lea cuando se subraye de amarillo, **ese es el trucaso**.»
+
+Tenía razón y era **un fallo mío al portar**: en la v3 la regla es `.pliego-oscuro .marca{color:#0C0C0C}` — sobre fondo oscuro, **el texto marcado va en negro**. Se me quedó fuera y el correo salía color hueso sobre el amarillo, ilegible. Y el truco es doble: mientras el marcador no ha pasado, el correo **no se ve** (negro sobre negro); **aparece con el marcador**. Arreglado.
+
+### «Cómo bregamos»: su frase, con turno propio
+Al traer la sección de la v3 se perdió el trabajo de ralentizar la entrada, así que se ha vuelto a poner **donde toca**: su cita —*«De pensar y creer; y después crear»*— entra **0,6 s después** del rótulo y con más recorrido (1,7 s). Los cuatro pasos **no llevan retardo**: la sección es alta y cada uno se revela al llegar, que ya los escalona solo. Meterles retardo fijo los habría hecho parecer lentos.
+
+### Las ocho, vivas
+Cada estrella flota a su ritmo, con el periodo y el desfase dependiendo de su índice, así el grupo respira pero **nunca late a la vez** (si latieran juntas parecería un GIF). El flotar va en el `<svg>` y el aterrizaje en el `<li>`: **si compartieran elemento, animación y transición se pelearían por la misma propiedad**. Arranca solo cuando el bloque ya ha aterrizado.
+
+### El salto al contacto
+Idea suya, entera: *«que cuando bajes a contacto una de las estrellas se acerque, aparezca una pantalla amarilla detrás cubriendo toda la web, que aparezcan las demás estrellas y luego bajes a contacto»*.
+
+Montado como **escena anclada** (`position:sticky`) dentro de una sección de 260vh: **el scroll no se secuestra**, solo se usa de línea de tiempo. Todo lo mueve una variable, `--p`:
+
+| Tramo | Qué pasa |
+|---|---|
+| 0 → .40 | La estrella **se acerca**: escala de 0,18 a 26 y gira 120°. La escala va con **potencia 2,2**, no lineal — así se queda casi quieta al principio y **se te viene encima** al final. |
+| .28 → .52 | Entra la **plancha amarilla por detrás** y cubre la web entera. La estrella, que es del mismo amarillo, **se funde en ella**. |
+| .50 → .88 | Aparecen **las otras siete**, en negro sobre el amarillo, escalonadas y enderezándose. |
+| .88 → 1 | Se sostiene, y al acabar la sección **cae el contacto**. |
+
+**Un detalle que había que resolver:** la cabecera es fija y va en color hueso, así que sobre el amarillo desaparecía. Mientras la plancha manda (>55 %), el JS pone `en-amarillo` en el `<html>` y la cabecera **se queda sin fondo y todo su texto pasa a negro**, con el botón invertido. Lleva `!important` a propósito: hay que ganarle a `header.scrolled` y a los colores propios de cada enlace.
+
+**Sin JavaScript o con movimiento reducido la sección no existe** (`display:none`): nada movería `--p`, así que se iría directo al contacto.
+
+### Verificación
+- **1440 px** y **390 px**: **0 desbordes** en los nueve tramos de la página, en los dos anchos.
+- El salto funciona también en móvil (la clase `en-amarillo` entra).
+- El correo: negro (`rgb(12,12,12)`) y el marcador destapado.
