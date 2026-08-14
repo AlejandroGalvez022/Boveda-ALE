@@ -3,8 +3,8 @@ titulo: La Brega Studio
 tipo: proyecto
 categoria: Personal
 estado: activo
-siguiente: "11-ago: HAY UNA VERSION 4 ('La Carta') en web/v4/index.html, con la v1, la v2 y la v3 intactas. Alejandro pidio una version nivel awwwards.com PARTIENDO DE LA OSCURA, que es la que mas le gusto. Sale de una observacion: el negro de La Brega NO es 'premium con degradado neon' (eso era la paleta de Omnia, un cliente, usada de papel pintado) sino UNA LAMINA IMPRESA: grano, arañazos, grabado de puntos, orbitas de linea fina con numeros romanos y anotaciones a mano. Asi que la v4 se queda en NEGRO + HUESO + SU AMARILLO, y el color lo pone SU OBRA. Ademas hereda de la v3 el LOGOTIPO REAL, SUS 8 ESTRELLAS y SUS POSTERS, que las oscuras no tenian. UNA SOLA REGLA gobierna la web, y es su lema: LA VELOCIDAD HACE RUIDO, LA CALMA REVELA (la luna del hero esta pintada en semitono de puntos y el tamaño del punto lo manda la velocidad del scroll). Cero dependencias de JS externo. Verificada en 360/390/430/768/1280/1440/1920: 0 desbordes, 0 errores, 0 sin revelar; contraste medido SOBRE EL PIXEL PINTADO (menu 6,4:1); aguanta sin tipografias, SIN JAVASCRIPT y con movimiento reducido. AHORA TOCA: (1) ABRIRLA Y VERLA (Live Server sobre web/v4/index.html), (2) elegir entre v1, v2, v3 y v4, (3) publicar en Netlify -> / , /v2/, /v3/ y /v4/. PENDIENTE DE SIEMPRE: logo PNG original y confirmar con Raul los textos de las fichas de proyecto"
-conversaciones: 3
+siguiente: "14-ago: sesion corta sobre la V2. (1) Sus posters reales ya se ven en la v2 (y en la v1): estaban solo en v3/img y v4/img, y web/img estaba vacia. (2) La seccion 'Como bregamos' se apoya ahora en SU FOTOGRAFIA (romeria a sangre, en blanco y negro, velo que empieza y acaba en el negro de la pagina, la tarjeta deja de ser panel solido, parallax del 7% que se para con movimiento reducido) - mismo tratamiento que el manifiesto de la v4, no se invento nada. La foto es un recorte propio (img/romeria-fondo.jpg) PORQUE EN MOVIL SALIA SU TITULAR POR DETRAS DEL MIO: el encuadre por CSS no vale, depende de la proporcion. Verificado sobre el pixel pintado: 10,4:1 el titular, 6,9:1 lo mas pequeno, 0 desbordes de 360 a 1920, 0 errores. AHORA TOCA: (1) elegir de una vez entre v1, v2, v3 y v4, (2) publicar en Netlify -> / , /v2/, /v3/ y /v4/. PENDIENTE DE SIEMPRE: logo PNG original, ORIGINALES EN ALTA de sus posters (a 1920 la foto se estira x1,92) y confirmar con Raul los textos de las fichas de proyecto"
+conversaciones: 4
 tags: [proyecto, web, cliente, propuesta]
 ---
 
@@ -34,13 +34,14 @@ Hay **cuatro versiones**, y las cuatro funcionan. La v1, la v2 y la v3 **no se h
 | | Archivo | En Netlify | Qué es |
 |---|---|---|---|
 | **v1** | `web/index.html` | `/` | La propuesta original (19-jul). Oscura, premium. |
-| **v2** | `web/v2/index.html` | `/v2/` | «Ruido → señal» (8-ago). Oscura. Eclipse en WebGL, manifiesto que se revela, galería anclada. |
+| **v2** | `web/v2/index.html` | `/v2/` | «Ruido → señal» (8-ago, retocada el 14-ago). Oscura. Eclipse en WebGL, manifiesto que se revela, galería anclada **con sus pósters reales** y **«Cómo bregamos» sobre su fotografía**. |
 | **v3** | `web/v3/index.html` | `/v3/` | «La Imprenta» (8-ago). **En papel claro.** La web se imprime delante de ti, con desregistro CMYK. **Sus pósters reales** y **cero dependencias**. |
 | **v4** ⭐ | `web/v4/index.html` | `/v4/` | «La Carta» (11-ago). **La oscura, a nivel Awwwards.** Su negro entendido como **lámina impresa**: luna en **semitono de puntos** (WebGL a mano), órbitas con romanos, sus 8 estrellas. Una sola regla: **la velocidad hace ruido, la calma revela.** Cero dependencias. |
 
 Ábrelas con **Live Server** en VSCode (clic derecho → *Open with Live Server*). Necesitan internet (Google Fonts, y la v2 además GSAP + Lenis — si no cargan, la web sigue funcionando entera).
 
 ## Conversaciones
+- [[La Brega Studio/2026-08-14 - La v2 se apoya en su fotografia|2026-08-14 · La v2 se apoya en su fotografía]]
 - [[La Brega Studio/2026-08-11 - Version 4 de la web (La Carta)|2026-08-11 · Versión 4 de la web (La Carta)]]
 - [[La Brega Studio/2026-08-08 - Version 3 de la web (La Imprenta)|2026-08-08 · Versión 3 de la web (La Imprenta)]]
 - [[La Brega Studio/2026-08-08 - Version 2 de la web (Ruido a senal)|2026-08-08 · Versión 2 de la web (Ruido → señal)]]
@@ -86,6 +87,13 @@ El concepto no es un efecto: son **sus dos frases** convertidas en interacción.
 - Y además: marquee cuya velocidad manda el scroll · ficha flotante por servicio · **galería horizontal anclada** con ficha que **abre como un eclipse** desde donde pulsas · letras que huyen del ratón en contacto · **menú a pantalla completa en móvil** (la v1 no tenía) · cursor que invierte lo de debajo.
 - **Verificada: 0 fallos** en 390 / 768 / 1280 / 1440 / 1920, incluida una pasada **con los CDN bloqueados** (sin ellos la galería se apila y los 4 proyectos siguen alcanzables).
 
+
+### Y lo que gana el 14-ago
+- **Sus pósters reales, por fin visibles.** La v2 los pedía por código desde el 8-ago, pero `web/img/` estaba vacía y se veía el arte de respaldo. Copiados ahí los cuatro: ahora la galería enseña **sus carteles**. (La **v1** también los usa: se le llenaron los huecos de paso.)
+- **«Cómo bregamos» se apoya en su fotografía.** Era la única sección de solo texto y números. Ahora lleva **su romería a sangre**, en blanco y negro y apagada, con un velo que arranca y termina en el negro de la página, y **la tarjeta deja de ser un panel sólido**: el fondo lo pone la foto. Mismo tratamiento que el manifiesto de la v4. La foto **respira con el scroll** y se para con movimiento reducido.
+- La foto es un **recorte propio** (`img/romeria-fondo.jpg`): solo la romería, sin la parte alta del cartel, **porque en móvil salía su titular por detrás del mío**.
+- Contraste medido **sobre el píxel pintado**: 10,4:1 el titular, 7,7:1 los párrafos, 6,9:1 la etiqueta pequeña. 0 desbordes de 360 a 1920, 0 errores.
+
 ## Qué lleva la v1
 Preloader, logo circular animado, cursor propio, hero con degradado de marca, marquee, botones magnéticos, grano. **Scroll premium con Lenis (suave/inercia) + GSAP ScrollTrigger** (revelados con stagger y dirección, hero con scrub, **manifiesto revelado palabra por palabra** ligado al scroll, e **inclinación de las tarjetas por velocidad de scroll**); si las librerías no cargan, cae en animaciones caseras (nada se rompe). Secciones: hero → marquee → manifiesto ("Revela") → servicios (01–06) → trabajo (4 proyectos suyos) → cómo bregamos → contacto. Verificada sin errores de JS; diseño comprobado con capturas.
 
@@ -93,6 +101,7 @@ Preloader, logo circular animado, cursor propio, hero con degradado de marca, ma
 - [ ] **Abrir la v4 y verla** (`web/v4/index.html` con Live Server) y decidir: ¿v1, v2, v3 o v4?
 - [ ] Confirmar con Raúl los **textos de las fichas de proyecto** (son recreación de sus pies de foto).
 - [ ] Pasar el **logo PNG original** (en la v3 está recreado bien en CSS, pero para fidelidad total).
+- [ ] Pedirle a Raúl **sus pósters en alta**: a 1920 px la foto de «Cómo bregamos» se estira ×1,92 (el original son 1000 px de ancho).
 - [x] ~~Meter **imágenes reales** de sus proyectos~~ → hecho en la v3: son **sus pósters reales** del feed. Pedirle los originales en alta si sale adelante.
 - [ ] Ajustar textos/servicios con Raúl tras presentarla.
 - [ ] Publicar en **Netlify** para enseñarla con un enlace → guía lista en [[La Brega Studio/GUIA - publicar en internet|Guía - publicar en internet]]. Repo git ya preparado en `web/`; falta crear el repo en GitHub y pasar la URL.

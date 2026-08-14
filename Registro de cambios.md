@@ -9,6 +9,20 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ---
 
+## 2026-08-14
+
+> [!abstract]+ 🗓️ Sesión 2026-08-14 — La v2 se apoya en su fotografía (y sus pósters, que llevaban meses invisibles)
+> - **Temas:** [[La Brega Studio/La Brega Studio|La Brega]] **v2** · sus pósters reales · foto de fondo en «Cómo bregamos» · contraste sobre el píxel pintado.
+> - **Hecho:** rato corto sobre la **v2**, que es la que quería mirar. (1) **Sus cuatro pósters ya se ven**: la v2 los pedía por código desde el 8-ago con respaldo automático, pero **`web/img/` estaba vacía** —los originales estaban solo dentro de `v3/img/` y `v4/img/`— así que siempre se había visto el arte generado. Copiados: entraron solos, sin tocar el HTML, y **la v1 también los usa**. (2) A petición suya (*«que en algún sitio haya una foto de fondo en una sección, que a mi cliente le gustan mucho»*), **«Cómo bregamos» se apoya ahora en su fotografía de la romería**: a sangre, en blanco y negro, apagada, con un velo que arranca y acaba en el negro de la página, la tarjeta convertida en transparente y un parallax del 7 % que se para con movimiento reducido. **Mismo tratamiento que el manifiesto de la v4: no se inventó un lenguaje nuevo.**
+> - **Decisiones:** (1) la sección elegida es la única que **solo tenía texto y números** — el caso exacto en el que lo que falta es una foto. (2) El encuadre **no se resuelve por CSS**: se recortó el JPG (`img/romeria-fondo.jpg`, 1000×630). (3) La foto se **subió** de brillo (.42 → .58) porque el contraste medido daba margen de sobra y en penumbra su fotografía no se leía.
+> - **Fallos cazados:** **en móvil salía su titular por detrás del mío** —al estirarse la sección, `object-fit:cover` dejaba de recortar por arriba y enseñaba la parte alta del cartel, con su logotipo y su titular en amarillo—; y **una costura en el borde de arriba**, porque el velo colgaba de la capa que se mueve (sobresale un 14 %) en vez de la sección.
+> - **Verificación:** contraste **sobre el píxel pintado** rehaciendo en canvas el filtro, el encuadre y el velo: 10,4:1 el titular, 11,0:1 los títulos, 7,7:1 los párrafos, 6,9:1 la etiqueta de 12 px. **0 desbordes y 0 errores** en 360 / 390 / 430 / 768 / 1280 / 1440 / 1920. El parallax llega a 57 px con 56 px de margen sin gastar.
+> - **Pendiente:** **elegir de una vez** entre v1, v2, v3 y v4, y **publicar en Netlify**. Nuevo: pedirle a Raúl **los pósters en alta** (a 1920 la foto se estira ×1,92).
+> - **Lo que aprendí:** un respaldo silencioso **esconde el fallo**. Los cuatro huecos de imagen de la v2 se caían con un `onerror` elegante desde el 8-ago y la web se veía «bien», así que nadie notó que **sus carteles no estaban**. Un respaldo que no se nota es un respaldo que no se arregla. Y la otra: **el encuadre de una foto de fondo no se resuelve con `object-position`** si la caja cambia de proporción — lo que hay que recortar es el archivo.
+
+---
+
+
 ## 2026-08-11
 
 > [!abstract]+ 🗓️ Sesión 2026-08-11 — La Brega v4: su negro no era «premium», era una lámina impresa

@@ -481,6 +481,29 @@ html:not(.gsap) .work .rail,html:not(.gsap) .work .stamp{display:none}
 .valores{background:var(--panel);border-radius:26px;padding:clamp(38px,6vw,72px);position:relative;overflow:hidden}
 .valores::before{content:"";position:absolute;right:-14%;top:-40%;width:52%;aspect-ratio:1;border-radius:50%;
   background:var(--grad-ring);filter:blur(70px);opacity:.16;pointer-events:none}
+
+/* --- La seccion se apoya en SU fotografia -------------------------------
+   Mismo tratamiento que el manifiesto de la v4: la foto va a sangre, en
+   blanco y negro y apagada, con un velo que arranca y termina en el negro
+   de la pagina para que la seccion no se vea como un parche pegado.
+   El velo es lo que sostiene el contraste del texto: no tocarlo a la ligera. */
+.foto-sec{position:relative;overflow:hidden}
+.foto-sec .foto-fondo{position:absolute;inset:-14% 0;z-index:0;will-change:transform}
+.foto-sec .foto-fondo img{width:100%;height:100%;object-fit:cover;
+  /* es un recorte de su lamina (solo la romeria): asi no sale su titular
+     ni su logotipo por detras del texto, encuadre el que encuadre */
+  object-position:50% 55%;filter:grayscale(1) contrast(1.06) brightness(.58)}
+/* el velo va en la SECCION, no en la capa que se mueve: si va en la capa,
+   que sobresale un 14% por arriba y por abajo, en el borde real de la
+   seccion todavia es semitransparente y se ve la costura. */
+.foto-sec::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,var(--bg) 0%,rgba(11,11,12,.66) 22%,rgba(11,11,12,.72) 64%,var(--bg) 100%)}
+.foto-sec>.wrap{position:relative;z-index:2}
+/* la tarjeta deja de ser un panel solido: ahora el fondo lo pone la foto */
+.foto-sec .valores{background:transparent;overflow:visible}
+.foto-sec .valores::before{opacity:.1}
+.foto-sec .val p{color:#cdc8bf}
+.foto-sec .sec-num{color:#b9b4aa}
 /* perspectiva para que las tres columnas se levanten al entrar (lo mueve GSAP) */
 .val-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;position:relative;z-index:2;perspective:1000px}
 @media(max-width:900px){.val-grid{grid-template-columns:1fr;gap:28px}}
@@ -707,7 +730,13 @@ footer{border-top:1px solid var(--line);padding:56px var(--gutter) 40px}
   </section>
 
   <!-- ===== 8. CÓMO BREGAMOS ===== -->
-  <section class="sec-pad wrap">
+  <section class="sec-pad foto-sec" id="bregamos">
+    <!-- su fotografia de la romeria sostiene la seccion (mismo tratamiento que el manifiesto de la v4) -->
+    <div class="foto-fondo" aria-hidden="true">
+      <img src="../img/romeria-fondo.jpg" alt="" width="1000" height="630" loading="lazy"
+           onerror="var f=this.closest('.foto-fondo'); if(f) f.remove()">
+    </div>
+    <div class="wrap">
     <div class="valores">
       <div class="sec-head" style="margin-bottom:44px">
         <h2 style="font-size:clamp(26px,4vw,54px)"><span class="mask-line"><span>Cómo bregamos</span></span></h2>
@@ -718,6 +747,7 @@ footer{border-top:1px solid var(--line);padding:56px var(--gutter) 40px}
         <div class="val reveal"><h3><span class="num">02</span> Sin postureo</h3><p>Nada de humo ni palabras raras. Te explicamos todo claro y te enseñamos el proceso por el camino.</p></div>
         <div class="val reveal"><h3><span class="num">03</span> Cerca de ti</h3><p>Somos pequeños a propósito. Trabajas directamente con quien diseña, no con un intermediario.</p></div>
       </div>
+    </div>
     </div>
   </section>
 
@@ -1175,6 +1205,19 @@ function maskCheck(){
 /* =====================================================================
    4. SCROLL: cabecera, barra de progreso, velocidad, seccion activa
    ===================================================================== */
+
+/* La foto de la seccion respira con el scroll: se mueve menos que la pagina,
+   asi el texto va por delante y la lamina se queda detras. El recorrido (7%)
+   nunca puede pasar del margen que le da inset:-14%, o se veria el borde. */
+var fotoSec=$('.foto-sec'), fotoFondo=$('.foto-sec .foto-fondo');
+function fotoScroll(){
+  if(!fotoFondo || reduce) return;
+  var r=fotoSec.getBoundingClientRect();
+  if(r.bottom<-40 || r.top>innerHeight+40) return;
+  var p=clamp((r.top+r.height/2-innerHeight/2)/innerHeight,-1.4,1.4);
+  fotoFondo.style.transform='translate3d(0,'+(p*-7).toFixed(2)+'%,0)';
+}
+
 var header=$('#header'), progress=$('#progress'), hBadge=$('header .badge'), grainEl=$('.grain');
 var lastY=window.scrollY, ticking=false, vel=0, velSmooth=0;
 function onScroll(){
@@ -1193,6 +1236,7 @@ function onScroll(){
   /* el eclipse se abre a medida que dejas el hero */
   if(glApi && hero){ var hb=hero.getBoundingClientRect(); glApi.open(clamp(-hb.top/Math.max(1,hb.height),0,1)); }
   if(!gsapActive) manifScroll();
+  fotoScroll();
   revealCheck(); maskCheck(); lastY=y; ticking=false;
 }
 addEventListener('scroll',function(){ if(!ticking){ requestAnimationFrame(onScroll); ticking=true; } },{passive:true});
