@@ -11,6 +11,16 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ## 2026-08-14
 
+> [!warning]+ 🗓️ 2026-08-14 (cierre) — Cambio de rumbo: las estrellas serán las áreas de trabajo, no las islas
+> - **Lo que dijo:** *«Apunta en las notas que las estrellas **no representarán las islas, sino las áreas de trabajo**. Sí representan las islas, pero **en la web** vamos a hacer que representen las áreas.»*
+> - **Qué significa:** en **su marca** las ocho estrellas siguen siendo las ocho islas —eso no cambia—; lo que cambia es **el papel que tienen en la web**: una estrella por área de trabajo.
+> - **Qué queda pendiente de rehacer:** toda la escena amarilla de la v5 — la línea de nombres de las islas, la frase «Son ocho porque somos ocho», el pie, el rótulo «Ocho estrellas» del menú, el ancla `#islas` y el hover estrella↔isla.
+> - **⚠️ El número no cuadra y hay que decidirlo antes de tocar código:** las estrellas son **ocho** y las áreas de la web son **seis** (Branding, Dirección de arte, Publicidad, Diseño gráfico, Contenido, Digital). Tres salidas: subir a ocho áreas (habría que inventarse dos → lo decide Raúl), usar solo seis estrellas (se pierde el «son ocho», que era la fuerza) o emparejar. **No se resuelve solo.**
+> - **Nada se ha tocado todavía:** solo está apuntado, como pidió.
+
+---
+
+
 > [!abstract]+ 🗓️ Sesión 2026-08-14 (tarde-3) — El salto al contacto: la marca se traga la página
 > - **Temas:** [[La Brega Studio/La Brega Studio|La Brega]] **v5** · transición anclada a pantalla completa · el truco del correo · las ocho, vivas.
 > - **Hecho:** (1) **El salto al contacto**, idea suya entera: al bajar, una estrella **se acerca** hasta comerse la pantalla, entra una **plancha amarilla por detrás** que cubre la web, aparecen **las otras siete en negro** sobre ella y de ahí cae el contacto. Escena **anclada** en una sección de 260vh: el scroll no se secuestra, se usa de línea de tiempo. (2) **El correo, en negro** — su truco. (3) La cita de «Cómo bregamos» recupera su turno propio (entra 0,6 s después del rótulo). (4) Las ocho estrellas **flotan**, cada una a su ritmo y con su desfase.

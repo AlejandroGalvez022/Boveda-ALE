@@ -160,3 +160,25 @@ Se solapan a propósito: cada pieza arranca antes de que termine la anterior, qu
 > `.js .ocho li` (dos clases) le ganaba por especificidad a `.salto-ocho li` (una) y las dejaba en `opacity:0`. Hizo falta escribir **`.js .salto-ocho li`** para empatar y, al ir después en el archivo, ganar. **Reutilizar un componente en otro contexto obliga a mirar con qué especificidad se definió el original.**
 
 Verificado: cabe entero en una pantalla a **1440** (550 px de 900) y a **390** (282 px de 844). **0 desbordes** en los dos.
+
+---
+
+## ⚠️ CAMBIO DE RUMBO: las estrellas pasan a ser las ÁREAS DE TRABAJO
+> «Apunta en las notas que las estrellas **NO representarán las islas, sino las áreas de trabajo**. Sí representan las islas, pero **en la web vamos a hacer que representen las áreas de trabajo**.»
+
+O sea: en **su marca** las ocho estrellas siguen siendo las ocho islas —eso no cambia—, pero **en la web** se les va a dar otro papel: **una estrella por área de trabajo**. Todo lo que se construyó hoy dando por hecho lo de las islas queda **pendiente de rehacer** con ese sentido.
+
+### Qué hay que cambiar cuando se haga
+Está todo concentrado en la escena amarilla (`.salto` / `#islas` en `web/v5/index.html`):
+- La línea de nombres **EL HIERRO · LA PALMA · …** → pasa a ser la lista de **áreas**.
+- La frase **«Son ocho porque somos ocho. Ninguna se entiende sola.»** → ya no vale: habla de islas.
+- El pie **«Están en los carteles, en la bandera…: son de dónde venimos»** → tampoco.
+- El rótulo del menú **«Ocho estrellas»** y el ancla `#islas`.
+- El enlace estrella↔isla del hover (el JS de `.ocho`), que ahora sería estrella↔área.
+
+> [!warning] El número no cuadra, y hay que resolverlo antes de tocar código
+> **Las estrellas son ocho, pero las áreas de trabajo de la web son SEIS**: Branding, Dirección de arte, Publicidad, Diseño gráfico, Contenido y Digital (sección «Lo que hacemos»).
+> Tres salidas: **(a)** subir a ocho áreas —habría que inventarse dos, y eso lo decide Raúl—; **(b)** usar solo seis estrellas y romper el «son ocho», que es justo lo que le daba la fuerza; o **(c)** mantener las ocho como sistema y **emparejar** las que sobran. Antes de rehacer nada hace falta que Alejandro (o Raúl) diga cuál.
+
+> [!todo] Pendiente
+> Rehacer la escena con las áreas de trabajo, en cuanto esté decidido lo del número.
