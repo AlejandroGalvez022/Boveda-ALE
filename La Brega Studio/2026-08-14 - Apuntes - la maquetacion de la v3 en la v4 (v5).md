@@ -182,3 +182,25 @@ Está todo concentrado en la escena amarilla (`.salto` / `#islas` en `web/v5/ind
 
 > [!todo] Pendiente
 > Rehacer la escena con las áreas de trabajo, en cuanto esté decidido lo del número.
+
+### Decidido: son «Lo que hacemos», y hacen falta DOS ÁREAS MÁS
+> «Es lo que hacemos, pero **necesitamos 2 áreas más porque son 8 estrellas**.»
+
+Queda cerrado el número: **no se tocan las ocho estrellas, se suben las áreas de seis a ocho**. Las estrellas de la web pasan a ser **las ocho áreas de trabajo**, una por área.
+
+**Las seis de ahora** (sección «Lo que hacemos»): Branding · Dirección de arte · Publicidad · Diseño gráfico · Contenido · Digital.
+
+**Dos candidatas, sacadas de su propio material** (no inventadas de cero):
+1. **Naming** — lo dicen ellos: la ficha de Saltimbanqui empieza literalmente por *«**Naming**, logotipo, sistema gráfico y aplicaciones»*. Hoy va escondido dentro de Branding, y es de lo primero que se vende.
+2. **Estrategia** — es lo que sostiene su propio proceso: los dos primeros pasos de «Cómo bregamos» son **«Escuchar»** y **«Pensar y creer»**, y su lema es *«De pensar y creer; y después crear. En ese orden»*. Ahora mismo esa parte del trabajo **no aparece en ningún área**, aunque es la que ellos ponen por delante.
+
+Otras que también salen de su material, por si prefieren: **Tipografía** (San Borondón: *«archivo intervenido y tipografía»*), **Packaging** (hoy metido dentro de Diseño gráfico) o **Motion**.
+
+> [!todo] Verificar con Raúl
+> **Las dos áreas nuevas las decide él**, no nosotros: son su carta de servicios, no un detalle de diseño. La propuesta es **Naming + Estrategia**.
+
+### Qué habrá que tocar cuando estén las ocho
+- **«Lo que hacemos»**: de seis filas a ocho, cada una con **su estrella** (`#s1`…`#s8`), numeradas 01–08.
+- Su rótulo: **«Seis maneras de bregar» → «Ocho maneras de bregar»**.
+- **La escena amarilla**: la línea de nombres pasa de islas a áreas; la frase «Son ocho porque somos ocho» se cambia por algo del oficio (encaja **«Ocho estrellas. Ocho maneras de bregar»**, que es su propia expresión); el pie deja de hablar de la bandera; y el hover pasa a ser **estrella ↔ área**.
+- El rótulo del menú («Ocho estrellas») y el ancla `#islas`.

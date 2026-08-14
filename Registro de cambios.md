@@ -11,6 +11,17 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ## 2026-08-14
 
+> [!check]+ 🗓️ 2026-08-14 (cierre 2) — Resuelto: las áreas suben de seis a ocho
+> - **Lo que dijo:** *«Es lo que hacemos, pero **necesitamos 2 áreas más porque son 8 estrellas**.»* Queda cerrado: **no se tocan las ocho estrellas, se suben las áreas**.
+> - **Las seis de ahora:** Branding · Dirección de arte · Publicidad · Diseño gráfico · Contenido · Digital.
+> - **Propuesta de las dos que faltan, sacada de su propio material** (no inventada): **Naming** —la ficha de Saltimbanqui empieza literalmente por *«Naming, logotipo, sistema gráfico y aplicaciones»*, y hoy va escondido dentro de Branding— y **Estrategia** —sus dos primeros pasos son «Escuchar» y «Pensar y creer», y su lema es *«De pensar y creer; y después crear. En ese orden»*: esa parte del trabajo, que ellos ponen por delante, **no aparece hoy en ningún área**. Alternativas también suyas: Tipografía, Packaging o Motion.
+> - **⚠️ Las decide Raúl**, no nosotros: son su carta de servicios.
+> - **Qué habrá que tocar:** «Lo que hacemos» de seis filas a ocho, cada una con su estrella (`#s1`…`#s8`); su rótulo pasa de «Seis maneras de bregar» a **«Ocho maneras de bregar»**; y la escena amarilla entera (nombres, frase, pie, menú, ancla y el hover, que pasa a ser estrella ↔ área).
+> - **Sigue sin tocarse el código:** apuntado, como pidió.
+
+---
+
+
 > [!warning]+ 🗓️ 2026-08-14 (cierre) — Cambio de rumbo: las estrellas serán las áreas de trabajo, no las islas
 > - **Lo que dijo:** *«Apunta en las notas que las estrellas **no representarán las islas, sino las áreas de trabajo**. Sí representan las islas, pero **en la web** vamos a hacer que representen las áreas.»*
 > - **Qué significa:** en **su marca** las ocho estrellas siguen siendo las ocho islas —eso no cambia—; lo que cambia es **el papel que tienen en la web**: una estrella por área de trabajo.
