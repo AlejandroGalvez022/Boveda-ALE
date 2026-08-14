@@ -674,31 +674,66 @@ html:not(.js) .taller .sello,html:not(.js) .taller .barra{display:none}
 .arrastra .estrella{width:12px; height:12px; color:var(--canario)}
 
 /* ==========================================================================
-   11. COMO BREGAMOS — sus cuatro pasos, sobre una orbita
-   "De pensar y creer; y despues crear. En ese orden." (suyo, literal)
+   LAS OCHO ISLAS — sus 8 estrellas, juntas
+   Van como en su cartel: cuatro y cuatro, en bloque. No es un mapa: la
+   relacion la cuenta la frase, y el gesto de que al pasar por una estrella
+   se encienda SU isla en la linea de abajo. Ese uno-a-uno es todo el
+   argumento, y no hace falta dibujar el archipielago para decirlo.
    ========================================================================== */
-.bregamos{position:relative}
-.pasos{display:grid; grid-template-columns:1fr; gap:0; border-top:1px solid var(--linea)}
-@media (min-width:900px){ .pasos{grid-template-columns:repeat(4,1fr)} }
-.paso{position:relative; padding:clamp(26px,3.4vw,46px) clamp(16px,2vw,30px) clamp(30px,4vw,54px);
-  border-bottom:1px solid var(--linea)}
-@media (min-width:900px){
-  .paso{border-bottom:0; border-right:1px solid var(--linea)}
-  .paso:last-child{border-right:0}
-  .paso:first-child{padding-left:0}
-  .paso:last-child{padding-right:0}
+.islas{text-align:center}
+.islas-rotulo{display:inline-flex; align-items:center; gap:14px; color:var(--humo);
+  margin-bottom:clamp(38px,6vw,72px)}
+.islas-rotulo .estrella{width:13px; height:13px; color:var(--canario)}
+
+.ocho{list-style:none; margin:0 auto; padding:0; display:grid; justify-content:center;
+  grid-template-columns:repeat(4,auto); gap:clamp(20px,4.4vw,64px) clamp(26px,5.6vw,86px)}
+.ocho li{color:var(--hueso); line-height:0; cursor:default;
+  transition:color .45s var(--salida), scale .5s var(--salida)}
+.ocho .estrella{width:clamp(34px,6.6vw,86px); height:clamp(34px,6.6vw,86px); display:block}
+/* aterrizan una detras de otra, girando un poco al caer */
+.js .ocho li{opacity:0; scale:.3; rotate:-35deg;
+  transition:opacity .95s var(--salida) calc(var(--i) * .1s),
+             scale 1.05s var(--salida) calc(var(--i) * .1s),
+             rotate 1.05s var(--salida) calc(var(--i) * .1s),
+             color .45s var(--salida)}
+.js .ocho.visto li{opacity:1; scale:1; rotate:0deg}
+.ocho li.viva{color:var(--canario); scale:1.12}
+
+/* la linea de las ocho: se enciende la isla de la estrella que tocas */
+.ocho-islas{display:flex; flex-wrap:wrap; justify-content:center; gap:0 clamp(10px,1.6vw,20px);
+  margin:clamp(34px,5vw,58px) auto 0; max-width:min(100%,1240px);
+  font-size:clamp(9.5px,.82vw,12px); letter-spacing:.16em; text-transform:uppercase; color:var(--tenue)}
+.ocho-islas span{position:relative; cursor:default; transition:color .35s}
+/* el separador va EN LINEA, no posicionado: asi nunca queda un punto
+   suelto al principio de una linea cuando la lista se parte */
+.ocho-islas span + span::before{content:'·'; margin-inline-end:clamp(10px,1.6vw,20px); color:var(--linea)}
+.ocho-islas span.viva{color:var(--canario)}
+
+/* la frase, que es lo que de verdad lo explica */
+.ocho-frase{position:relative; z-index:0; margin:clamp(52px,8vw,104px) auto 0; max-width:20ch;
+  font-size:clamp(30px,5.4vw,84px); font-weight:900; line-height:.98; letter-spacing:-.04em;
+  text-transform:uppercase}
+.ocho-frase em{display:inline-block; margin-top:.16em; font-family:var(--f-serif); font-style:italic;
+  font-weight:400; text-transform:none; letter-spacing:-.01em; font-size:.82em; color:var(--humo)}
+.islas .marcada{position:relative; display:inline-block; white-space:nowrap}
+.islas .marcada svg{position:absolute; left:-.06em; right:-.06em; bottom:-.02em; width:112%; height:.44em;
+  z-index:-1; fill:var(--canario); opacity:.92;
+  clip-path:inset(0 100% 0 0); transition:clip-path 1.1s var(--salida) .75s}
+.islas .ocho-frase.visto .marcada svg{clip-path:inset(0 0 0 0)}
+
+.ocho-pie{margin:clamp(26px,4vw,42px) auto 0; max-width:48ch; color:var(--humo);
+  font-size:clamp(14px,1.3vw,17px); line-height:1.55}
+
+@media (max-width:560px){
+  .ocho{grid-template-columns:repeat(4,auto); gap:18px 20px}
+  .ocho-islas{gap:0 12px}
 }
-.paso .p-num{display:flex; align-items:center; gap:11px; color:var(--tenue); margin-bottom:clamp(18px,2.6vw,30px)}
-.paso .p-num .estrella{width:13px; height:13px; color:var(--canario); opacity:0; transform:scale(.3);
-  transition:opacity .5s, transform .6s var(--salida)}
-.paso.visto .p-num .estrella{opacity:1; transform:none}
-.paso h3{font-size:clamp(21px,2.5vw,32px); font-weight:900; letter-spacing:-.03em; text-transform:uppercase;
-  margin-bottom:12px}
-.paso p{color:var(--humo); font-size:14.5px}
-.paso .p-linea{position:absolute; left:0; bottom:-1px; height:1px; width:0; background:var(--canario);
-  transition:width 1.1s var(--salida)}
-.paso.visto .p-linea{width:100%}
-@media (min-width:900px){ .paso .p-linea{bottom:auto; top:-1px} }
+@media (prefers-reduced-motion:reduce){
+  .js .ocho li{opacity:1!important; scale:1!important; rotate:0deg!important}
+  .islas .marcada svg{clip-path:inset(0 0 0 0)!important}
+}
+
+
 
 /* ==========================================================================
    12. CONTACTO
@@ -754,6 +789,82 @@ footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
   .efem .orbitas circle{stroke-dashoffset:0}
   .paso .p-linea{width:100%}
 }
+
+/* ==========================================================================
+   AMBITO .de-v3 — LO TRAIDO DE LA V3, TAL CUAL
+   Dos secciones enteras de «La Imprenta»: «Como bregamos» (su banda amarilla)
+   y el contacto (sello, titular que huye del raton y correo subrayado).
+   Va TODO dentro de .de-v3 porque los nombres chocan: en la v5, .marca es la
+   fila del logotipo de la portada, .sello es el dato de coordenadas y
+   .contacto es otra seccion distinta. Aqui dentro mandan las variables de la
+   v3; fuera, no existe ninguna de estas reglas.
+   ========================================================================== */
+.de-v3{
+  --papel:#F0EDE4; --tinta:#0C0C0C; --tinta-70:rgba(12,12,12,.7);
+  --acento:#F5E400; --acento-txt:#0C0C0C;
+  --f-display:var(--f);
+}
+.de-v3 .serif{font-family:var(--f-serif); font-weight:400}
+.de-v3.pliego-tinta{background:var(--acento); color:var(--acento-txt)}
+.de-v3.contacto-v3{background:var(--tinta); color:var(--papel); text-align:center; position:relative}
+
+/* las cruces de registro de imprenta, en las esquinas */
+.de-v3 .registro{position:absolute; width:26px; height:26px; opacity:.35; pointer-events:none}
+.de-v3 .registro::before,.de-v3 .registro::after{content:''; position:absolute; background:currentColor}
+.de-v3 .registro::before{left:50%; top:0; width:1px; height:100%; transform:translateX(-50%)}
+.de-v3 .registro::after{top:50%; left:0; height:1px; width:100%; transform:translateY(-50%)}
+.de-v3 .registro span{position:absolute; inset:6px; border:1px solid currentColor; border-radius:50%}
+.de-v3 .registro.al{top:var(--borde); left:var(--borde)}
+.de-v3 .registro.br{bottom:var(--borde); right:var(--borde)}
+
+/* la cabecera de pliego: filete arriba, rotulo grande y folio a la derecha */
+.de-v3 .cab{display:flex; align-items:baseline; justify-content:space-between; gap:20px; flex-wrap:wrap;
+  border-top:1px solid currentColor; padding-top:14px; margin-bottom:clamp(38px,6vw,96px)}
+.de-v3 .cab h2{font-family:var(--f-display); font-weight:900; text-transform:uppercase; letter-spacing:-.045em;
+  line-height:.9; font-size:clamp(34px,6.4vw,96px)}
+.de-v3 .cab .num{font-family:var(--f-mono); font-size:.68rem; letter-spacing:.16em; opacity:.6}
+
+/* los cuatro pasos */
+.de-v3 .pasos{display:grid; gap:0; border-top:1px solid currentColor; list-style:none; margin:0; padding:0}
+.de-v3 .pasos li{border-bottom:1px solid currentColor; padding:clamp(20px,3vw,38px) 0;
+  display:grid; grid-template-columns:auto 1fr; gap:clamp(16px,3vw,48px); align-items:start}
+.de-v3 .pasos .p-n{font-family:var(--f-display); font-weight:900; font-size:clamp(30px,5vw,74px); line-height:.85;
+  letter-spacing:-.05em; opacity:.22; width:2.4ch}
+.de-v3 .pasos h3{font-family:var(--f-display); font-weight:900; text-transform:uppercase; letter-spacing:-.04em;
+  font-size:clamp(22px,3.4vw,46px); line-height:1; margin-bottom:.3em}
+.de-v3 .pasos p{max-width:52ch; opacity:.8}
+.de-v3 .pasos li:hover .p-n{opacity:1; color:var(--tinta); transition:opacity .4s, color .4s}
+
+/* el contacto */
+.de-v3 .grande{font-family:var(--f-display); font-weight:900; text-transform:uppercase; letter-spacing:-.05em;
+  line-height:.86; font-size:clamp(46px,12vw,190px); display:block; margin-block:clamp(16px,3vw,34px);
+  color:inherit; text-decoration:none}
+.de-v3 .grande span{display:inline-block; transition:transform .5s cubic-bezier(.2,.8,.2,1), color .3s}
+.de-v3 .grande:hover span{color:var(--acento)}
+.de-v3 .correo{display:inline-block; font-family:var(--f-serif); font-size:clamp(20px,2.6vw,38px);
+  position:relative; padding:.05em .2em; color:inherit; text-decoration:none}
+.de-v3 .sello-v3{width:clamp(96px,13vw,168px); height:clamp(96px,13vw,168px); margin-inline:auto; position:relative;
+  display:grid; place-items:center; transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.de-v3 .sello-v3:hover{transform:rotate(14deg) scale(1.06)}
+.de-v3 .sello-v3 svg{position:absolute; inset:0; width:100%; height:100%}
+.de-v3 .sello-v3 .sello-txt{fill:currentColor; font-family:var(--f-mono); font-size:9px; letter-spacing:.16em; font-weight:700}
+.de-v3 .sello-v3 .estrella{inset:0; margin:auto; width:24%; height:24%}
+.de-v3 .redes-v3{display:flex; gap:clamp(14px,2.6vw,40px); justify-content:center; flex-wrap:wrap;
+  margin-top:clamp(26px,4vw,52px); font-family:var(--f-mono); font-size:.78rem; letter-spacing:.14em; text-transform:uppercase}
+.de-v3 .redes-v3 a{position:relative; padding-bottom:3px; color:inherit; text-decoration:none}
+.de-v3 .redes-v3 a::after{content:''; position:absolute; left:0; right:0; bottom:0; height:1px; background:currentColor;
+  transform:scaleX(0); transform-origin:right; transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.de-v3 .redes-v3 a:hover::after{transform:scaleX(1); transform-origin:left}
+
+/* el marcador amarillo del correo. OJO: en la v3 lo destapaba la clase .on;
+   aqui el motor de la v5 pone .visto, asi que se engancha a esa. */
+.de-v3 .marca-v3{position:relative; display:inline-block; z-index:0}
+.de-v3 .marca-v3 svg{position:absolute; left:-3%; top:8%; width:106%; height:88%; z-index:-1;
+  fill:var(--acento); clip-path:inset(0 100% 0 0);
+  transition:clip-path .9s cubic-bezier(.76,0,.24,1) .25s}
+.de-v3 .marca-v3.visto svg{clip-path:inset(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){ .de-v3 .marca-v3 svg{clip-path:inset(0 0 0 0)} }
+
 </style>
 </head>
 <body>
@@ -824,7 +935,8 @@ footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
     <a href="#taller"><span class="romano">III</span>El taller<svg class="estrella"><use href="#s4"/></svg></a>
     <a href="#efemerides"><span class="romano">IV</span>Efemérides<svg class="estrella"><use href="#s6"/></svg></a>
     <a href="#bregamos"><span class="romano">V</span>Cómo bregamos<svg class="estrella"><use href="#s2"/></svg></a>
-    <a href="#contacto"><span class="romano">VI</span>Contacto<svg class="estrella"><use href="#s8"/></svg></a>
+    <a href="#islas"><span class="romano">VI</span>Ocho estrellas<svg class="estrella"><use href="#s5"/></svg></a>
+    <a href="#contacto"><span class="romano">VII</span>Contacto<svg class="estrella"><use href="#s8"/></svg></a>
   </nav>
   <div class="m-pie mono">
     <a href="https://www.instagram.com/labrega_estudio/" target="_blank" rel="noopener">Instagram</a>
@@ -1038,26 +1150,92 @@ footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
 </section>
 
 <!-- ===================== 9. COMO BREGAMOS ===================== -->
-<section class="pliego env bregamos" id="bregamos">
-  <div class="cabecera">
-    <h2 data-sube>Cómo bregamos</h2>
-    <div class="lado mono" data-sube><span class="romano">V</span><svg class="estrella"><use href="#s2"/></svg>De pensar y creer; y después crear</div>
-  </div>
-  <div class="pasos">
-    <div class="paso" data-paso><span class="p-linea"></span><div class="p-num mono"><span class="romano">I</span><svg class="estrella"><use href="#s1"/></svg></div><h3>Escuchar</h3><p>Antes de abrir un archivo, preguntamos. Qué vendes, a quién, y qué te hace distinto de verdad.</p></div>
-    <div class="paso" data-paso><span class="p-linea"></span><div class="p-num mono"><span class="romano">II</span><svg class="estrella"><use href="#s3"/></svg></div><h3>Pensar y creer</h3><p>La idea manda. Si no nos la creemos nosotros, no hay manera de que se la crea nadie más.</p></div>
-    <div class="paso" data-paso><span class="p-linea"></span><div class="p-num mono"><span class="romano">III</span><svg class="estrella"><use href="#s4"/></svg></div><h3>Crear</h3><p>Ahí llega el dibujo: identidad, sistema y piezas. Lo bonito viene después de la idea, pero viene.</p></div>
-    <div class="paso" data-paso><span class="p-linea"></span><div class="p-num mono"><span class="romano">IV</span><svg class="estrella"><use href="#s6"/></svg></div><h3>Bregar</h3><p>Y luego se defiende. Aplicarla, cuidarla y que aguante de pie cuando salga a la calle.</p></div>
+<!-- ===================== 9. COMO BREGAMOS (LA DE LA V3, TAL CUAL) =====
+     Traida entera de la v3 porque a Alejandro le gusta esa. Va envuelta en
+     .de-v3, que es un ambito con SUS variables y SUS reglas: sin eso
+     chocarian .cab, .pasos, .marca (aqui es la fila del logo), .sello (aqui
+     es el de la portada) y .contacto, que en la v5 son otra cosa.
+     ================================================================== -->
+<section class="pliego de-v3 pliego-tinta" id="bregamos">
+  <div class="env">
+    <div class="cab" data-sube>
+      <h2>Cómo bregamos</h2>
+      <span class="num">05 / Pliego</span>
+    </div>
+    <p class="serif" data-sube style="max-width:38ch;font-size:clamp(20px,2.4vw,32px);margin-bottom:clamp(24px,4vw,48px)">
+      «De pensar y creer; y después crear. <em>En ese orden.</em>»
+    </p>
+    <ul class="pasos">
+      <li data-sube><span class="p-n">01</span><div><h3>Escuchar</h3><p>Antes de abrir un programa, preguntamos. Qué vendes, a quién, por qué tú y no el de al lado. La mitad del trabajo se resuelve aquí.</p></div></li>
+      <li data-sube><span class="p-n">02</span><div><h3>Pensar y creer</h3><p>Buscamos la idea que sostiene la marca. Si no nos la creemos nosotros, no te la vamos a vender.</p></div></li>
+      <li data-sube><span class="p-n">03</span><div><h3>Crear</h3><p>Ahí ya sí: identidad, sistema, piezas. Diseño que revela lo que la marca es, no que lo maquilla.</p></div></li>
+      <li data-sube><span class="p-n">04</span><div><h3>Bregar</h3><p>Y quedarnos. Acompañando la marca cuando toca crecer, cambiar o aguantar el temporal.</p></div></li>
+    </ul>
   </div>
 </section>
 
-<!-- ===================== 10. CONTACTO ===================== -->
-<section class="contacto env" id="contacto">
-  <span class="halo" aria-hidden="true"></span>
-  <div class="rotulo mono" data-sube><span class="romano">VI</span><svg class="estrella"><use href="#s8"/></svg>¿Tienes una marca entre manos?</div>
-  <h2 id="tituloContacto">Vamos a bregar.</h2>
-  <a href="mailto:somoslabrega@gmail.com" class="correo" data-sube>somoslabrega@gmail.com</a>
-  <div class="cta" data-sube><a href="mailto:somoslabrega@gmail.com" class="boton"><span>Cuéntanos tu proyecto</span></a></div>
+<!-- ===================== 10. LAS OCHO ISLAS =====================
+     Sus 8 estrellas no son un adorno: son las 8 islas. Aqui van puestas
+     en su SITIO REAL (longitud y latitud de cada una, de El Hierro a La
+     Graciosa), sobre una carta de linea fina — el mismo grabado de su
+     cartel del OVNI. Cada isla lleva una estrella distinta del sistema,
+     y Gran Canaria, que es donde estan, va en su amarillo.
+     ============================================================== -->
+<section class="pliego env islas" id="islas">
+  <div class="islas-rotulo mono" data-sube><span class="romano">VI</span><svg class="estrella"><use href="#s5"/></svg>Una por isla</div>
+
+  <!-- Las 8 juntas, como en su cartel: cuatro y cuatro. Aterrizan una detras
+       de otra, de oeste a este, y cada una se enciende en su amarillo al
+       pasar por encima, llevandose con ella el nombre de su isla. -->
+  <ul class="ocho" data-ocho>
+    <li style="--i:0"><svg class="estrella"><use href="#s1"/></svg></li>
+    <li style="--i:1"><svg class="estrella"><use href="#s2"/></svg></li>
+    <li style="--i:2"><svg class="estrella"><use href="#s3"/></svg></li>
+    <li style="--i:3"><svg class="estrella"><use href="#s4"/></svg></li>
+    <li style="--i:4"><svg class="estrella"><use href="#s5"/></svg></li>
+    <li style="--i:5"><svg class="estrella"><use href="#s6"/></svg></li>
+    <li style="--i:6"><svg class="estrella"><use href="#s7"/></svg></li>
+    <li style="--i:7"><svg class="estrella"><use href="#s8"/></svg></li>
+  </ul>
+
+  <p class="ocho-islas mono" data-sube>
+    <span>El Hierro</span><span>La Palma</span><span>La Gomera</span><span>Tenerife</span><span>Gran Canaria</span><span>Fuerteventura</span><span>Lanzarote</span><span>La Graciosa</span>
+  </p>
+
+  <blockquote class="ocho-frase" data-sube>
+    Son ocho porque somos <span class="marcada" id="marcada-islas">ocho<svg viewBox="0 0 300 60" preserveAspectRatio="none" aria-hidden="true"><use href="#brocha"/></svg></span>.<br>
+    <em>Ninguna se entiende sola.</em>
+  </blockquote>
+
+  <p class="ocho-pie" data-sube>Están en los carteles, en la bandera y en el pie de esta página. No son un adorno gráfico: son de dónde venimos.</p>
+</section>
+
+<!-- ===================== 11. CONTACTO ===================== -->
+<!-- ===================== 11. CONTACTO (EL DE LA V3, TAL CUAL) ===== -->
+<section class="pliego de-v3 contacto-v3" id="contacto">
+  <span class="registro al" aria-hidden="true"><span></span></span>
+  <span class="registro br" aria-hidden="true"><span></span></span>
+  <div class="env">
+    <div class="sello-v3" data-sube>
+      <svg viewBox="0 0 200 200" aria-hidden="true">
+        <defs><path id="aro" d="M100,100 m-76,0 a76,76 0 1,1 152,0 a76,76 0 1,1 -152,0"/></defs>
+        <circle cx="100" cy="100" r="94" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="100" cy="100" r="62" fill="none" stroke="currentColor" stroke-width="1"/>
+        <text class="sello-txt"><textPath href="#aro">LA BREGA ESTUDIO · LAS PALMAS DE GRAN CANARIA · DESDE 2026 · </textPath></text>
+      </svg>
+      <svg class="estrella gira"><use href="#s1"/></svg>
+    </div>
+
+    <p class="mono" data-sube style="margin-top:26px">¿Bregamos juntos?</p>
+    <a href="mailto:somoslabrega@gmail.com" class="grande" data-letras>Escríbenos</a>
+    <a href="mailto:somoslabrega@gmail.com" class="correo serif"><span class="marca-v3" data-marca>somoslabrega@gmail.com<svg viewBox="0 0 300 60" preserveAspectRatio="none" aria-hidden="true"><use href="#brocha"/></svg></span></a>
+
+    <div class="redes-v3">
+      <a href="https://www.instagram.com/labrega_estudio/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@labrega.estudio" target="_blank" rel="noopener">TikTok</a>
+      <a href="mailto:somoslabrega@gmail.com">Correo</a>
+    </div>
+  </div>
 </section>
 
 </main>
@@ -1409,7 +1587,7 @@ var troceados = [].slice.call(document.querySelectorAll('[data-troceo]'));
 function trocearTodo(){ if(!quieto) troceados.forEach(enLineas); }
 trocearTodo();
 
-var porRevelar = [].slice.call(document.querySelectorAll('[data-sube],[data-paso],[data-troceo],[data-velo],[data-palabras],.mascara'));
+var porRevelar = [].slice.call(document.querySelectorAll('[data-sube],[data-paso],[data-troceo],[data-velo],[data-palabras],[data-ocho],[data-marca],.mascara'));
 function revelar(el){
   if(el._visto) return;
   el._visto = true;
@@ -2048,6 +2226,63 @@ if(abrirMenu){
     }
   }
   paso();
+})();
+
+
+/* =====================================================================
+   LAS OCHO — estrella <-> isla
+   Todo el argumento de la seccion es el uno-a-uno: al tocar una estrella
+   se enciende SU isla, y al reves. Es lo que sustituye al mapa.
+   ===================================================================== */
+(function(){
+  var lista = document.querySelector('.ocho');
+  if(!lista) return;
+  var estrellas = [].slice.call(lista.children);
+  var nombres   = [].slice.call(document.querySelectorAll('.ocho-islas span'));
+  function enciende(i, si){
+    if(estrellas[i]) estrellas[i].classList.toggle('viva', si);
+    if(nombres[i])   nombres[i].classList.toggle('viva', si);
+  }
+  estrellas.forEach(function(el, i){
+    el.addEventListener('mouseenter', function(){ enciende(i, true); });
+    el.addEventListener('mouseleave', function(){ enciende(i, false); });
+  });
+  nombres.forEach(function(el, i){
+    el.addEventListener('mouseenter', function(){ enciende(i, true); });
+    el.addEventListener('mouseleave', function(){ enciende(i, false); });
+  });
+})();
+
+
+/* =====================================================================
+   LO TRAIDO DE LA V3 — las letras que huyen del raton
+   Portado de la v3 tal cual: parte el titular en letras y las levanta
+   segun lo cerca que pase el puntero. Escrito sin depender de los
+   ayudantes de la v3 ($$, clamp, quieto), que aqui no existen igual.
+   ===================================================================== */
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  [].slice.call(document.querySelectorAll('[data-letras]')).forEach(function(el){
+    var txt = el.textContent.trim(), h = '';
+    for (var i=0;i<txt.length;i++){
+      h += '<span style="transition-delay:'+(i*22)+'ms">' + (txt[i]===' ' ? '&nbsp;' : txt[i]) + '</span>';
+    }
+    el.innerHTML = h;
+    if (reduce) return;
+    var ls = [].slice.call(el.querySelectorAll('span'));
+    el.addEventListener('pointermove', function(e){
+      var r = el.getBoundingClientRect(), px = e.clientX - r.left;
+      ls.forEach(function(s){
+        var sr = s.getBoundingClientRect();
+        var d = Math.abs((sr.left - r.left + sr.width/2) - px);
+        var f = Math.max(0, Math.min(1, 1 - d/210));
+        s.style.transform = 'translateY(' + (-f*26).toFixed(1) + 'px) rotate(' + ((Math.random()-0.5)*f*8).toFixed(1) + 'deg)';
+      });
+    });
+    el.addEventListener('pointerleave', function(){
+      ls.forEach(function(s){ s.style.transform = 'none'; });
+    });
+  });
 })();
 
 repasar();

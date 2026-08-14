@@ -11,6 +11,20 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ## 2026-08-14
 
+> [!abstract]+ 🗓️ Sesión 2026-08-14 (tarde-2) — Las ocho islas, y la v3 entra en la v5
+> - **Temas:** [[La Brega Studio/La Brega Studio|La Brega]] **v5** · las 8 estrellas = las 8 islas · portar dos secciones enteras de la v3 · CSS muerto que muerde.
+> - **Hecho:** (1) la entrada de «Cómo bregamos» pasó a ir **por turnos** para que se leyera su lema (luego quedó descartada al traer la de la v3); (2) sección nueva **«Ocho estrellas»**: las ocho juntas, cuatro y cuatro como en su cartel, con los nombres debajo, la frase **«Son ocho porque somos ocho. Ninguna se entiende sola»** con «ocho» subrayado por su marcador, y el gesto de que **al pasar por una estrella se enciende su isla**; (3) **«Cómo bregamos» y el contacto de la v3, traídos tal cual** —la banda amarilla y el sello circular con «ESCRÍBENOS»—, metidos en un ámbito `.de-v3`.
+> - **La corrección del día, y es la buena:** el primer intento de las islas fue **un mapa** con las coordenadas reales de cada una. Lo rechazó: *«las quiero juntas… que lo explique de manera poética, que ese es el estilo de La Brega. No quiero que sea un mapa»*. **Ser exacto no es ser bueno**: el mapa era verdad pero era una infografía, y ellos hacen carteles.
+> - **Decisiones:** el ámbito **`.de-v3`** no es cosmética — en la v5 `.marca` es la fila del logotipo, `.sello` el dato de coordenadas y `.contacto` otra sección; sin aislar, traerlas revienta la portada.
+> - **Fallos cazados:** **101 px de desborde** tras el trasplante. El culpable era el **CSS de la vieja sección de la v4, que seguía en el archivo**: su `.pasos{grid-template-columns:repeat(4,1fr)}` partía la lista de la v3 en cuatro columnas y tiraba el cuarto paso fuera. Y antes, la etiqueta de una estrella salía con otra tipografía porque la clase `.arriba` **ya existía** en la v5 y su JS le reconstruye el contenido.
+> - **Verificación:** 390 px → **0 desbordes** en los seis tramos de la página y ningún texto cortado; 1440 → 0 desbordes y los cuatro pasos a ancho completo. La portada intacta. El menú pasa a siete entradas.
+> - **Pendiente:** la **batería completa** (sin JS, sin tipografías, movimiento reducido) y **elegir versión**.
+> - **Lo que aprendí:** **al sustituir una sección hay que borrar su CSS, no solo su HTML.** El código muerto es inofensivo hasta que sus nombres son genéricos (`.pasos`, `.marca`, `.arriba`) y muerde a lo siguiente que entre. Y para cazar un desborde: **ocultar los hijos de `<body>` uno a uno** y ver cuál baja el `scrollWidth` — buscar «lo que sobresale» no sirve, porque hay decorados que sobresalen a propósito dentro de `overflow:hidden`.
+
+---
+
+
+
 > [!abstract]+ 🗓️ Sesión 2026-08-14 (tarde) — Nace la v5: la maquetación de la v3 dentro de la v4
 > - **Temas:** [[La Brega Studio/La Brega Studio|La Brega]] **v5** · portar la rejilla del pliego · titular a sangre · contraste sobre el píxel pintado.
 > - **Hecho:** Alejandro pidió *«haz una versión v5, copias entera la v4 sin perder nada y trabajamos ahí»* y, encima, *«la maquetación de esta sección de la v3 en la v4… MAQUETACIÓN NO CONTENIDO»*. Creada **`web/v5/`** como copia byte a byte de la v4 (`diff -r` limpio, mismo SHA) y portada la rejilla de la v3 en dos sitios: **el manifiesto** (filete arriba, `MANIFIESTO` display a la izquierda, folio a la derecha, y dos columnas 1.15fr/.85fr con el titular a la izquierda y la nota estrecha —46ch— arrancando más abajo a la derecha) y **la portada** (bloque centrado en vertical, fila de marca con el logotipo grande y el sello en mono a la derecha, titular **a sangre** y fila de abajo con la bajada a la izquierda y los datos a la derecha; el «baja para ver» descolgado al pie).

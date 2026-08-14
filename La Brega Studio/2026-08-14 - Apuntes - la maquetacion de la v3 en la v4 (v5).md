@@ -57,3 +57,38 @@ Medido a **3439 px**: logotipo, titular, bajada y «baja para ver» los cuatro a
 
 > [!tip] La lección
 > **Un `max-width` con `margin:auto` es una decisión de diseño, no un ajuste técnico.** En anchos normales no se ve; en un monitor ancho es la diferencia entre una portada editorial y un bloque flotando en el centro. Y el sitio donde mirar si algo «no está alineado como en la otra versión» es **qué contenedor envuelve la sección**, no el `text-align`.
+
+---
+
+## Segunda tanda (mismo día): las ocho islas y dos secciones traídas de la v3
+
+### 1. «Cómo bregamos», más lenta
+Pidió: *«la animación del inicio hazla más lenta para que se lea la frase del inicio»*. Entraba **todo a la vez** en 1,1 s —título, lema y los cuatro pasos— y su lema se perdía. Se le dieron **turnos**: el lema arranca solo a los 0,55 s y está entero a 1,8 s; las cuatro líneas amarillas entran después, escalonadas (1,25 / 1,6 / 1,95 / 2,3 s).
+> Ese trabajo quedó **descartado luego**, porque pidió traer la sección de la v3 entera. La lección se queda igual: si una sección entra de golpe, lo que se pierde es siempre la frase.
+
+### 2. Las ocho estrellas = las ocho islas
+Su encargo: *«las 8 estrellas representan las islas… haz algo súper crema»*. El **primer intento fue un mapa**: las 8 estrellas colocadas en la longitud y latitud reales de cada isla, sobre una carta de línea fina. Lo rechazó: *«quiero las 8 estrellas **juntas**… simplemente que explique que las 8 estrellas son las 8 islas. **De manera poética**, que ese es el estilo de La Brega. **No quiero que sea un mapa**»*.
+
+> [!important] La corrección, que es la lección
+> **Ser exacto no es lo mismo que ser bueno.** El mapa era verdad —las coordenadas eran reales— pero era una *infografía*, y La Brega no hace infografías: hace carteles. Lo poético no estaba en dónde cae cada isla, sino en decir «somos ocho» y callarse.
+
+Lo que quedó: las **ocho juntas, cuatro y cuatro** como en su cartel, grandes; debajo la línea con los ocho nombres; y la frase, que es la que hace el trabajo:
+> **SON OCHO PORQUE SOMOS OCHO.** *Ninguna se entiende sola.*
+
+con «ocho» subrayado por **su marcador amarillo** (el mismo `#brocha` del manifiesto). Y un gesto que sustituye al mapa: **al pasar por una estrella se enciende su isla** en la línea de abajo, y al revés. Ese uno-a-uno es todo el argumento.
+
+### 3. «Cómo bregamos» y el contacto, traídos de la v3 tal cual
+*«Quiero sí o sí que el de la v3 esté en la v5 tal cual. Me flipa. Y el contacto también»*. Traídas **enteras**: la banda **amarilla** de «Cómo bregamos» (cabecera de pliego, la cita en serif y los cuatro pasos numerados) y el contacto (sello circular, «ESCRÍBENOS» con las letras que huyen del ratón, el correo subrayado con el marcador y las cruces de registro).
+
+**Van dentro de un ámbito `.de-v3`**, y esto no es un capricho: los nombres chocan de frente. En la v5, **`.marca` es la fila del logotipo** de la portada, **`.sello` es el dato de coordenadas** y **`.contacto` es otra sección**. Sin el ámbito, traerlas habría reventado el hero.
+
+> [!warning] El fallo que costó encontrarlo
+> Tras el cambio aparecieron **101 px de desborde horizontal**. El culpable: **el CSS de la vieja «Cómo bregamos» de la v4 seguía en el archivo**, y su regla `.pasos{grid-template-columns:repeat(4,1fr)}` partía la lista de la v3 en cuatro columnas, tirando el cuarto paso fuera de la pantalla. **Al sustituir una sección hay que borrar su CSS, no solo su HTML**: el código muerto no es inofensivo si sus nombres son genéricos.
+> Para encontrarlo: ocultar los hijos de `<body>` uno a uno y ver cuál baja el `scrollWidth`. Buscar «elementos que sobresalen» no vale, porque hay decorados que sobresalen a propósito dentro de `overflow:hidden`.
+
+### Verificación
+- **390 px**: 0 desbordes en los seis tramos de la página y ningún texto cortado.
+- **1440 px**: 0 desbordes. Los cuatro pasos apilados a ancho completo (1293 px), como en la v3.
+- El contacto: las 10 letras de «Escríbenos» troceadas (el efecto del ratón vive), el marcador del correo se destapa y el sello gira.
+- La portada **sin contaminar**: el logotipo sigue a 58 px y su sello sigue existiendo.
+- El menú pasa a **siete** entradas: las islas entran como VI y contacto como VII.

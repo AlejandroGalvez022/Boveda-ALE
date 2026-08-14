@@ -37,7 +37,7 @@ Hay **cinco versiones**, y las cinco funcionan. Se trabaja en la **v5**; las dem
 | **v2** | `web/v2/index.html` | `/v2/` | «Ruido → señal» (8-ago, retocada el 14-ago). Oscura. Eclipse en WebGL, manifiesto que se revela, galería anclada **con sus pósters reales** y **«Cómo bregamos» sobre su fotografía**. |
 | **v3** | `web/v3/index.html` | `/v3/` | «La Imprenta» (8-ago). **En papel claro.** La web se imprime delante de ti, con desregistro CMYK. **Sus pósters reales** y **cero dependencias**. |
 | **v4** | `web/v4/index.html` | `/v4/` | «La Carta» (11-ago). **La oscura, a nivel Awwwards.** Su negro entendido como **lámina impresa**: luna en **semitono de puntos** (WebGL a mano), órbitas con romanos, sus 8 estrellas. Una sola regla: **la velocidad hace ruido, la calma revela.** Cero dependencias. |
-| **v5** ⭐ | `web/v5/index.html` | `/v5/` | La v4 **con la maquetación de la v3** (14-ago). Copia exacta de la v4 y encima la rejilla del pliego: manifiesto a dos columnas con filete y folio, y portada con fila de marca, titular **a sangre** y fila de datos abajo. |
+| **v5** ⭐ | `web/v5/index.html` | `/v5/` | La v4 **con lo mejor de la v3** (14-ago). Rejilla del pliego en el manifiesto y en la portada (titular **a sangre**); **«Cómo bregamos» y el contacto traídos enteros de la v3** (la banda amarilla y el sello); y una sección nueva: **las ocho estrellas son las ocho islas**. |
 
 Ábrelas con **Live Server** en VSCode (clic derecho → *Open with Live Server*). Necesitan internet (Google Fonts, y la v2 además GSAP + Lenis — si no cargan, la web sigue funcionando entera).
 
