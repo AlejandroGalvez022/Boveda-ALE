@@ -11,6 +11,15 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ## 2026-08-14
 
+> [!check]+ 🗓️ 2026-08-14 (cierre 3) — Las ocho áreas, ya en la web
+> - **Las dio él**, con descripción incluida: **01 Branding · 02 Diseño gráfico · 03 Publicidad · 04 Creatividad · 05 Dirección de arte · 06 Diseño editorial · 07 Diseño digital · 08 Estrategia de marca.** (Mi propuesta de «Naming + Estrategia» queda descartada.)
+> - **Hecho:** «Lo que hacemos» pasa de seis filas a **ocho**, cada una con **su estrella** (`#s1`…`#s8`, en ese orden) — ese es ahora el sistema: la estrella 01 es Branding en toda la web. Su rótulo pasa a **«Ocho maneras de bregar»**. Y **la escena amarilla deja de hablar de islas**: la línea de abajo son las ocho áreas, la frase es **«Ocho estrellas. Ocho maneras de bregar.»** y debajo *«Una por cada cosa que sabemos hacer.»*
+> - **Fallo repetido:** al quitar la sección suelta quedaron vivas `.islas`, `.islas-rotulo`, `.islas .marcada`, `.ocho-frase` y `.ocho-pie` — reglas de algo que ya no existe. **Segunda vez en el mismo día.** Borradas; `grep` de «islas» en el archivo: cero.
+> - **Verificado:** 8 áreas con sus 8 estrellas en orden; la escena cabe entera en una pantalla a 1440 y a 390; **0 desbordes** en los nueve tramos, en los dos anchos.
+
+---
+
+
 > [!check]+ 🗓️ 2026-08-14 (cierre 2) — Resuelto: las áreas suben de seis a ocho
 > - **Lo que dijo:** *«Es lo que hacemos, pero **necesitamos 2 áreas más porque son 8 estrellas**.»* Queda cerrado: **no se tocan las ocho estrellas, se suben las áreas**.
 > - **Las seis de ahora:** Branding · Dirección de arte · Publicidad · Diseño gráfico · Contenido · Digital.

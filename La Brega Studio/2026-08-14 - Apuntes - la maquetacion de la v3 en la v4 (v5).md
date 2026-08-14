@@ -204,3 +204,29 @@ Otras que también salen de su material, por si prefieren: **Tipografía** (San 
 - Su rótulo: **«Seis maneras de bregar» → «Ocho maneras de bregar»**.
 - **La escena amarilla**: la línea de nombres pasa de islas a áreas; la frase «Son ocho porque somos ocho» se cambia por algo del oficio (encaja **«Ocho estrellas. Ocho maneras de bregar»**, que es su propia expresión); el pie deja de hablar de la bandera; y el hover pasa a ser **estrella ↔ área**.
 - El rótulo del menú («Ocho estrellas») y el ancla `#islas`.
+
+### ✅ HECHO: las ocho áreas, con sus textos
+Alejandro las cerró él mismo, con descripción incluida. **Ya están en la web** — mi propuesta de «Naming + Estrategia» queda descartada; estas son las suyas:
+
+| | Área | Qué dice |
+|---|---|---|
+| 01 | **Branding** | Creamos marcas desde la estrategia hasta su identidad completa. |
+| 02 | **Diseño gráfico** | Damos forma visual a ideas, negocios y proyectos. |
+| 03 | **Publicidad** | Desarrollamos campañas que buscan impacto, recuerdo y respuesta. |
+| 04 | **Creatividad** | Conceptos, ideas y soluciones que se salen de lo previsible. |
+| 05 | **Dirección de arte** | Construimos universos visuales coherentes y reconocibles. |
+| 06 | **Diseño editorial** | Dossiers, catálogos, publicaciones y piezas corporativas. |
+| 07 | **Diseño digital** | Webs, redes sociales y experiencias visuales para entornos digitales. |
+| 08 | **Estrategia de marca** | Posicionamiento, tono, narrativa y criterio para que una marca tenga algo que decir. |
+
+**Cada área lleva su estrella** (`#s1`…`#s8`, en ese orden) y ese es ahora el sistema: la estrella 01 es Branding en toda la web.
+
+**Lo que cambió:**
+- «Lo que hacemos»: de seis filas a **ocho**, con los textos de arriba. Su rótulo pasa a **«Ocho maneras de bregar»**.
+- **La escena amarilla** deja de hablar de islas: la línea de abajo son las **ocho áreas**, la frase es **«Ocho estrellas. Ocho maneras de bregar.»** y debajo *«Una por cada cosa que sabemos hacer.»* El pie: *«…No son un adorno gráfico: son el sistema con el que trabajamos.»*
+- El ancla `#islas` pasa a **`#ocho`** y la clase `.ocho-islas` a `.ocho-areas`.
+
+> [!warning] Y otra vez lo mismo: CSS huérfano
+> Al quitar la sección suelta quedaron vivas `.islas`, `.islas-rotulo`, `.islas .marcada`, `.ocho-frase` y `.ocho-pie` — **reglas de algo que ya no existe**. Es la segunda vez en el mismo día. Borradas todas. `grep` de «islas» en el archivo: **cero**.
+
+**Verificado:** 8 áreas con sus 8 estrellas en orden · la escena cabe entera en una pantalla a 1440 (680 px de 900) y a 390 (342 px de 844) · **0 desbordes** en los nueve tramos, en los dos anchos.

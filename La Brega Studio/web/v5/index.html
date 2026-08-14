@@ -680,10 +680,6 @@ html:not(.js) .taller .sello,html:not(.js) .taller .barra{display:none}
    se encienda SU isla en la linea de abajo. Ese uno-a-uno es todo el
    argumento, y no hace falta dibujar el archipielago para decirlo.
    ========================================================================== */
-.islas{text-align:center}
-.islas-rotulo{display:inline-flex; align-items:center; gap:14px; color:var(--humo);
-  margin-bottom:clamp(38px,6vw,72px)}
-.islas-rotulo .estrella{width:13px; height:13px; color:var(--canario)}
 
 .ocho{list-style:none; margin:0 auto; padding:0; display:grid; justify-content:center;
   grid-template-columns:repeat(4,auto); gap:clamp(20px,4.4vw,64px) clamp(26px,5.6vw,86px)}
@@ -719,37 +715,24 @@ html:not(.js) .taller .sello,html:not(.js) .taller .barra{display:none}
 @media (prefers-reduced-motion:reduce){ .ocho .estrella{animation:none} }
 
 /* la linea de las ocho: se enciende la isla de la estrella que tocas */
-.ocho-islas{display:flex; flex-wrap:wrap; justify-content:center; gap:0 clamp(10px,1.6vw,20px);
+.ocho-areas{display:flex; flex-wrap:wrap; justify-content:center; gap:0 clamp(10px,1.6vw,20px);
   margin:clamp(34px,5vw,58px) auto 0; max-width:min(100%,1240px);
   font-size:clamp(9.5px,.82vw,12px); letter-spacing:.16em; text-transform:uppercase; color:var(--tenue)}
-.ocho-islas span{position:relative; cursor:default; transition:color .35s}
+.ocho-areas span{position:relative; cursor:default; transition:color .35s}
 /* el separador va EN LINEA, no posicionado: asi nunca queda un punto
    suelto al principio de una linea cuando la lista se parte */
-.ocho-islas span + span::before{content:'·'; margin-inline-end:clamp(10px,1.6vw,20px); color:var(--linea)}
-.ocho-islas span.viva{color:var(--canario)}
+.ocho-areas span + span::before{content:'·'; margin-inline-end:clamp(10px,1.6vw,20px); color:var(--linea)}
+.ocho-areas span.viva{color:var(--canario)}
 
 /* la frase, que es lo que de verdad lo explica */
-.ocho-frase{position:relative; z-index:0; margin:clamp(52px,8vw,104px) auto 0; max-width:20ch;
-  font-size:clamp(30px,5.4vw,84px); font-weight:900; line-height:.98; letter-spacing:-.04em;
-  text-transform:uppercase}
-.ocho-frase em{display:inline-block; margin-top:.16em; font-family:var(--f-serif); font-style:italic;
-  font-weight:400; text-transform:none; letter-spacing:-.01em; font-size:.82em; color:var(--humo)}
-.islas .marcada{position:relative; display:inline-block; white-space:nowrap}
-.islas .marcada svg{position:absolute; left:-.06em; right:-.06em; bottom:-.02em; width:112%; height:.44em;
-  z-index:-1; fill:var(--canario); opacity:.92;
-  clip-path:inset(0 100% 0 0); transition:clip-path 1.1s var(--salida) .75s}
-.islas .ocho-frase.visto .marcada svg{clip-path:inset(0 0 0 0)}
 
-.ocho-pie{margin:clamp(26px,4vw,42px) auto 0; max-width:48ch; color:var(--humo);
-  font-size:clamp(14px,1.3vw,17px); line-height:1.55}
 
 @media (max-width:560px){
   .ocho{grid-template-columns:repeat(4,auto); gap:18px 20px}
-  .ocho-islas{gap:0 12px}
+  .ocho-areas{gap:0 12px}
 }
 @media (prefers-reduced-motion:reduce){
   .js .ocho li{opacity:1!important; scale:1!important; rotate:0deg!important}
-  .islas .marcada svg{clip-path:inset(0 0 0 0)!important}
 }
 
 
@@ -833,7 +816,7 @@ footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
   color:var(--canario); fill:currentColor;
   translate:-50% -50%; rotate:var(--giro,0deg)}
 /* --- lo que aparece sobre el amarillo -----------------------------------
-   Todo el bloque de las ocho islas vive aqui dentro. Cada pieza entra con
+   Todo el bloque de las ocho areas vive aqui dentro. Cada pieza entra con
    su propio tramo del recorrido (--resto, --nombres, --frase, --pie), no
    con transiciones: al ir pegado al scroll se puede ir hacia atras, y eso
    es lo que hace que parezca cine y no un GIF que se dispara una vez.
@@ -854,9 +837,9 @@ footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
   transition:none}
 .salto-ocho .estrella{width:clamp(24px,4.2vw,56px); height:clamp(24px,4.2vw,56px); animation:none}
 
-.salto-contenido .ocho-islas{margin:clamp(16px,2.4vw,30px) auto 0; color:#0C0C0C;
+.salto-contenido .ocho-areas{margin:clamp(16px,2.4vw,30px) auto 0; color:#0C0C0C;
   opacity:var(--nombres,0); translate:0 calc((1 - var(--nombres,0)) * 10px)}
-.salto-contenido .ocho-islas span+span::before{color:rgba(12,12,12,.4)}
+.salto-contenido .ocho-areas span+span::before{color:rgba(12,12,12,.4)}
 
 /* EL REMATE, sobre el amarillo. Entra por lineas enmascaradas —el mismo gesto
    que el resto de la web— y en negro, que es lo unico que se lee ahi.
@@ -1062,7 +1045,7 @@ html:not(.js) .salto{display:none}
     <a href="#taller"><span class="romano">III</span>El taller<svg class="estrella"><use href="#s4"/></svg></a>
     <a href="#efemerides"><span class="romano">IV</span>Efemérides<svg class="estrella"><use href="#s6"/></svg></a>
     <a href="#bregamos"><span class="romano">V</span>Cómo bregamos<svg class="estrella"><use href="#s2"/></svg></a>
-    <a href="#islas"><span class="romano">VI</span>Ocho estrellas<svg class="estrella"><use href="#s5"/></svg></a>
+    <a href="#ocho"><span class="romano">VI</span>Ocho estrellas<svg class="estrella"><use href="#s5"/></svg></a>
     <a href="#contacto"><span class="romano">VII</span>Contacto<svg class="estrella"><use href="#s8"/></svg></a>
   </nav>
   <div class="m-pie mono">
@@ -1152,15 +1135,18 @@ html:not(.js) .salto{display:none}
 <section class="pliego env" id="hacemos">
   <div class="cabecera">
     <h2 data-sube>Lo que hacemos</h2>
-    <div class="lado mono" data-sube><span class="romano">II</span><svg class="estrella"><use href="#s1"/></svg>Seis maneras de bregar</div>
+    <div class="lado mono" data-sube><span class="romano">II</span><svg class="estrella"><use href="#s1"/></svg>Ocho maneras de bregar</div>
   </div>
+  <!-- OCHO areas, una por estrella. Los textos son de Alejandro (14-ago). -->
   <ul class="hacemos">
-    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">01</span><h3>Branding</h3><p class="desc">Identidad completa: naming, logotipo, sistema gráfico y un manual para que no se despeine.</p><svg class="estrella"><use href="#s1"/></svg></div></li>
-    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">02</span><h3>Dirección de arte</h3><p class="desc">El criterio visual de todo lo que sale con tu nombre. La mirada, no solo el archivo.</p><svg class="estrella"><use href="#s3"/></svg></div></li>
-    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">03</span><h3>Publicidad</h3><p class="desc">Campañas con idea. De las que se quedan, no de las que se saltan.</p><svg class="estrella"><use href="#s4"/></svg></div></li>
-    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">04</span><h3>Diseño gráfico</h3><p class="desc">Cartelería, editorial, packaging, aplicaciones. Lo que haga falta imprimir.</p><svg class="estrella"><use href="#s6"/></svg></div></li>
-    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">05</span><h3>Contenido</h3><p class="desc">Redes con criterio: piezas que cuentan algo y suenan a ti.</p><svg class="estrella"><use href="#s2"/></svg></div></li>
-    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">06</span><h3>Digital</h3><p class="desc">Webs y productos que respetan la marca en vez de aplastarla.</p><svg class="estrella"><use href="#s8"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">01</span><h3>Branding</h3><p class="desc">Creamos marcas desde la estrategia hasta su identidad completa.</p><svg class="estrella"><use href="#s1"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">02</span><h3>Diseño gráfico</h3><p class="desc">Damos forma visual a ideas, negocios y proyectos.</p><svg class="estrella"><use href="#s2"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">03</span><h3>Publicidad</h3><p class="desc">Desarrollamos campañas que buscan impacto, recuerdo y respuesta.</p><svg class="estrella"><use href="#s3"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">04</span><h3>Creatividad</h3><p class="desc">Conceptos, ideas y soluciones que se salen de lo previsible.</p><svg class="estrella"><use href="#s4"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">05</span><h3>Dirección de arte</h3><p class="desc">Construimos universos visuales coherentes y reconocibles.</p><svg class="estrella"><use href="#s5"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">06</span><h3>Diseño editorial</h3><p class="desc">Dossiers, catálogos, publicaciones y piezas corporativas.</p><svg class="estrella"><use href="#s6"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">07</span><h3>Diseño digital</h3><p class="desc">Webs, redes sociales y experiencias visuales para entornos digitales.</p><svg class="estrella"><use href="#s7"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">08</span><h3>Estrategia de marca</h3><p class="desc">Posicionamiento, tono, narrativa y criterio para que una marca tenga algo que decir.</p><svg class="estrella"><use href="#s8"/></svg></div></li>
   </ul>
 </section>
 
@@ -1310,12 +1296,12 @@ html:not(.js) .salto{display:none}
      La escena va anclada (sticky) dentro de una seccion alta: el scroll no
      se secuestra, solo se usa como linea de tiempo.
      ============================================================== -->
-<section class="salto" id="islas">
+<section class="salto" id="ocho">
   <div class="salto-escena">
     <div class="salto-plancha"></div>
     <svg class="salto-nucleo" aria-hidden="true"><use href="#s5"/></svg>
 
-    <!-- Todo lo de las ocho islas pasa AQUI DENTRO: el bloque de ocho, sus
+    <!-- Todo lo de las ocho areas pasa AQUI DENTRO: el bloque de ocho, sus
          nombres, la frase y el pie. Entran por turnos sobre el amarillo,
          cada uno con su tramo del recorrido, para que se lea como una
          secuencia y no como una pantalla que aparece de golpe. -->
@@ -1331,16 +1317,16 @@ html:not(.js) .salto{display:none}
         <li style="--i:7"><svg class="estrella"><use href="#s8"/></svg></li>
       </ul>
 
-      <p class="ocho-islas mono">
-        <span>El Hierro</span><span>La Palma</span><span>La Gomera</span><span>Tenerife</span><span>Gran Canaria</span><span>Fuerteventura</span><span>Lanzarote</span><span>La Graciosa</span>
+      <p class="ocho-areas mono">
+        <span>Branding</span><span>Diseño gráfico</span><span>Publicidad</span><span>Creatividad</span><span>Dirección de arte</span><span>Diseño editorial</span><span>Diseño digital</span><span>Estrategia de marca</span>
       </p>
 
       <div class="salto-frase">
-        <p class="salto-grande"><span>Son ocho porque</span><span>somos ocho.</span></p>
-        <p class="salto-sub">Ninguna se entiende sola.</p>
+        <p class="salto-grande"><span>Ocho estrellas.</span><span>Ocho maneras de bregar.</span></p>
+        <p class="salto-sub">Una por cada cosa que sabemos hacer.</p>
       </div>
 
-      <p class="salto-pie">Están en los carteles, en la bandera y en el pie de esta página. No son un adorno gráfico: son de dónde venimos.</p>
+      <p class="salto-pie">Están en los carteles, en el pie de esta página y en todo lo que sale con nuestro nombre. No son un adorno gráfico: son el sistema con el que trabajamos.</p>
     </div>
   </div>
 </section>
@@ -2372,7 +2358,7 @@ if(abrirMenu){
   var lista = document.querySelector('.ocho');
   if(!lista) return;
   var estrellas = [].slice.call(lista.children);
-  var nombres   = [].slice.call(document.querySelectorAll('.ocho-islas span'));
+  var nombres   = [].slice.call(document.querySelectorAll('.ocho-areas span'));
   function enciende(i, si){
     if(estrellas[i]) estrellas[i].classList.toggle('viva', si);
     if(nombres[i])   nombres[i].classList.toggle('viva', si);
