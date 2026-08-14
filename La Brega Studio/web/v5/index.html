@@ -832,20 +832,38 @@ footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
   width:var(--nsz,54px); height:var(--nsz,54px);
   color:var(--canario); fill:currentColor;
   translate:-50% -50%; rotate:var(--giro,0deg)}
-.salto-resto{position:absolute; inset:0; margin:0; padding:0; list-style:none; z-index:3}
-.salto-resto li{position:absolute; left:var(--x); top:var(--y); translate:-50% -50%;
-  color:#0C0C0C; line-height:0;
-  opacity:var(--resto,0); scale:calc(.35 + var(--resto,0) * .65);
-  rotate:calc((1 - var(--resto,0)) * -40deg)}
-.salto-resto .estrella{width:clamp(26px,4.6vw,64px); height:clamp(26px,4.6vw,64px); display:block}
+/* --- lo que aparece sobre el amarillo -----------------------------------
+   Todo el bloque de las ocho islas vive aqui dentro. Cada pieza entra con
+   su propio tramo del recorrido (--resto, --nombres, --frase, --pie), no
+   con transiciones: al ir pegado al scroll se puede ir hacia atras, y eso
+   es lo que hace que parezca cine y no un GIF que se dispara una vez.
+   Los tamanos son mas contenidos que los de una seccion normal porque
+   aqui las cuatro piezas tienen que caber en UNA pantalla.
+   ------------------------------------------------------------------------ */
+.salto-contenido{position:relative; z-index:3; width:100%; padding-inline:var(--borde);
+  text-align:center; color:#0C0C0C; pointer-events:none}
+
+.salto-ocho{grid-template-columns:repeat(4,auto); gap:clamp(12px,2.4vw,30px) clamp(18px,3.6vw,52px);
+  margin-inline:auto}
+/* .js .ocho li (dos clases) le ganaba por especificidad a .salto-ocho li y
+   las dejaba invisibles: aqui hace falta el .js delante para empatar y,
+   al ir despues en el archivo, ganar. */
+.js .salto-ocho li{color:#0C0C0C; opacity:var(--resto,0);
+  scale:calc(.4 + var(--resto,0) * .6);
+  rotate:calc((1 - var(--resto,0)) * -32deg);
+  transition:none}
+.salto-ocho .estrella{width:clamp(24px,4.2vw,56px); height:clamp(24px,4.2vw,56px); animation:none}
+
+.salto-contenido .ocho-islas{margin:clamp(16px,2.4vw,30px) auto 0; color:#0C0C0C;
+  opacity:var(--nombres,0); translate:0 calc((1 - var(--nombres,0)) * 10px)}
+.salto-contenido .ocho-islas span+span::before{color:rgba(12,12,12,.4)}
 
 /* EL REMATE, sobre el amarillo. Entra por lineas enmascaradas —el mismo gesto
    que el resto de la web— y en negro, que es lo unico que se lee ahi.
    Se mueve con --frase, no con una transicion: asi va pegado al scroll y
    se puede ir hacia atras, que es lo que lo hace parecer cine y no un GIF. */
-.salto-frase{position:relative; z-index:4; text-align:center; padding-inline:var(--borde);
-  color:#0C0C0C; pointer-events:none}
-.salto-grande{font-size:clamp(34px,7.6vw,124px); font-weight:900; line-height:.95;
+.salto-frase{position:relative; z-index:4; margin-top:clamp(24px,4vw,54px)}
+.salto-grande{font-size:clamp(28px,6.2vw,102px); font-weight:900; line-height:.95;
   letter-spacing:-.045em; text-transform:uppercase}
 .salto-grande span{display:block; overflow:hidden}
 .salto-grande > span{
@@ -854,11 +872,16 @@ footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
 .salto-grande > span:last-child{
   clip-path:inset(calc((1 - min(1, var(--frase,0) * 1.35)) * 100%) 0 0 0);
   translate:0 calc((1 - min(1, var(--frase,0) * 1.35)) * .32em)}
-.salto-sub{margin-top:clamp(10px,1.6vw,20px); font-family:var(--f-serif); font-style:italic;
-  font-size:clamp(18px,2.6vw,42px); line-height:1.2;
+.salto-sub{margin-top:clamp(8px,1.2vw,16px); font-family:var(--f-serif); font-style:italic;
+  font-size:clamp(16px,2.2vw,34px); line-height:1.2;
   opacity:calc(max(0, var(--frase,0) - .45) * 1.82);
   translate:0 calc((1 - var(--frase,0)) * 14px)}
 
+
+/* el pie, lo ultimo que entra: cierra la escena antes de caer al contacto */
+.salto-pie{margin:clamp(20px,3vw,36px) auto 0; max-width:46ch;
+  font-size:clamp(12px,1.05vw,15px); line-height:1.55; color:rgba(12,12,12,.72);
+  opacity:var(--pie,0); translate:0 calc((1 - var(--pie,0)) * 12px)}
 /* Sobre la plancha amarilla el menu (que es color hueso) desaparece: cuando
    la plancha manda, la cabecera se pinta en negro. */
 /* La cabecera lleva su propio fondo oscuro al hacer scroll; sobre el amarillo
@@ -1278,37 +1301,6 @@ html:not(.js) .salto{display:none}
   </div>
 </section>
 
-<!-- ===================== 10. LAS OCHO ISLAS =====================
-     Sus 8 estrellas no son un adorno: son las 8 islas. Aqui van puestas
-     en su SITIO REAL (longitud y latitud de cada una, de El Hierro a La
-     Graciosa), sobre una carta de linea fina — el mismo grabado de su
-     cartel del OVNI. Cada isla lleva una estrella distinta del sistema,
-     y Gran Canaria, que es donde estan, va en su amarillo.
-     ============================================================== -->
-<section class="pliego env islas" id="islas">
-  <div class="islas-rotulo mono" data-sube><span class="romano">VI</span><svg class="estrella"><use href="#s5"/></svg>Una por isla</div>
-
-  <!-- Las 8 juntas, como en su cartel: cuatro y cuatro. Aterrizan una detras
-       de otra, de oeste a este, y cada una se enciende en su amarillo al
-       pasar por encima, llevandose con ella el nombre de su isla. -->
-  <ul class="ocho" data-ocho>
-    <li style="--i:0"><svg class="estrella"><use href="#s1"/></svg></li>
-    <li style="--i:1"><svg class="estrella"><use href="#s2"/></svg></li>
-    <li style="--i:2"><svg class="estrella"><use href="#s3"/></svg></li>
-    <li style="--i:3"><svg class="estrella"><use href="#s4"/></svg></li>
-    <li style="--i:4"><svg class="estrella"><use href="#s5"/></svg></li>
-    <li style="--i:5"><svg class="estrella"><use href="#s6"/></svg></li>
-    <li style="--i:6"><svg class="estrella"><use href="#s7"/></svg></li>
-    <li style="--i:7"><svg class="estrella"><use href="#s8"/></svg></li>
-  </ul>
-
-  <p class="ocho-islas mono" data-sube>
-    <span>El Hierro</span><span>La Palma</span><span>La Gomera</span><span>Tenerife</span><span>Gran Canaria</span><span>Fuerteventura</span><span>Lanzarote</span><span>La Graciosa</span>
-  </p>
-
-
-  <p class="ocho-pie" data-sube>Están en los carteles, en la bandera y en el pie de esta página. No son un adorno gráfico: son de dónde venimos.</p>
-</section>
 
 <!-- ===================== 11. CONTACTO ===================== -->
 <!-- ============ EL SALTO AL CONTACTO ============================
@@ -1318,22 +1310,37 @@ html:not(.js) .salto{display:none}
      La escena va anclada (sticky) dentro de una seccion alta: el scroll no
      se secuestra, solo se usa como linea de tiempo.
      ============================================================== -->
-<section class="salto" id="salto" aria-hidden="true">
+<section class="salto" id="islas">
   <div class="salto-escena">
     <div class="salto-plancha"></div>
-    <svg class="salto-nucleo" viewBox="0 0 100 100"><use href="#s5"/></svg>
-    <ul class="salto-resto">
-      <li style="--i:0; --x:15%; --y:24%"><svg class="estrella"><use href="#s1"/></svg></li>
-      <li style="--i:1; --x:80%; --y:19%"><svg class="estrella"><use href="#s2"/></svg></li>
-      <li style="--i:2; --x:33%; --y:70%"><svg class="estrella"><use href="#s3"/></svg></li>
-      <li style="--i:3; --x:66%; --y:76%"><svg class="estrella"><use href="#s4"/></svg></li>
-      <li style="--i:4; --x:44%; --y:87%"><svg class="estrella"><use href="#s6"/></svg></li>
-      <li style="--i:5; --x:88%; --y:56%"><svg class="estrella"><use href="#s7"/></svg></li>
-      <li style="--i:6; --x:9%;  --y:58%"><svg class="estrella"><use href="#s8"/></svg></li>
-    </ul>
-    <div class="salto-frase">
-      <p class="salto-grande"><span>Son ocho porque</span><span>somos ocho.</span></p>
-      <p class="salto-sub">Ninguna se entiende sola.</p>
+    <svg class="salto-nucleo" aria-hidden="true"><use href="#s5"/></svg>
+
+    <!-- Todo lo de las ocho islas pasa AQUI DENTRO: el bloque de ocho, sus
+         nombres, la frase y el pie. Entran por turnos sobre el amarillo,
+         cada uno con su tramo del recorrido, para que se lea como una
+         secuencia y no como una pantalla que aparece de golpe. -->
+    <div class="salto-contenido">
+      <ul class="ocho salto-ocho">
+        <li style="--i:0"><svg class="estrella"><use href="#s1"/></svg></li>
+        <li style="--i:1"><svg class="estrella"><use href="#s2"/></svg></li>
+        <li style="--i:2"><svg class="estrella"><use href="#s3"/></svg></li>
+        <li style="--i:3"><svg class="estrella"><use href="#s4"/></svg></li>
+        <li style="--i:4"><svg class="estrella"><use href="#s5"/></svg></li>
+        <li style="--i:5"><svg class="estrella"><use href="#s6"/></svg></li>
+        <li style="--i:6"><svg class="estrella"><use href="#s7"/></svg></li>
+        <li style="--i:7"><svg class="estrella"><use href="#s8"/></svg></li>
+      </ul>
+
+      <p class="ocho-islas mono">
+        <span>El Hierro</span><span>La Palma</span><span>La Gomera</span><span>Tenerife</span><span>Gran Canaria</span><span>Fuerteventura</span><span>Lanzarote</span><span>La Graciosa</span>
+      </p>
+
+      <div class="salto-frase">
+        <p class="salto-grande"><span>Son ocho porque</span><span>somos ocho.</span></p>
+        <p class="salto-sub">Ninguna se entiende sola.</p>
+      </div>
+
+      <p class="salto-pie">Están en los carteles, en la bandera y en el pie de esta página. No son un adorno gráfico: son de dónde venimos.</p>
     </div>
   </div>
 </section>
@@ -2444,10 +2451,13 @@ if(abrirMenu){
       escena.style.setProperty('--giro', (p * 120).toFixed(1) + 'deg');
       var plancha = tramo(p, .28, .52);
       escena.style.setProperty('--plancha', plancha.toFixed(3));
-      var resto = tramo(p, .50, .84);
-      /* y la frase, que es el remate: entra cuando las ocho ya estan */
-      escena.style.setProperty('--frase', tramo(p, .62, .90).toFixed(3));
-      escena.style.setProperty('--resto', resto.toFixed(3));
+      /* la secuencia sobre el amarillo: las ocho, sus nombres, la frase
+         y el pie. Se solapan a proposito: cada una arranca antes de que
+         la anterior termine, que es lo que la encadena. */
+      escena.style.setProperty("--resto",   tramo(p, .46, .68).toFixed(3));
+      escena.style.setProperty("--nombres", tramo(p, .56, .76).toFixed(3));
+      escena.style.setProperty("--frase",   tramo(p, .62, .88).toFixed(3));
+      escena.style.setProperty("--pie",     tramo(p, .78, .96).toFixed(3));
       /* el menu se pinta en negro mientras el amarillo manda */
       var amarillo = plancha > .55;
       if(amarillo !== enAmarillo){ enAmarillo = amarillo; raiz.classList.toggle('en-amarillo', amarillo); }

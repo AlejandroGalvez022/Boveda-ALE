@@ -141,3 +141,22 @@ Se movió una estrella que caía **encima de la «O» de OCHO** (estaba en el 50
 > **Regla general: si algo vectorial tiene que crecer mucho, se redimensiona; no se escala.**
 
 Verificado otra vez: **0 desbordes** en los nueve tramos, a 1440.
+
+### Y al final, TODO dentro de la estrella
+> «Esto también va dentro de la estrella.» (señalando la sección entera de las ocho)
+
+La sección suelta **desaparece**: el bloque de ocho, la línea de nombres, la frase y el pie **viven ahora dentro de la escena amarilla**, encadenados por tramos del recorrido:
+
+| Tramo | Entra |
+|---|---|
+| .46 → .68 | **Las ocho**, en negro, enderezándose |
+| .56 → .76 | **Los nombres** de las islas |
+| .62 → .88 | **«Son ocho porque somos ocho»** por líneas enmascaradas |
+| .78 → .96 | **El pie** que lo cierra |
+
+Se solapan a propósito: cada pieza arranca antes de que termine la anterior, que es lo que las encadena en vez de dejarlas a saltos. El ancla `#islas` del menú apunta ahora a la escena.
+
+> [!warning] Las ocho no aparecían
+> `.js .ocho li` (dos clases) le ganaba por especificidad a `.salto-ocho li` (una) y las dejaba en `opacity:0`. Hizo falta escribir **`.js .salto-ocho li`** para empatar y, al ir después en el archivo, ganar. **Reutilizar un componente en otro contexto obliga a mirar con qué especificidad se definió el original.**
+
+Verificado: cabe entero en una pantalla a **1440** (550 px de 900) y a **390** (282 px de 844). **0 desbordes** en los dos.
