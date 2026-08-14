@@ -371,6 +371,12 @@ a:hover .rueda .rueda-in,button:hover .rueda .rueda-in{transform:translateY(-100
    ============================================================ */
 .hero{justify-content:center; padding-top:clamp(118px,17vh,180px); padding-bottom:clamp(70px,11vh,110px)}
 /* fila de marca: logotipo grande a la izquierda, dato pegado a la derecha */
+/* LA PORTADA VA A SANGRE, como la de la v3: alli el hero NO usa .env — es la
+   propia seccion la que lleva el padding, asi que el bloque se pega al margen
+   izquierdo y los datos al derecho. En la v4 iba metido en la caja de 1720px
+   CENTRADA, y en un monitor ancho el titular se quedaba flotando en el medio.
+   Aqui se le quita el tope y el centrado, y se le deja solo el margen. */
+.hero .dentro{max-width:none; margin-inline:0}
 .hero .marca{display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap;
   margin-bottom:clamp(14px,2.2vw,26px)}
 .hero .marca .logo{font-size:clamp(26px,4.2vw,58px); color:var(--hueso)}

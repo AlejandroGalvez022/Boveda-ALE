@@ -32,6 +32,7 @@ metadata:
   🔑 **Un `position:absolute` es tan bueno como su ancestro posicionado.** El «baja para ver» colgaba de `.dentro` (que es relative) y se montaba sobre la bajada: si va al pie de la sección, tiene que ser **hijo de la sección**.
   🔑 **Un degradado de velo tiene que apagarse DENTRO de su propia caja** o dibuja un canto recto: con el radio vertical al 300 % llegaba vivo al borde y partía la luna con una línea.
   ⚠️ **Si renombras un contenedor, busca quién colgaba de él**: al pasar `.pie` a `.hero-datos`, la hora local perdió el `flex-direction:column` y salió `HORA LOCAL10:44:48`.
+  🔑 **LA PORTADA DE LA V3 VA A SANGRE, y el motivo es que su hero NO usa `.env`**: es la propia sección la que lleva el `padding: 120px var(--borde) 40px`. La v4 la mete en `.dentro.env` (tope 1720px y centrada) y en un monitor ancho (3439px) el titular se queda **flotando en el centro** — Alejandro lo cazó ahí, porque a 1440 no se ve. Se arregla con `.hero .dentro{max-width:none; margin-inline:0}`. **Cuando algo «no está alineado como en la otra versión», mirar QUÉ CONTENEDOR envuelve la sección, no el `text-align`.**
 
 En Netlify: v1 en `/`, v2 en `/v2/`, v3 en `/v3/`, **v4 en `/v4/`**.
 

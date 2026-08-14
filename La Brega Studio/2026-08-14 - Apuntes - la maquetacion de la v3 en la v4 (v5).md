@@ -45,3 +45,15 @@ Proyecto: [[La Brega Studio/La Brega Studio|La Brega Studio]]
 
 > [!todo] Falta pasarle la batería completa de la v4
 > Queda comprobar la v5 **sin JavaScript**, **sin las tipografías de Google** y con **movimiento reducido**, que es el estándar con el que se cerraron la v3 y la v4.
+
+## Corrección (mismo día): la portada tiene que ir A SANGRE
+Alejandro lo vio en su monitor ancho: *«en el hero de la v5 me refiero a que esté alineado a la izquierda como en la v3»*. Y tenía razón — se me había escapado el detalle que lo explica todo:
+
+**El hero de la v3 NO usa `.env`.** Es la propia `<section class="hero">` la que lleva el `padding: 120px var(--borde) 40px`, así que el bloque va **a sangre**: pegado al margen izquierdo, con el sello y los datos contra el derecho. La v4 (y por tanto la v5) mete la portada en `<div class="dentro env">`, que **tapa a 1720 px y centra** — en una pantalla de 1440 no se nota, pero en un monitor de 3439 px el titular se queda **flotando en mitad de la pantalla**.
+
+Arreglado con una línea: `.hero .dentro{max-width:none; margin-inline:0}`.
+
+Medido a **3439 px**: logotipo, titular, bajada y «baja para ver» los cuatro a **72 px** del borde izquierdo (que es justo el margen), y sello y datos a 87 px del derecho. A 1440 px **no cambia nada** (el titular sigue ocupando el 99,5 %), porque el tope de 1720 solo estorbaba de ahí para arriba.
+
+> [!tip] La lección
+> **Un `max-width` con `margin:auto` es una decisión de diseño, no un ajuste técnico.** En anchos normales no se ve; en un monitor ancho es la diferencia entre una portada editorial y un bloque flotando en el centro. Y el sitio donde mirar si algo «no está alineado como en la otra versión» es **qué contenedor envuelve la sección**, no el `text-align`.
