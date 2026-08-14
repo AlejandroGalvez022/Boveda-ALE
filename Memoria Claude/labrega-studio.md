@@ -26,6 +26,13 @@ metadata:
   🎞️ **Motor de animación** (2.ª vuelta, que pidió él con la colección *CSS & JS Animations* de Awwwards porque *«los revelados eran un opacity y un translateY»*): texto que **sube por líneas enmascaradas**, el **logotipo vuela** del preloader a la cabecera, **cortina** que destapa las fotos, **rótulos que ruedan**, **botones magnéticos**, **3D** en la galería (las láminas de los lados giran hacia dentro), **salida del hero ligada al scroll** y las 8 estrellas del pie escalonadas.
   El taller es una **galería anclada con `position:sticky`, sin GSAP**. Cero dependencias. Verificada 360→1920, **sin tipografías, sin JavaScript y con movimiento reducido**.
 
+
+- **v5 «la maquetación de la v3 dentro de la v4»** — `web/v5/index.html` (14-ago-2026). Pidió: *«haz una versión v5, copias entera la v4 sin perder nada y trabajamos ahí»* + *«la maquetación de esta sección de la v3 en la v4… **MAQUETACIÓN NO CONTENIDO**»*. Copia byte a byte de la v4 y encima la **rejilla del pliego** en el manifiesto (filete arriba, rótulo display + folio, dos columnas 1.15fr/.85fr con la nota estrecha a 46ch arrancando más abajo) y en la **portada** (bloque centrado, fila de marca con logotipo grande + sello en mono a la derecha, titular **a sangre**, fila de abajo con bajada izq y datos der, «baja» descolgado al pie). **Ni un texto nuevo**: los datos son los de la v4 recolocados.
+  🔑 **«A sangre» se calibra contra el ancho de CONTENIDO, no contra la caja.** Medí `.dentro` con su padding dentro (1425 px en vez de 1293) y el titular primero se quedó corto y luego se salió. Queda en 99,5 % a 1440 y 98,3 % a 1920, con el ensanchado **solo desde 760 px** para no romper el mínimo ya medido de la v4 en móvil (a 390 px el titular tiene que caber en una línea con `nowrap`).
+  🔑 **Un `position:absolute` es tan bueno como su ancestro posicionado.** El «baja para ver» colgaba de `.dentro` (que es relative) y se montaba sobre la bajada: si va al pie de la sección, tiene que ser **hijo de la sección**.
+  🔑 **Un degradado de velo tiene que apagarse DENTRO de su propia caja** o dibuja un canto recto: con el radio vertical al 300 % llegaba vivo al borde y partía la luna con una línea.
+  ⚠️ **Si renombras un contenedor, busca quién colgaba de él**: al pasar `.pie` a `.hero-datos`, la hora local perdió el `flex-direction:column` y salió `HORA LOCAL10:44:48`.
+
 En Netlify: v1 en `/`, v2 en `/v2/`, v3 en `/v3/`, **v4 en `/v4/`**.
 
 Nota: [[La Brega Studio]].

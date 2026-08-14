@@ -1,0 +1,2051 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La Brega Estudio — No hacemos ruido. Hacemos marcas.</title>
+<meta name="description" content="La Brega Estudio. Branding, dirección creativa y publicidad desde Canarias. No hacemos ruido. Hacemos marcas.">
+<meta name="theme-color" content="#08080A">
+<meta property="og:title" content="La Brega Estudio">
+<meta property="og:description" content="No hacemos ruido. Hacemos marcas.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;700;900&family=Instrument+Serif:ital@0;1&family=Pinyon+Script&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* ==========================================================================
+   LA BREGA ESTUDIO — v4 «LA CARTA»
+   ---------------------------------------------------------------------------
+   El mundo oscuro de La Brega no es "premium con degradado neon": mirando su
+   feed, su negro es una LAMINA IMPRESA — grano y arañazos, grabados de puntos
+   (su Luna), diagramas orbitales de linea fina con numeros romanos (su OVNI),
+   anotaciones a mano (San Borondon) y sus 8 estrellas. Eso es lo que dibuja
+   esta version.
+
+   UNA SOLA REGLA gobierna toda la web, y es su lema hecho fisica:
+        LA VELOCIDAD HACE RUIDO. LA CALMA REVELA.
+   Al moverte rapido todo se deshace en puntos gordos y la tinta se descuadra;
+   al parar, el semitono se afina, los canales cuadran y aparece la señal.
+   La variable --vel (0..1) la escribe el JS y de ella cuelga todo.
+
+   Cero dependencias de JS externo. Solo tipografias (y aguanta sin ellas).
+   ========================================================================== */
+
+:root{
+  /* --- el papel negro y la tinta --- */
+  --negro:#08080A;
+  --negro-2:#101013;
+  --hueso:#F2EFE6;
+  --humo:#9A948A;   /* 6,6:1 sobre el negro */
+  --tenue:#7C776D;  /* 4,2:1 — solo rotulos cortos en versalita */
+  --linea:rgba(242,239,230,.14);
+  --linea-suave:rgba(242,239,230,.07);
+
+  /* --- sus tintas (salen de sus propios trabajos) --- */
+  --canario:#FFE500;      /* el amarillo del marcador. Es SU acento. */
+  --verde:#3ECB2B;        /* Saltimbanqui */
+  --magenta:#FF1F5A;      /* Omnia */
+  --naranja:#FF6A00;      /* Omnia */
+
+  /* --- tipografia --- */
+  --f:'Archivo',Helvetica,'Helvetica Neue',Arial,sans-serif;
+  --f-serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --f-script:'Pinyon Script','Snell Roundhand','Brush Script MT',cursive;
+  --f-mono:'Space Mono',ui-monospace,'Courier New',monospace;
+
+  /* --- movimiento --- */
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --salida:cubic-bezier(.16,1,.3,1);
+  --borde:clamp(18px,4.6vw,72px);
+
+  /* --- estado en vivo (lo escribe el JS) --- */
+  --vel:0;         /* 0..1  velocidad de scroll normalizada = "ruido" */
+  --vel-s:0;       /* -1..1 con signo */
+  --mx:50%; --my:50%;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+/* el hueco de la barra se reserva SIEMPRE: al abrir la ficha se bloquea el
+   body y, sin esto, la cabecera fija pegaria un salto de 15px */
+html{-webkit-text-size-adjust:100%; scrollbar-gutter:stable}
+body{
+  margin:0; background:var(--negro); color:var(--hueso);
+  font-family:var(--f); font-weight:400;
+  font-size:clamp(15px,1.02vw,17px); line-height:1.55;
+  overflow-x:hidden; -webkit-font-smoothing:antialiased;
+}
+body.bloqueado{overflow:hidden}
+img{max-width:100%; display:block}
+a{color:inherit; text-decoration:none}
+button{font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer; text-align:inherit}
+h1,h2,h3,h4,p,ul,figure,dl,dd,dt{margin:0}
+ul{padding:0; list-style:none}
+::selection{background:var(--canario); color:var(--negro)}
+:focus-visible{outline:2px solid var(--canario); outline-offset:4px; border-radius:2px}
+
+/* ---------- utilidades ---------- */
+.env{width:100%; max-width:1720px; margin-inline:auto; padding-inline:var(--borde)}
+.mono{font-family:var(--f-mono); font-size:.68rem; letter-spacing:.17em; text-transform:uppercase; font-weight:700}
+.serif{font-family:var(--f-serif); font-weight:400}
+.script{font-family:var(--f-script)}
+.sr{position:absolute!important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+.romano{font-family:var(--f-mono); font-weight:700; letter-spacing:.2em}
+
+/* Secciones. OJO: NUNCA usar el atajo `padding: X 0` en un elemento que
+   tambien lleve .env — borraria el margen lateral y la seccion se iria a
+   sangre (fallo real cazado en la v2). Solo arriba y abajo. */
+.pliego{position:relative; padding-block:clamp(84px,12vw,190px)}
+
+/* ==========================================================================
+   CAPAS GLOBALES — grano, arañazos, barra de lectura
+   El grano SUBE con la velocidad: es el ruido, literalmente.
+   ========================================================================== */
+/* inset pequeño + will-change: la animacion solo mueve `transform`, asi que con
+   su propia capa la compone la GPU y no repinta. Con inset:-60% la capa medía
+   casi 5 veces la pantalla y se notaba en la CPU. */
+.grano{
+  position:fixed; inset:-14%; z-index:9000; pointer-events:none; will-change:transform;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='.6'/></svg>");
+  mix-blend-mode:screen;
+  opacity:calc(.055 + var(--vel) * .1);
+  animation:granear .9s steps(5) infinite;
+}
+@keyframes granear{
+  0%{transform:translate3d(0,0,0)} 20%{transform:translate3d(-4%,3%,0)} 40%{transform:translate3d(3%,-4%,0)}
+  60%{transform:translate3d(-3%,-3%,0)} 80%{transform:translate3d(4%,2%,0)} 100%{transform:translate3d(0,0,0)}
+}
+/* arañazos de la plancha: su negro nunca es liso */
+.aranazos{
+  position:fixed; inset:0; z-index:8999; pointer-events:none; opacity:.07; mix-blend-mode:screen;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><g stroke='white' fill='none' stroke-width='.6' opacity='.85'><path d='M20 90 L180 70'/><path d='M420 30 L470 260'/><path d='M60 400 L300 460'/><path d='M520 380 L560 540'/><path d='M240 140 L250 300'/><path d='M330 520 L500 500'/><path d='M110 240 L130 250'/><path d='M480 120 L590 100'/></g></svg>");
+}
+.lectura{position:fixed; top:0; left:0; height:2px; width:100%; z-index:9100; background:var(--canario);
+  transform:scaleX(0); transform-origin:0 50%; will-change:transform}
+
+/* ==========================================================================
+   CURSOR — un reticulo de carta nautica
+   ========================================================================== */
+.reticulo{position:fixed; top:0; left:0; width:44px; height:44px; z-index:9200; pointer-events:none;
+  margin:-22px 0 0 -22px; will-change:transform; opacity:0; transition:opacity .3s}
+.reticulo.vivo{opacity:1}
+.reticulo .aro{position:absolute; inset:0; border:1px solid rgba(242,239,230,.55); border-radius:50%;
+  transition:transform .35s var(--salida), background .3s, border-color .3s}
+.reticulo .cruz::before,.reticulo .cruz::after{content:''; position:absolute; background:rgba(242,239,230,.55);
+  transition:opacity .3s}
+.reticulo .cruz::before{left:50%; top:-9px; width:1px; height:62px; transform:translateX(-50%)}
+.reticulo .cruz::after{top:50%; left:-9px; height:1px; width:62px; transform:translateY(-50%)}
+.reticulo .rot{position:absolute; inset:0; display:grid; place-items:center; font-family:var(--f-mono);
+  font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--negro);
+  opacity:0; transition:opacity .25s; white-space:nowrap}
+.reticulo.abierto .aro{transform:scale(2.15); background:var(--canario); border-color:var(--canario)}
+.reticulo.abierto .cruz::before,.reticulo.abierto .cruz::after{opacity:0}
+.reticulo.abierto .rot{opacity:1}
+body.con-reticulo,body.con-reticulo a,body.con-reticulo button{cursor:none}
+@media (hover:none),(pointer:coarse){.reticulo{display:none}}
+
+/* ==========================================================================
+   LOGOTIPO — el de verdad: apilado a la izquierda,
+   LA fino / BREGA negra / ESTUDIO. fino con el punto gordo.
+   (La v1 y la v2 lo tenian mal: usaban una insignia circular, que era el
+   recorte del avatar de Instagram, no su logotipo.)
+   ========================================================================== */
+.logo{display:block; line-height:.84; letter-spacing:-.018em; text-transform:uppercase; font-family:var(--f)}
+.logo b{display:block; font-weight:900; letter-spacing:-.045em}
+.logo i{display:block; font-style:normal; font-weight:300; font-size:.84em; letter-spacing:-.005em}
+.logo .pt{font-weight:900}
+
+/* ==========================================================================
+   ESTRELLAS — su sistema grafico (8 piezas, dibujadas en SVG)
+   ========================================================================== */
+.estrella{display:inline-block; fill:currentColor; vertical-align:middle}
+.gira{animation:gira 16s linear infinite}
+.gira-r{animation:gira 26s linear infinite reverse}
+.late{animation:late 5s ease-in-out infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes late{0%,100%{transform:scale(1)}50%{transform:scale(.76) rotate(45deg)}}
+
+/* ==========================================================================
+   1. PRELOADER — la lamina se revela
+   ========================================================================== */
+.carga{display:none}
+.js .carga{position:fixed; inset:0; z-index:9500; background:var(--negro); display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:clamp(22px,4vw,40px); padding:var(--borde);
+  transition:transform 1.05s var(--salida), opacity .6s ease .35s; will-change:transform}
+.carga.fuera{transform:translateY(-101%); opacity:0}
+.carga canvas{position:absolute; inset:0; width:100%; height:100%; opacity:.5; image-rendering:pixelated}
+.carga .c-in{position:relative; z-index:2; display:flex; flex-direction:column; align-items:center;
+  gap:clamp(18px,3vw,30px); text-align:center}
+.carga .logo{font-size:clamp(34px,7.4vw,74px); text-align:left; opacity:0; transform:translateY(14px);
+  transition:opacity .7s var(--salida), transform .9s var(--salida)}
+.carga.pinta .logo{opacity:1; transform:none}
+.carga .c-estrellas{display:flex; gap:clamp(8px,1.8vw,18px)}
+.carga .c-estrellas .estrella{width:clamp(13px,2.2vw,20px); height:clamp(13px,2.2vw,20px); color:var(--canario);
+  opacity:0; transform:scale(.3) rotate(-90deg); transition:opacity .4s, transform .5s var(--salida)}
+.carga .c-estrellas .estrella.on{opacity:1; transform:none}
+.carga .c-frase{font-family:var(--f-serif); font-size:clamp(15px,2vw,22px); color:var(--humo); max-width:22ch;
+  line-height:1.35}
+.carga .c-num{position:absolute; right:var(--borde); bottom:var(--borde); z-index:2; font-family:var(--f-mono);
+  font-weight:700; font-size:clamp(38px,9vw,96px); line-height:1; font-variant-numeric:tabular-nums; color:var(--hueso)}
+.carga .c-pie{position:absolute; left:var(--borde); bottom:var(--borde); z-index:2; color:var(--tenue)}
+
+/* ==========================================================================
+   2. CABECERA + MENU A PANTALLA COMPLETA
+   ========================================================================== */
+header{position:fixed; top:0; left:0; width:100%; z-index:9050; display:flex; align-items:center;
+  justify-content:space-between; gap:20px; padding:clamp(16px,2.4vw,26px) var(--borde);
+  transition:background .45s, backdrop-filter .45s, padding .45s var(--ease), border-color .45s;
+  border-bottom:1px solid transparent}
+header.posado{background:rgba(8,8,10,.7); backdrop-filter:blur(14px) saturate(1.2); border-bottom-color:var(--linea-suave);
+  padding-block:clamp(11px,1.6vw,15px)}
+header .logo{font-size:clamp(15px,1.5vw,19px)}
+.nav-c{display:flex; align-items:center; gap:clamp(20px,2.4vw,34px)}
+/* mas claro que --humo a proposito: estos rotulos viajan por encima de la luna */
+.nav-c a.enl{font-family:var(--f-mono); font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  color:#BDB7AC; position:relative; padding-block:4px; transition:color .3s}
+.nav-c a.enl::after{content:''; position:absolute; left:0; bottom:0; height:1px; width:0; background:var(--canario);
+  transition:width .4s var(--salida)}
+.nav-c a.enl:hover,.nav-c a.enl.aqui{color:var(--hueso)}
+.nav-c a.enl:hover::after,.nav-c a.enl.aqui::after{width:100%}
+.boton{display:inline-flex; align-items:center; gap:9px; background:var(--hueso); color:var(--negro);
+  font-family:var(--f-mono); font-size:11px; font-weight:700; letter-spacing:.13em; text-transform:uppercase;
+  padding:12px 20px; border-radius:100px; position:relative; overflow:hidden; isolation:isolate}
+.boton span{position:relative; z-index:2}
+.boton::before{content:''; position:absolute; inset:0; background:var(--canario); transform:translateY(101%);
+  transition:transform .5s var(--salida); z-index:1}
+.boton:hover::before{transform:none}
+.abrir-menu{display:none; width:46px; height:46px; align-items:center; justify-content:center; position:relative; z-index:2}
+.abrir-menu i{display:block; width:24px; height:1.6px; background:var(--hueso); position:relative; transition:background .3s}
+.abrir-menu i::before,.abrir-menu i::after{content:''; position:absolute; left:0; width:24px; height:1.6px;
+  background:var(--hueso); transition:transform .45s var(--salida)}
+.abrir-menu i::before{top:-7px} .abrir-menu i::after{top:7px}
+body.menu-abierto .abrir-menu i{background:transparent}
+body.menu-abierto .abrir-menu i::before{transform:translateY(7px) rotate(45deg)}
+body.menu-abierto .abrir-menu i::after{transform:translateY(-7px) rotate(-45deg)}
+@media (max-width:1000px){ .nav-c a.enl,.nav-c .boton{display:none} .abrir-menu{display:flex} }
+
+.menu{position:fixed; inset:0; z-index:9040; background:var(--negro); display:flex; flex-direction:column;
+  justify-content:center; padding:clamp(96px,14vh,150px) var(--borde) clamp(30px,6vh,60px);
+  clip-path:circle(0% at calc(100% - 46px) 44px); transition:clip-path .9s var(--salida); pointer-events:none}
+body.menu-abierto .menu{clip-path:circle(155% at calc(100% - 46px) 44px); pointer-events:auto}
+.menu .m-estrellas{position:absolute; inset:0; pointer-events:none; opacity:.09}
+.menu .m-estrellas .estrella{position:absolute; color:var(--hueso)}
+.menu nav{display:flex; flex-direction:column; align-items:flex-start; gap:2px; position:relative; z-index:2}
+.menu nav a{display:flex; align-items:center; gap:.3em; font-size:clamp(32px,8.4vw,86px); font-weight:900;
+  text-transform:uppercase; letter-spacing:-.04em; line-height:1.06; padding-block:4px;
+  opacity:0; transform:translateY(26px); transition:opacity .55s var(--salida), transform .65s var(--salida), color .3s}
+body.menu-abierto .menu nav a{opacity:1; transform:none}
+.menu nav a .romano{font-size:.22em; color:var(--tenue); letter-spacing:.14em; margin-right:.4em; font-weight:700}
+/* la estrella no reserva sitio hasta que aparece: si no, los rotulos se salen en movil */
+.menu nav a .estrella{width:0; height:.34em; opacity:0; color:var(--canario); flex:none;
+  transition:width .35s var(--salida), opacity .35s, margin .35s var(--salida)}
+.menu nav a:hover .estrella{width:.34em; margin-left:.16em; opacity:1}
+.menu nav a:hover{color:var(--canario)}
+.menu .m-pie{margin-top:clamp(26px,5vh,52px); display:flex; gap:22px; flex-wrap:wrap; position:relative; z-index:2;
+  opacity:0; transform:translateY(16px); transition:opacity .5s var(--salida) .5s, transform .5s var(--salida) .5s}
+body.menu-abierto .menu .m-pie{opacity:1; transform:none}
+.menu .m-pie a{color:var(--humo); transition:color .3s}
+.menu .m-pie a:hover{color:var(--canario)}
+
+/* ==========================================================================
+   3. REVELADOS
+   ========================================================================== */
+.js [data-sube]{opacity:0; transform:translateY(30px); transition:opacity .95s var(--salida), transform 1.05s var(--salida)}
+.js [data-sube].visto{opacity:1; transform:none}
+.mascara{display:block; overflow:hidden}
+.mascara>span{display:block}
+.js .mascara>span{transform:translateY(108%); transition:transform 1.1s var(--salida)}
+.js .visto .mascara>span,.js .mascara.visto>span{transform:none}
+
+/* --------------------------------------------------------------------------
+   TROCEADO DE TEXTO — el revelado por LINEAS ENMASCARADAS
+   Es el gesto que repiten todas las webs premiadas: el texto no aparece
+   fundiendose, SUBE desde debajo de su propia linea, una linea detras de otra.
+   El JS parte el texto en palabras, mide cual cae en cada linea y las agrupa.
+   -------------------------------------------------------------------------- */
+.pal{display:inline-block}
+/* el padding+margin negativo da aire a tildes y descendentes: sin el,
+   overflow:hidden se come el rabo de la "g" y el acento de la "Ó" */
+.ln{display:block; overflow:hidden; padding-bottom:.1em; margin-bottom:-.1em}
+.ln-in{display:block; will-change:transform}
+.js .ln-in{transform:translateY(115%); transition:transform 1.15s var(--salida)}
+.js .visto .ln-in{transform:none}
+/* a las palabras sueltas (contacto) se les da el mismo trato, con desfase */
+.js .pal-mask{display:inline-block; overflow:hidden; padding-bottom:.1em; margin-bottom:-.1em; vertical-align:bottom}
+.js .pal-mask>span{display:inline-block; transform:translateY(115%); transition:transform 1.1s var(--salida)}
+.js .visto .pal-mask>span{transform:none}
+
+/* --------------------------------------------------------------------------
+   CORTINA DE IMAGEN — la foto se destapa de abajo arriba mientras se acerca
+   -------------------------------------------------------------------------- */
+.js [data-velo]{clip-path:inset(0 0 100% 0); transition:clip-path 1.35s var(--salida)}
+.js [data-velo].visto{clip-path:inset(0 0 0 0)}
+.js [data-velo] > img{transform:scale(1.22); transition:transform 1.6s var(--salida)}
+.js [data-velo].visto > img{transform:scale(1)}
+
+/* --------------------------------------------------------------------------
+   ENLACES QUE RUEDAN — el rotulo sube y entra su copia por debajo
+   -------------------------------------------------------------------------- */
+/* La copia va en position:absolute JUSTO DEBAJO, no apilada: asi la caja mide
+   UNA linea (si midiera dos, el rotulo reservaria el doble de alto). */
+.rueda{display:inline-block; overflow:hidden; vertical-align:bottom; position:relative}
+.rueda .rueda-in{display:block; position:relative; transition:transform .55s var(--salida)}
+.rueda .rueda-in > span{display:block; white-space:nowrap}
+.rueda .rueda-in > span:nth-child(2){position:absolute; left:0; top:100%; width:100%}
+a:hover .rueda .rueda-in,button:hover .rueda .rueda-in{transform:translateY(-100%)}
+
+/* --------------------------------------------------------------------------
+   IMAN — el boton se acerca al raton y el rotulo va un poco por detras
+   -------------------------------------------------------------------------- */
+[data-iman]{will-change:transform}
+[data-iman].suelto{transition:transform .7s var(--salida)}
+[data-iman] .iman-txt{display:inline-flex; align-items:center; gap:9px}
+[data-iman].suelto .iman-txt{transition:transform .7s var(--salida)}
+
+/* las 8 estrellas del pie: entran una detras de otra. Van envueltas porque
+   cada una tiene ya su propia animacion de giro sobre `transform`. */
+.js .pie-estrellas .est-caja{display:inline-flex; opacity:0; transform:translateY(26px) scale(.35);
+  transition:opacity .7s var(--salida), transform .9s var(--salida)}
+.js .pie-estrellas.visto .est-caja{opacity:1; transform:none}
+
+/* ==========================================================================
+   4. HERO — LA LUNA GRABADA
+   Un shader escrito a mano dibuja una luna en SEMITONO DE PUNTOS, como el
+   grabado de su cartel del Dia de la Luna. Y aqui esta la idea de toda la
+   web: el tamaño del punto lo manda la VELOCIDAD del scroll. Vas rapido y la
+   luna se deshace en puntos gordos (ruido); paras y el punto se afina hasta
+   que la luna se ve nitida (señal).
+   ========================================================================== */
+.hero{position:relative; min-height:100svh; display:flex; flex-direction:column; justify-content:flex-end;
+  padding-top:clamp(120px,18vh,190px); padding-bottom:clamp(26px,5vh,44px); overflow:hidden}
+.hero .cielo{position:absolute; inset:0; z-index:0}
+.hero .cielo canvas{width:100%; height:100%; display:block}
+/* respaldo si WebGL no arranca: la misma luna, con puntos en CSS */
+.hero .cielo.respaldo{background:
+  radial-gradient(circle at 72% 42%, rgba(242,239,230,.92) 0 17%, rgba(242,239,230,.15) 17.6%, transparent 30%),
+  radial-gradient(circle at 30% 80%, rgba(242,239,230,.05), transparent 60%), var(--negro)}
+.hero .cielo.respaldo::after{content:''; position:absolute; inset:0; mix-blend-mode:multiply;
+  background-image:radial-gradient(circle, var(--negro) 42%, transparent 43%); background-size:4px 4px}
+/* velo: garantiza que el texto se lea siempre por encima del cielo */
+.hero .velo{position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(96deg, rgba(8,8,10,.94) 0%, rgba(8,8,10,.82) 30%, rgba(8,8,10,.3) 62%, rgba(8,8,10,.08) 100%)}
+.hero .velo::after{content:''; position:absolute; left:0; right:0; bottom:0; height:46%;
+  background:linear-gradient(transparent, rgba(8,8,10,.92))}
+/* Banda de sombra arriba: la luna pasa por DETRAS del menu y sus puntos de
+   semitono son casi blancos. Se mantiene fuerte hasta pasados los ~80px (donde
+   acaba la cabecera) y luego se abre. Medido sobre el pixel pintado: sin esto
+   el peor caso del menu se quedaba en 2,3:1. */
+.hero .velo::before{content:''; position:absolute; left:0; right:0; top:0; height:190px;
+  background:linear-gradient(rgba(8,8,10,.97) 0%, rgba(8,8,10,.95) 42%, rgba(8,8,10,0) 100%)}
+.hero .dentro{position:relative; z-index:3; width:100%}
+.hero .marca{margin-bottom:clamp(16px,2.2vw,26px)}
+.hero .marca .logo{font-size:clamp(17px,2.2vw,30px); color:var(--humo)}
+/* el minimo del clamp esta medido: "No hacemos ruido." va en una sola linea
+   (white-space:nowrap) y a 360px de ancho no puede pasar de ~31px o se sale */
+.hero h1{font-size:clamp(26px,7.9vw,138px); font-weight:900; line-height:.9; letter-spacing:-.045em;
+  text-transform:uppercase}
+/* EL DESREGISTRO: cada palabra lleva dos fantasmas de tinta, canario y verde,
+   que se separan con la velocidad y CUADRAN al parar. Es "no hacemos ruido"
+   escrito con la propia tipografia. */
+.hero h1 .p{display:inline-block; white-space:nowrap;
+  text-shadow:calc(var(--vel-s) * -7px) 0 0 rgba(255,229,0,.85), calc(var(--vel-s) * 7px) 0 0 rgba(62,203,43,.7)}
+.hero h1 .apagado{color:var(--tenue)}
+.hero .bajada{margin-top:clamp(20px,2.6vw,32px); max-width:46ch; color:var(--humo);
+  font-size:clamp(15px,1.35vw,19px)}
+.hero .pie{display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap;
+  margin-top:clamp(34px,6vh,64px); padding-top:clamp(16px,2vw,24px); border-top:1px solid var(--linea-suave)}
+.hero .pie .col{display:flex; flex-direction:column; gap:5px; color:var(--tenue)}
+.hero .pie .col b{color:var(--humo); font-weight:700}
+.baja{display:flex; align-items:center; gap:12px; color:var(--humo)}
+.baja .raya{width:56px; height:1px; background:var(--linea); position:relative; overflow:hidden; flex:none}
+.baja .raya::after{content:''; position:absolute; inset:0; background:var(--canario); transform:translateX(-100%);
+  animation:corre 2.4s var(--ease) infinite}
+
+/* ============================================================
+   MAQUETACION DE LA PORTADA DE LA V3 llevada a la v4
+   Se porta la REJILLA: el bloque va centrado en vertical, el logotipo
+   crece y comparte fila con el dato en mono, el titular ocupa el ancho
+   entero y la fila de abajo reparte bajada (izq) y datos (der).
+   Ni la paleta ni los mecanismos (luna, --vel, desregistro) se tocan.
+   Va DESPUES del bloque original a proposito: lo reescribe.
+   ============================================================ */
+.hero{justify-content:center; padding-top:clamp(118px,17vh,180px); padding-bottom:clamp(70px,11vh,110px)}
+/* fila de marca: logotipo grande a la izquierda, dato pegado a la derecha */
+.hero .marca{display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap;
+  margin-bottom:clamp(14px,2.2vw,26px)}
+.hero .marca .logo{font-size:clamp(26px,4.2vw,58px); color:var(--hueso)}
+/* El sello cae encima de la luna, que es lo mas claro de la portada: medido
+   sobre el pixel pintado, el peor caso se quedaba en 1,92:1. Mismo recurso
+   que la v4 ya usa para el menu (.velo::before), pero atado a la fila, para
+   que siga al sello cuando el titular cambie de tamano. */
+.hero .marca{position:relative; isolation:isolate}
+.hero .marca > *{position:relative; z-index:1}
+.hero .marca::before{content:''; position:absolute; inset:-110px -26px -100px; z-index:0; pointer-events:none;
+  /* el radio VERTICAL tiene que apagarse dentro de la caja (62% de 270px = 167px,
+     y a 0 en el 80% = 134px, justo el medio alto): si no, el degradado llega vivo
+     al borde y dibuja un canto recto sobre la luna */
+  background:radial-gradient(62% 60% at 80% 50%, rgba(8,8,10,.93) 0%, rgba(8,8,10,.82) 30%, rgba(8,8,10,.45) 55%, rgba(8,8,10,.12) 70%, rgba(8,8,10,0) 82%)}
+/* el sello sube a --humo (6,6:1 sobre el negro) y lleva halo: asi se lee sobre
+   los puntos de la luna sin tener que taparla mas de lo justo */
+.hero .marca .sello{color:var(--humo); letter-spacing:.16em; font-size:.68rem; padding-bottom:.5em;
+  text-shadow:0 0 7px rgba(8,8,10,.95), 0 0 2px rgba(8,8,10,.98), 0 1px 2px rgba(8,8,10,.9)}
+/* el titular, a sangre y apretado como el de la v3 */
+.hero h1{line-height:.84; letter-spacing:-.055em}
+/* fila de abajo: la bajada a la izquierda, los datos a la derecha */
+.hero .hero-bajo{display:flex; justify-content:space-between; align-items:flex-end; gap:clamp(20px,3vw,52px);
+  flex-wrap:wrap; margin-top:clamp(22px,3.4vw,48px)}
+.hero .bajada{margin-top:0; max-width:34ch; flex:1 1 22ch}
+.hero .hero-datos{display:flex; gap:clamp(18px,3vw,52px); flex-wrap:wrap}
+.hero .hero-datos .col{display:flex; flex-direction:column; gap:5px; max-width:22ch; color:var(--tenue); text-align:right}
+.hero .hero-datos .col b{color:var(--humo); font-weight:700}
+/* y el "baja" se descuelga al pie de la portada, como en la v3 */
+/* El titular, A SANGRE como el de la v3. OJO: el clamp original
+   (26px,7.9vw,138px) esta MEDIDO para que "No hacemos ruido." quepa en una
+   sola linea a 360px con white-space:nowrap — por eso NO se toca y el
+   ensanchado entra solo a partir de 760px, donde ya sobra sitio. El tope de
+   151px sale de la caja: 10,61 px de linea por cada px de cuerpo, y el
+   interior maximo de .env son ~1576px. */
+@media (min-width:760px){ .hero h1{font-size:min(8.42vw,146px)} }
+.hero .baja{position:absolute; left:var(--borde); bottom:clamp(18px,3vh,26px); z-index:3}
+@keyframes corre{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+/* orbitas finas del hero, como su cartel del OVNI */
+.hero .orbitas{position:absolute; left:50%; top:44%; width:min(190vh,190vw); aspect-ratio:1; translate:-50% -50%;
+  z-index:2; pointer-events:none; opacity:.3}
+.hero .orbitas circle{fill:none; stroke:var(--hueso); stroke-width:.5; vector-effect:non-scaling-stroke}
+@media (max-width:900px){
+  .hero .velo{background:linear-gradient(180deg, rgba(8,8,10,.55) 0%, rgba(8,8,10,.35) 34%, rgba(8,8,10,.94) 76%)}
+  .hero .pie .col.opcional{display:none}
+}
+
+/* ==========================================================================
+   5. CINTA — la velocidad y el sentido los manda el scroll
+   ========================================================================== */
+.cinta{border-top:1px solid var(--linea); border-bottom:1px solid var(--linea); padding-block:clamp(16px,2.2vw,26px);
+  overflow:hidden; white-space:nowrap; position:relative; z-index:4; background:var(--negro)}
+.cinta .via{display:inline-flex; will-change:transform}
+.cinta span{display:inline-flex; align-items:center; gap:clamp(18px,3vw,34px); padding-inline:clamp(18px,3vw,34px);
+  font-size:clamp(20px,4vw,52px); font-weight:900; text-transform:uppercase; letter-spacing:-.035em}
+.cinta .estrella{width:.42em; height:.42em; color:var(--canario); flex:none}
+
+/* ==========================================================================
+   6. MANIFIESTO — sobre su propia fotografia
+   La banda coge SOLO la parte de abajo de su cartel de la Rebeldia (la
+   romeria), asi el rotulo amarillo original no pelea con el titular.
+   ========================================================================== */
+.manif{position:relative; min-height:min(96svh,900px); display:flex; align-items:center;
+  padding-block:clamp(90px,14vh,170px); overflow:hidden}
+.manif .foto{position:absolute; inset:-12% 0; z-index:0; will-change:transform}
+.manif .foto img{width:100%; height:100%; object-fit:cover; object-position:50% 100%;
+  filter:grayscale(1) contrast(1.12) brightness(.5)}
+.manif .foto::after{content:''; position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(8,8,10,.92) 0%, rgba(8,8,10,.6) 32%, rgba(8,8,10,.72) 66%, rgba(8,8,10,.96) 100%)}
+.manif .dentro{position:relative; z-index:2; width:100%}
+.manif .rotulo{display:flex; align-items:center; gap:14px; color:var(--humo); margin-bottom:clamp(24px,4vw,44px)}
+.manif .rotulo .estrella{width:13px; height:13px; color:var(--canario)}
+.manif blockquote{font-size:clamp(26px,5.1vw,78px); font-weight:900; line-height:1.02; letter-spacing:-.038em;
+  text-transform:uppercase; max-width:17ch}
+.manif blockquote em{font-family:var(--f-serif); font-style:italic; font-weight:400; text-transform:none;
+  letter-spacing:-.01em}
+/* la palabra "bregar", subrayada con SU marcador amarillo de verdad */
+.manif .marcada{position:relative; display:inline-block; white-space:nowrap}
+/* El marcador lo dispara el PROPIO blockquote, no un observador sobre la
+   palabra: al rehacer el troceado (cuando cargan las tipografias o al cambiar
+   de tamaño) el nodo de la palabra se vuelve a crear, y un observador atado a
+   el se quedaba mirando un nodo suelto. La clase vive en el blockquote, que
+   nunca se destruye — solo se le cambia el contenido. */
+.manif .marcada svg{position:absolute; left:-.06em; right:-.06em; bottom:-.02em; width:112%; height:.44em; z-index:-1;
+  fill:var(--canario); opacity:.92;
+  clip-path:inset(0 100% 0 0); transition:clip-path 1.1s var(--salida) .55s}
+.manif blockquote.visto .marcada svg,.manif .marcada.visto svg{clip-path:inset(0 0 0 0)}
+.manif .parrafos{margin-top:clamp(28px,4.4vw,52px); display:grid; grid-template-columns:1fr; gap:clamp(16px,2vw,24px);
+  max-width:62ch; color:var(--humo); font-size:clamp(15px,1.35vw,18px)}
+.manif .firma{margin-top:clamp(26px,4vw,44px); color:var(--tenue)}
+@media (min-width:1100px){ .manif .parrafos{grid-template-columns:1fr 1fr; max-width:none; gap:clamp(24px,3vw,54px)} }
+
+/* ============================================================
+   MAQUETACION DEL PLIEGO (portada de la v3) aplicada al manifiesto
+   Se porta la REJILLA, no el contenido ni la paleta: filete arriba,
+   rotulo display a la izquierda con el folio a la derecha, y debajo
+   dos columnas (1.15fr / .85fr) — titular a la izquierda, nota mas
+   estrecha y arrancando mas abajo a la derecha.
+   Va DESPUES del bloque original a proposito: reescribe .parrafos,
+   que en la v4 se abria a dos columnas a partir de 1100px.
+   ============================================================ */
+.manif .cab{display:flex; align-items:baseline; justify-content:space-between; gap:20px; flex-wrap:wrap;
+  border-top:1px solid var(--linea); padding-top:14px; margin-bottom:clamp(38px,6vw,96px)}
+.manif .cab h2{font-size:clamp(34px,6.4vw,96px); font-weight:900; text-transform:uppercase;
+  letter-spacing:-.045em; line-height:.9}
+.manif .cab .num{display:flex; align-items:center; gap:12px; color:var(--tenue);
+  font-size:.68rem; letter-spacing:.16em}
+.manif .cab .num .estrella{width:12px; height:12px; color:var(--canario)}
+
+.manif .dos-col{display:grid; grid-template-columns:1fr; gap:clamp(30px,5vw,90px); align-items:start}
+@media (min-width:960px){ .manif .dos-col{grid-template-columns:1.15fr .85fr} }
+
+/* el titular sube a la escala del pliego y suelta el tope de 17ch, que era
+   el que lo obligaba a partirse pronto cuando iba a todo el ancho */
+.manif blockquote{font-size:clamp(30px,5.2vw,80px); line-height:.94; letter-spacing:-.045em; max-width:none}
+
+/* la nota: columna estrecha, arranca mas abajo que el titular (como en la v3)
+   y en UNA sola columna a cualquier ancho, que es lo que la hace legible */
+.manif .nota{margin-top:clamp(26px,4vw,54px)}
+.manif .parrafos{margin-top:0; grid-template-columns:1fr; max-width:46ch; gap:14px;
+  font-size:clamp(16px,1.5vw,20px); line-height:1.35}
+@media (min-width:1100px){ .manif .parrafos{grid-template-columns:1fr; max-width:46ch; gap:14px} }
+.manif .firma{margin-top:clamp(18px,2.4vw,26px)}
+
+/* ==========================================================================
+   7. LO QUE HACEMOS — lista editorial que se entinta
+   ========================================================================== */
+.cabecera{display:flex; align-items:flex-end; justify-content:space-between; gap:26px; flex-wrap:wrap;
+  margin-bottom:clamp(38px,6vw,74px); padding-bottom:clamp(16px,2vw,24px); border-bottom:1px solid var(--linea)}
+.cabecera h2{font-size:clamp(28px,5.6vw,80px); font-weight:900; letter-spacing:-.04em; line-height:.96; text-transform:uppercase}
+.cabecera .lado{display:flex; align-items:center; gap:14px; color:var(--tenue)}
+.cabecera .lado .estrella{width:12px; height:12px; color:var(--canario)}
+
+.hacemos li{position:relative; border-bottom:1px solid var(--linea); isolation:isolate; overflow:hidden}
+.hacemos .fila{display:grid; grid-template-columns:76px 1fr minmax(0,30ch) 40px; gap:clamp(14px,2.4vw,32px);
+  align-items:center; padding-block:clamp(20px,2.6vw,34px); position:relative; z-index:2}
+.hacemos .n{font-family:var(--f-mono); font-size:12px; font-weight:700; letter-spacing:.16em; color:var(--tenue); transition:color .35s}
+.hacemos h3{font-size:clamp(22px,4.2vw,56px); font-weight:900; letter-spacing:-.035em; text-transform:uppercase;
+  transition:transform .5s var(--salida), color .35s}
+.hacemos .desc{color:var(--humo); font-size:14.5px; transition:color .35s}
+.hacemos .estrella{width:clamp(17px,2.4vw,30px); height:clamp(17px,2.4vw,30px); color:var(--negro); justify-self:end;
+  opacity:0; transform:rotate(-90deg) scale(.4); transition:opacity .4s, transform .55s var(--salida)}
+/* el barrido de tinta entra desde abajo. overflow:hidden en el li es
+   OBLIGATORIO: sin el, el barrido escondido se ve dentro de la fila de abajo
+   y parece que estan todas encendidas (fallo real de la v2). */
+.hacemos .tinta{position:absolute; inset:0; z-index:1; background:var(--canario); transform:translateY(101%);
+  transition:transform .6s var(--salida)}
+.hacemos li:hover .tinta,.hacemos li:focus-within .tinta{transform:none}
+.hacemos li:hover .n,.hacemos li:focus-within .n,
+.hacemos li:hover h3,.hacemos li:focus-within h3,
+.hacemos li:hover .desc,.hacemos li:focus-within .desc{color:var(--negro)}
+.hacemos li:hover h3,.hacemos li:focus-within h3{transform:translateX(18px)}
+.hacemos li:hover .estrella,.hacemos li:focus-within .estrella{opacity:1; transform:none}
+@media (max-width:1000px){
+  .hacemos .fila{grid-template-columns:44px 1fr 26px; gap:14px}
+  .hacemos .desc{display:none}
+}
+
+/* ==========================================================================
+   8. EL TALLER — las laminas (galeria horizontal anclada con sticky)
+   Sus carteles de verdad. Al desplazarte rapido se deshacen en semitono;
+   al parar, cuadran. La del centro es la señal; las de los lados, ruido.
+   ========================================================================== */
+.taller{position:relative; background:var(--negro)}
+.taller .t-cab{padding-top:clamp(84px,12vw,190px)}
+.pin{position:relative}
+.pegado{position:sticky; top:0; height:100svh; display:flex; align-items:center; overflow:hidden}
+/* flex:none es OBLIGATORIO: .tira es un item flexible de .pegado y, si puede
+   encogerse, scrollWidth deja de medir la tira entera y el recorrido sale mal */
+/* perspective en la tira: las laminas de los lados se GIRAN hacia dentro, como
+   paginas de un atlas abierto. Solo la del centro te mira de frente. */
+.tira{display:flex; flex:none; align-items:center; gap:clamp(20px,3.4vw,64px);
+  padding-inline:var(--borde); will-change:transform; perspective:1700px}
+/* La lamina se dimensiona por el ALTO disponible, no solo por el ancho: es una
+   galeria anclada a pantalla completa y, midiendo solo el ancho, en pantallas
+   bajas (1280x800) la lamina no cabia y el sello se metia bajo la cabecera. */
+.lam{flex:0 0 min(64vw, 600px, calc((100svh - 290px) * 0.8)); position:relative; --foc:1}
+.lam .marco{position:relative; display:block; width:100%; aspect-ratio:4/5; overflow:hidden; background:var(--negro-2);
+  border:1px solid var(--linea); transform-style:preserve-3d;
+  transform:rotateY(var(--giro,0deg)) scale(calc(.9 + .1*var(--foc))); transition:transform .55s var(--salida)}
+.lam .marco img{width:100%; height:100%; object-fit:cover;
+  filter:saturate(calc(.25 + .75*var(--foc))) brightness(calc(.55 + .45*var(--foc)));
+  transition:filter .5s var(--ease), transform .9s var(--salida); transform:scale(1.03)}
+.lam:hover .marco img{transform:scale(1.08)}
+/* EL SEMITONO: la trama de puntos se agranda y se hace visible con la
+   velocidad. Es el mismo gesto que el shader de la luna, en las fotos. */
+.lam .trama{position:absolute; inset:0; z-index:2; pointer-events:none; mix-blend-mode:multiply;
+  background-image:radial-gradient(circle, #000 44%, transparent 46%);
+  background-size:calc(3px + var(--vel) * 11px) calc(3px + var(--vel) * 11px);
+  opacity:calc(var(--vel) * .9)}
+/* nada de mix-blend-mode aqui: sobre el verde de Saltimbanqui o el degradado
+   de Omnia la inversion daba colores ilegibles. Chapa negra y listo. */
+.lam .num{position:absolute; top:12px; left:12px; z-index:3; color:var(--hueso);
+  background:rgba(8,8,10,.72); backdrop-filter:blur(6px); border:1px solid var(--linea);
+  padding:6px 11px; border-radius:100px}
+.lam .abrir{position:absolute; right:14px; bottom:14px; z-index:3; display:inline-flex; align-items:center; gap:8px;
+  background:var(--hueso); color:var(--negro); padding:9px 15px; border-radius:100px;
+  opacity:0; transform:translateY(10px); transition:opacity .4s, transform .45s var(--salida)}
+.lam:hover .abrir,.lam:focus-within .abrir{opacity:1; transform:none}
+.lam .abrir .estrella{width:11px; height:11px}
+.lam .datos{display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-top:16px;
+  opacity:calc(.35 + .65*var(--foc)); transition:opacity .5s}
+.lam .datos h3{font-size:clamp(18px,2.3vw,30px); font-weight:900; letter-spacing:-.03em; text-transform:uppercase}
+.lam .datos .cat{color:var(--tenue); text-align:right}
+/* rotulo fijo mientras dura el anclaje: sin el se pierde el contexto */
+/* por debajo de la cabecera fija (mide ~74px), que va por encima */
+.taller .sello{position:absolute; top:clamp(90px,12vh,116px); left:var(--borde); z-index:5; display:flex;
+  align-items:center; gap:12px; color:var(--humo); pointer-events:none}
+.taller .sello b{color:var(--hueso); font-weight:700}
+.taller .sello .guion{width:26px; height:1px; background:var(--canario)}
+.taller .barra{position:absolute; left:var(--borde); right:var(--borde); bottom:clamp(20px,4vh,40px); z-index:5;
+  display:flex; align-items:center; gap:18px}
+.taller .barra .via{flex:1; height:1px; background:var(--linea); position:relative; overflow:hidden}
+.taller .barra .via i{position:absolute; inset:0; background:var(--canario); transform-origin:0 50%; transform:scaleX(0)}
+.taller .barra .cnt{color:var(--humo); font-variant-numeric:tabular-nums}
+/* La galeria se APILA en dos casos: en movil y si el JS no llega a moverla.
+   Si no, tres de las cinco laminas quedarian inalcanzables dentro del
+   overflow (fallo real que se cazo en la v2 con el CDN caido). */
+@media (max-width:900px){
+  .pin{height:auto!important}
+  .pegado{position:static; height:auto; display:block; padding-block:clamp(30px,6vw,60px)}
+  .tira{flex-direction:column; gap:clamp(40px,8vw,70px); transform:none!important}
+  .lam{flex:none; width:100%; --foc:1}
+  .lam .marco{transform:none}
+  .taller .sello,.taller .barra{display:none}
+}
+html:not(.js) .pin{height:auto!important}
+html:not(.js) .pegado{position:static; height:auto; display:block; padding-block:40px}
+html:not(.js) .tira{flex-direction:column; gap:56px; transform:none!important}
+html:not(.js) .lam{flex:none; width:100%}
+html:not(.js) .taller .sello,html:not(.js) .taller .barra{display:none}
+
+/* ==========================================================================
+   9. FICHA DE LAMINA — la lamina vuela desde su sitio (FLIP)
+   ========================================================================== */
+/* OPACO del todo: con rgba(...,.98) la web de detras seguia leyendose por
+   debajo del titular de la ficha. Es el mismo fallo que ya salio en la v3. */
+.ficha{position:fixed; inset:0; z-index:9300; background:var(--negro); overflow-y:auto; overscroll-behavior:contain;
+  opacity:0; visibility:hidden; transition:opacity .5s var(--ease), visibility .5s}
+.ficha.abierta{opacity:1; visibility:visible}
+.ficha .f-in{max-width:1240px; margin-inline:auto; padding:clamp(80px,12vh,140px) var(--borde) clamp(50px,9vh,100px);
+  display:grid; grid-template-columns:1fr; gap:clamp(26px,4vw,60px); align-items:start}
+@media (min-width:1000px){ .ficha .f-in{grid-template-columns:minmax(0,1fr) minmax(0,1fr)} }
+.ficha .f-arte{position:relative; overflow:hidden; border:1px solid var(--linea); background:var(--negro-2);
+  aspect-ratio:4/5}
+.ficha .f-arte img{width:100%; height:100%; object-fit:cover; transform-origin:top left; will-change:transform}
+.ficha .f-tag{color:var(--canario)}
+.ficha h2{font-size:clamp(32px,6vw,76px); font-weight:900; letter-spacing:-.045em; line-height:.94;
+  text-transform:uppercase; margin-block:12px clamp(18px,2.6vw,28px)}
+.ficha .f-txt{color:var(--humo); font-size:clamp(15px,1.4vw,19px); max-width:56ch}
+.ficha .f-datos{display:flex; flex-wrap:wrap; gap:clamp(20px,3vw,44px); margin-top:clamp(26px,4vw,44px);
+  padding-top:clamp(18px,2.4vw,26px); border-top:1px solid var(--linea)}
+.ficha .f-datos div{min-width:120px}
+.ficha .f-datos dt{color:var(--tenue); margin-bottom:6px}
+.ficha .f-datos dd{font-size:15px; font-weight:700}
+.ficha .f-nota{margin-top:clamp(22px,3vw,34px); color:var(--tenue); line-height:1.9; font-size:11px;
+  font-family:var(--f-mono); letter-spacing:.04em; text-transform:none}
+.ficha .f-cerrar{position:fixed; top:clamp(16px,2.4vw,26px); right:var(--borde); z-index:3; width:54px; height:54px;
+  border-radius:50%; border:1px solid var(--linea); display:grid; place-items:center; background:rgba(8,8,10,.7);
+  backdrop-filter:blur(10px); transition:background .3s, border-color .3s, transform .4s var(--salida)}
+.ficha .f-cerrar:hover{background:var(--canario); border-color:var(--canario); color:var(--negro); transform:rotate(90deg)}
+.ficha .f-cerrar svg{width:18px; height:18px}
+
+/* ==========================================================================
+   10. EFEMERIDES — su archivo, sobre las orbitas que se dibujan
+   ========================================================================== */
+.efem{position:relative; overflow:hidden}
+.efem .orbitas{position:absolute; left:50%; top:50%; width:min(150vw,1500px); aspect-ratio:1; translate:-50% -50%;
+  z-index:0; pointer-events:none; opacity:.42}
+/* SIN vector-effect aqui: con non-scaling-stroke el guion del dasharray pasa a
+   medirse en pixeles de pantalla y el dibujado de la orbita se rompe.
+   El grosor va en unidades del viewBox (200), que es lo que hace la linea fina. */
+.efem .orbitas circle{fill:none; stroke:var(--hueso); stroke-width:.16;
+  stroke-dasharray:var(--l); stroke-dashoffset:var(--l); transition:stroke-dashoffset 2.6s var(--salida)}
+.efem .orbitas.visto circle{stroke-dashoffset:0}
+/* el font-size va tambien en unidades del viewBox: 11 se veria a 80px */
+.efem .orbitas text{fill:var(--tenue); font-family:var(--f-mono); font-size:2.6px; letter-spacing:.4px}
+.efem .dentro{position:relative; z-index:2}
+.carril{display:flex; gap:clamp(16px,2.6vw,40px); overflow-x:auto; scroll-snap-type:x mandatory;
+  padding-bottom:20px; scrollbar-width:none; cursor:grab}
+.carril::-webkit-scrollbar{display:none}
+.carril.agarrando{cursor:grabbing; scroll-snap-type:none}
+.carril figure{flex:0 0 min(74vw,340px); scroll-snap-align:center}
+.carril figure .caja{position:relative; overflow:hidden; border:1px solid var(--linea); background:var(--negro-2);
+  aspect-ratio:4/5}
+.carril figure img{width:100%; height:100%; object-fit:cover; transition:transform .9s var(--salida);
+  filter:brightness(.82)}
+.carril figure:hover img{transform:scale(1.06); filter:brightness(1)}
+.carril figure .trama{position:absolute; inset:0; z-index:2; pointer-events:none; mix-blend-mode:multiply;
+  background-image:radial-gradient(circle, #000 44%, transparent 46%);
+  background-size:calc(3px + var(--vel) * 9px) calc(3px + var(--vel) * 9px); opacity:calc(var(--vel) * .8)}
+.carril figcaption{display:flex; align-items:baseline; justify-content:space-between; gap:14px; margin-top:13px}
+.carril figcaption b{font-size:15px; font-weight:700}
+.carril figcaption span{color:var(--tenue)}
+.arrastra{margin-top:clamp(18px,2.4vw,28px); color:var(--tenue); display:flex; align-items:center; gap:10px}
+.arrastra .estrella{width:12px; height:12px; color:var(--canario)}
+
+/* ==========================================================================
+   11. COMO BREGAMOS — sus cuatro pasos, sobre una orbita
+   "De pensar y creer; y despues crear. En ese orden." (suyo, literal)
+   ========================================================================== */
+.bregamos{position:relative}
+.pasos{display:grid; grid-template-columns:1fr; gap:0; border-top:1px solid var(--linea)}
+@media (min-width:900px){ .pasos{grid-template-columns:repeat(4,1fr)} }
+.paso{position:relative; padding:clamp(26px,3.4vw,46px) clamp(16px,2vw,30px) clamp(30px,4vw,54px);
+  border-bottom:1px solid var(--linea)}
+@media (min-width:900px){
+  .paso{border-bottom:0; border-right:1px solid var(--linea)}
+  .paso:last-child{border-right:0}
+  .paso:first-child{padding-left:0}
+  .paso:last-child{padding-right:0}
+}
+.paso .p-num{display:flex; align-items:center; gap:11px; color:var(--tenue); margin-bottom:clamp(18px,2.6vw,30px)}
+.paso .p-num .estrella{width:13px; height:13px; color:var(--canario); opacity:0; transform:scale(.3);
+  transition:opacity .5s, transform .6s var(--salida)}
+.paso.visto .p-num .estrella{opacity:1; transform:none}
+.paso h3{font-size:clamp(21px,2.5vw,32px); font-weight:900; letter-spacing:-.03em; text-transform:uppercase;
+  margin-bottom:12px}
+.paso p{color:var(--humo); font-size:14.5px}
+.paso .p-linea{position:absolute; left:0; bottom:-1px; height:1px; width:0; background:var(--canario);
+  transition:width 1.1s var(--salida)}
+.paso.visto .p-linea{width:100%}
+@media (min-width:900px){ .paso .p-linea{bottom:auto; top:-1px} }
+
+/* ==========================================================================
+   12. CONTACTO
+   ========================================================================== */
+.contacto{position:relative; text-align:center; padding-block:clamp(100px,17vh,220px); overflow:hidden}
+.contacto .halo{position:absolute; left:50%; top:50%; width:min(92vw,860px); aspect-ratio:1; translate:-50% -50%;
+  border-radius:50%; background:radial-gradient(circle, rgba(255,229,0,.13), transparent 62%); z-index:0; pointer-events:none}
+.contacto>*{position:relative; z-index:2}
+.contacto .rotulo{display:inline-flex; align-items:center; gap:12px; color:var(--humo); margin-bottom:clamp(22px,3.4vw,34px)}
+.contacto .rotulo .estrella{width:12px; height:12px; color:var(--canario)}
+.contacto h2{font-size:clamp(40px,12vw,192px); font-weight:900; letter-spacing:-.055em; line-height:.86; text-transform:uppercase}
+/* cada PALABRA en una caja que no se parte: las letras van sueltas para que
+   huyan del raton y, sin esto, la linea rompe entre dos letras («VAMOS A BRE /
+   GAR.»). Es el mismo fallo que ya salio en la v2. */
+.contacto h2 .w{display:inline-block; white-space:nowrap}
+.contacto h2 .l{display:inline-block; will-change:transform}
+.contacto .correo{display:inline-block; margin-top:clamp(28px,4.4vw,50px); font-size:clamp(16px,2.2vw,30px);
+  font-weight:700; border-bottom:2px solid var(--linea); padding-bottom:7px; transition:color .3s, border-color .3s}
+.contacto .correo:hover{color:var(--canario); border-color:var(--canario)}
+.contacto .cta{margin-top:clamp(30px,4.6vw,52px); display:flex; justify-content:center}
+
+/* ==========================================================================
+   13. PIE
+   ========================================================================== */
+footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
+.pie-estrellas{display:flex; justify-content:space-between; gap:clamp(8px,2vw,26px); flex-wrap:wrap;
+  margin-bottom:clamp(34px,5vw,60px)}
+.pie-estrellas .estrella{width:clamp(22px,4.4vw,58px); height:clamp(22px,4.4vw,58px); color:var(--hueso); opacity:.85}
+.pie-rejilla{display:flex; align-items:flex-end; justify-content:space-between; gap:clamp(24px,4vw,50px); flex-wrap:wrap}
+.pie-rejilla .logo{font-size:clamp(20px,2.6vw,34px)}
+.pie-rejilla .redes{display:flex; gap:22px}
+.pie-rejilla .redes a{color:var(--humo); transition:color .3s}
+.pie-rejilla .redes a:hover{color:var(--canario)}
+.pie-rejilla .fino{color:var(--tenue); max-width:34ch; line-height:1.9}
+.arriba{color:var(--humo); transition:color .3s}
+.arriba:hover{color:var(--canario)}
+
+/* ==========================================================================
+   14. MOVIMIENTO REDUCIDO — todo visible, nada se mueve
+   ========================================================================== */
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important; transition:none!important}
+  .js [data-sube]{opacity:1!important; transform:none!important}
+  .js .mascara>span{transform:none!important}
+  .js .ln-in,.js .pal-mask>span{transform:none!important}
+  .js [data-velo]{clip-path:none!important}
+  .js [data-velo]>img{transform:none!important}
+  .js .pie-estrellas .est-caja{opacity:1!important; transform:none!important}
+  .lam .marco{transform:none!important}
+  .carga{display:none!important}
+  .grano{opacity:.05}
+  .manif .marcada svg{clip-path:inset(0 0 0 0)}
+  .efem .orbitas circle{stroke-dashoffset:0}
+  .paso .p-linea{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== estrellas: su sistema grafico ===================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="s1" viewBox="0 0 100 100"><path d="M50 2 L55.7 36.1 L83.9 16.1 L63.9 44.3 L98 50 L63.9 55.7 L83.9 83.9 L55.7 63.9 L50 98 L44.3 63.9 L16.1 83.9 L36.1 55.7 L2 50 L36.1 44.3 L16.1 16.1 L44.3 36.1 Z"/></symbol>
+    <symbol id="s2" viewBox="0 0 100 100"><path d="M50 6 A22 22 0 0 1 81.1 18.9 A22 22 0 0 1 94 50 A22 22 0 0 1 81.1 81.1 A22 22 0 0 1 50 94 A22 22 0 0 1 18.9 81.1 A22 22 0 0 1 6 50 A22 22 0 0 1 18.9 18.9 A22 22 0 0 1 50 6 Z"/></symbol>
+    <symbol id="s3" viewBox="0 0 100 100"><path d="M50 0 C53 28 72 47 100 50 C72 53 53 72 50 100 C47 72 28 53 0 50 C28 47 47 28 50 0 Z"/></symbol>
+    <symbol id="s4" viewBox="0 0 100 100"><path d="M50 2 L57.8 21 L74 8.4 L71.2 28.8 L91.6 26 L79 42.2 L98 50 L79 57.8 L91.6 74 L71.2 71.2 L74 91.6 L57.8 79 L50 98 L42.2 79 L26 91.6 L28.8 71.2 L8.4 74 L21 57.8 L2 50 L21 42.2 L8.4 26 L28.8 28.8 L26 8.4 L42.2 21 Z"/></symbol>
+    <symbol id="s5" viewBox="0 0 100 100"><path fill-rule="evenodd" d="M50 2 L55.7 36.1 L83.9 16.1 L63.9 44.3 L98 50 L63.9 55.7 L83.9 83.9 L55.7 63.9 L50 98 L44.3 63.9 L16.1 83.9 L36.1 55.7 L2 50 L36.1 44.3 L16.1 16.1 L44.3 36.1 Z M50 38 A12 12 0 1 0 50 62 A12 12 0 1 0 50 38 Z"/></symbol>
+    <symbol id="s6" viewBox="0 0 100 100"><path d="M50 0 C53 28 72 47 100 50 C72 53 53 72 50 100 C47 72 28 53 0 50 C28 47 47 28 50 0 Z"/><path d="M50 22 C51.6 36.6 63.4 48.4 78 50 C63.4 51.6 51.6 63.4 50 78 C48.4 63.4 36.6 51.6 22 50 C36.6 48.4 48.4 36.6 50 22 Z" transform="rotate(45 50 50)"/></symbol>
+    <symbol id="s7" viewBox="0 0 100 100"><path fill-rule="evenodd" d="M50 2 L57.8 21 L74 8.4 L71.2 28.8 L91.6 26 L79 42.2 L98 50 L79 57.8 L91.6 74 L71.2 71.2 L74 91.6 L57.8 79 L50 98 L42.2 79 L26 91.6 L28.8 71.2 L8.4 74 L21 57.8 L2 50 L21 42.2 L8.4 26 L28.8 28.8 L26 8.4 L42.2 21 Z M50 30 A20 20 0 1 0 50 70 A20 20 0 1 0 50 30 Z"/></symbol>
+    <symbol id="s8" viewBox="0 0 100 100"><path fill-rule="evenodd" d="M50 6 A22 22 0 0 1 81.1 18.9 A22 22 0 0 1 94 50 A22 22 0 0 1 81.1 81.1 A22 22 0 0 1 50 94 A22 22 0 0 1 18.9 81.1 A22 22 0 0 1 6 50 A22 22 0 0 1 18.9 18.9 A22 22 0 0 1 50 6 Z M46 24 h8 v18 h18 v8 h-18 v18 h-8 v-18 h-18 v-8 h18 z"/></symbol>
+    <!-- trazo de marcador: su subrayado amarillo pintado a mano -->
+    <symbol id="brocha" viewBox="0 0 300 60" preserveAspectRatio="none">
+      <path d="M1 16 C42 5 78 21 118 12 C158 3 196 19 238 9 C264 3 284 12 299 6 L299 44 C272 55 244 44 214 51 C176 60 140 45 104 53 C70 60 36 47 2 55 Z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="grano" aria-hidden="true"></div>
+<div class="aranazos" aria-hidden="true"></div>
+<div class="lectura" id="lectura" aria-hidden="true"></div>
+<div class="reticulo" id="reticulo" aria-hidden="true"><span class="aro"></span><span class="cruz"></span><span class="rot" id="reticuloRot"></span></div>
+
+<!-- ===================== 1. PRELOADER ===================== -->
+<div class="carga" id="carga" role="status" aria-live="polite">
+  <canvas id="cargaLienzo" aria-hidden="true"></canvas>
+  <div class="c-in">
+    <span class="logo"><i>La</i><b>Brega</b><i>Estudio<span class="pt">.</span></i></span>
+    <div class="c-estrellas" aria-hidden="true">
+      <svg class="estrella"><use href="#s1"/></svg><svg class="estrella"><use href="#s2"/></svg>
+      <svg class="estrella"><use href="#s3"/></svg><svg class="estrella"><use href="#s4"/></svg>
+      <svg class="estrella"><use href="#s5"/></svg><svg class="estrella"><use href="#s6"/></svg>
+      <svg class="estrella"><use href="#s7"/></svg><svg class="estrella"><use href="#s8"/></svg>
+    </div>
+    <p class="c-frase">Esta tierra nos enseñó algo antes que el diseño:<br>nos enseñó a <em class="script" style="font-size:1.5em">bregar</em>.</p>
+  </div>
+  <span class="c-pie mono">Revelando la lámina</span>
+  <span class="c-num" id="cargaNum">000</span>
+</div>
+
+<!-- ===================== 2. CABECERA ===================== -->
+<header id="cabecera">
+  <a href="#arriba" class="logo" aria-label="La Brega Estudio, ir al principio"><i>La</i><b>Brega</b><i>Estudio<span class="pt">.</span></i></a>
+  <div class="nav-c">
+    <a class="enl" href="#manifiesto">Manifiesto</a>
+    <a class="enl" href="#hacemos">Lo que hacemos</a>
+    <a class="enl" href="#taller">El taller</a>
+    <a class="enl" href="#efemerides">Efemérides</a>
+    <a class="boton" href="#contacto"><span>Hablemos</span></a>
+    <button class="abrir-menu" id="abrirMenu" aria-label="Abrir el menú" aria-expanded="false" aria-controls="menu"><i></i></button>
+  </div>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <div class="m-estrellas" aria-hidden="true">
+    <svg class="estrella gira" style="width:16%;height:16%;top:12%;left:6%"><use href="#s1"/></svg>
+    <svg class="estrella late" style="width:10%;height:10%;top:64%;left:74%"><use href="#s3"/></svg>
+    <svg class="estrella gira-r" style="width:13%;height:13%;top:78%;left:12%"><use href="#s4"/></svg>
+    <svg class="estrella gira" style="width:9%;height:9%;top:26%;left:82%"><use href="#s6"/></svg>
+  </div>
+  <nav aria-label="Principal">
+    <a href="#manifiesto"><span class="romano">I</span>Manifiesto<svg class="estrella"><use href="#s3"/></svg></a>
+    <a href="#hacemos"><span class="romano">II</span>Lo que hacemos<svg class="estrella"><use href="#s1"/></svg></a>
+    <a href="#taller"><span class="romano">III</span>El taller<svg class="estrella"><use href="#s4"/></svg></a>
+    <a href="#efemerides"><span class="romano">IV</span>Efemérides<svg class="estrella"><use href="#s6"/></svg></a>
+    <a href="#bregamos"><span class="romano">V</span>Cómo bregamos<svg class="estrella"><use href="#s2"/></svg></a>
+    <a href="#contacto"><span class="romano">VI</span>Contacto<svg class="estrella"><use href="#s8"/></svg></a>
+  </nav>
+  <div class="m-pie mono">
+    <a href="https://www.instagram.com/labrega_estudio/" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.tiktok.com/@labrega.estudio" target="_blank" rel="noopener">TikTok</a>
+    <a href="mailto:somoslabrega@gmail.com">somoslabrega@gmail.com</a>
+  </div>
+</div>
+
+<main id="arriba">
+
+<!-- ===================== 3. HERO ===================== -->
+<section class="hero" id="hero">
+<!-- nace CON el respaldo puesto: asi hay luna aunque no haya JS ni WebGL. El
+       shader se lo quita solo cuando ha compilado y enlazado de verdad. -->
+  <div class="cielo respaldo" id="cielo" aria-hidden="true"><canvas id="lienzoCielo"></canvas></div>
+  <div class="velo" aria-hidden="true"></div>
+  <svg class="orbitas" viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="50" cy="50" r="49"/><circle cx="50" cy="50" r="37"/><circle cx="50" cy="50" r="24.5"/>
+  </svg>
+  <div class="dentro env">
+    <!-- MAQUETACION DE LA PORTADA DE LA V3, con el contenido de la v4:
+         (1) fila de marca: logotipo grande a la izquierda y el dato en mono
+             pegado a la derecha, alineados por la base;
+         (2) el titular a sangre, ocupando el ancho entero;
+         (3) fila de abajo: la bajada estrecha a la izquierda y los datos a la
+             derecha, alineados por abajo;
+         (4) el "baja para ver" se descuelga al pie de la portada.
+         Ni un texto nuevo: los datos son los que ya tenia la v4, recolocados. -->
+    <div class="marca" data-sube>
+      <span class="logo"><i>La</i><b>Brega</b><i>Estudio<span class="pt">.</span></i></span>
+      <span class="sello mono opcional">28°07′N · 15°26′O — Las Palmas de Gran Canaria</span>
+    </div>
+    <h1>
+      <span class="mascara"><span><span class="p apagado">No hacemos ruido.</span></span></span>
+      <span class="mascara"><span><span class="p">Hacemos marcas.</span></span></span>
+    </h1>
+    <div class="hero-bajo">
+      <p class="bajada" data-sube>Estudio de branding, dirección creativa y publicidad. Desde Canarias, para marcas que prefieren decir algo a decirlo más alto.</p>
+      <div class="hero-datos">
+        <div class="col mono" data-sube><span>Hora local</span><b id="reloj">--:--:--</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="baja mono" data-sube><span class="raya"></span>Baja para ver</div>
+</section>
+
+<!-- ===================== 4. CINTA ===================== -->
+<div class="cinta" aria-hidden="true">
+  <div class="via" id="via1">
+    <span>Branding<svg class="estrella"><use href="#s1"/></svg>Dirección de arte<svg class="estrella"><use href="#s3"/></svg>Publicidad<svg class="estrella"><use href="#s4"/></svg>Diseño gráfico<svg class="estrella"><use href="#s6"/></svg></span>
+    <span>Branding<svg class="estrella"><use href="#s1"/></svg>Dirección de arte<svg class="estrella"><use href="#s3"/></svg>Publicidad<svg class="estrella"><use href="#s4"/></svg>Diseño gráfico<svg class="estrella"><use href="#s6"/></svg></span>
+  </div>
+</div>
+
+<!-- ===================== 5. MANIFIESTO ===================== -->
+<section class="manif" id="manifiesto">
+  <div class="foto" id="manifFoto" aria-hidden="true">
+    <img src="img/rebeldia.jpg" alt="" width="1000" height="1250" loading="lazy">
+  </div>
+  <div class="dentro env">
+    <!-- MAQUETACION DE LA V3 (el pliego): filete arriba, rotulo grande a la
+         izquierda y folio a la derecha; debajo, dos columnas — el titular
+         display a la izquierda y la nota, mas estrecha y mas baja, a la
+         derecha. El contenido es el de la v4, sin tocar. -->
+    <div class="cab" data-sube>
+      <h2>Manifiesto</h2>
+      <span class="num mono"><span class="romano">I</span><svg class="estrella"><use href="#s3"/></svg></span>
+    </div>
+    <div class="dos-col">
+      <blockquote data-sube>
+        Esta tierra nos enseñó algo <em>antes que</em> el diseño:<br>
+        nos enseñó a <span class="marcada" id="marcada">bregar<svg viewBox="0 0 300 60" preserveAspectRatio="none" aria-hidden="true"><use href="#brocha"/></svg></span>.
+      </blockquote>
+      <div class="nota">
+        <div class="parrafos">
+          <p data-sube>No venimos a seguir tendencias. No venimos a hacer ruido. Venimos a crear, venimos a construir, venimos a bregar. Somos un estudio pequeño a propósito: trabajas con quien diseña, no con un intermediario.</p>
+          <p data-sube>Por eso decimos que el diseño no maquilla, <em style="font-family:var(--f-serif);font-style:italic">revela</em>. Tu marca ya está ahí dentro. Nuestro trabajo es quitarle la capa que no la dejaba verse, y dejarla en pie.</p>
+        </div>
+        <p class="firma mono" data-sube>La Brega Estudio · Canarias</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 6. LO QUE HACEMOS ===================== -->
+<section class="pliego env" id="hacemos">
+  <div class="cabecera">
+    <h2 data-sube>Lo que hacemos</h2>
+    <div class="lado mono" data-sube><span class="romano">II</span><svg class="estrella"><use href="#s1"/></svg>Seis maneras de bregar</div>
+  </div>
+  <ul class="hacemos">
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">01</span><h3>Branding</h3><p class="desc">Identidad completa: naming, logotipo, sistema gráfico y un manual para que no se despeine.</p><svg class="estrella"><use href="#s1"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">02</span><h3>Dirección de arte</h3><p class="desc">El criterio visual de todo lo que sale con tu nombre. La mirada, no solo el archivo.</p><svg class="estrella"><use href="#s3"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">03</span><h3>Publicidad</h3><p class="desc">Campañas con idea. De las que se quedan, no de las que se saltan.</p><svg class="estrella"><use href="#s4"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">04</span><h3>Diseño gráfico</h3><p class="desc">Cartelería, editorial, packaging, aplicaciones. Lo que haga falta imprimir.</p><svg class="estrella"><use href="#s6"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">05</span><h3>Contenido</h3><p class="desc">Redes con criterio: piezas que cuentan algo y suenan a ti.</p><svg class="estrella"><use href="#s2"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">06</span><h3>Digital</h3><p class="desc">Webs y productos que respetan la marca en vez de aplastarla.</p><svg class="estrella"><use href="#s8"/></svg></div></li>
+  </ul>
+</section>
+
+<!-- ===================== 7. EL TALLER ===================== -->
+<section class="taller" id="taller">
+  <div class="t-cab env">
+    <div class="cabecera">
+      <h2 data-sube>El taller</h2>
+      <div class="lado mono" data-sube><span class="romano">III</span><svg class="estrella"><use href="#s4"/></svg>Cinco láminas</div>
+    </div>
+  </div>
+  <div class="pin" id="pin">
+    <div class="pegado">
+      <div class="sello mono"><span class="guion"></span><b id="selloTitulo">Saltimbanqui</b><span id="selloCat">Identidad</span></div>
+      <div class="tira" id="tira">
+
+        <article class="lam" data-lam
+          data-tit="Saltimbanqui" data-cat="Identidad de marca" data-rom="I" data-ano="2026"
+          data-img="img/saltimbanqui.jpg" data-que="Naming, logotipo, sistema gráfico y aplicaciones"
+          data-txt="Hay marcas que pisan fuerte. Que aterrizan de pie. Una identidad diseñada para dar el salto: logotipo de peso, un verde que no pide permiso y un sistema que funciona igual en un cartel de tres metros que en una camiseta.">
+          <button class="marco" aria-label="Ver la ficha de Saltimbanqui">
+            <img src="img/saltimbanqui.jpg" alt="Cartel de Saltimbanqui: tipografía amarilla gigante sobre verde ácido con una figura en semitono haciendo el pino" width="1000" height="1250" loading="lazy" data-par="0.06">
+            <span class="trama"></span>
+            <span class="num mono"><span class="romano">Lámina I</span></span>
+            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
+          </button>
+          <div class="datos"><h3>Saltimbanqui</h3><span class="cat mono">Identidad</span></div>
+        </article>
+
+        <article class="lam" data-lam
+          data-tit="Omnia" data-cat="Identidad y dirección de arte" data-rom="II" data-ano="2026"
+          data-img="img/omnia.jpg" data-que="Logotipo modular, paleta y dirección de arte"
+          data-txt="Algo potente y divertido, como sus fiestas de afro-techno. Un logotipo modular que encaja como un puzzle y una paleta de degradados con grano que se puede estirar hasta donde llegue la noche.">
+          <button class="marco" aria-label="Ver la ficha de Omnia">
+            <img src="img/omnia.jpg" alt="Cartel de Omnia: logotipo blanco modular sobre un eclipse negro con degradado naranja, magenta y verde" width="1000" height="1250" loading="lazy" data-par="-0.05">
+            <span class="trama"></span>
+            <span class="num mono"><span class="romano">Lámina II</span></span>
+            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
+          </button>
+          <div class="datos"><h3>Omnia</h3><span class="cat mono">Identidad</span></div>
+        </article>
+
+        <article class="lam" data-lam
+          data-tit="Revela" data-cat="Campaña propia" data-rom="III" data-ano="2026"
+          data-img="img/revela.jpg" data-que="Concepto, dirección de arte y cartelería"
+          data-txt="El diseño no maquilla. Revela. Una pieza para decir en voz alta lo que pensamos: la marca ya estaba ahí, y nuestro trabajo es quitarle la capa que no la dejaba verse.">
+          <button class="marco" aria-label="Ver la ficha de Revela">
+            <img src="img/revela.jpg" alt="Cartel Revela: torso de escultura clásica en blanco y negro con la frase El diseño no maquilla. Revela." width="1000" height="1250" loading="lazy" data-par="0.05">
+            <span class="trama"></span>
+            <span class="num mono"><span class="romano">Lámina III</span></span>
+            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
+          </button>
+          <div class="datos"><h3>Revela</h3><span class="cat mono">Campaña</span></div>
+        </article>
+
+        <article class="lam" data-lam
+          data-tit="Día de Brega" data-cat="Campaña propia · Día de Canarias" data-rom="IV" data-ano="2026"
+          data-img="img/dia-de-canarias.jpg" data-que="Concepto, símbolo y piezas para redes"
+          data-txt="Nuestra salida a escena el Día de Canarias. Una bandera negra con nuestro sistema de estrellas y un canario en el mástil. Porque esta tierra nos enseñó algo antes que el diseño: nos enseñó a bregar.">
+          <button class="marco" aria-label="Ver la ficha de Día de Brega">
+            <img src="img/dia-de-canarias.jpg" alt="Cartel del Día de Canarias: bandera negra con las estrellas de La Brega y un canario amarillo" width="1000" height="1250" loading="lazy" data-par="-0.06">
+            <span class="trama"></span>
+            <span class="num mono"><span class="romano">Lámina IV</span></span>
+            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
+          </button>
+          <div class="datos"><h3>Día de Brega</h3><span class="cat mono">Campaña</span></div>
+        </article>
+
+        <article class="lam" data-lam
+          data-tit="San Borondón 1840" data-cat="Dirección de arte" data-rom="V" data-ano="2026"
+          data-img="img/san-borondon.jpg" data-que="Dirección de arte, archivo intervenido y tipografía"
+          data-txt="La isla que aparece y desaparece. Archivo intervenido, grano de plata y anotaciones a mano: la dirección de arte entendida como una excavación, no como un filtro.">
+          <button class="marco" aria-label="Ver la ficha de San Borondón 1840">
+            <img src="img/san-borondon.jpg" alt="Cartel San Borondón 1840: fotografía antigua en blanco y negro muy granulada con tipografía display apilada" width="1000" height="1250" loading="lazy" data-par="0.05">
+            <span class="trama"></span>
+            <span class="num mono"><span class="romano">Lámina V</span></span>
+            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
+          </button>
+          <div class="datos"><h3>San Borondón</h3><span class="cat mono">Dirección de arte</span></div>
+        </article>
+
+      </div>
+      <div class="barra"><span class="cnt mono" id="cntA">01</span><span class="via"><i id="barraVia"></i></span><span class="cnt mono" id="cntB">05</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 8. EFEMERIDES ===================== -->
+<section class="pliego efem" id="efemerides">
+  <svg class="orbitas" id="orbitasEfem" viewBox="0 0 200 200" aria-hidden="true">
+    <circle cx="100" cy="100" r="96" style="--l:604"/>
+    <circle cx="100" cy="100" r="74" style="--l:465"/>
+    <circle cx="100" cy="100" r="52" style="--l:327"/>
+    <circle cx="100" cy="100" r="30" style="--l:189"/>
+    <text x="100" y="7" text-anchor="middle">IX</text>
+    <text x="100" y="29" text-anchor="middle">VIII</text>
+    <text x="100" y="51" text-anchor="middle">VII</text>
+    <text x="100" y="73" text-anchor="middle">VI</text>
+  </svg>
+  <div class="dentro env">
+    <div class="cabecera">
+      <h2 data-sube>Efemérides</h2>
+      <div class="lado mono" data-sube><span class="romano">IV</span><svg class="estrella"><use href="#s6"/></svg>Cartelería de la casa</div>
+    </div>
+    <div class="carril" id="carril">
+      <figure data-sube><div class="caja"><img src="img/luna.jpg" alt="Cartel del Día Internacional de la Luna: grabado antiguo de la luna sobre fondo negro estrellado" width="1000" height="1251" loading="lazy"><span class="trama"></span></div><figcaption><b>Día de la Luna</b><span class="mono">20.07</span></figcaption></figure>
+      <figure data-sube><div class="caja"><img src="img/ovni.jpg" alt="Cartel del Día Internacional del OVNI: diagrama orbital de línea fina con números romanos sobre negro" width="1000" height="1333" loading="lazy"><span class="trama"></span></div><figcaption><b>Día del OVNI</b><span class="mono">02.07</span></figcaption></figure>
+      <figure data-sube><div class="caja"><img src="img/estrellas.jpg" alt="Las ocho estrellas del sistema gráfico de La Brega Estudio, en blanco sobre negro" width="1000" height="1250" loading="lazy"><span class="trama"></span></div><figcaption><b>Nuestras ocho estrellas</b><span class="mono">Sistema</span></figcaption></figure>
+      <figure data-sube><div class="caja"><img src="img/saltimbanqui-logo.jpg" alt="Logotipo de Saltimbanqui en amarillo pálido sobre verde ácido con grano" width="1000" height="1250" loading="lazy"><span class="trama"></span></div><figcaption><b>Saltimbanqui</b><span class="mono">Logotipo</span></figcaption></figure>
+      <figure data-sube><div class="caja"><img src="img/omnia-aplicaciones.jpg" alt="Aplicaciones de la identidad de Omnia" width="1000" height="1250" loading="lazy"><span class="trama"></span></div><figcaption><b>Omnia</b><span class="mono">Aplicaciones</span></figcaption></figure>
+    </div>
+    <p class="arrastra mono">Arrastra<svg class="estrella"><use href="#s3"/></svg>o pasa el dedo</p>
+  </div>
+</section>
+
+<!-- ===================== 9. COMO BREGAMOS ===================== -->
+<section class="pliego env bregamos" id="bregamos">
+  <div class="cabecera">
+    <h2 data-sube>Cómo bregamos</h2>
+    <div class="lado mono" data-sube><span class="romano">V</span><svg class="estrella"><use href="#s2"/></svg>De pensar y creer; y después crear</div>
+  </div>
+  <div class="pasos">
+    <div class="paso" data-paso><span class="p-linea"></span><div class="p-num mono"><span class="romano">I</span><svg class="estrella"><use href="#s1"/></svg></div><h3>Escuchar</h3><p>Antes de abrir un archivo, preguntamos. Qué vendes, a quién, y qué te hace distinto de verdad.</p></div>
+    <div class="paso" data-paso><span class="p-linea"></span><div class="p-num mono"><span class="romano">II</span><svg class="estrella"><use href="#s3"/></svg></div><h3>Pensar y creer</h3><p>La idea manda. Si no nos la creemos nosotros, no hay manera de que se la crea nadie más.</p></div>
+    <div class="paso" data-paso><span class="p-linea"></span><div class="p-num mono"><span class="romano">III</span><svg class="estrella"><use href="#s4"/></svg></div><h3>Crear</h3><p>Ahí llega el dibujo: identidad, sistema y piezas. Lo bonito viene después de la idea, pero viene.</p></div>
+    <div class="paso" data-paso><span class="p-linea"></span><div class="p-num mono"><span class="romano">IV</span><svg class="estrella"><use href="#s6"/></svg></div><h3>Bregar</h3><p>Y luego se defiende. Aplicarla, cuidarla y que aguante de pie cuando salga a la calle.</p></div>
+  </div>
+</section>
+
+<!-- ===================== 10. CONTACTO ===================== -->
+<section class="contacto env" id="contacto">
+  <span class="halo" aria-hidden="true"></span>
+  <div class="rotulo mono" data-sube><span class="romano">VI</span><svg class="estrella"><use href="#s8"/></svg>¿Tienes una marca entre manos?</div>
+  <h2 id="tituloContacto">Vamos a bregar.</h2>
+  <a href="mailto:somoslabrega@gmail.com" class="correo" data-sube>somoslabrega@gmail.com</a>
+  <div class="cta" data-sube><a href="mailto:somoslabrega@gmail.com" class="boton"><span>Cuéntanos tu proyecto</span></a></div>
+</section>
+
+</main>
+
+<!-- ===================== 11. PIE ===================== -->
+<footer class="env">
+  <div class="pie-estrellas" aria-hidden="true">
+    <svg class="estrella gira"><use href="#s1"/></svg><svg class="estrella late"><use href="#s2"/></svg>
+    <svg class="estrella gira-r"><use href="#s3"/></svg><svg class="estrella gira"><use href="#s4"/></svg>
+    <svg class="estrella late"><use href="#s5"/></svg><svg class="estrella gira-r"><use href="#s6"/></svg>
+    <svg class="estrella gira"><use href="#s7"/></svg><svg class="estrella late"><use href="#s8"/></svg>
+  </div>
+  <div class="pie-rejilla">
+    <span class="logo"><i>La</i><b>Brega</b><i>Estudio<span class="pt">.</span></i></span>
+    <p class="fino mono">No hacemos ruido.<br>Hacemos marcas.<br>28°07′N · 15°26′O</p>
+    <div class="redes mono">
+      <a href="https://www.instagram.com/labrega_estudio/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@labrega.estudio" target="_blank" rel="noopener">TikTok</a>
+      <a href="mailto:somoslabrega@gmail.com">Email</a>
+    </div>
+    <button class="arriba mono" id="volverArriba">Volver arriba ↑</button>
+  </div>
+</footer>
+
+<!-- ===================== FICHA DE LAMINA ===================== -->
+<div class="ficha" id="ficha" role="dialog" aria-modal="true" aria-labelledby="fichaTitulo" aria-hidden="true">
+  <button class="f-cerrar" id="fichaCerrar" aria-label="Cerrar la ficha">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <div class="f-in">
+<!-- sin src: un src="" apunta a la propia pagina y dispara un error de carga -->
+    <div class="f-arte"><img id="fichaImg" alt=""></div>
+    <div>
+      <span class="f-tag mono" id="fichaTag"></span>
+      <h2 id="fichaTitulo"></h2>
+      <p class="f-txt" id="fichaTxt"></p>
+      <dl class="f-datos">
+        <div><dt class="mono">Lámina</dt><dd id="fichaRom"></dd></div>
+        <div><dt class="mono">Año</dt><dd id="fichaAno"></dd></div>
+        <div><dt class="mono">Qué hicimos</dt><dd id="fichaQue"></dd></div>
+      </dl>
+      <p class="f-nota">Nota — los textos de las fichas son una recreación a partir de las publicaciones de La Brega en Instagram, para que la propuesta se vea completa. Hay que confirmarlos antes de publicar.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* =========================================================================
+   0. BASES
+   ========================================================================= */
+var raiz   = document.documentElement;
+var mqQuieto = matchMedia('(prefers-reduced-motion: reduce)');
+var quieto = mqQuieto.matches;
+var fino   = matchMedia('(hover:hover) and (pointer:fine)').matches;
+var movil  = function(){ return window.matchMedia('(max-width:900px)').matches; };
+var lim    = function(v,a,b){ return v<a?a:(v>b?b:v); };
+/* nada se revela hasta que el preloader se va: si no, el hero se anima POR
+   DEBAJO de la pantalla de carga y cuando esta sube ya esta todo puesto */
+var arrancado = false;
+
+/* =========================================================================
+   1. SCROLL SUAVE PROPIO (sin librerias)
+   Solo con raton fino: en tactil el scroll nativo del movil siempre es mejor.
+   Es lo que da la inercia "de estudio" y, de paso, la VELOCIDAD que alimenta
+   toda la web. Si algo falla, se apaga solo y queda el scroll normal.
+   ========================================================================= */
+var suave = { on:(fino && !quieto), meta:0, act:0, parado:false };
+(function(){
+  if(!suave.on) return;
+  suave.meta = suave.act = window.scrollY || 0;
+  var propio = false;   // marca los scroll que provocamos nosotros
+
+  function tope(){ return Math.max(0, document.documentElement.scrollHeight - window.innerHeight); }
+
+  window.addEventListener('wheel', function(e){
+    if(suave.parado) return;
+    if(e.ctrlKey) return;                      // zoom del navegador
+    // Solo se le cede la rueda al carril cuando el gesto es HORIZONTAL. Si se
+    // le cediera tambien la vertical, con el raton encima del carrusel la
+    // pagina no bajaria: una trampa de scroll de manual.
+    if(Math.abs(e.deltaX) > Math.abs(e.deltaY) && e.target.closest && e.target.closest('.carril')) return;
+    e.preventDefault();
+    var d = e.deltaY;
+    if(e.deltaMode === 1) d *= 18;             // deltas por linea
+    else if(e.deltaMode === 2) d *= window.innerHeight;
+    suave.meta = lim(suave.meta + d, 0, tope());
+  }, {passive:false});
+
+  window.addEventListener('keydown', function(e){
+    if(suave.parado) return;
+    var t = e.target.tagName;
+    if(t === 'INPUT' || t === 'TEXTAREA') return;
+    var h = window.innerHeight, d = null;
+    if(e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) d = h*0.9;
+    else if(e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) d = -h*0.9;
+    else if(e.key === 'ArrowDown') d = 90;
+    else if(e.key === 'ArrowUp') d = -90;
+    else if(e.key === 'Home') { suave.meta = 0; e.preventDefault(); return; }
+    else if(e.key === 'End') { suave.meta = tope(); e.preventDefault(); return; }
+    if(d !== null){ e.preventDefault(); suave.meta = lim(suave.meta + d, 0, tope()); }
+  });
+
+  // si el scroll no lo hemos hecho nosotros (barra, buscar en pagina, anclas
+  // del navegador), hay que resincronizar o la pagina "tira" hacia atras
+  window.addEventListener('scroll', function(){
+    if(propio){ propio = false; return; }
+    suave.meta = suave.act = window.scrollY;
+  }, {passive:true});
+
+  suave.paso = function(){
+    if(suave.parado) return;
+    var d = suave.meta - suave.act;
+    if(Math.abs(d) < 0.12){ suave.act = suave.meta; return; }
+    suave.act += d * 0.115;
+    propio = true;
+    window.scrollTo(0, suave.act);
+  };
+  suave.ir = function(y){ suave.meta = lim(y, 0, tope()); };
+})();
+
+function irA(y){
+  if(suave.on){ suave.ir(y); }
+  else { window.scrollTo({ top:y, behavior: quieto ? 'auto' : 'smooth' }); }
+}
+document.addEventListener('click', function(e){
+  var a = e.target.closest && e.target.closest('a[href^="#"]');
+  if(!a) return;
+  var id = a.getAttribute('href');
+  if(!id || id.length < 2) return;
+  var dest = document.querySelector(id);
+  if(!dest) return;
+  e.preventDefault();
+  cerrarMenu();
+  irA(dest.getBoundingClientRect().top + window.scrollY - 4);
+});
+
+/* =========================================================================
+   2. PRELOADER — la lamina se revela
+   ========================================================================= */
+(function(){
+  var caja = document.getElementById('carga');
+  var num  = document.getElementById('cargaNum');
+  var lz   = document.getElementById('cargaLienzo');
+  var estrellas = caja ? caja.querySelectorAll('.c-estrellas .estrella') : [];
+  var fin = false;
+
+  function arrancarHero(){
+    if(fin) return; fin = true;
+    document.body.classList.remove('bloqueado');
+    arrancado = true;
+    var h = document.querySelector('.hero');
+    if(h){
+      h.querySelectorAll('.mascara').forEach(function(m){ m.classList.add('visto'); m._visto = true; });
+      h.querySelectorAll('[data-sube],[data-troceo]').forEach(function(el,i){
+        setTimeout(function(){ el.classList.add('visto'); el._visto = true; }, 240 + i*90);
+      });
+    }
+    ponerEnMarcha();
+  }
+  if(quieto || !caja){ if(caja) caja.style.display='none'; arrancarHero(); return; }
+
+  document.body.classList.add('bloqueado');
+  caja.classList.add('pinta');
+
+  // grano de la plancha, pintado a mano en el canvas
+  var ctx = lz ? lz.getContext('2d') : null, ancho = 0, alto = 0, amp = 1, vivo = true;
+  function medir(){
+    if(!lz) return;
+    ancho = Math.max(1, Math.ceil(lz.clientWidth/3));
+    alto  = Math.max(1, Math.ceil(lz.clientHeight/3));
+    lz.width = ancho; lz.height = alto;
+  }
+  medir();
+  function pintarGrano(){
+    if(!vivo || !ctx) return;
+    var d = ctx.createImageData(ancho, alto), p = d.data;
+    for(var i=0;i<p.length;i+=4){
+      var v = Math.random() < (0.10 + 0.5*amp) ? (Math.random()*255*amp) : 0;
+      p[i]=p[i+1]=p[i+2]=v; p[i+3]=255;
+    }
+    ctx.putImageData(d,0,0);
+    requestAnimationFrame(pintarGrano);
+  }
+  pintarGrano();
+
+  /* LA TRANSICION: el logotipo no desaparece con el telon, se queda y VUELA
+     hasta su sitio en la cabecera mientras el telon sube por detras. Se saca
+     una copia a una capa propia (z 9600, por encima del telon) porque si se
+     quedara dentro subiria con el. Es el gesto de preloader que hacen las
+     webs premiadas: la carga no se corta, se convierte en la pagina. */
+  function volarLogo(){
+    var a = caja.querySelector('.logo');
+    var b = document.querySelector('#cabecera .logo');
+    if(!a || !b) return;
+    var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+    if(!ra.width || !rb.width) return;
+    var esc = rb.width / ra.width;
+    var vuelo = a.cloneNode(true);
+    vuelo.style.cssText = 'position:fixed;z-index:9600;margin:0;left:' + ra.left + 'px;top:' + ra.top +
+      'px;width:' + ra.width + 'px;font-size:' + getComputedStyle(a).fontSize +
+      ';transform-origin:top left;pointer-events:none';
+    document.body.appendChild(vuelo);
+    a.style.visibility = 'hidden';
+    b.style.opacity = '0';
+    requestAnimationFrame(function(){
+      vuelo.style.transition = 'transform 1.05s cubic-bezier(.76,0,.24,1)';
+      vuelo.style.transform = 'translate(' + (rb.left-ra.left).toFixed(1) + 'px,' +
+        (rb.top-ra.top).toFixed(1) + 'px) scale(' + esc.toFixed(4) + ')';
+    });
+    setTimeout(function(){
+      b.style.transition = 'opacity .25s'; b.style.opacity = '1';
+      setTimeout(function(){
+        if(vuelo.parentNode) vuelo.parentNode.removeChild(vuelo);
+        b.style.transition = ''; b.style.opacity = '';
+      }, 300);
+    }, 930);
+  }
+
+  var n = 0;
+  var reloj = setInterval(function(){
+    n += Math.floor(Math.random()*9) + 4;
+    if(n >= 100) n = 100;
+    if(num) num.textContent = ('00'+n).slice(-3);
+    amp = 1 - (n/100);
+    var cuantas = Math.round((n/100) * estrellas.length);
+    for(var i=0;i<estrellas.length;i++){ estrellas[i].classList.toggle('on', i < cuantas); }
+    if(n >= 100){
+      clearInterval(reloj);
+      setTimeout(function(){
+        vivo = false;
+        volarLogo();
+        caja.classList.add('fuera');
+        setTimeout(arrancarHero, 420);
+      }, 300);
+    }
+  }, 78);
+
+  // red de seguridad: pase lo que pase, a los 4,5 s la web esta viva
+  setTimeout(function(){
+    if(fin) return;
+    clearInterval(reloj); vivo = false;
+    caja.classList.add('fuera');
+    arrancarHero();
+  }, 4500);
+  window.addEventListener('resize', medir);
+})();
+
+/* =========================================================================
+   3. REVELADOS — IntersectionObserver + RED DE SEGURIDAD
+   Con un scroll rapido el observer puede SALTARSE un elemento entre dos
+   fotogramas y ese trozo no se revela nunca (fallo real cazado en la v3).
+   Por eso, ademas, se repasa cada pocos fotogramas lo que ya quedo arriba.
+   ========================================================================= */
+/* =========================================================================
+   3-bis. EL MOTOR DE ANIMACION
+   Lo que repiten las webs premiadas no es un efecto suelto, es un vocabulario:
+   el texto SUBE por lineas enmascaradas, las fotos se DESTAPAN con una
+   cortina, los rotulos RUEDAN al pasar por encima y los botones se ACERCAN al
+   raton. Aqui se declara a que le toca cada cosa, en un solo sitio.
+   ========================================================================= */
+/* OJO: aqui NO pueden entrar los rotulos con `display:flex` (.manif .rotulo,
+   .cabecera .lado, .contacto .rotulo). Trocear en lineas convierte los hijos
+   en bloques y destroza la fila. Solo texto corrido. */
+var TROCEAR = '.cabecera h2, .manif .cab h2, .manif blockquote, .manif .parrafos p, .paso h3, .hero .bajada';
+var VELOS   = '.manif .foto, .lam .marco, .carril figure .caja';
+
+document.querySelectorAll(TROCEAR).forEach(function(el){
+  el.removeAttribute('data-sube');          // si no, se animaria dos veces
+  el.setAttribute('data-troceo','');
+});
+document.querySelectorAll(VELOS).forEach(function(el){ el.setAttribute('data-velo',''); });
+
+/* --- parte el texto en palabras conservando <em>, <br> y los bloques que no
+       se pueden partir (la palabra con el marcador lleva un SVG dentro) --- */
+function enPalabras(nodo, salida){
+  [].slice.call(nodo.childNodes).forEach(function(n){
+    if(n.nodeType === 3){
+      n.textContent.split(/(\s+)/).forEach(function(t){
+        if(t === '') return;
+        if(/^\s+$/.test(t)){ salida.push(document.createTextNode(' ')); return; }
+        var s = document.createElement('span'); s.className = 'pal'; s.textContent = t;
+        salida.push(s);
+      });
+    } else if(n.nodeType === 1){
+      if(n.tagName === 'BR'){ salida.push(n.cloneNode(false)); return; }
+      if(n.children.length === 0 && n.textContent.trim()){
+        // solo texto dentro: se trocea por dentro y cada palabra conserva su
+        // etiqueta (asi la cursiva de <em> no se pierde)
+        var dentro = [];
+        enPalabras(n, dentro);
+        dentro.forEach(function(p){
+          if(p.nodeType === 1 && p.className === 'pal'){
+            var copia = n.cloneNode(false);
+            copia.textContent = p.textContent;
+            var caja = document.createElement('span');
+            caja.className = 'pal'; caja.appendChild(copia);
+            salida.push(caja);
+          } else salida.push(p);
+        });
+      } else {
+        var entero = document.createElement('span');
+        entero.className = 'pal'; entero.appendChild(n.cloneNode(true));
+        salida.push(entero);
+      }
+    }
+  });
+}
+
+/* --- agrupa las palabras que han caido en la MISMA linea y le pone a cada
+       linea su mascara. Hay que medir DESPUES de pintar, por eso se rehace
+       cuando cargan las tipografias y al cambiar de tamaño. --- */
+function enLineas(el){
+  if(el._orig == null) el._orig = el.innerHTML;
+  el.innerHTML = el._orig;
+  var trozos = [];
+  enPalabras(el, trozos);
+  el.innerHTML = '';
+  trozos.forEach(function(n){ el.appendChild(n); });
+
+  var lineas = [], actual = null, ultTop = null, hayPal = false;
+  [].slice.call(el.childNodes).forEach(function(n){
+    if(n.nodeType === 1 && n.className === 'pal'){
+      hayPal = true;
+      var t = n.offsetTop;
+      if(ultTop === null || Math.abs(t - ultTop) > 3){ actual = []; lineas.push(actual); ultTop = t; }
+      actual.push(n);
+    } else if(actual){ actual.push(n); }
+  });
+  if(!hayPal){ el.innerHTML = el._orig; return; }
+
+  var frag = document.createDocumentFragment();
+  lineas.forEach(function(linea, i){
+    var ln = document.createElement('span'); ln.className = 'ln';
+    var inn = document.createElement('span'); inn.className = 'ln-in';
+    inn.style.transitionDelay = (i * 0.085).toFixed(3) + 's';
+    linea.forEach(function(n){
+      if(n.nodeType === 1 && n.tagName === 'BR') return;  // el corte ya lo da la propia linea
+      inn.appendChild(n);
+    });
+    ln.appendChild(inn); frag.appendChild(ln);
+  });
+  el.innerHTML = ''; el.appendChild(frag);
+}
+
+var troceados = [].slice.call(document.querySelectorAll('[data-troceo]'));
+function trocearTodo(){ if(!quieto) troceados.forEach(enLineas); }
+trocearTodo();
+
+var porRevelar = [].slice.call(document.querySelectorAll('[data-sube],[data-paso],[data-troceo],[data-velo],[data-palabras],.mascara'));
+function revelar(el){
+  if(el._visto) return;
+  el._visto = true;
+  el.classList.add('visto');
+}
+function ponerEnMarcha(){
+  if('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(ent){
+      ent.forEach(function(e){ if(e.isIntersecting) revelar(e.target); });
+    }, { rootMargin:'0px 0px -12% 0px', threshold:0.01 });
+    porRevelar.forEach(function(el){ obs.observe(el); });
+  }
+  repasar();
+}
+function repasar(){
+  if(!arrancado) return;
+  var h = window.innerHeight;
+  for(var i=0;i<porRevelar.length;i++){
+    var el = porRevelar[i];
+    if(el._visto) continue;
+    var r = el.getBoundingClientRect();
+    if(r.top < h*0.92 && r.bottom > -h*0.5) revelar(el);
+  }
+}
+
+/* =========================================================================
+   4. EL BUCLE — velocidad, cinta, parallax, galeria anclada
+   Todo cuelga de aqui. Un solo requestAnimationFrame para toda la web.
+   ========================================================================= */
+var ultY = window.scrollY, ultT = performance.now(), velCruda = 0, vel = 0, tic = 0;
+/* --vel lo lee TODA la web (grano, semitonos, titular, shader). Escribirlo en
+   :root cada fotograma obliga a recalcular estilo en media pagina, asi que
+   solo se escribe cuando cambia de verdad. */
+var velNorm = 0, velSig = 0;
+var cabecera = document.getElementById('cabecera');
+var lectura  = document.getElementById('lectura');
+var via1     = document.getElementById('via1');
+var viaX     = 0;
+var manifFoto= document.getElementById('manifFoto');
+var heroDentro = document.querySelector('.hero .dentro');
+var enlaces  = [].slice.call(document.querySelectorAll('.nav-c a.enl'));
+var secciones= enlaces.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+
+/* --- galeria anclada (sticky + traslacion por progreso) --- */
+var pin = document.getElementById('pin'), tira = document.getElementById('tira');
+var lams = [].slice.call(document.querySelectorAll('.lam'));
+var barraVia = document.getElementById('barraVia'), cntA = document.getElementById('cntA');
+var selloTitulo = document.getElementById('selloTitulo'), selloCat = document.getElementById('selloCat');
+var recorrido = 0;
+function medirTaller(){
+  if(!pin || !tira) return;
+  if(movil()){ pin.style.height=''; tira.style.transform=''; recorrido = 0; return; }
+  recorrido = Math.max(0, tira.scrollWidth - window.innerWidth);
+  pin.style.height = (window.innerHeight + recorrido) + 'px';
+}
+medirTaller();
+
+function bucle(){
+  var y = window.scrollY;
+  /* La velocidad va normalizada A TIEMPO, no a fotogramas: medida en pixeles
+     por fotograma de 60Hz. Si no, a 120Hz la web se aquietaria el doble de
+     rapido y a 30Hz tardaria el doble (se vio en headless, que va a ~4 fps). */
+  var ahora = performance.now();
+  var dt = Math.min(80, ahora - ultT); ultT = ahora;
+  var f = Math.max(0.4, dt / 16.67);
+  velCruda = (y - ultY) / f; ultY = y;
+  vel += (Math.abs(velCruda) - vel) * (1 - Math.pow(0.86, f));
+  /* SUELO: por debajo de medio pixel por fotograma se considera QUIETO y se
+     pone a cero de golpe. Sin esto la cola exponencial deja la trama de
+     semitono encendida a un 15% para siempre y "la calma revela" no llega. */
+  if(vel < 0.5) vel = 0;
+  var vn  = lim(vel/58, 0, 1);
+  var vns = lim(velCruda/58, -1, 1);
+  if(Math.abs(vn - velNorm) > 0.004 || (vn === 0 && velNorm !== 0)){
+    velNorm = vn; raiz.style.setProperty('--vel', vn.toFixed(3));
+  }
+  if(Math.abs(vns - velSig) > 0.004 || (vns === 0 && velSig !== 0)){
+    velSig = vns; raiz.style.setProperty('--vel-s', vns.toFixed(3));
+  }
+
+  if(suave.paso) suave.paso();
+
+  // barra de lectura
+  var total = document.documentElement.scrollHeight - window.innerHeight;
+  if(lectura) lectura.style.transform = 'scaleX(' + (total>0 ? lim(y/total,0,1) : 0) + ')';
+
+  // cabecera
+  if(cabecera) cabecera.classList.toggle('posado', y > 40);
+
+  // cinta: la velocidad y el sentido los manda el scroll
+  if(via1){
+    viaX -= (0.55 + Math.abs(velCruda)*0.14) * (velCruda >= 0 ? 1 : -1);
+    var mitad = via1.scrollWidth / 2;
+    if(mitad > 0){ if(viaX <= -mitad) viaX += mitad; else if(viaX > 0) viaX -= mitad; }
+    via1.style.transform = 'translate3d(' + viaX.toFixed(2) + 'px,0,0)';
+  }
+
+  // el hero SE VA: el contenido sube, se encoge y se apaga ligado al scroll.
+  // Es el "scrub" de las webs premiadas: la salida no es un corte, es un plano.
+  if(heroDentro && !quieto && y < window.innerHeight*1.3){
+    var ph = lim(y / Math.max(1, window.innerHeight), 0, 1);
+    heroDentro.style.transform = 'translate3d(0,' + (ph*-10).toFixed(2) + '%,0) scale(' + (1 - ph*0.07).toFixed(4) + ')';
+    heroDentro.style.opacity = lim(1 - ph*1.25, 0, 1).toFixed(3);
+  }
+
+  // parallax de la foto del manifiesto
+  if(manifFoto && !quieto){
+    var r = manifFoto.parentElement.getBoundingClientRect();
+    if(r.bottom > -200 && r.top < window.innerHeight + 200){
+      var p = (r.top + r.height/2 - window.innerHeight/2) / window.innerHeight;
+      manifFoto.style.transform = 'translate3d(0,' + (p * 7).toFixed(2) + '%,0)';
+    }
+  }
+
+  // galeria anclada
+  if(pin && tira && recorrido > 0 && !movil()){
+    var pr = pin.getBoundingClientRect();
+    var largo = pin.offsetHeight - window.innerHeight;
+    var p2 = largo > 0 ? lim(-pr.top / largo, 0, 1) : 0;
+    tira.style.transform = 'translate3d(' + (-p2 * recorrido).toFixed(2) + 'px,0,0)';
+    if(barraVia) barraVia.style.transform = 'scaleX(' + p2.toFixed(4) + ')';
+    var centro = window.innerWidth/2, mejor = 0, mejorD = 1e9;
+    for(var i=0;i<lams.length;i++){
+      var lr = lams[i].getBoundingClientRect();
+      var medio = lr.left + lr.width/2;
+      var d = Math.abs(medio - centro);
+      lams[i].style.setProperty('--foc', lim(1 - d/(window.innerWidth*0.58), 0, 1).toFixed(3));
+      // las de los lados se giran hacia dentro: solo la del centro te mira de frente
+      lams[i].style.setProperty('--giro',
+        (lim((medio - centro)/window.innerWidth, -1, 1) * -20).toFixed(2) + 'deg');
+      if(d < mejorD){ mejorD = d; mejor = i; }
+    }
+    if(cntA) cntA.textContent = ('0'+(mejor+1)).slice(-2);
+    if(selloTitulo && lams[mejor]){
+      selloTitulo.textContent = lams[mejor].getAttribute('data-tit');
+      selloCat.textContent = lams[mejor].getAttribute('data-cat');
+    }
+  }
+
+  // enlace activo
+  if((tic % 8) === 0){
+    var act = -1;
+    for(var k=0;k<secciones.length;k++){
+      if(!secciones[k]) continue;
+      var sr = secciones[k].getBoundingClientRect();
+      if(sr.top <= window.innerHeight*0.4 && sr.bottom > window.innerHeight*0.4) act = k;
+    }
+    enlaces.forEach(function(a,i){ a.classList.toggle('aqui', i === act); });
+  }
+  // red de seguridad de los revelados
+  if((tic % 6) === 0) repasar();
+
+  tic++;
+  requestAnimationFrame(bucle);
+}
+requestAnimationFrame(bucle);
+
+var remedir = null;
+var anchoPrevio = window.innerWidth;
+window.addEventListener('resize', function(){
+  clearTimeout(remedir);
+  remedir = setTimeout(function(){
+    // el troceado se rehace SOLO si cambia el ancho: las lineas son otras.
+    // En movil, la barra del navegador al aparecer/desaparecer dispara resize
+    // sin cambiar el ancho, y rehacerlo ahi seria tirar el trabajo por nada.
+    if(window.innerWidth !== anchoPrevio){ anchoPrevio = window.innerWidth; trocearTodo(); }
+    medirTaller(); repasar();
+  }, 180);
+});
+// las tipografias cambian donde rompe cada linea: hay que volver a trocear
+window.addEventListener('load', function(){ medirTaller(); });
+if(document.fonts && document.fonts.ready){
+  document.fonts.ready.then(function(){ trocearTodo(); medirTaller(); repasar(); }).catch(function(){});
+}
+setTimeout(function(){ medirTaller(); repasar(); }, 1500);
+
+/* =========================================================================
+   5. EL CIELO — la luna en semitono, en WebGL escrito a mano
+   El tamaño del punto lo manda la velocidad del scroll: rapido = ruido,
+   quieto = señal. Si WebGL no arranca, cae en el respaldo de CSS.
+   ========================================================================= */
+(function(){
+  var lz = document.getElementById('lienzoCielo');
+  var cielo = document.getElementById('cielo');
+  if(!lz || quieto){ if(cielo){ cielo.classList.add('respaldo'); if(lz) lz.style.display='none'; } return; }
+
+  var gl = null;
+  try { gl = lz.getContext('webgl', {antialias:false, alpha:false, powerPreference:'low-power'})
+          || lz.getContext('experimental-webgl'); } catch(e){ gl = null; }
+  if(!gl){ cielo.classList.add('respaldo'); lz.style.display='none'; return; }
+
+  var vs = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+  var fs = [
+  'precision highp float;',
+  'uniform vec2 uRes; uniform float uT; uniform vec2 uMouse; uniform float uNoise; uniform float uY;',
+  'float hash(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123); }',
+  'float vn(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f);',
+  '  return mix(mix(hash(i),hash(i+vec2(1,0)),f.x), mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x), f.y); }',
+  'float fbm(vec2 p){ float v=0.,a=.5; for(int i=0;i<4;i++){ v+=a*vn(p); p*=2.04; a*=.5; } return v; }',
+  'void main(){',
+  '  vec2 fc = gl_FragCoord.xy;',
+  '  vec2 uv = (fc - .5*uRes)/uRes.y;',
+  // la luna se coloca a la derecha en pantallas anchas y arriba en estrechas
+  '  float ancho = uRes.x/uRes.y;',
+  // arriba y a la derecha: el borde de abajo de la luna queda en el 44,5% del
+  // alto, justo por encima de donde empieza el titular. Medido, no estimado.
+  // El borde de abajo de la luna cae en el 40,5% del alto; el titular empieza
+  // sobre el 46%. Medido con el pixel pintado: rozandolo, la palabra "ruido"
+  // (que va apagada a proposito) se quedaba en 1,47:1.
+  '  vec2 c = ancho > 1.05 ? vec2(0.34, 0.33) : vec2(0.0, 0.31);',
+  '  float R  = ancho > 1.05 ? 0.235 : 0.225;',
+  '  c.y += uY*0.12;',   // al bajar, la luna se va por arriba
+
+  // ruido: cuando vas rapido, la plancha se descuadra en franjas
+  '  uv.x += (hash(vec2(floor(fc.y/4.0), 3.7))-.5) * uNoise * 0.05;',
+  '  vec2 q = (uv - c)/R;',
+  '  float d = length(q);',
+  '  float lum = 0.0;',
+  '  if(d < 1.0){',
+  '    vec3 n = vec3(q, sqrt(max(0.0, 1.0 - dot(q,q))));',
+  // luz baja y por la izquierda, como en su cartel de la Luna. Ademas deja en
+  // sombra el cuadrante de ARRIBA, que es justo por donde pasa el menu.
+  '    vec3 L = normalize(vec3(uMouse.x*0.55 - 0.40, uMouse.y*0.45 - 0.20, 0.70));',
+  '    float dif = max(0.0, dot(n, L));',
+  '    float crat = fbm(n.xy*3.4 + n.z*1.2 + 12.0);',
+  '    float mare = smoothstep(0.42, 0.78, fbm(n.xy*1.5 + 5.0));',
+  '    lum = dif * (0.55 + 0.62*crat) * (1.0 - 0.34*mare);',
+  // OJO: smoothstep con edge0 > edge1 es COMPORTAMIENTO INDEFINIDO en GLSL.
+  // Siempre en orden creciente y se invierte con 1.0 - x.
+  '    lum *= 1.0 - smoothstep(0.955, 1.0, d);',
+  '  }',
+  // corona muy tenue alrededor
+  '  lum += 0.055 * exp(-abs(d-1.0)*5.5) * step(1.0, d);',
+  // SEMITONO: rejilla girada 45 grados; el punto crece con el ruido
+  '  float celda = 3.1 + uNoise*9.0;',
+  '  float a = 0.7853981;',
+  '  mat2 rot = mat2(cos(a), -sin(a), sin(a), cos(a));',
+  '  vec2 g = rot * fc / celda;',
+  '  vec2 cc = floor(g) + 0.5;',
+  '  cc += (vec2(hash(cc), hash(cc+7.7)) - 0.5) * (0.16 + uNoise*0.75);',
+  '  float rad = sqrt(clamp(lum,0.0,1.0)) * 0.74;',
+  // idem: con lum=0 el radio es 0 y smoothstep(0,-0.16,x) quedaba indefinido
+  // (en la practica: la pantalla entera se ponia blanca en algunas GPU)
+  '  float punto = 1.0 - smoothstep(rad-0.16, rad, length(g-cc));',
+  // estrellas: puntos finos, por encima del semitono (como en su cartel)
+  '  vec2 sc = floor(fc/9.0);',
+  '  float est = 0.0;',
+  '  float h1 = hash(sc);',
+  '  if(h1 > 0.9915){',
+  '    float br = 0.5 + 0.5*sin(uT*1.6 + h1*90.0);',
+  '    est = (1.0 - smoothstep(0.0, 1.5, length(fract(fc/9.0)-0.5)*9.0)) * (0.5+0.5*br);',
+  '  }',
+  '  vec3 tinta = vec3(0.949, 0.937, 0.902);',
+  '  vec3 fondo = vec3(0.031, 0.031, 0.039);',
+  '  vec3 col = mix(fondo, tinta, clamp(punto + est, 0.0, 1.0));',
+  '  gl_FragColor = vec4(col, 1.0);',
+  '}'].join('\n');
+
+  function compilar(tipo, src){
+    var sh = gl.createShader(tipo);
+    gl.shaderSource(sh, src); gl.compileShader(sh);
+    if(!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) return null;
+    return sh;
+  }
+  var v = compilar(gl.VERTEX_SHADER, vs), f = compilar(gl.FRAGMENT_SHADER, fs);
+  if(!v || !f){ cielo.classList.add('respaldo'); lz.style.display='none'; return; }
+  var prog = gl.createProgram();
+  gl.attachShader(prog, v); gl.attachShader(prog, f); gl.linkProgram(prog);
+  if(!gl.getProgramParameter(prog, gl.LINK_STATUS)){ cielo.classList.add('respaldo'); lz.style.display='none'; return; }
+  gl.useProgram(prog);
+  cielo.classList.remove('respaldo');   // a partir de aqui manda el shader
+
+  var buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+  var loc = gl.getAttribLocation(prog, 'p');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  var uRes = gl.getUniformLocation(prog,'uRes'), uT = gl.getUniformLocation(prog,'uT');
+  var uMouse = gl.getUniformLocation(prog,'uMouse'), uNoise = gl.getUniformLocation(prog,'uNoise');
+  var uY = gl.getUniformLocation(prog,'uY');
+
+  /* El shader pinta a pantalla completa cada fotograma. A dpr 1.6 en un
+     monitor grande son millones de pixeles y se come la GPU sin que se note la
+     diferencia: el dibujo ES de puntos gordos. Se limita el pixel y el ancho. */
+  var dpr = Math.min(window.devicePixelRatio || 1, 1.25);
+  function medir(){
+    var w = Math.max(1, Math.round(lz.clientWidth * dpr));
+    var h = Math.max(1, Math.round(lz.clientHeight * dpr));
+    if(w > 1800){ h = Math.round(h * 1800/w); w = 1800; }
+    if(lz.width !== w || lz.height !== h){ lz.width = w; lz.height = h; }
+    gl.viewport(0,0,lz.width,lz.height);
+  }
+  var mx = 0, my = 0, tmx = 0, tmy = 0;
+  if(fino){
+    window.addEventListener('mousemove', function(e){
+      tmx = (e.clientX/window.innerWidth)*2-1;
+      tmy = 1-(e.clientY/window.innerHeight)*2;
+    }, {passive:true});
+  }
+  var verse = true;
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(e){ verse = e[0].isIntersecting; }, {threshold:0})
+      .observe(document.querySelector('.hero'));
+  }
+  var t0 = performance.now(), cuadro = 0, quietoVivo = quieto;
+  function pinta(){
+    requestAnimationFrame(pinta);
+    /* se consulta EN VIVO, no solo al arrancar: asi respeta el ajuste aunque
+       se active con la pagina ya abierta (y aunque el navegador lo aplique al
+       CSS antes que a matchMedia, que es lo que pasa en Chrome headless) */
+    /* Una vez por segundo se vuelve a PREGUNTAR de cero. Un MediaQueryList
+       creado al arrancar no siempre se entera de un cambio posterior. */
+    if((cuadro++ % 60) === 0){ quietoVivo = matchMedia('(prefers-reduced-motion: reduce)').matches; }
+    if(quietoVivo){
+      if(!cielo.classList.contains('respaldo')){ cielo.classList.add('respaldo'); lz.style.display='none'; }
+      return;
+    }
+    if(!verse || document.hidden) return;   // ni fuera de vista ni en otra pestaña
+    medir();
+    mx += (tmx-mx)*0.055; my += (tmy-my)*0.055;
+    gl.uniform2f(uRes, lz.width, lz.height);
+    gl.uniform1f(uT, (performance.now()-t0)/1000);
+    gl.uniform2f(uMouse, mx, my);
+    gl.uniform1f(uNoise, velNorm);   /* el mismo valor que usa el CSS */
+    gl.uniform1f(uY, lim(window.scrollY/Math.max(1,window.innerHeight), 0, 1));
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+  pinta();
+})();
+
+/* =========================================================================
+   6. RETICULO (cursor)
+   ========================================================================= */
+(function(){
+  if(!fino || quieto) return;
+  var r = document.getElementById('reticulo'), rot = document.getElementById('reticuloRot');
+  if(!r) return;
+  document.body.classList.add('con-reticulo');
+  var x = innerWidth/2, y = innerHeight/2, cx = x, cy = y;
+  window.addEventListener('mousemove', function(e){ x = e.clientX; y = e.clientY; r.classList.add('vivo'); }, {passive:true});
+  document.addEventListener('mouseleave', function(){ r.classList.remove('vivo'); });
+  (function loop(){ cx += (x-cx)*0.2; cy += (y-cy)*0.2;
+    r.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
+    requestAnimationFrame(loop); })();
+  function marcar(el, texto){
+    el.addEventListener('mouseenter', function(){ r.classList.add('abierto'); rot.textContent = texto; });
+    el.addEventListener('mouseleave', function(){ r.classList.remove('abierto'); });
+  }
+  document.querySelectorAll('.lam .marco').forEach(function(el){ marcar(el, 'Ver'); });
+  document.querySelectorAll('a, button:not(.marco), .hacemos li').forEach(function(el){ marcar(el, ''); });
+  document.querySelectorAll('.carril').forEach(function(el){ marcar(el, 'Arrastra'); });
+})();
+
+/* =========================================================================
+   6-bis. ROTULOS QUE RUEDAN E IMANES
+   Dos gestos que estan en casi todas las webs premiadas y que aqui se montan
+   sobre el marcado que ya hay, sin ensuciar el HTML.
+   ========================================================================= */
+(function(){
+  if(quieto) return;
+  // el rotulo se duplica: el de arriba se va y entra su copia por debajo
+  document.querySelectorAll('.nav-c a.enl, .menu .m-pie a, footer .redes a, .arriba').forEach(function(a){
+    var txt = a.textContent.trim();
+    if(!txt) return;
+    a.innerHTML = '<span class="rueda"><span class="rueda-in"><span>' + txt + '</span><span>' + txt + '</span></span></span>';
+  });
+
+  if(!fino) return;
+  // el boton de cerrar la ficha se queda fuera: ya usa transform para girar 90°
+  document.querySelectorAll('.boton').forEach(function(el){
+    el.setAttribute('data-iman','');
+    el.classList.add('suelto');
+    var interior = el.querySelector('span:not(.iman-txt)');
+    if(interior && !el.querySelector('.iman-txt')) interior.classList.add('iman-txt');
+    el.addEventListener('pointerenter', function(){ el.classList.remove('suelto'); });
+    el.addEventListener('pointermove', function(e){
+      var r = el.getBoundingClientRect();
+      var dx = e.clientX - r.left - r.width/2;
+      var dy = e.clientY - r.top - r.height/2;
+      el.style.transform = 'translate(' + (dx*0.3).toFixed(1) + 'px,' + (dy*0.45).toFixed(1) + 'px)';
+      var t = el.querySelector('.iman-txt');
+      if(t) t.style.transform = 'translate(' + (dx*0.14).toFixed(1) + 'px,' + (dy*0.2).toFixed(1) + 'px)';
+    });
+    el.addEventListener('pointerleave', function(){
+      el.classList.add('suelto');
+      el.style.transform = '';
+      var t = el.querySelector('.iman-txt');
+      if(t) t.style.transform = '';
+    });
+  });
+})();
+
+/* =========================================================================
+   7. MENU
+   ========================================================================= */
+var menu = document.getElementById('menu'), abrirMenu = document.getElementById('abrirMenu');
+function cerrarMenu(){
+  if(!document.body.classList.contains('menu-abierto')) return;
+  document.body.classList.remove('menu-abierto','bloqueado');
+  suave.parado = false;
+  if(suave.on){ suave.meta = suave.act = window.scrollY; }
+  if(menu) menu.setAttribute('aria-hidden','true');
+  if(abrirMenu){ abrirMenu.setAttribute('aria-expanded','false'); abrirMenu.setAttribute('aria-label','Abrir el menú'); }
+}
+if(abrirMenu){
+  abrirMenu.addEventListener('click', function(){
+    var ab = !document.body.classList.contains('menu-abierto');
+    if(!ab){ cerrarMenu(); return; }
+    // con el menu abierto la pagina de detras no se mueve
+    document.body.classList.add('menu-abierto','bloqueado');
+    suave.parado = true;
+    menu.setAttribute('aria-hidden','false');
+    abrirMenu.setAttribute('aria-expanded','true');
+    abrirMenu.setAttribute('aria-label','Cerrar el menú');
+  });
+}
+
+/* =========================================================================
+   8. FICHA DE LAMINA — la lamina vuela desde su sitio hasta la ficha (FLIP)
+   ========================================================================= */
+(function(){
+  var ficha = document.getElementById('ficha');
+  var img   = document.getElementById('fichaImg');
+  var cerrar= document.getElementById('fichaCerrar');
+  if(!ficha) return;
+  var previo = null;
+
+  function abrir(art, origen){
+    img.src = art.getAttribute('data-img');
+    img.alt = 'Cartel de ' + art.getAttribute('data-tit');
+    document.getElementById('fichaTag').textContent   = art.getAttribute('data-cat');
+    document.getElementById('fichaTitulo').textContent= art.getAttribute('data-tit');
+    document.getElementById('fichaTxt').textContent   = art.getAttribute('data-txt');
+    document.getElementById('fichaRom').textContent   = art.getAttribute('data-rom');
+    document.getElementById('fichaAno').textContent   = art.getAttribute('data-ano');
+    document.getElementById('fichaQue').textContent   = art.getAttribute('data-que');
+
+    previo = document.activeElement;
+    var barra = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.paddingRight = barra > 0 ? barra + 'px' : '';
+    document.body.classList.add('bloqueado');
+    suave.parado = true;
+    ficha.classList.add('abierta');
+    ficha.setAttribute('aria-hidden','false');
+    ficha.scrollTop = 0;
+
+    // FLIP: la imagen sale exactamente de donde estaba la lamina
+    if(origen && !quieto){
+      var a = ficha.querySelector('.f-arte').getBoundingClientRect();
+      if(a.width > 0 && origen.width > 0){
+        var dx = origen.left - a.left, dy = origen.top - a.top;
+        var sx = origen.width / a.width, sy = origen.height / a.height;
+        img.style.transition = 'none';
+        img.style.transform  = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sx + ',' + sy + ')';
+        requestAnimationFrame(function(){
+          img.style.transition = 'transform .95s cubic-bezier(.16,1,.3,1)';
+          img.style.transform  = 'none';
+        });
+      }
+    }
+    cerrar.focus();
+  }
+  function cerrarFicha(){
+    ficha.classList.remove('abierta');
+    ficha.setAttribute('aria-hidden','true');
+    document.body.classList.remove('bloqueado');
+    document.body.style.paddingRight = '';
+    suave.parado = false;
+    if(suave.on){ suave.meta = suave.act = window.scrollY; }
+    img.style.transition = 'none'; img.style.transform = 'none';
+    if(previo && previo.focus) previo.focus();
+  }
+  document.querySelectorAll('.lam .marco').forEach(function(b){
+    b.addEventListener('click', function(){
+      abrir(b.closest('.lam'), b.getBoundingClientRect());
+    });
+  });
+  cerrar.addEventListener('click', cerrarFicha);
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){
+      if(ficha.classList.contains('abierta')) cerrarFicha();
+      else cerrarMenu();
+    }
+  });
+  ficha.addEventListener('click', function(e){ if(e.target === ficha) cerrarFicha(); });
+})();
+
+/* =========================================================================
+   9. CARRIL DE EFEMERIDES — se arrastra con el raton
+   ========================================================================= */
+(function(){
+  var c = document.getElementById('carril');
+  if(!c) return;
+  var abajo = false, x0 = 0, s0 = 0, movido = 0;
+  c.addEventListener('pointerdown', function(e){
+    if(e.pointerType === 'touch') return;   // en tactil manda el scroll nativo
+    abajo = true; movido = 0; x0 = e.clientX; s0 = c.scrollLeft;
+    c.classList.add('agarrando'); c.setPointerCapture(e.pointerId);
+  });
+  c.addEventListener('pointermove', function(e){
+    if(!abajo) return;
+    var d = e.clientX - x0; movido = Math.abs(d);
+    c.scrollLeft = s0 - d;
+  });
+  function soltar(e){
+    if(!abajo) return; abajo = false; c.classList.remove('agarrando');
+    try{ c.releasePointerCapture(e.pointerId); }catch(err){}
+  }
+  c.addEventListener('pointerup', soltar);
+  c.addEventListener('pointercancel', soltar);
+  /* La rueda VERTICAL no se toca: baja la pagina, como espera cualquiera.
+     El carril se mueve arrastrando, con el dedo, con gesto horizontal de
+     trackpad (que el navegador ya aplica solo por overflow-x) o con el teclado. */
+  c.setAttribute('tabindex','0');
+  c.addEventListener('keydown', function(e){
+    var paso = c.clientWidth * 0.7;
+    if(e.key === 'ArrowRight'){ e.preventDefault(); c.scrollLeft += paso; }
+    else if(e.key === 'ArrowLeft'){ e.preventDefault(); c.scrollLeft -= paso; }
+  });
+})();
+
+/* =========================================================================
+   10. CONTACTO — las letras se apartan del raton
+   ========================================================================= */
+(function(){
+  var h = document.getElementById('tituloContacto');
+  if(!h) return;
+  /* Tres capas encajadas:
+     .pal-mask (recorta)  >  .w (sube desde debajo, palabra entera, nowrap)
+     >  .l (cada letra, que es la que luego huye del raton).
+     Asi la entrada es el mismo gesto que el resto de la web y «BREGAR.»
+     sigue sin poder partirse por la mitad. */
+  var palabras = h.textContent.split(/\s+/).filter(Boolean);
+  var frag = document.createDocumentFragment();
+  palabras.forEach(function(pal, k){
+    var mask = document.createElement('span');
+    mask.className = 'pal-mask';
+    var w = document.createElement('span');
+    w.className = 'w';
+    w.style.transitionDelay = (k * 0.11).toFixed(2) + 's';
+    for(var i=0;i<pal.length;i++){
+      var s = document.createElement('span');
+      s.className = 'l'; s.textContent = pal[i];
+      w.appendChild(s);
+    }
+    mask.appendChild(w);
+    frag.appendChild(mask);
+    if(k < palabras.length-1) frag.appendChild(document.createTextNode(' '));
+  });
+  h.textContent = ''; h.appendChild(frag);
+  h.setAttribute('data-palabras','');
+  porRevelar.push(h);
+  if(quieto) h.classList.add('visto');
+  if(!fino || quieto) return;
+  var letras = [].slice.call(h.querySelectorAll('.l'));
+  h.parentElement.addEventListener('mousemove', function(e){
+    for(var i=0;i<letras.length;i++){
+      var r = letras[i].getBoundingClientRect();
+      var dx = (r.left + r.width/2) - e.clientX, dy = (r.top + r.height/2) - e.clientY;
+      var dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist < 190){
+        var fza = (1 - dist/190) * 26;
+        letras[i].style.transform = 'translate(' + (dx/dist*fza).toFixed(1) + 'px,' + (dy/dist*fza).toFixed(1) + 'px)';
+        letras[i].style.transition = 'transform .18s ease-out';
+      } else if(letras[i].style.transform){
+        letras[i].style.transform = ''; letras[i].style.transition = 'transform .7s cubic-bezier(.16,1,.3,1)';
+      }
+    }
+  });
+  h.parentElement.addEventListener('mouseleave', function(){
+    letras.forEach(function(l){ l.style.transform=''; l.style.transition='transform .7s cubic-bezier(.16,1,.3,1)'; });
+  });
+})();
+
+/* =========================================================================
+   11. DETALLES — reloj de Canarias, estrellas del menu, volver arriba
+   ========================================================================= */
+(function(){
+  var r = document.getElementById('reloj');
+  if(!r) return;
+  function pinta(){
+    try{
+      r.textContent = new Intl.DateTimeFormat('es-ES', {
+        timeZone:'Atlantic/Canary', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
+      }).format(new Date());
+    }catch(e){ r.textContent = new Date().toTimeString().slice(0,8); }
+  }
+  pinta(); setInterval(pinta, 1000);
+})();
+(function(){
+  var b = document.getElementById('volverArriba');
+  if(b) b.addEventListener('click', function(){ irA(0); });
+})();
+// las 8 estrellas del pie entran una detras de otra, girando
+(function(){
+  var pe = document.querySelector('.pie-estrellas');
+  if(!pe) return;
+  [].slice.call(pe.querySelectorAll('.estrella')).forEach(function(e, i){
+    // se envuelve para no pisar el `transform` de su propia animacion de giro
+    var caja = document.createElement('span');
+    caja.className = 'est-caja';
+    caja.style.transitionDelay = (i * 0.07).toFixed(2) + 's';
+    e.parentNode.insertBefore(caja, e);
+    caja.appendChild(e);
+  });
+  porRevelar.push(pe);
+  if(quieto) pe.classList.add('visto');
+})();
+// las orbitas de Efemerides se dibujan al entrar
+(function(){
+  var o = document.getElementById('orbitasEfem');
+  if(!o) return;
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(e){ if(e[0].isIntersecting) o.classList.add('visto'); }, {threshold:0.15})
+      .observe(o.parentElement);
+  } else { o.classList.add('visto'); }
+})();
+
+// parallax suave dentro de cada lamina
+(function(){
+  if(quieto) return;
+  var imgs = [].slice.call(document.querySelectorAll('.lam img[data-par]'));
+  if(!imgs.length) return;
+  function paso(){
+    requestAnimationFrame(paso);
+    if(movil()) return;
+    var c = window.innerWidth/2;
+    for(var i=0;i<imgs.length;i++){
+      var r = imgs[i].getBoundingClientRect();
+      if(r.right < -200 || r.left > window.innerWidth + 200) continue;
+      var p = ((r.left + r.width/2) - c) / window.innerWidth;
+      var k = parseFloat(imgs[i].getAttribute('data-par')) || 0;
+      imgs[i].style.transform = 'scale(1.09) translateX(' + (p*k*100).toFixed(2) + 'px)';
+    }
+  }
+  paso();
+})();
+
+repasar();
+})();
+</script>
+</body>
+</html>
