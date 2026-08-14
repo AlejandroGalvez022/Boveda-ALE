@@ -128,3 +128,16 @@ Montado como **escena anclada** (`position:sticky`) dentro de una sección de 26
 - **1440 px** y **390 px**: **0 desbordes** en los nueve tramos de la página, en los dos anchos.
 - El salto funciona también en móvil (la clase `en-amarillo` entra).
 - El correo: negro (`rgb(12,12,12)`) y el marcador destapado.
+
+### Y el remate: «somos ocho» dentro de la escena
+> «Lo de somos 8 quiero que salga **cuando la estrella se haga grande y aparezcan todas ahí**, que quede súper espectacular, como cinematográfico. También decirte: **la estrella se ve pixelada**.»
+
+**La frase se mudó al momento amarillo**, que es donde pega: entra por líneas enmascaradas (`--frase`, del 62 % al 90 % del recorrido) en negro sobre el amarillo, con las siete estrellas alrededor y *«Ninguna se entiende sola»* debajo en su cursiva. Se quitó de la sección de arriba para no decirlo dos veces; allí se quedan el rótulo, las ocho, la línea de nombres y el pie.
+Se movió una estrella que caía **encima de la «O» de OCHO** (estaba en el 50 %/41 %, justo en el centro).
+
+> [!important] Por qué se veía pixelada — y la lección
+> La estrella crecía con `scale` y llevaba `will-change`. **Un SVG escalado por `transform` se rasteriza UNA sola vez a su tamaño base y luego se estira** — y `will-change` lo empeora, porque lo sube a su propia capa de composición. Por eso pixelaba.
+> Se arregla **cambiándole el ancho de verdad** (`width`/`height` en píxeles desde el JS) en vez de escalarla: así el navegador la vuelve a dibujar nítida en cada fotograma. Va `position:absolute` para no arrastrar el layout de los hermanos, y con **tope de 2,4 diagonales de pantalla**: más allá no se nota y solo cuesta pintar.
+> **Regla general: si algo vectorial tiene que crecer mucho, se redimensiona; no se escala.**
+
+Verificado otra vez: **0 desbordes** en los nueve tramos, a 1440.
