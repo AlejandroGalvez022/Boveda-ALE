@@ -46,7 +46,7 @@ Se puso precio a la web (v5) y se preparó el documento para Raúl: una **factur
 ## Pendiente de completar en el documento (no se inventa)
 > [!todo] Verificar antes de enviar a Raúl
 > - Nº de factura.
-> - NIF/DNI de Alejandro, domicilio, email personal, teléfono.
+> - Domicilio de Alejandro, email personal, teléfono. (NIF: 45177623B ✔)
 > - ¿Se factura como autónomo? Tratamiento de **IVA (21 %)** e **IRPF (−15 %)**, o recibo entre particulares. El importe neto para el cliente sigue siendo 2.200 €.
 > - CIF/NIF y domicilio fiscal de **La Brega Estudio** (si Raúl factura como empresa/autónomo).
 > - IBAN / Bizum para el cobro.
