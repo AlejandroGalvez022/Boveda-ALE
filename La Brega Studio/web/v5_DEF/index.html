@@ -224,28 +224,28 @@ body.menu-abierto .abrir-menu i::before{transform:translateY(7px) rotate(45deg)}
 body.menu-abierto .abrir-menu i::after{transform:translateY(-7px) rotate(-45deg)}
 @media (max-width:1000px){ .nav-c a.enl,.nav-c .boton{display:none} .abrir-menu{display:flex} }
 
-.menu{position:fixed; inset:0; z-index:9040; background:var(--negro); display:flex; flex-direction:column;
+.menu{position:fixed; inset:0; z-index:9040; background:var(--canario); display:flex; flex-direction:column;
   justify-content:center; padding:clamp(96px,14vh,150px) var(--borde) clamp(30px,6vh,60px);
   clip-path:circle(0% at calc(100% - 46px) 44px); transition:clip-path .9s var(--salida); pointer-events:none}
 body.menu-abierto .menu{clip-path:circle(155% at calc(100% - 46px) 44px); pointer-events:auto}
 .menu .m-estrellas{position:absolute; inset:0; pointer-events:none; opacity:.09}
-.menu .m-estrellas .estrella{position:absolute; color:var(--hueso)}
+.menu .m-estrellas .estrella{position:absolute; color:var(--negro)}
 .menu nav{display:flex; flex-direction:column; align-items:flex-start; gap:2px; position:relative; z-index:2}
 .menu nav a{display:flex; align-items:center; gap:.3em; font-size:clamp(32px,8.4vw,86px); font-weight:900;
-  text-transform:uppercase; letter-spacing:-.04em; line-height:1.06; padding-block:4px;
+  text-transform:uppercase; letter-spacing:-.04em; line-height:1.06; padding-block:4px; color:var(--negro);
   opacity:0; transform:translateY(26px); transition:opacity .55s var(--salida), transform .65s var(--salida), color .3s}
 body.menu-abierto .menu nav a{opacity:1; transform:none}
-.menu nav a .romano{font-size:.22em; color:var(--tenue); letter-spacing:.14em; margin-right:.4em; font-weight:700}
+.menu nav a .romano{font-size:.22em; color:rgba(8,8,10,.55); letter-spacing:.14em; margin-right:.4em; font-weight:700}
 /* la estrella no reserva sitio hasta que aparece: si no, los rotulos se salen en movil */
-.menu nav a .estrella{width:0; height:.34em; opacity:0; color:var(--canario); flex:none;
+.menu nav a .estrella{width:0; height:.34em; opacity:0; color:var(--negro); flex:none;
   transition:width .35s var(--salida), opacity .35s, margin .35s var(--salida)}
 .menu nav a:hover .estrella{width:.34em; margin-left:.16em; opacity:1}
-.menu nav a:hover{color:var(--canario)}
+.menu nav a:hover{color:var(--negro)}
 .menu .m-pie{margin-top:clamp(26px,5vh,52px); display:flex; gap:22px; flex-wrap:wrap; position:relative; z-index:2;
   opacity:0; transform:translateY(16px); transition:opacity .5s var(--salida) .5s, transform .5s var(--salida) .5s}
 body.menu-abierto .menu .m-pie{opacity:1; transform:none}
-.menu .m-pie a{color:var(--humo); transition:color .3s}
-.menu .m-pie a:hover{color:var(--canario)}
+.menu .m-pie a{color:rgba(8,8,10,.68); transition:color .3s}
+.menu .m-pie a:hover{color:var(--negro)}
 
 /* ==========================================================================
    3. REVELADOS
