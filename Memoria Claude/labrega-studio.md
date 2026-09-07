@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: a38d008c-192b-4c01-8820-2faaa5ce4909
-  modified: 2026-08-11T18:34:28.261Z
+  modified: 2026-09-07T15:09:34.776Z
 ---
 
 **La Brega Estudio** — estudio de branding/dirección creativa (Canarias) de **Raúl Vega**, amigo y cliente de Alejandro. Alejandro le prepara una **propuesta de web** (la presentó ~2026-07-19).
@@ -25,7 +25,6 @@ metadata:
   ⚠️ Ese decaimiento **debe llevar suelo** (por debajo de ~medio píxel por fotograma, quieto es quieto) o la trama se queda encendida para siempre; y **normalizado a tiempo**, no a fotogramas.
   🎞️ **Motor de animación** (2.ª vuelta, que pidió él con la colección *CSS & JS Animations* de Awwwards porque *«los revelados eran un opacity y un translateY»*): texto que **sube por líneas enmascaradas**, el **logotipo vuela** del preloader a la cabecera, **cortina** que destapa las fotos, **rótulos que ruedan**, **botones magnéticos**, **3D** en la galería (las láminas de los lados giran hacia dentro), **salida del hero ligada al scroll** y las 8 estrellas del pie escalonadas.
   El taller es una **galería anclada con `position:sticky`, sin GSAP**. Cero dependencias. Verificada 360→1920, **sin tipografías, sin JavaScript y con movimiento reducido**.
-
 
 - **v5 «la maquetación de la v3 dentro de la v4»** — `web/v5/index.html` (14-ago-2026). Pidió: *«haz una versión v5, copias entera la v4 sin perder nada y trabajamos ahí»* + *«la maquetación de esta sección de la v3 en la v4… **MAQUETACIÓN NO CONTENIDO**»*. Copia byte a byte de la v4 y encima la **rejilla del pliego** en el manifiesto (filete arriba, rótulo display + folio, dos columnas 1.15fr/.85fr con la nota estrecha a 46ch arrancando más abajo) y en la **portada** (bloque centrado, fila de marca con logotipo grande + sello en mono a la derecha, titular **a sangre**, fila de abajo con bajada izq y datos der, «baja» descolgado al pie). **Ni un texto nuevo**: los datos son los de la v4 recolocados.
   🔑 **«A sangre» se calibra contra el ancho de CONTENIDO, no contra la caja.** Medí `.dentro` con su padding dentro (1425 px en vez de 1293) y el titular primero se quedó corto y luego se salió. Queda en 99,5 % a 1440 y 98,3 % a 1920, con el ensanchado **solo desde 760 px** para no romper el mínimo ya medido de la v4 en móvil (a 390 px el titular tiene que caber en una línea con `nowrap`).
@@ -52,11 +51,14 @@ Nota: [[La Brega Studio]].
 
 **Su marca (revisada el 8-ago mirando su Instagram, para no reinvestigar):** lema *"No hacemos ruido. Hacemos marcas."*. Su feed son **carteles de imprenta**: base negra o blanca con **mucho grano**, foto de archivo canaria en B/N y grabados antiguos; acentos **amarillo canario** (marcador pintado a mano), **verde ácido** (Saltimbanqui) y **degradado naranja→magenta→verde** (Omnia); motivos cósmicos (órbitas, eclipses, números romanos); tipografía mezclada a propósito (grotesca muy bold + serif editorial + caligráfica + tipo tiza); efemérides inventadas con humor; orgullo canario.
 ⚠️ **Dos cosas que la v1 y la v2 tienen MAL** (descubierto el 8-ago): (1) su **logo NO es una insignia circular** —eso era el recorte del avatar—, es el **apilado a la izquierda `LA` fino / `BREGA` negra / `ESTUDIO.` fino con el punto gordo**; (2) tienen un **sistema de 8 estrellas/asteriscos** que es su firma gráfica (en la v3 están dibujadas en SVG).
-Proyectos suyos: Saltimbanqui, Omnia, "El diseño no maquilla. Revela.", Día de Brega, San Borondón 1840.
+Proyectos suyos en EL TALLER (v5_DEF): Saltimbanqui, Omnia, "El diseño no maquilla. Revela.", Día de Brega, San Borondón 1840.
+🆕 **Dos proyectos reales más, confirmados el 7-sep-2026 con capturas suyas de Instagram** (no inventados, texto = su pie de foto real):
+- **SUPERBIA** — branding para un estudio de interiorismo/arquitectura (post del 13-ago). Marca azul geométrica + rótulo "SUPERBIA / STUDIO" sobre panel gris texturado con borde azul sólido. Pie real: *"SUPERBIA no necesitaba un logo. Necesitaba piel. Piedra. Forja. [...] Sin adornos innecesarios. Sin pedir permiso. Sin bajar la voz. [...] SUPERBIA. Nueva marca. Nueva piel. Mismo carácter."*
+- **RAÍZ** — branding para un colectivo de artistas (carrusel del 9-ago, 5 fotos: icono mano/guante mostaza + rótulo "RAÍZ" sobre fondo marrón/mostaza texturado, merch y collage de artistas en huecos con forma de mano). Pie real: *"Branding para Raíz, un proyecto que quiere entender y mostrar desde donde crea cada artista y de dónde nace su inspiración. Como defensores y amantes del arte no podíamos no contribuir a la causa."*
+✅ **Recuperadas el 7-sep-2026 noche:** las capturas se habían pegado en el chat (no como adjunto), pero se pudieron sacar de las imágenes en base64 guardadas en el propio JSONL de la conversación — sí queda rastro, al contrario de lo que se pensó al principio. Se extrajeron las 6 imágenes (SUPERBIA ×1, RAÍZ ×5), se recortaron para quitar la barra lateral de Instagram (usuario/likes/comentarios) y se detectó un sello de "repost/reshare" de Instagram en las 5 fotos del carrusel de RAÍZ — se limpió con un parche de color plano sobre la esquina inferior izquierda de la foto elegida como portada (`img_02`, la del icono de mano). SUPERBIA ya estaba limpia sin parchear. Archivos finales: `web/v5_DEF/img/superbia.jpg` y `web/v5_DEF/img/raiz.jpg`, ya metidos en EL TALLER como Lámina VI y Lámina VII.
 **Su voz** (de sus pies de foto): *«Venimos a crear. Venimos a construir. Venimos a bregar.»* · *«De pensar y creer; y después crear. En ese orden.»*
 
 ⚠️ **Y una lección que ya me ha costado tres veces EN ESTE MISMO PROYECTO:** antes de escribir la siguiente versión, **releer los fallos de la anterior**. En la v4 repetí los tres que ya estaban documentados: la palabra partida por la mitad al trocear un titular en letras `inline-block`, el modal semitransparente que deja ver la web de detrás, y los revelados disparándose por debajo del preloader. Y una regla nueva de la v4: **si un nodo se puede regenerar (troceo de texto que se rehace al cargar tipografías o al cambiar de ancho), no le cuelgues estado ni observadores — cuélgaselos a su contenedor**, que no se destruye.
-
 
 **🔁 Retoque de la v2 (14-ago-2026)** — la v1, la v3 y la v4 sin tocar:
 - **Sus cuatro pósters ya se ven en la v2 (y en la v1).** Los pedía por código desde el 8-ago con un `onerror` que los quita si faltan, pero **`web/img/` estaba vacía** (los originales vivían solo en `v3/img/` y `v4/img/`), así que siempre se vio el arte generado. ⚠️ **Un respaldo silencioso esconde el fallo**: la web se veía «bien» y por eso nadie notó que faltaban sus carteles.
@@ -66,4 +68,6 @@ Proyectos suyos: Saltimbanqui, Omnia, "El diseño no maquilla. Revela.", Día de
 - Contraste medido **sobre el píxel pintado** (canvas rehaciendo filtro + encuadre + velo): 10,4:1 titular, 7,7:1 párrafos, 6,9:1 la etiqueta de 12 px. 0 desbordes y 0 errores de 360 a 1920.
 - ⚠️ A 1920 px la foto se estira **×1,92** (sus originales son de 1000 px): otro motivo para pedirle **los pósters en alta**.
 
-**Pendiente:** que Alejandro **vea la v4 y elija** entre v1, v2, v3 y v4; logo PNG real; **confirmar con Raúl los textos de las fichas de proyecto**, que son recreación de sus pies de foto; y desplegar en Netlify. (Las **imágenes reales ya están**: son sus pósters del feed, en `web/v3/img/` y `web/v4/img/`.) Relacionado: [[user-profile]], [[preview-web-changes]], [[boveda-alejandro-personal]].
+🆕 **La versión en producción ahora es v5, en `web/v5_DEF/index.html`** (no v4 — ver [[La Brega Studio]] para la tabla de versiones, que aún dice `web/v5/` y hay que reconciliar con `v5_DEF`). EL TALLER tiene ahora **7 láminas (I–VII)** hardcodeadas: título "Siete láminas" y contador `id="cntB"="07"` en el HTML, tras sumar SUPERBIA (VI) y RAÍZ (VII) el 7-sep-2026.
+
+**Pendiente:** logo PNG real; **confirmar con Raúl los textos de las fichas de proyecto**, que son recreación de sus pies de foto; desplegar en Netlify; y reconciliar `v5` vs `v5_DEF` en la nota del proyecto. Relacionado: [[user-profile]], [[preview-web-changes]], [[boveda-alejandro-personal]].
