@@ -9,6 +9,19 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ---
 
+## 2026-09-07
+
+> [!check]+ 🗓️ 2026-09-07 — La Brega v5: fuera Efemérides, ratón arreglado en las fichas y enlace para el móvil
+> - **Efemérides borrada entera** (HTML + CSS + los dos módulos de JS: el carril que se arrastraba y el `IntersectionObserver` de las órbitas). Motivo suyo: *«ya los proyectos están arriba en EL TALLER justo encima.»* Menú renumerado **I–VI**. Verificado: sonda `{"efem":false,"carril":false,"orbitasEfem":false,"lams":5}`, **0 fallos** a 390 y 1440.
+> - **Fallo repetido (tercera vez):** al quitar la sección volvieron a quedar comentarios y numeración descuadrados. Renumerados CSS y JS. Sin efecto en pantalla.
+> - **Ratón en las fichas de EL TALLER:** al abrir un proyecto desaparecía el cursor. Causa: la ficha (`z-index:9300`) tapaba el retículo (`.reticulo`, `9200`) y el CSS esconde el cursor del sistema. Arreglo de una línea: `.reticulo` a `9400`. Verificado con ficha abierta (`{"fichaZ":"9300","retZ":"9400","retVis":"1"}`) + captura.
+> - **Enlace para el móvil:** `web/v5_DEF/index.html` publicada como artifact privado de Claude con las 6 fotos incrustadas (2,8 MB) → `https://claude.ai/code/artifact/8e61629b-748f-42b2-9c10-9ea691f764a8`. Es copia del momento.
+> - **Pendiente de él:** *«mira las redes y actualiza los proyectos»* — Instagram y TikTok piden login y no devuelven nada a una petición normal. Los textos de las fichas siguen siendo la recreación del feed (ya avisado dentro de la web). Tiene que pegar/confirmar él los proyectos actuales. No se inventan.
+> - Nota: [[La Brega Studio/2026-09-07 - Quitar Efemerides, arreglar el raton en las fichas y enlace movil|2026-09-07 · Quitar Efemérides, arreglar el ratón en las fichas y enlace móvil]].
+> - Quedan sin usar en `web/v5_DEF/img/`: `luna.jpg`, `ovni.jpg`, `estrellas.jpg`, `omnia-aplicaciones.jpg`, `saltimbanqui-logo.jpg`. Sin borrar.
+
+---
+
 ## 2026-08-14
 
 > [!check]+ 🗓️ 2026-08-14 (cierre 3) — Las ocho áreas, ya en la web

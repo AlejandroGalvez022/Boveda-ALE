@@ -126,7 +126,7 @@ ul{padding:0; list-style:none}
 /* ==========================================================================
    CURSOR — un reticulo de carta nautica
    ========================================================================== */
-.reticulo{position:fixed; top:0; left:0; width:44px; height:44px; z-index:9200; pointer-events:none;
+.reticulo{position:fixed; top:0; left:0; width:44px; height:44px; z-index:9400; pointer-events:none;
   margin:-22px 0 0 -22px; will-change:transform; opacity:0; transition:opacity .3s}
 .reticulo.vivo{opacity:1}
 .reticulo .aro{position:absolute; inset:0; border:1px solid rgba(242,239,230,.55); border-radius:50%;
@@ -640,40 +640,6 @@ html:not(.js) .taller .sello,html:not(.js) .taller .barra{display:none}
 .ficha .f-cerrar svg{width:18px; height:18px}
 
 /* ==========================================================================
-   10. EFEMERIDES — su archivo, sobre las orbitas que se dibujan
-   ========================================================================== */
-.efem{position:relative; overflow:hidden}
-.efem .orbitas{position:absolute; left:50%; top:50%; width:min(150vw,1500px); aspect-ratio:1; translate:-50% -50%;
-  z-index:0; pointer-events:none; opacity:.42}
-/* SIN vector-effect aqui: con non-scaling-stroke el guion del dasharray pasa a
-   medirse en pixeles de pantalla y el dibujado de la orbita se rompe.
-   El grosor va en unidades del viewBox (200), que es lo que hace la linea fina. */
-.efem .orbitas circle{fill:none; stroke:var(--hueso); stroke-width:.16;
-  stroke-dasharray:var(--l); stroke-dashoffset:var(--l); transition:stroke-dashoffset 2.6s var(--salida)}
-.efem .orbitas.visto circle{stroke-dashoffset:0}
-/* el font-size va tambien en unidades del viewBox: 11 se veria a 80px */
-.efem .orbitas text{fill:var(--tenue); font-family:var(--f-mono); font-size:2.6px; letter-spacing:.4px}
-.efem .dentro{position:relative; z-index:2}
-.carril{display:flex; gap:clamp(16px,2.6vw,40px); overflow-x:auto; scroll-snap-type:x mandatory;
-  padding-bottom:20px; scrollbar-width:none; cursor:grab}
-.carril::-webkit-scrollbar{display:none}
-.carril.agarrando{cursor:grabbing; scroll-snap-type:none}
-.carril figure{flex:0 0 min(74vw,340px); scroll-snap-align:center}
-.carril figure .caja{position:relative; overflow:hidden; border:1px solid var(--linea); background:var(--negro-2);
-  aspect-ratio:4/5}
-.carril figure img{width:100%; height:100%; object-fit:cover; transition:transform .9s var(--salida);
-  filter:brightness(.82)}
-.carril figure:hover img{transform:scale(1.06); filter:brightness(1)}
-.carril figure .trama{position:absolute; inset:0; z-index:2; pointer-events:none; mix-blend-mode:multiply;
-  background-image:radial-gradient(circle, #000 44%, transparent 46%);
-  background-size:calc(3px + var(--vel) * 9px) calc(3px + var(--vel) * 9px); opacity:calc(var(--vel) * .8)}
-.carril figcaption{display:flex; align-items:baseline; justify-content:space-between; gap:14px; margin-top:13px}
-.carril figcaption b{font-size:15px; font-weight:700}
-.carril figcaption span{color:var(--tenue)}
-.arrastra{margin-top:clamp(18px,2.4vw,28px); color:var(--tenue); display:flex; align-items:center; gap:10px}
-.arrastra .estrella{width:12px; height:12px; color:var(--canario)}
-
-/* ==========================================================================
    LAS OCHO ISLAS — sus 8 estrellas, juntas
    Van como en su cartel: cuatro y cuatro, en bloque. No es un mapa: la
    relacion la cuenta la frase, y el gesto de que al pasar por una estrella
@@ -738,7 +704,7 @@ html:not(.js) .taller .sello,html:not(.js) .taller .barra{display:none}
 
 
 /* ==========================================================================
-   12. CONTACTO
+   10. CONTACTO
    ========================================================================== */
 .contacto{position:relative; text-align:center; padding-block:clamp(100px,17vh,220px); overflow:hidden}
 .contacto .halo{position:absolute; left:50%; top:50%; width:min(92vw,860px); aspect-ratio:1; translate:-50% -50%;
@@ -758,7 +724,7 @@ html:not(.js) .taller .sello,html:not(.js) .taller .barra{display:none}
 .contacto .cta{margin-top:clamp(30px,4.6vw,52px); display:flex; justify-content:center}
 
 /* ==========================================================================
-   13. PIE
+   11. PIE
    ========================================================================== */
 footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
 .pie-estrellas{display:flex; justify-content:space-between; gap:clamp(8px,2vw,26px); flex-wrap:wrap;
@@ -774,7 +740,7 @@ footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
 .arriba:hover{color:var(--canario)}
 
 /* ==========================================================================
-   14. MOVIMIENTO REDUCIDO — todo visible, nada se mueve
+   12. MOVIMIENTO REDUCIDO — todo visible, nada se mueve
    ========================================================================== */
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important; transition:none!important}
@@ -788,7 +754,6 @@ footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
   .carga{display:none!important}
   .grano{opacity:.05}
   .manif .marcada svg{clip-path:inset(0 0 0 0)}
-  .efem .orbitas circle{stroke-dashoffset:0}
   .paso .p-linea{width:100%}
 }
 
@@ -1026,7 +991,6 @@ html:not(.js) .salto{display:none}
     <a class="enl" href="#manifiesto">Manifiesto</a>
     <a class="enl" href="#hacemos">Lo que hacemos</a>
     <a class="enl" href="#taller">El taller</a>
-    <a class="enl" href="#efemerides">Efemérides</a>
     <a class="boton" href="#contacto"><span>Hablemos</span></a>
     <button class="abrir-menu" id="abrirMenu" aria-label="Abrir el menú" aria-expanded="false" aria-controls="menu"><i></i></button>
   </div>
@@ -1043,10 +1007,9 @@ html:not(.js) .salto{display:none}
     <a href="#manifiesto"><span class="romano">I</span>Manifiesto<svg class="estrella"><use href="#s3"/></svg></a>
     <a href="#hacemos"><span class="romano">II</span>Lo que hacemos<svg class="estrella"><use href="#s1"/></svg></a>
     <a href="#taller"><span class="romano">III</span>El taller<svg class="estrella"><use href="#s4"/></svg></a>
-    <a href="#efemerides"><span class="romano">IV</span>Efemérides<svg class="estrella"><use href="#s6"/></svg></a>
-    <a href="#bregamos"><span class="romano">V</span>Cómo bregamos<svg class="estrella"><use href="#s2"/></svg></a>
-    <a href="#ocho"><span class="romano">VI</span>Ocho estrellas<svg class="estrella"><use href="#s5"/></svg></a>
-    <a href="#contacto"><span class="romano">VII</span>Contacto<svg class="estrella"><use href="#s8"/></svg></a>
+    <a href="#bregamos"><span class="romano">IV</span>Cómo bregamos<svg class="estrella"><use href="#s2"/></svg></a>
+    <a href="#ocho"><span class="romano">V</span>Ocho estrellas<svg class="estrella"><use href="#s5"/></svg></a>
+    <a href="#contacto"><span class="romano">VI</span>Contacto<svg class="estrella"><use href="#s8"/></svg></a>
   </nav>
   <div class="m-pie mono">
     <a href="https://www.instagram.com/labrega_estudio/" target="_blank" rel="noopener">Instagram</a>
@@ -1234,35 +1197,6 @@ html:not(.js) .salto{display:none}
   </div>
 </section>
 
-<!-- ===================== 8. EFEMERIDES ===================== -->
-<section class="pliego efem" id="efemerides">
-  <svg class="orbitas" id="orbitasEfem" viewBox="0 0 200 200" aria-hidden="true">
-    <circle cx="100" cy="100" r="96" style="--l:604"/>
-    <circle cx="100" cy="100" r="74" style="--l:465"/>
-    <circle cx="100" cy="100" r="52" style="--l:327"/>
-    <circle cx="100" cy="100" r="30" style="--l:189"/>
-    <text x="100" y="7" text-anchor="middle">IX</text>
-    <text x="100" y="29" text-anchor="middle">VIII</text>
-    <text x="100" y="51" text-anchor="middle">VII</text>
-    <text x="100" y="73" text-anchor="middle">VI</text>
-  </svg>
-  <div class="dentro env">
-    <div class="cabecera">
-      <h2 data-sube>Efemérides</h2>
-      <div class="lado mono" data-sube><span class="romano">IV</span><svg class="estrella"><use href="#s6"/></svg>Cartelería de la casa</div>
-    </div>
-    <div class="carril" id="carril">
-      <figure data-sube><div class="caja"><img src="img/luna.jpg" alt="Cartel del Día Internacional de la Luna: grabado antiguo de la luna sobre fondo negro estrellado" width="1000" height="1251" loading="lazy"><span class="trama"></span></div><figcaption><b>Día de la Luna</b><span class="mono">20.07</span></figcaption></figure>
-      <figure data-sube><div class="caja"><img src="img/ovni.jpg" alt="Cartel del Día Internacional del OVNI: diagrama orbital de línea fina con números romanos sobre negro" width="1000" height="1333" loading="lazy"><span class="trama"></span></div><figcaption><b>Día del OVNI</b><span class="mono">02.07</span></figcaption></figure>
-      <figure data-sube><div class="caja"><img src="img/estrellas.jpg" alt="Las ocho estrellas del sistema gráfico de La Brega Estudio, en blanco sobre negro" width="1000" height="1250" loading="lazy"><span class="trama"></span></div><figcaption><b>Nuestras ocho estrellas</b><span class="mono">Sistema</span></figcaption></figure>
-      <figure data-sube><div class="caja"><img src="img/saltimbanqui-logo.jpg" alt="Logotipo de Saltimbanqui en amarillo pálido sobre verde ácido con grano" width="1000" height="1250" loading="lazy"><span class="trama"></span></div><figcaption><b>Saltimbanqui</b><span class="mono">Logotipo</span></figcaption></figure>
-      <figure data-sube><div class="caja"><img src="img/omnia-aplicaciones.jpg" alt="Aplicaciones de la identidad de Omnia" width="1000" height="1250" loading="lazy"><span class="trama"></span></div><figcaption><b>Omnia</b><span class="mono">Aplicaciones</span></figcaption></figure>
-    </div>
-    <p class="arrastra mono">Arrastra<svg class="estrella"><use href="#s3"/></svg>o pasa el dedo</p>
-  </div>
-</section>
-
-<!-- ===================== 9. COMO BREGAMOS ===================== -->
 <!-- ===================== 9. COMO BREGAMOS (LA DE LA V3, TAL CUAL) =====
      Traida entera de la v3 porque a Alejandro le gusta esa. Va envuelta en
      .de-v3, que es un ambito con SUS variables y SUS reglas: sin eso
@@ -1436,10 +1370,6 @@ var suave = { on:(fino && !quieto), meta:0, act:0, parado:false };
   window.addEventListener('wheel', function(e){
     if(suave.parado) return;
     if(e.ctrlKey) return;                      // zoom del navegador
-    // Solo se le cede la rueda al carril cuando el gesto es HORIZONTAL. Si se
-    // le cediera tambien la vertical, con el raton encima del carrusel la
-    // pagina no bajaria: una trampa de scroll de manual.
-    if(Math.abs(e.deltaX) > Math.abs(e.deltaY) && e.target.closest && e.target.closest('.carril')) return;
     e.preventDefault();
     var d = e.deltaY;
     if(e.deltaMode === 1) d *= 18;             // deltas por linea
@@ -1623,7 +1553,7 @@ document.addEventListener('click', function(e){
    .cabecera .lado, .contacto .rotulo). Trocear en lineas convierte los hijos
    en bloques y destroza la fila. Solo texto corrido. */
 var TROCEAR = '.cabecera h2, .manif .cab h2, .manif blockquote, .manif .parrafos p, .paso h3, .hero .bajada';
-var VELOS   = '.manif .foto, .lam .marco, .carril figure .caja';
+var VELOS   = '.manif .foto, .lam .marco';
 
 document.querySelectorAll(TROCEAR).forEach(function(el){
   el.removeAttribute('data-sube');          // si no, se animaria dos veces
@@ -2060,7 +1990,6 @@ setTimeout(function(){ medirTaller(); repasar(); }, 1500);
   }
   document.querySelectorAll('.lam .marco').forEach(function(el){ marcar(el, 'Ver'); });
   document.querySelectorAll('a, button:not(.marco), .hacemos li').forEach(function(el){ marcar(el, ''); });
-  document.querySelectorAll('.carril').forEach(function(el){ marcar(el, 'Arrastra'); });
 })();
 
 /* =========================================================================
@@ -2198,41 +2127,7 @@ if(abrirMenu){
 })();
 
 /* =========================================================================
-   9. CARRIL DE EFEMERIDES — se arrastra con el raton
-   ========================================================================= */
-(function(){
-  var c = document.getElementById('carril');
-  if(!c) return;
-  var abajo = false, x0 = 0, s0 = 0, movido = 0;
-  c.addEventListener('pointerdown', function(e){
-    if(e.pointerType === 'touch') return;   // en tactil manda el scroll nativo
-    abajo = true; movido = 0; x0 = e.clientX; s0 = c.scrollLeft;
-    c.classList.add('agarrando'); c.setPointerCapture(e.pointerId);
-  });
-  c.addEventListener('pointermove', function(e){
-    if(!abajo) return;
-    var d = e.clientX - x0; movido = Math.abs(d);
-    c.scrollLeft = s0 - d;
-  });
-  function soltar(e){
-    if(!abajo) return; abajo = false; c.classList.remove('agarrando');
-    try{ c.releasePointerCapture(e.pointerId); }catch(err){}
-  }
-  c.addEventListener('pointerup', soltar);
-  c.addEventListener('pointercancel', soltar);
-  /* La rueda VERTICAL no se toca: baja la pagina, como espera cualquiera.
-     El carril se mueve arrastrando, con el dedo, con gesto horizontal de
-     trackpad (que el navegador ya aplica solo por overflow-x) o con el teclado. */
-  c.setAttribute('tabindex','0');
-  c.addEventListener('keydown', function(e){
-    var paso = c.clientWidth * 0.7;
-    if(e.key === 'ArrowRight'){ e.preventDefault(); c.scrollLeft += paso; }
-    else if(e.key === 'ArrowLeft'){ e.preventDefault(); c.scrollLeft -= paso; }
-  });
-})();
-
-/* =========================================================================
-   10. CONTACTO — las letras se apartan del raton
+   9. CONTACTO — las letras se apartan del raton
    ========================================================================= */
 (function(){
   var h = document.getElementById('tituloContacto');
@@ -2285,7 +2180,7 @@ if(abrirMenu){
 })();
 
 /* =========================================================================
-   11. DETALLES — reloj de Canarias, estrellas del menu, volver arriba
+   10. DETALLES — reloj de Canarias, estrellas del menu, volver arriba
    ========================================================================= */
 (function(){
   var r = document.getElementById('reloj');
@@ -2317,15 +2212,6 @@ if(abrirMenu){
   });
   porRevelar.push(pe);
   if(quieto) pe.classList.add('visto');
-})();
-// las orbitas de Efemerides se dibujan al entrar
-(function(){
-  var o = document.getElementById('orbitasEfem');
-  if(!o) return;
-  if('IntersectionObserver' in window){
-    new IntersectionObserver(function(e){ if(e[0].isIntersecting) o.classList.add('visto'); }, {threshold:0.15})
-      .observe(o.parentElement);
-  } else { o.classList.add('visto'); }
 })();
 
 // parallax suave dentro de cada lamina
