@@ -138,9 +138,9 @@ ul{padding:0; list-style:none}
 .reticulo .rot{position:absolute; inset:0; display:grid; place-items:center; font-family:var(--f-mono);
   font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--negro);
   opacity:0; transition:opacity .25s; white-space:nowrap}
-.reticulo.abierto .aro{transform:scale(2.15); background:var(--canario); border-color:var(--canario)}
+.reticulo.abierto .aro{transform:scale(2.15); background:var(--hueso); border-color:var(--hueso); mix-blend-mode:difference}
 .reticulo.abierto .cruz::before,.reticulo.abierto .cruz::after{opacity:0}
-.reticulo.abierto .rot{opacity:1}
+.reticulo.abierto .rot{opacity:1; color:var(--hueso); mix-blend-mode:difference}
 body.con-reticulo,body.con-reticulo a,body.con-reticulo button{cursor:none}
 @media (hover:none),(pointer:coarse){.reticulo{display:none}}
 
@@ -991,6 +991,7 @@ html:not(.js) .salto{display:none}
     <a class="enl" href="#manifiesto">Manifiesto</a>
     <a class="enl" href="#hacemos">Lo que hacemos</a>
     <a class="enl" href="#taller">El taller</a>
+    <a class="enl" href="#bregamos">Cómo bregamos</a>
     <a class="boton" href="#contacto"><span>Hablemos</span></a>
     <button class="abrir-menu" id="abrirMenu" aria-label="Abrir el menú" aria-expanded="false" aria-controls="menu"><i></i></button>
   </div>
@@ -1357,7 +1358,6 @@ html:not(.js) .salto{display:none}
         <div><dt class="mono">Año</dt><dd id="fichaAno"></dd></div>
         <div><dt class="mono">Qué hicimos</dt><dd id="fichaQue"></dd></div>
       </dl>
-      <p class="f-nota">Nota — los textos de las fichas son una recreación a partir de las publicaciones de La Brega en Instagram, para que la propuesta se vea completa. Hay que confirmarlos antes de publicar.</p>
     </div>
   </div>
 </div>
