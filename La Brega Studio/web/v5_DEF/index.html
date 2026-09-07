@@ -129,9 +129,9 @@ ul{padding:0; list-style:none}
 .reticulo{position:fixed; top:0; left:0; width:44px; height:44px; z-index:9400; pointer-events:none;
   margin:-22px 0 0 -22px; will-change:transform; opacity:0; transition:opacity .3s}
 .reticulo.vivo{opacity:1}
-.reticulo .aro{position:absolute; inset:0; border:1px solid rgba(242,239,230,.55); border-radius:50%;
+.reticulo .aro{position:absolute; inset:0; border:1px solid var(--hueso); border-radius:50%; mix-blend-mode:difference;
   transition:transform .35s var(--salida), background .3s, border-color .3s}
-.reticulo .cruz::before,.reticulo .cruz::after{content:''; position:absolute; background:rgba(242,239,230,.55);
+.reticulo .cruz::before,.reticulo .cruz::after{content:''; position:absolute; background:var(--hueso); mix-blend-mode:difference;
   transition:opacity .3s}
 .reticulo .cruz::before{left:50%; top:-9px; width:1px; height:62px; transform:translateX(-50%)}
 .reticulo .cruz::after{top:50%; left:-9px; height:1px; width:62px; transform:translateY(-50%)}
