@@ -20,7 +20,7 @@ Se puso precio a la web (v5) y se preparó el documento para Raúl: una **factur
 
 | # | Partida | Importe | Por qué |
 |---|---------|--------:|---------|
-| 1 | Diseño y dirección de arte | 700 € | Concepto visual propio desde la identidad de La Brega. **5 rutas de diseño completas** hasta la definitiva. Piezas gráficas originales (estrellas, órbitas, sello, cinta). |
+| 1 | Diseño y concepto visual | 700 € | Concepto visual propio desde la identidad de La Brega. **5 propuestas de diseño completas** hasta la definitiva. Piezas gráficas originales (estrellas, órbitas, sello, cinta). Todo hecho por Alejandro, sin subcontratar. |
 | 2 | Desarrollo web a medida | 950 € | Página única programada desde cero, **2.462 líneas, sin plantillas ni librerías**. Shader WebGL de cielo/luna escrito a mano que reacciona al scroll, preloader animado, scroll suave propio, galería horizontal lámina→ficha, sistema SVG, menú a pantalla completa, cursor de retículo, reloj de Canarias, sello, formulario. |
 | 3 | Adaptación y robustez | 200 € | Verificado en **7 anchos (360–1920 px)**. Funciona sin JS, sin tipografías externas y con «movimiento reducido». Contraste medido sobre el píxel real. |
 | 4 | SEO técnico (on-page) | 200 € | Title/meta, Open Graph + Twitter Card, JSON-LD (ficha de estudio), sitemap.xml, robots.txt, favicons, semántica, rendimiento. |
@@ -46,7 +46,7 @@ Se puso precio a la web (v5) y se preparó el documento para Raúl: una **factur
 ## Pendiente de completar en el documento (no se inventa)
 > [!todo] Verificar antes de enviar a Raúl
 > - Nº de factura.
-> - Domicilio de Alejandro, email personal, teléfono. (NIF: 45177623B ✔)
+> - ~~NIF, domicilio, email, teléfono de Alejandro~~ ✔ (45177623B · Calle Hortensia 25 · galvezbranaa@gmail.com · 605 856 214)
 > - ¿Se factura como autónomo? Tratamiento de **IVA (21 %)** e **IRPF (−15 %)**, o recibo entre particulares. El importe neto para el cliente sigue siendo 2.200 €.
 > - CIF/NIF y domicilio fiscal de **La Brega Estudio** (si Raúl factura como empresa/autónomo).
 > - IBAN / Bizum para el cobro.
