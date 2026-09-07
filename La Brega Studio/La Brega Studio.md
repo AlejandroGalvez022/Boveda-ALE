@@ -3,8 +3,8 @@ titulo: La Brega Studio
 tipo: proyecto
 categoria: Personal
 estado: activo
-siguiente: "14-ago (fin de sesion): la V5 es la version viva. Lleva la maquetacion de la v3 (manifiesto a dos columnas y portada A SANGRE), «Como bregamos» y el CONTACTO traidos ENTEROS de la v3 (banda amarilla y sello), y EL SALTO AL CONTACTO: una estrella se acerca, una plancha amarilla cubre la web y sobre ella entra toda la secuencia de las ocho. ⚠️ CAMBIO DE RUMBO APUNTADO: en la web las estrellas NO representaran las islas, sino las AREAS DE TRABAJO (en su marca si son las islas, pero en la web no), Y SE SUBEN LAS AREAS DE 6 A 8 (decidido: no se tocan las ocho estrellas). HECHO: las ocho areas las dio el (Branding, Diseno grafico, Publicidad, Creatividad, Direccion de arte, Diseno editorial, Diseno digital, Estrategia de marca) y YA ESTAN en la web con su descripcion, cada una con su estrella. La escena amarilla ya no habla de islas. AHORA TOCA: (3) pasarle a la v5 la bateria completa (sin JS, sin tipografias, movimiento reducido), (4) elegir version y publicar en Netlify. PENDIENTE DE SIEMPRE: logo PNG original, posters en alta y confirmar los textos con Raul"
-conversaciones: 5
+siguiente: "07-sep: PRECIO PUESTO — 2.200 EUR pago unico, todo incluido (web + Netlify + dominio ano 1 + SEO tecnico + alta en Google). Documento listo: 'Factura - La Brega web v5.html' (a nombre de Alejandro Galvez Brana, sin logo de Reload). FALTA: Alejandro rellena los datos fiscales marcados (NIF, domicilio, nº factura, IVA/IRPF, IBAN, dominio) y se lo envia a Raul. DESPUES: elegir dominio y publicar en Netlify (repo git preparado en web/, falta crear repo GitHub y pasar la URL). --- CONTEXTO v5: la V5 es la version viva. Lleva la maquetacion de la v3 (manifiesto a dos columnas y portada A SANGRE), «Como bregamos» y el CONTACTO traidos ENTEROS de la v3 (banda amarilla y sello), y EL SALTO AL CONTACTO: una estrella se acerca, una plancha amarilla cubre la web y sobre ella entra toda la secuencia de las ocho. ⚠️ CAMBIO DE RUMBO APUNTADO: en la web las estrellas NO representaran las islas, sino las AREAS DE TRABAJO (en su marca si son las islas, pero en la web no), Y SE SUBEN LAS AREAS DE 6 A 8 (decidido: no se tocan las ocho estrellas). HECHO: las ocho areas las dio el (Branding, Diseno grafico, Publicidad, Creatividad, Direccion de arte, Diseno editorial, Diseno digital, Estrategia de marca) y YA ESTAN en la web con su descripcion, cada una con su estrella. La escena amarilla ya no habla de islas. AHORA TOCA: (3) pasarle a la v5 la bateria completa (sin JS, sin tipografias, movimiento reducido), (4) elegir version y publicar en Netlify. PENDIENTE DE SIEMPRE: logo PNG original, posters en alta y confirmar los textos con Raul"
+conversaciones: 6
 tags: [proyecto, web, cliente, propuesta]
 ---
 
@@ -42,6 +42,7 @@ Hay **cinco versiones**, y las cinco funcionan. Se trabaja en la **v5**; las dem
 Ábrelas con **Live Server** en VSCode (clic derecho → *Open with Live Server*). Necesitan internet (Google Fonts, y la v2 además GSAP + Lenis — si no cargan, la web sigue funcionando entera).
 
 ## Conversaciones
+- [[La Brega Studio/2026-09-07 - Presupuesto y factura explicada (web v5)|2026-09-07 · Presupuesto y factura explicada (web v5)]]
 - [[La Brega Studio/2026-08-14 - Apuntes - la maquetacion de la v3 en la v4 (v5)|2026-08-14 · Apuntes — la maquetación de la v3 en la v4 (v5)]]
 - [[La Brega Studio/2026-08-14 - La v2 se apoya en su fotografia|2026-08-14 · La v2 se apoya en su fotografía]]
 - [[La Brega Studio/2026-08-11 - Version 4 de la web (La Carta)|2026-08-11 · Versión 4 de la web (La Carta)]]

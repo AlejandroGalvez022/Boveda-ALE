@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Factura — La Brega Estudio · Web v5</title>
+<style>
+  :root{
+    --tinta:#141416;
+    --suave:#5b5b63;
+    --linea:#d9d9de;
+    --papel:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{
+    font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--tinta);background:#f4f4f6;padding:32px;
+  }
+  .hoja{
+    max-width:820px;margin:0 auto;background:var(--papel);
+    padding:52px 56px 44px;box-shadow:0 1px 24px rgba(0,0,0,.08);
+  }
+  .barra{height:5px;border-radius:3px;margin-bottom:34px;
+    background:linear-gradient(90deg,#ff7a1a,#e0218a 46%,#7b2ff7 78%,#b6ff2e);}
+  header{display:flex;justify-content:space-between;align-items:flex-start;gap:32px;margin-bottom:34px}
+  h1{font-size:26px;letter-spacing:.14em;font-weight:800;text-transform:uppercase}
+  h1 span{display:block;font-size:12px;letter-spacing:.28em;color:var(--suave);font-weight:600;margin-top:6px}
+  .meta{text-align:right;font-size:12.5px;color:var(--suave);line-height:1.7}
+  .meta b{color:var(--tinta)}
+  .partes{display:flex;gap:40px;margin-bottom:30px}
+  .parte{flex:1}
+  .parte h3{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--suave);margin-bottom:8px}
+  .parte p{font-size:13px;line-height:1.65}
+  .parte .grande{font-size:15px;font-weight:700}
+  .todo{color:#b26a00;font-style:italic}
+  .resumen{background:#faf7f2;border-left:3px solid #e0218a;padding:14px 18px;font-size:13.5px;margin-bottom:30px}
+  table{width:100%;border-collapse:collapse;margin-bottom:8px}
+  thead th{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--suave);
+    text-align:left;padding:0 0 10px;border-bottom:2px solid var(--tinta)}
+  thead th.n{text-align:right;width:120px}
+  tbody td{padding:14px 0;border-bottom:1px solid var(--linea);vertical-align:top}
+  tbody td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:600}
+  .concepto b{display:block;font-size:13.5px;margin-bottom:3px}
+  .concepto small{color:var(--suave);font-size:12px;line-height:1.5;display:block}
+  .incluido{color:#1a7a2e;font-weight:700}
+  .totales{margin-left:auto;width:320px;margin-top:14px}
+  .totales div{display:flex;justify-content:space-between;padding:7px 0;font-size:13px;color:var(--suave)}
+  .totales .fin{border-top:2px solid var(--tinta);margin-top:6px;padding-top:12px;
+    font-size:19px;font-weight:800;color:var(--tinta)}
+  h2{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--suave);
+    margin:34px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--linea)}
+  .porque p{font-size:13px;margin-bottom:9px}
+  ul{margin:0 0 0 18px}
+  li{font-size:12.5px;line-height:1.6;margin-bottom:5px;color:var(--suave)}
+  .cond li b{color:var(--tinta)}
+  .pie{margin-top:38px;padding-top:16px;border-top:1px solid var(--linea);
+    font-size:11px;color:var(--suave);line-height:1.7}
+  .firma{display:flex;gap:60px;margin-top:34px}
+  .firma div{flex:1;border-top:1px solid var(--tinta);padding-top:8px;font-size:11.5px;color:var(--suave)}
+  @media print{
+    body{background:#fff;padding:0;font-size:12px}
+    .hoja{box-shadow:none;max-width:none;padding:22mm 18mm}
+    h2{margin-top:22px}
+  }
+</style>
+</head>
+<body>
+<div class="hoja">
+  <div class="barra"></div>
+
+  <header>
+    <div>
+      <h1>Factura<span>Diseño y desarrollo web</span></h1>
+    </div>
+    <div class="meta">
+      Nº <b class="todo">2026-01 · confirmar</b><br>
+      Fecha de emisión <b>7 de septiembre de 2026</b><br>
+      Vencimiento <b>a convenir</b>
+    </div>
+  </header>
+
+  <div class="partes">
+    <div class="parte">
+      <h3>Emisor</h3>
+      <p class="grande">Alejandro Gálvez Braña</p>
+      <p>
+        Diseño y desarrollo web · freelance<br>
+        NIF <span class="todo">— completar</span><br>
+        Domicilio <span class="todo">— completar</span><br>
+        Email <span class="todo">— completar (personal)</span><br>
+        Tel. <span class="todo">— completar</span>
+      </p>
+    </div>
+    <div class="parte">
+      <h3>Cliente</h3>
+      <p class="grande">La Brega Estudio</p>
+      <p>
+        A la atención de Raúl Vega<br>
+        CIF / NIF <span class="todo">— completar</span><br>
+        Domicilio fiscal <span class="todo">— completar</span><br>
+        Email somoslabrega@gmail.com
+      </p>
+    </div>
+  </div>
+
+  <div class="resumen">
+    <b>Concepto general.</b> Diseño, desarrollo a medida y puesta en marcha del sitio web
+    de La Brega Estudio &mdash; versión definitiva (v5): sitio de una sola página, con
+    dominio propio, optimización técnica para buscadores y alta en Google.
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Concepto</th><th class="n">Importe</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="concepto">
+          <b>1. Diseño y dirección de arte</b>
+          <small>Concepto visual propio partiendo de la identidad de La Brega (lema, paleta,
+          universo gráfico). Se exploraron 5 rutas de diseño completas hasta llegar a la
+          definitiva: portada, sistema de retícula, tipografía, tratamiento de imágenes
+          y piezas gráficas originales (estrellas, órbitas, sello, cinta).</small>
+        </td>
+        <td class="n">700,00 €</td>
+      </tr>
+      <tr>
+        <td class="concepto">
+          <b>2. Desarrollo web a medida</b>
+          <small>Sitio de una sola página programado desde cero (HTML, CSS y JavaScript,
+          2.462 líneas, sin plantillas ni librerías externas). Incluye: efecto de cielo y
+          luna en WebGL escrito a mano que reacciona al scroll, pantalla de carga animada,
+          desplazamiento suave propio, galería horizontal con transición de lámina a ficha,
+          sistema gráfico en SVG, menú a pantalla completa, cursor de retículo, reloj de
+          Canarias en vivo, sello de contacto y formulario operativo.</small>
+        </td>
+        <td class="n">950,00 €</td>
+      </tr>
+      <tr>
+        <td class="concepto">
+          <b>3. Adaptación a dispositivos y robustez</b>
+          <small>Verificado en 7 anchos de pantalla (360 a 1920 px). Funciona sin
+          JavaScript, sin tipografías externas y respetando el ajuste de &laquo;movimiento
+          reducido&raquo; del sistema. Contraste de texto medido sobre el resultado real.</small>
+        </td>
+        <td class="n">200,00 €</td>
+      </tr>
+      <tr>
+        <td class="concepto">
+          <b>4. SEO técnico (on-page)</b>
+          <small>Títulos y meta descripciones, Open Graph y Twitter Card para compartir en
+          redes, datos estructurados JSON-LD (ficha de estudio), <i>sitemap.xml</i>,
+          <i>robots.txt</i>, juego de favicons, jerarquía semántica y rendimiento de carga.</small>
+        </td>
+        <td class="n">200,00 €</td>
+      </tr>
+      <tr>
+        <td class="concepto">
+          <b>5. Publicación e indexación en buscadores</b>
+          <small>Despliegue en Netlify con HTTPS y actualización automática. Alta y
+          verificación en Google Search Console y Bing Webmaster, envío del sitemap y
+          solicitud de indexación. Panel de analítica ligero para consultar visitas.</small>
+        </td>
+        <td class="n">150,00 €</td>
+      </tr>
+      <tr>
+        <td class="concepto">
+          <b>6. Dominio (primer año) y configuración DNS</b>
+          <small>Registro de un dominio propio a nombre de La Brega Estudio, configuración
+          de DNS y certificado de seguridad. Coste del registro del primer año incluido.
+          <span class="todo">Dominio a elegir &mdash; p. ej. labregaestudio.com</span></small>
+        </td>
+        <td class="n incluido">Incluido</td>
+      </tr>
+      <tr>
+        <td class="concepto">
+          <b>7. Ronda de ajustes tras la presentación</b>
+          <small>Una tanda de correcciones de textos y fotografías una vez revisado el
+          sitio con el cliente.</small>
+        </td>
+        <td class="n incluido">Incluido</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="totales">
+    <div><span>Base</span><span>2.200,00 €</span></div>
+    <div><span>IVA (21 %)</span><span class="todo">según régimen — confirmar</span></div>
+    <div><span>Retención IRPF</span><span class="todo">si se factura a empresa — confirmar</span></div>
+    <div class="fin"><span>Total acordado</span><span>2.200,00 €</span></div>
+  </div>
+
+  <h2>Por qué este precio</h2>
+  <div class="porque">
+    <p>
+      El paquete completo (diseño + desarrollo a medida + dominio + SEO técnico + alta en
+      buscadores) tiene un precio de mercado aproximado de <b>3.500&ndash;5.000 €</b> contratado
+      a un profesional freelance con experiencia, y de <b>6.000&ndash;12.000 €</b> en un estudio.
+    </p>
+    <p>
+      El importe de esta factura, <b>2.200 €</b>, aplica un descuento cercano al <b>45 %</b>
+      sobre esa referencia. Corresponde a unas 50 horas de trabajo reconocidas &mdash; de las
+      60 a 100 realmente invertidas a lo largo de las cinco versiones&mdash;, a una tarifa por
+      debajo de la habitual. Es un precio de confianza, no una tarifa comercial.
+    </p>
+  </div>
+
+  <h2>No incluye</h2>
+  <ul class="cond">
+    <li><b>Posicionamiento continuo</b> (trabajo mensual de contenidos, enlaces e informes para subir en Google). Se presupuesta aparte si se desea.</li>
+    <li><b>Mantenimiento posterior</b> ni nuevas secciones o funciones no descritas arriba.</li>
+    <li><b>Renovación del dominio a partir del segundo año</b> (~12&ndash;15 €/año), que pasa a nombre y cargo de La Brega Estudio.</li>
+    <li><b>Redacción de textos definitivos.</b> Los textos actuales de proyectos son una propuesta a partir de su feed; se confirman con el cliente en la ronda de ajustes.</li>
+    <li><b>Fotografía y carteles en alta resolución</b>, que aporta el cliente.</li>
+  </ul>
+
+  <h2>Condiciones</h2>
+  <ul>
+    <li>Forma de pago propuesta: <b>50 % al aceptar</b> el presupuesto y <b>50 % a la publicación</b> del sitio. <span class="todo">A confirmar.</span></li>
+    <li>Datos de pago: <span class="todo">IBAN / Bizum — completar</span></li>
+    <li>Entrega del código fuente completo y traspaso de accesos (Netlify, dominio, Search Console) al cliente.</li>
+    <li>Validez de este presupuesto: 30 días.</li>
+  </ul>
+
+  <div class="firma">
+    <div>Emisor &mdash; Alejandro Gálvez Braña</div>
+    <div>Conforme &mdash; La Brega Estudio</div>
+  </div>
+
+  <div class="pie">
+    Documento emitido el 7 de septiembre de 2026. Los importes por concepto son un desglose
+    orientativo del valor entregado; el importe acordado es el total de 2.200 €.
+    El tratamiento fiscal (factura con IVA/IRPF o recibo) se ajustará según el alta del emisor
+    como autónomo en el momento del cobro; el importe neto para el cliente no varía.
+    Los campos marcados en <span class="todo">cursiva ámbar</span> están pendientes de completar.
+  </div>
+</div>
+</body>
+</html>
