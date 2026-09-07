@@ -19,6 +19,7 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 > - **Pendiente de él:** *«mira las redes y actualiza los proyectos»* — Instagram y TikTok piden login y no devuelven nada a una petición normal. Los textos de las fichas siguen siendo la recreación del feed (ya avisado dentro de la web). Tiene que pegar/confirmar él los proyectos actuales. No se inventan.
 > - Nota: [[La Brega Studio/2026-09-07 - Quitar Efemerides, arreglar el raton en las fichas y enlace movil|2026-09-07 · Quitar Efemérides, arreglar el ratón en las fichas y enlace móvil]].
 > - Quedan sin usar en `web/v5_DEF/img/`: `luna.jpg`, `ovni.jpg`, `estrellas.jpg`, `omnia-aplicaciones.jpg`, `saltimbanqui-logo.jpg`. Sin borrar.
+> - **Actualización de la tarde:** pegó 5 capturas reales de su Instagram (SUPERBIA ×1, RAÍZ ×4) → **dos proyectos nuevos confirmados con pie de foto real**, no inventado. Texto guardado en [[La Brega Studio/La Brega Studio|La Brega Studio]] y en memoria. **Bloqueo:** las capturas se pegaron en el chat, no como archivo adjunto — no se puede recuperar el píxel una vez pasa el turno de conversación. **No se tocó `web/v5_DEF/index.html`**: falta que mande los archivos reales (fotos del post, o las capturas de nuevo pero como adjunto) antes de meterlos en EL TALLER.
 
 ---
 
