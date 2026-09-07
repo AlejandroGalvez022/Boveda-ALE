@@ -834,10 +834,14 @@ footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
    la plancha manda, la cabecera se pinta en negro. */
 /* La cabecera lleva su propio fondo oscuro al hacer scroll; sobre el amarillo
    eso deja una banda verde oliva y los enlaces ilegibles. Mientras la plancha
-   manda, la cabecera se queda SIN fondo y todo su texto va en negro. Lleva
+   manda, la cabecera lleva SU PROPIO fondo amarillo y todo su texto va en negro.
+   Fondo propio (no transparente) a proposito: el JS mantiene esta clase activa
+   ~200px despues de que la plancha real ya salio de pantalla (red de seguridad
+   para no apagarla de golpe), y con fondo transparente ese margen dejaba el
+   menu en negro sobre el fondo negro de la seccion siguiente, ilegible. Lleva
    !important a proposito: hay que ganarle a `header.scrolled` y a los colores
    propios de cada enlace, que son mas especificos. */
-html.en-amarillo header{background:transparent!important; backdrop-filter:none!important;
+html.en-amarillo header{background:var(--canario)!important; backdrop-filter:none!important;
   border-bottom-color:rgba(12,12,12,.16)!important}
 html.en-amarillo header,
 html.en-amarillo header a,
