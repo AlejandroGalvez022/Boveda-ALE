@@ -9,6 +9,15 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ---
 
+## 2026-09-20
+
+> [!check]+ 🗓️ 2026-09-20 — Bot de trading: se acaban las notificaciones repetidas
+> - **Causa:** se agotó el crédito de la API de Anthropic; la IA fallaba cada turno de 15 min y el bot mandaba «error» + «Recuperado» en bucle (las vueltas cortas entre análisis «funcionaban» y disparaban el Recuperado).
+> - **Arreglo** (`src/bot.py`, commit `7671090` en el repo del bot): si falla la IA, una vuelta corta ya no cuenta como recuperación. Ahora: **un** aviso 💳, silencio, y **un** «Recuperado» cuando un análisis vuelve a ir bien. Test nuevo; 107 pasan. Bot reiniciado 22:55.
+> - **Pendiente de él:** recargar crédito en console.anthropic.com (Plans & Billing, sin auto-recarga a 50 $) y **rotar las 3 claves** pegadas en el chat (Anthropic, Revolut X, Telegram). Sigue en paper: sin dinero en riesgo.
+
+---
+
 ## 2026-09-07
 
 > [!check]+ 🗓️ 2026-09-07 — La Brega v5: fuera Efemérides, ratón arreglado en las fichas y enlace para el móvil
