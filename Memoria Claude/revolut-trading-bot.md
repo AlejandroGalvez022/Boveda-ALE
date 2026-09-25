@@ -37,6 +37,12 @@ hace**. Paga él todo (API de Anthropic aparte de Max; ver [[claude-plan-pago-pr
 - Página con gráficas para el móvil (artifact privado):
   https://claude.ai/artifact/WNW2s4mkZutgNTSnYkYzj2 (se actualiza republicando
   `scratchpad/informe/veredicto-bot.html` o con `url`).
+- **Él quiere «ganancias mensuales» (26-sep).** La tendencia solo gana el 44% de los
+  meses (gana mucho en pocos); ninguna estrategia honesta gana todos los meses —
+  decírselo así. Lo que sí: **sueldo del 1,5% del VALOR el día 1** (`sueldo_pct`,
+  `TENDENCIA_SUELDO`): 2018-2026 empezando en cada año cobra ~3× más que un % fijo
+  y no se agota. Connors RSI(2) como complemento: descartado. Umbral de
+  rebalanceo 5% (+1,3 pts/año). Detalle: `src/mensual.py`, `docs/investigacion.md`.
 - Revolut X: maker 0%, taker 0,09%; la API admite `"execution_instructions":["post_only"]`.
 
 **Qué corre:**
