@@ -12,6 +12,8 @@ tags: [proyecto, trading, python]
 
 Volver al [[Indice]]
 
+> [!tip] 📱 Página con gráficas (privada): https://claude.ai/artifact/WNW2s4mkZutgNTSnYkYzj2
+
 > [!info] Ficha
 > **Código:** `C:\Users\galve\Documents\revolut-trading-bot` (repo git local, sin remoto) · **Exchange:** Revolut X (API firmada Ed25519) · **Avisos y control:** Telegram · **Modo:** PAPEL (dinero simulado)
 
@@ -20,7 +22,7 @@ Volver al [[Indice]]
 | | ¿Gana después de comisiones? |
 |---|---|
 | **Bot intradía** (reglas técnicas + IA, XRP, 15 min) | ❌ **No demostrado.** Las reglas técnicas pierden −0,09R por operación en 3,7 años; con 192 variantes validadas año a año, fuera de muestra −0,12R |
-| **Cartera de TENDENCIA** (BTC+ETH+XRP, una decisión al día) | ✅ **Aguantó la prueba** 2020-2026: mismo dinero que aguantar las tres, con la caída máxima de −75% a **−42%**. En 2022: −19% frente a −59% |
+| **Cartera de TENDENCIA** (BTC+ETH+XRP, una decisión al día, control de volatilidad) | ✅ **Aguantó la prueba** 2018-2026 (8,7 años): 31,6%/año frente a 20,6% aguantando, con la caída máxima de −88% a **−36%**. En 2018, que no se usó para diseñarla: −14% frente a −76% |
 
 > [!warning] Lo que NO promete
 > Nadie puede garantizar beneficio. La tendencia **protege en las caídas**, pero en los años muy alcistas gana **menos** que aguantar (entra tarde). Es menos riesgo por el mismo dinero, no dinero mágico.
@@ -29,7 +31,7 @@ Volver al [[Indice]]
 
 | Qué | Cómo | Coste |
 |---|---|---|
-| **Bot de tendencia** | Tarea de Windows `BotTendencia`: una pasada al día, 1.000 € en papel, resumen por Telegram | 0 € (sin IA) |
+| **Bot de tendencia** | Tarea de Windows `BotTendencia`: una pasada al día, 1.000 € en papel (con control de volatilidad al 50%), resumen por Telegram | 0 € (sin IA) |
 | Bot intradía | Tarea `BotTradingXRP`, en papel. La IA está parada: **crédito de la API agotado** | ~66 €/mes con la IA encendida |
 | **Hablar con Claude por Telegram** | Escribe en el chat del bot: te llega «📥 Recibido» y Claude lo lee y contesta | — |
 
