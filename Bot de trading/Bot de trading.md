@@ -27,11 +27,21 @@ Volver al [[Indice]]
 > [!warning] Lo que NO promete
 > Nadie puede garantizar beneficio. La tendencia **protege en las caídas**, pero en los años muy alcistas gana **menos** que aguantar (entra tarde). Es menos riesgo por el mismo dinero, no dinero mágico.
 
+## 💶 Ganancias mensuales (26-sep)
+
+Mes a mes, la tendencia **no** gana todos los meses (44% de meses en positivo): pierde poco muchas veces y gana mucho pocas. Ninguna estrategia honesta de cripto da beneficio todos los meses.
+
+Lo que sí da dinero **cada mes**: un **sueldo del 1,5% del valor de la cartera** el día 1. Simulado 2018-2026 empezando en cada año: con 1.000 € habría cobrado 3.064 € desde 2018 (≈ 30 €/mes típico, nunca menos de 10 €) y **no se puede agotar** (si el bote baja, el sueldo baja). Ya corre así en papel.
+
+| Por cada 10.000 € | Sueldo típico al mes | Mes más flojo |
+|---|---|---|
+| 1,5% del valor | ~140-440 € según la racha | ~100-150 € |
+
 ## ⚙️ Qué está corriendo
 
 | Qué | Cómo | Coste |
 |---|---|---|
-| **Bot de tendencia** | Tarea de Windows `BotTendencia`: una pasada al día, 1.000 € en papel (con control de volatilidad al 50%), resumen por Telegram | 0 € (sin IA) |
+| **Bot de tendencia** | Tarea de Windows `BotTendencia`: una pasada al día, 1.000 € en papel (control de volatilidad al 50%, **sueldo del 1,5% el día 1**), resumen por Telegram | 0 € (sin IA) |
 | Bot intradía | Tarea `BotTradingXRP`, en papel. La IA está parada: **crédito de la API agotado** | ~66 €/mes con la IA encendida |
 | **Hablar con Claude por Telegram** | Escribe en el chat del bot: te llega «📥 Recibido» y Claude lo lee y contesta | — |
 

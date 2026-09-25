@@ -9,6 +9,13 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ---
 
+## 2026-09-26
+
+> [!check]+ 🗓️ 2026-09-26 — Bot de trading: ganancias mensuales
+> - Pidió «ganancias mensuales». Mes a mes, la tendencia solo gana el 44% de los meses (gana mucho en pocos). Connors RSI(2) como complemento: descartado (no mejora los meses).
+> - **Sueldo del 1,5% del valor el día 1**: 2018-2026 empezando en cada año, cobra ~3× más que un fijo y no se puede agotar. Metido en la cartera en papel.
+> - Umbral de rebalanceo al 5% (menos comisión por el vaivén): +1,3 puntos/año.
+
 ## 2026-09-25
 
 > [!check]+ 🗓️ 2026-09-25 — Bot de trading: pruebas de rentabilidad y cartera de tendencia
