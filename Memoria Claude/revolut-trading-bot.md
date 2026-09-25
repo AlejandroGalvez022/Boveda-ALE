@@ -28,6 +28,15 @@ hace**. Paga él todo (API de Anthropic aparte de Max; ver [[claude-plan-pago-pr
   con costes: 56%/año como aguantar, **caída máx −42% vs −75%**, Sharpe 1,30 vs 0,98;
   2022 −19% vs −59%. Robusto de 7 a 56 días; 3 días falla (comisiones).
   En años alcistas gana MENOS que aguantar: protege, no multiplica. Decírselo así.
+- **Fuera de muestra 2018-2019** (crash no usado para fijar nada; XRP = XRPBTC×BTCUSDT):
+  aguantar −74%, tendencia −21%, **tendencia + vol 50% +2%**. 2018-2026 entero (USD):
+  aguantar 20,6%/año caída −88% · tend+vol **31,6%, −36%, Sharpe 1,11** → es la que
+  corre por defecto (`Ajustes.vol_obj=0.5`; `TENDENCIA_VOL=0` la quita).
+- **10 monedas** (top ene-2020 operable en Revolut X) sale PEOR que 3 (Sharpe 1,03 vs
+  1,29): no ampliar el universo con altcoins.
+- Página con gráficas para el móvil (artifact privado):
+  https://claude.ai/artifact/WNW2s4mkZutgNTSnYkYzj2 (se actualiza republicando
+  `scratchpad/informe/veredicto-bot.html` o con `url`).
 - Revolut X: maker 0%, taker 0,09%; la API admite `"execution_instructions":["post_only"]`.
 
 **Qué corre:**
