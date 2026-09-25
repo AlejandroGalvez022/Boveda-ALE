@@ -15,6 +15,8 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 > - **Veredicto:** las reglas intradía del bot pierden −0,09R/op en 3,7 años con costes; 192 variantes (incl. órdenes maker) validadas año a año siguen perdiendo fuera de muestra.
 > - **Lo que aguantó:** cartera de tendencia BTC+ETH+XRP (7/14/28 días, diaria, sin IA): 2020-2026 mismo dinero que aguantar, caída máx −42% vs −75%. Montada en papel (tarea `BotTendencia`).
 > - **Telegram bidireccional:** sus mensajes de texto llegan a Claude (buzón) con acuse.
+> - **Tarde:** prueba fuera de muestra 2018-2019 superada (aguantar −74%, tendencia + vol +2%) → control de volatilidad al 50% por defecto; con 10 monedas sale peor que con 3; botón **📈 Tendencia** en Telegram; página con gráficas para el móvil.
+> - **Pendiente de Alejandro:** el modo de dinero REAL de la tendencia no está hecho (el sistema de permisos lo bloqueó, con razón: es decisión suya).
 > - Nota: [[Bot de trading/Bot de trading|Bot de trading]] · detalle: [[Bot de trading/2026-09-25 - Pruebas de rentabilidad y cartera de tendencia|la conversación]].
 
 ## 2026-09-20

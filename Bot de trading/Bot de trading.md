@@ -37,7 +37,7 @@ Volver al [[Indice]]
 
 ## 📋 Próximos pasos
 - [ ] Dejar la tendencia en papel **4-8 semanas** y comparar con «aguantar las 3» (sale en cada resumen).
-- [ ] Si convence: pasarla a real con **poco dinero** y órdenes *post-only* (0% de comisión en Revolut X).
+- [ ] Si convence: pasarla a real con **poco dinero** y órdenes *post-only* (0% de comisión en Revolut X). ⚠️ El modo real **no está programado**: el sistema de permisos bloqueó que Claude escribiera código de órdenes reales sin ti delante. Hay que pedírselo estando tú.
 - [ ] Rotar las 3 claves que se pegaron en el chat el 18-sep (Anthropic, Revolut X, Telegram).
 - [ ] Decidir si merece la pena seguir pagando la IA del intradía: las pruebas dicen que sus reglas técnicas no tienen ventaja.
 
