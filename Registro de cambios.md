@@ -9,6 +9,14 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ---
 
+## 2026-09-25
+
+> [!check]+ 🗓️ 2026-09-25 — Bot de trading: pruebas de rentabilidad y cartera de tendencia
+> - **Veredicto:** las reglas intradía del bot pierden −0,09R/op en 3,7 años con costes; 192 variantes (incl. órdenes maker) validadas año a año siguen perdiendo fuera de muestra.
+> - **Lo que aguantó:** cartera de tendencia BTC+ETH+XRP (7/14/28 días, diaria, sin IA): 2020-2026 mismo dinero que aguantar, caída máx −42% vs −75%. Montada en papel (tarea `BotTendencia`).
+> - **Telegram bidireccional:** sus mensajes de texto llegan a Claude (buzón) con acuse.
+> - Nota: [[Bot de trading/Bot de trading|Bot de trading]] · detalle: [[Bot de trading/2026-09-25 - Pruebas de rentabilidad y cartera de tendencia|la conversación]].
+
 ## 2026-09-20
 
 > [!check]+ 🗓️ 2026-09-20 — Bot de trading: se acaban las notificaciones repetidas

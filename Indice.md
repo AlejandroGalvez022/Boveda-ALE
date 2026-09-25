@@ -20,6 +20,7 @@ Tu bóveda **por fuera de Reload**: tus clientes propios y tus demos. Separada d
 - 🦷 [[Clinica dental/Clinica dental|Clínica dental]] — mantenimiento web (encargo por cerrar).
 - 🎨 [[Estudio Alisio/Estudio Alisio|Estudio Alisio]] — demo de estudio creativo.
 - 💡 [[Experimentos/Experimentos de diseno|Experimentos de diseño]] — ideas de apps (calendario minimalista iPhone, organizadora de eventos, app con animaciones, app de potencial libre).
+- 📈 [[Bot de trading/Bot de trading|Bot de trading]] — Revolut X. **Veredicto 25-sep:** el intradía no tiene ventaja probada; la **cartera de tendencia** BTC+ETH+XRP sí (mismo dinero que aguantar, caída máxima −42% en vez de −75%). Corriendo en papel.
 
 ---
 
