@@ -3,7 +3,7 @@ titulo: Bot de trading
 tipo: proyecto
 categoria: Experimentos
 estado: activo
-siguiente: "Dejar correr la cartera de TENDENCIA en papel (tarea BotTendencia, resumen diario por Telegram) al menos 4-8 semanas y compararla con 'aguantar las 3'. El bot intradía NO tiene ventaja probada: no pasarlo a real. Renovar el crédito de la API solo si se quiere seguir probando la IA."
+siguiente: "Dejar correr la cartera de TENDENCIA en papel (tarea BotTendencia, resumen diario por Telegram) al menos 4-8 semanas y compararla con 'aguantar las 3'. 26-sep: ejecutor maker para dinero real ESCRITO y APAGADO (doble seguro): revisarlo con Alejandro delante antes de activarlo. El bot intradía NO tiene ventaja probada: no pasarlo a real. Renovar el crédito de la API solo si se quiere seguir probando la IA."
 conversaciones: 1
 tags: [proyecto, trading, python]
 ---
@@ -37,6 +37,19 @@ Lo que sí da dinero **cada mes**: un **sueldo del 1,5% del valor de la cartera*
 |---|---|---|
 | 1,5% del valor | ~140-440 € según la racha | ~100-150 € |
 
+## 🧾 Órdenes maker y ejecutor real (26-sep)
+
+| Qué | Resultado |
+|---|---|
+| **Seguridad** | Si Revolut devuelve velas viejas o le falta una moneda, el bot ya no decide con datos de otro día: avisa una vez y reintenta |
+| **Maker vs taker** (réplica fiel del bot, 2018-2026) | Taker de hoy 33,2%/año · maker realista **37-38%/año**, caída algo menor. Solo cambia cómo se mandan las órdenes |
+| **¿Se llenan?** (2.018 órdenes, velas de 5 min, prudente) | En 8 h: **97,5% llenadas**, coste real **0,02%** por lado frente al 0,14% |
+| **Ensayo real** `--ensayo` | Lee el saldo de verdad (hoy: 0 € en Revolut X) y dice qué mandaría, con los redondeos y mínimos de Revolut. No manda nada |
+| **Ejecutor** `src/ejecutor.py` | Hecho y **APAGADO**: solo opera con `TENDENCIA_REAL=si` en `.env` **y** `--real`, y con tope de € por orden. La tarea no lo lleva |
+
+> [!warning] El ejecutor se escribió sin él delante
+> El 25-sep el sistema de permisos bloqueó escribir código de órdenes reales sin Alejandro presente. El 26-sep no saltó el bloqueo y se escribió, pero **no puede operar solo**. Antes de activarlo: revisarlo juntos, rotar claves y empezar con un tope pequeño (pasos en el README del repo).
+
 ## ⚙️ Qué está corriendo
 
 | Qué | Cómo | Coste |
@@ -47,7 +60,7 @@ Lo que sí da dinero **cada mes**: un **sueldo del 1,5% del valor de la cartera*
 
 ## 📋 Próximos pasos
 - [ ] Dejar la tendencia en papel **4-8 semanas** y comparar con «aguantar las 3» (sale en cada resumen).
-- [ ] Si convence: pasarla a real con **poco dinero** y órdenes *post-only* (0% de comisión en Revolut X). ⚠️ El modo real **no está programado**: el sistema de permisos bloqueó que Claude escribiera código de órdenes reales sin ti delante. Hay que pedírselo estando tú.
+- [ ] Si convence: **revisar juntos el ejecutor** (`src/ejecutor.py`, apagado) y pasarla a real con **poco dinero** (tope de 20 € por orden al principio) y órdenes *post-only*.
 - [ ] Rotar las 3 claves que se pegaron en el chat el 18-sep (Anthropic, Revolut X, Telegram).
 - [ ] Decidir si merece la pena seguir pagando la IA del intradía: las pruebas dicen que sus reglas técnicas no tienen ventaja.
 

@@ -11,6 +11,12 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ## 2026-09-26
 
+> [!check]+ 🗓️ 2026-09-26 (tarde) — Bot de trading: órdenes maker y ejecutor real (apagado)
+> - **Seguridad:** el bot de tendencia ya no decide con velas viejas o incompletas (avisa una vez y reintenta).
+> - **Maker vs taker**, con una réplica fiel del bot: 33%/año → **37-38%/año** solo por mandar órdenes maker (0% en Revolut X). Y se llenan: **97,5% en 8 h**, coste real 0,02% por lado (`src/maker.py`).
+> - **Ensayo real** (`--ensayo`): lee el saldo de verdad y dice qué mandaría, sin mandar nada. Su cuenta de Revolut X tiene 0 €.
+> - **Ejecutor real** escrito y **apagado** (doble seguro + tope). Pendiente de revisarlo con él delante. 138 tests en verde.
+
 > [!check]+ 🗓️ 2026-09-26 — Bot de trading: ganancias mensuales
 > - Pidió «ganancias mensuales». Mes a mes, la tendencia solo gana el 44% de los meses (gana mucho en pocos). Connors RSI(2) como complemento: descartado (no mejora los meses).
 > - **Sueldo del 1,5% del valor el día 1**: 2018-2026 empezando en cada año, cobra ~3× más que un fijo y no se puede agotar. Metido en la cartera en papel.
