@@ -11,6 +11,13 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ## 2026-09-27
 
+> [!check]+ 🗓️ 2026-09-27 (noche, 2) — Lustre: tienda montada y compra de prueba OK
+> - **Web publicada:** https://lustre-backgrounds.netlify.app (cuenta de Netlify personal). Fallo cazado: **Netlify Drop se salta las carpetas `dist`** → la web salió sin fondo; el motor va ahora en `js/`.
+> - **Web de venta completa:** precios (24 $ / 59 $), FAQ, `terms.html` (quién vende, pago, reembolso 14 días, privacidad) y `license.html` (generada desde LICENSE.md). La licencia decía «una por proyecto» y se vendía una ilimitada: **alineada**.
+> - **Lemon Squeezy:** tienda `alejandrogalvez`, logo AG (`Productos/Tienda/`), USD, W-8BEN, cobro al IBAN de Revolut; identidad **en revisión**. Producto con variantes Single 24 $ y Unlimited 59 $, ZIP en las dos. **Compra de prueba OK** (en test no deja descargar; el ZIP se comprobó a mano: 16 archivos, demo funciona).
+> - **Dudas resueltas con él:** Lemon Squeezy tiene reseñas flojas en Trustpilot (soporte, suspensiones) → se sigue, con **Gumroad de plan B** (solo cambiar enlaces). Lo fiscal lo lleva él.
+> - **Siguiente:** Framer (cuenta + proyecto + envío al Marketplace). Ver `siguiente` en [[Productos/Haze/Lustre|Lustre]].
+
 > [!check]+ 🗓️ 2026-09-27 (noche) — Haze pasa a llamarse **Lustre** + referencia web
 > - **Nombre:** lo eligió Alejandro. «Haze» es neblina y ningún fondo lo es; «lustre» es el brillo de una superficie. Comprobado: Autodesk Lustre retirado en 2024; en Framer solo hay una *plantilla* con ese nombre (los componentes van aparte).
 > - **Renombrado en todo:** código (`window.Lustre`, `data-lustre`, `LustreBackground`, `Lustre.framer.tsx`), docs, demo, pruebas, portadas, ZIP (`Lustre-v1.0.0.zip`), web y vídeo (`lustre-video-1920x1080.mp4`). La nota pasa a [[Productos/Haze/Lustre|Lustre]].

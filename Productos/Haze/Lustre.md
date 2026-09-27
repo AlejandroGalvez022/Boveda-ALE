@@ -3,7 +3,7 @@ titulo: Lustre
 tipo: proyecto
 categoria: Producto
 estado: activo
-siguiente: "27-sep (tarde): RENOMBRADO A LUSTRE (antes Haze). investigacion de mercado hecha (canal Framer + Lemon Squeezy CONFIRMADO), ribbons rehecho como SILK, fallo de escala en movil arreglado, VIDEO de la ficha hecho. 64 pruebas, 0 fallos. Toca lo suyo (email y licencia YA hechos): mirar el video y pasos 5-9 (Lemon Squeezy, Netlify, Framer) — SIN gestor, lo fiscal lo lleva el de venta/Ficha de venta.md. Despues, 60 dias sin tocar."
+siguiente: "27-sep (noche) PARADOS EN FRAMER. Hecho: web en https://lustre-backgrounds.netlify.app (precios, condiciones, licencia, botones a Lemon Squeezy); tienda Lemon Squeezy alejandrogalvez (USD, logo AG, W-8BEN, IBAN Revolut) con producto Single 24 / Unlimited 59 y ZIP; compra de prueba OK. SIGUIENTE: 1) Framer: el crea cuenta + proyecto Lustre, pega Desktop/LUSTRE - PARA FRAMER/Lustre.framer.tsx, pagina de preview y envio al Marketplace (miniatura sin texto); 2) cuando Lemon Squeezy apruebe identidad: Activate store + Copy to live mode + cambiar enlace en venta/config.json y resubir Netlify; 3) anadir el Component URL de Framer en Links del producto de Lemon Squeezy; 4) renombrar carpeta Productos/Haze -> Productos/Lustre (VS Code la bloquea)."
 conversaciones: 0
 tags: [proyecto, producto, webgl, pasivo, marketplace]
 ---
