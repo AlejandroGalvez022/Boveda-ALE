@@ -3,7 +3,7 @@ titulo: Lustre
 tipo: proyecto
 categoria: Producto
 estado: activo
-siguiente: "27-sep (tarde): RENOMBRADO A LUSTRE (antes Haze). investigacion de mercado hecha (canal Framer + Lemon Squeezy CONFIRMADO), ribbons rehecho como SILK, fallo de escala en movil arreglado, VIDEO de la ficha hecho. 64 pruebas, 0 fallos. Toca lo suyo: mirar el video, email en LICENSE y pasos 5-9 (Lemon Squeezy, Netlify, Framer) — SIN gestor, lo fiscal lo lleva el de venta/Ficha de venta.md. Despues, 60 dias sin tocar."
+siguiente: "27-sep (tarde): RENOMBRADO A LUSTRE (antes Haze). investigacion de mercado hecha (canal Framer + Lemon Squeezy CONFIRMADO), ribbons rehecho como SILK, fallo de escala en movil arreglado, VIDEO de la ficha hecho. 64 pruebas, 0 fallos. Toca lo suyo (email y licencia YA hechos): mirar el video y pasos 5-9 (Lemon Squeezy, Netlify, Framer) — SIN gestor, lo fiscal lo lleva el de venta/Ficha de venta.md. Despues, 60 dias sin tocar."
 conversaciones: 0
 tags: [proyecto, producto, webgl, pasivo, marketplace]
 ---

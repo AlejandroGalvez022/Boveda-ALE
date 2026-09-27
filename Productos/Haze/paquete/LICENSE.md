@@ -5,11 +5,6 @@ Copyright © 2026 Alejandro Gálvez. All rights reserved.
 Buying Lustre grants you a **perpetual, non-exclusive, non-transferable licence**
 under the terms below. It is not a sale of the software itself.
 
-> ⚠️ **Draft — have a lawyer or your gestor read this before you publish.**
-> It is written to be clear, not to be bulletproof. If you sell through a
-> marketplace (Envato, Framer, Gumroad, UI8), **their licence usually replaces
-> this one** — read theirs and keep whichever governs.
-
 ---
 
 ## What you may do
@@ -94,4 +89,4 @@ consumer protection law grants you a different venue — in which case it does.
 
 ---
 
-Questions about any of this before you buy: **[your email here]**
+Questions about any of this before you buy: **galvezbranaa@gmail.com**

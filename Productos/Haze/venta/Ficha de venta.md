@@ -81,8 +81,8 @@ Volver a [[Productos/Haze/Lustre|Lustre]]
 ## ✅ Pasos para publicarlo (lo que te toca)
 
 1. **Mirar los fondos** en `Productos/Haze/paquete/demo/index.html` con Live Server. Si alguno no te gusta, no se publica: me dices cuál y lo cambio.
-2. **Tu email** en `paquete/LICENSE.md`, última línea, donde pone `[your email here]`. Mejor uno solo para esto, no el de Reload.
-3. **La licencia:** si quieres, que le eche un ojo tu madre (es abogada). Nada de gestor: lo fiscal lo lleva Alejandro en su renta (decidido el 27-sep). Cuando den el visto bueno, se quita el aviso de *Draft* del principio. `empaquetar.py` avisa mientras siga ahí.
+2. ~~Tu email en la licencia~~ ✅ **Hecho (27-sep):** galvezbranaa@gmail.com en `LICENSE.md` y en el soporte del `README.md`.
+3. ~~La licencia~~ ✅ **Hecho (27-sep):** quitado el aviso de *Draft* (era una nota para ti y la habría visto el comprador). Si quieres, que la mire tu madre.
 4. ~~Comprobar el nombre~~ ✅ **Hecho (27-sep)**: se llama **Lustre** (antes Haze). En Framer solo hay una *plantilla* gratis con ese nombre (los componentes van aparte) y Autodesk Lustre se retiró en 2024. En npm `lustre` está cogido: si algún día se publica ahí, con usuario delante (`@tuusuario/lustre`).
 5. **Lemon Squeezy:** crear la cuenta, crear el producto «Lustre» con **dos variantes** (Single project 24 $ y Unlimited 59 $), subir `venta/Lustre-v1.0.0.zip` como archivo del producto y copiar el enlace de compra.
 6. Pegar ese enlace en `venta/config.json` → `"buy_url": "…"` y lanzar `python empaquetar.py` desde la carpeta `venta/`.

@@ -149,5 +149,5 @@ One licence per end product. Commercial use included, source included and
 modifiable. Reselling it as a component library is not. Full terms in
 [LICENSE.md](LICENSE.md).
 
-Support is the documentation plus email. No chat, no Discord — that is why it
+Support is the documentation plus email (galvezbranaa@gmail.com). No chat, no Discord — that is why it
 costs what it costs.
