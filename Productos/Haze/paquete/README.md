@@ -18,10 +18,10 @@ That is the whole integration.
 | | |
 |---|---|
 | **`caustics`** | The light on the floor of a pool. A network of thin bright lines meeting in brighter knots, bent by the water, with the faint rainbow fringe real caustics have. |
-| **`ribbons`** | Silk ribbons drifting and turning over. Each one twists, shows its back, catches a highlight on the fold and passes behind the others. |
+| **`silk`** | A sheet of shot silk, draped in long folds that drift and run into one another. Deep shade in the troughs, a sharp sheen on the crests, and the colour turns with the angle of the cloth, the way silk woven from two colours does. |
 | **`chrome`** | Liquid metal. A smooth swell reflecting a photo studio built from your palette — sky, floor, a hard horizon and two soft-boxes — so the reflections stay crisp. No textures, no lights. |
 
-Swap between them at runtime with `.motif('ribbons')` — the canvas and the GL
+Swap between them at runtime with `.motif('silk')` — the canvas and the GL
 context are kept, only the shader is rebuilt.
 
 ---
@@ -78,7 +78,7 @@ of the work went into the parts you only notice when they are missing:
 ## The one option that matters
 
 `energy` (0 → 1) is how alive the surface is: the water in caustics gets rougher
-and brighter, ribbons widen and spread apart, chrome swells deeper. Wire it
+and brighter, the silk folds deeper, chrome swells deeper. Wire it
 to scroll and you have the effect people actually buy this for:
 
 ```js

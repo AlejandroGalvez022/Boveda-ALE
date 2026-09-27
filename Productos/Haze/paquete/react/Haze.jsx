@@ -7,7 +7,7 @@
  *
  *   import HazeBackground from "./Haze";
  *
- *   <HazeBackground motif="ribbons" palette="dusk" style={{ height: "100svh" }}>
+ *   <HazeBackground motif="silk" palette="dusk" style={{ height: "100svh" }}>
  *     <h1>Your hero</h1>
  *   </HazeBackground>
  *

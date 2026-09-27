@@ -63,7 +63,7 @@ if (location.hash === '#reduced') {
   check('reduced: pinta algo', stats(a).tones > 40, stats(a).tones);
   R.done = true;
 } else {
-  var motifs = ['caustics', 'ribbons', 'chrome'];
+  var motifs = ['caustics', 'silk', 'chrome'];
   var shots = {};
   motifs.forEach(function (m) {
     var h = fresh({ motif: m, palette: 'lagoon', energy: 0.5 });
@@ -87,9 +87,9 @@ if (location.hash === '#reduced') {
     for (var i = 0; i < 8; i++) frame(h, i);
     R.data[m].ms = Math.round((performance.now() - t0) / 8);
   });
-  check('caustics ≠ ribbons', diff(shots.caustics, shots.ribbons) > 40, diff(shots.caustics, shots.ribbons).toFixed(1));
+  check('caustics ≠ silk', diff(shots.caustics, shots.silk) > 40, diff(shots.caustics, shots.silk).toFixed(1));
   check('caustics ≠ chrome', diff(shots.caustics, shots.chrome) > 40, diff(shots.caustics, shots.chrome).toFixed(1));
-  check('ribbons ≠ chrome', diff(shots.ribbons, shots.chrome) > 40, diff(shots.ribbons, shots.chrome).toFixed(1));
+  check('silk ≠ chrome', diff(shots.silk, shots.chrome) > 40, diff(shots.silk, shots.chrome).toFixed(1));
 
   /* set() con valores undefined (lo que mandan React y Framer) */
   var h = fresh({ motif: 'chrome', speed: 1, contrast: 1.2 });
@@ -104,7 +104,7 @@ if (location.hash === '#reduced') {
   check('token var() → su color', Math.abs(c0[0] - 1) < .01 && c0[1] < .01 && Math.abs(c0[2] - 128 / 255) < .01, c0.map(function (v) { return v.toFixed(2); }).join(','));
 
   /* pause() del usuario sobrevive a los vigilantes */
-  var h = fresh({ motif: 'ribbons' });
+  var h = fresh({ motif: 'silk' });
   h.play(); check('play() arranca', h._running === true);
   h.pause(); h._resume();
   check('pause() aguanta a IntersectionObserver/visibilidad', h._running === false);
@@ -112,14 +112,19 @@ if (location.hash === '#reduced') {
   h._halt(); h._resume(); check('una pausa automática sí se reanuda sola', h._running === true);
   h.pause();
 
+  /* en móvil la escala multiplica la del usuario, no la pisa */
+  var h = fresh({ motif: 'silk', scale: 0.6 });
+  var w0 = h._w; h._w = 390; var sm = h._v('scale'); h._w = 1200; var sd = h._v('scale'); h._w = w0;
+  check('móvil: scale se multiplica, no se pisa', Math.abs(sm - 0.6 * 1.35) < 1e-9 && sd === 0.6, sm.toFixed(3) + ' / ' + sd);
+
   /* speed 0 = mismo fotograma siempre (lienzo de Framer, imagen fija) */
   var h = fresh({ motif: 'caustics', speed: 0 });
   var a = frame(h); var b0 = performance.now(); while (performance.now() - b0 < 60) {} var b = frame(h);
   check('speed 0 → mismo fotograma', diff(a, b) === 0, diff(a, b));
 
   /* startAt cambia el primer fotograma */
-  var h1 = fresh({ motif: 'ribbons', speed: 0, startAt: 2 }); var A = frame(h1);
-  var h2 = fresh({ motif: 'ribbons', speed: 0, startAt: 20 }); var B = frame(h2);
+  var h1 = fresh({ motif: 'silk', speed: 0, startAt: 2 }); var A = frame(h1);
+  var h2 = fresh({ motif: 'silk', speed: 0, startAt: 20 }); var B = frame(h2);
   check('startAt elige el fotograma', diff(A, B) > 8, diff(A, B).toFixed(1));
 
   /* destroy() no deja restos */
@@ -132,7 +137,7 @@ if (location.hash === '#reduced') {
   var gc = HTMLCanvasElement.prototype.getContext;
   HTMLCanvasElement.prototype.getContext = function () { return null; };
   var reason = null;
-  ['caustics', 'ribbons', 'chrome'].forEach(function (m) {
+  ['caustics', 'silk', 'chrome'].forEach(function (m) {
     host.style.backgroundImage = '';
     var h = new Haze(host, { motif: m, onFallback: function (r) { reason = r; } });
     check(m + ': sin WebGL → respaldo CSS', h._fallback && /gradient/.test(host.style.backgroundImage) && !host.querySelector('canvas'));
@@ -144,10 +149,10 @@ if (location.hash === '#reduced') {
 
   /* auto-init por atributos */
   var d = document.createElement('div'); d.className = 't';
-  d.setAttribute('data-haze', ''); d.setAttribute('data-haze-motif', 'ribbons'); d.setAttribute('data-haze-palette', 'dusk'); d.setAttribute('data-haze-energy', '0.7');
+  d.setAttribute('data-haze', ''); d.setAttribute('data-haze-motif', 'silk'); d.setAttribute('data-haze-palette', 'dusk'); d.setAttribute('data-haze-energy', '0.7');
   document.body.appendChild(d);
   var made = Haze.autoInit();
-  check('data-haze arranca solo', made.length === 1 && made[0].o.motif === 'ribbons' && made[0].o.energy === 0.7);
+  check('data-haze arranca solo', made.length === 1 && made[0].o.motif === 'silk' && made[0].o.energy === 0.7);
   made[0].destroy();
   R.done = true;
 }

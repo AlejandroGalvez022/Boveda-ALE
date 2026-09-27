@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Haze — video</title>
+<!--
+  Generador del vídeo de la ficha de venta. NO va en el paquete.
+  Lo graba video.ps1 fotograma a fotograma llamando a go(n): cada fotograma
+  es un instante exacto (speed 0 + startAt), así que el vídeo sale sin tirones
+  aunque la captura sea lenta.
+  Guion: caustics → silk → chrome, 5 s cada uno con la energía subiendo, y
+  cierre con los tres a la vez y el nombre.
+-->
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;background:#05070b;overflow:hidden}
+  body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#f2f4f6}
+  .layer{position:absolute;inset:0;opacity:0}
+  .layer > .bg{position:absolute;inset:0}
+  .trio{display:grid;grid-template-columns:repeat(3,1fr)}
+  .trio > div{position:relative}
+  .trio > div + div{border-left:2px solid #05070b}
+  .veil{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(5,7,11,0) 50%,rgba(5,7,11,.45) 82%,rgba(5,7,11,.8) 100%)}
+  .cap{position:absolute;left:5.5%;right:5.5%;bottom:7.5%;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+  .cap h2{font-size:clamp(40px,5.6vw,108px);font-weight:800;letter-spacing:-.05em;line-height:.9}
+  .cap small{display:block;margin-top:.9em;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:clamp(11px,.95vw,18px);letter-spacing:.18em;text-transform:uppercase;color:rgba(242,244,246,.72)}
+  .meter{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:clamp(11px,.95vw,18px);
+    letter-spacing:.18em;text-transform:uppercase;color:rgba(242,244,246,.72);text-align:right}
+  .meter i{display:block;margin-top:.8em;width:clamp(120px,14vw,260px);height:4px;border-radius:2px;background:rgba(242,244,246,.22);overflow:hidden}
+  .meter b{display:block;height:100%;background:#f2f4f6;width:0}
+  .end h1{font-size:clamp(64px,11vw,190px);font-weight:800;letter-spacing:-.055em;line-height:.85}
+  .end p{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:clamp(12px,1.25vw,20px);
+    letter-spacing:.18em;text-transform:uppercase;color:rgba(242,244,246,.78);text-align:right;line-height:1.7}
+</style>
+<script src="../paquete/dist/haze.js"></script>
+</head><body>
+<script>
+  var FPS = 30, SEG = 5, FADE = 0.8, END = 3.5;
+  var TOTAL = Math.round((3 * SEG + END) * FPS);   // fotogramas: lo lee video.ps1
+  var SHOTS = [
+    { motif: 'caustics', palette: 'lagoon', t0: 10, name: 'Caustics', sub: 'Light on the floor of a pool' },
+    { motif: 'silk',     palette: 'violet', t0: 20, name: 'Silk',     sub: 'Draped shot silk' },
+    { motif: 'chrome',   palette: 'steel',  t0: 3,  name: 'Chrome',   sub: 'Liquid metal' }
+  ];
+  function haze(el, o) {
+    var h = new Haze(el, Object.assign({ intro: false, mouse: 0, speed: 0, quality: 1, vignette: .25 }, o));
+    h.pause(); return h;
+  }
+  function clamp(x) { return Math.max(0, Math.min(1, x)); }
+  function ease(x) { x = clamp(x); return x * x * (3 - 2 * x); }
+
+  var layers = SHOTS.map(function (s) {
+    var L = document.createElement('div'); L.className = 'layer';
+    L.innerHTML = '<div class="bg"></div><div class="veil"></div><div class="cap"><div><h2>' + s.name +
+      '</h2><small>' + s.sub + '</small></div><div class="meter">Energy<i><b></b></i></div></div>';
+    document.body.appendChild(L);
+    return { el: L, cap: L.querySelector('.cap'), bar: L.querySelector('b'), s: s, h: haze(L.querySelector('.bg'), { motif: s.motif, palette: s.palette }) };
+  });
+
+  var end = document.createElement('div'); end.className = 'layer';
+  end.innerHTML = '<div class="bg trio"><div></div><div></div><div></div></div><div class="veil"></div>' +
+    '<div class="cap end"><h1>Haze</h1><p>Three WebGL backgrounds<br>Zero dependencies · 9 KB<br>HTML · React · Framer</p></div>';
+  document.body.appendChild(end);
+  var trio = [].map.call(end.querySelectorAll('.trio > div'), function (d, i) {
+    return haze(d, { motif: SHOTS[i].motif, palette: SHOTS[i].palette, energy: .5 });
+  });
+
+  function draw(h, t, e) { h.o.startAt = t; h._energy = h._energyTarget = e; h._draw(); }
+
+  /* Cada capa entra encima de la anterior con un fundido; la de debajo se
+     deja de pintar en cuanto la de encima es opaca. */
+  window.go = function (f) {
+    var s = f / FPS;
+    layers.forEach(function (L, i) {
+      var start = i * SEG, local = s - start;
+      var op = i === 0 ? 1 : clamp((local + FADE) / FADE);
+      var covered = s >= (i + 1) * SEG;               // la siguiente ya es opaca
+      L.el.style.opacity = covered ? 0 : op;
+      if (op > 0 && !covered) {
+        var e = .2 + .7 * ease(local / SEG);
+        draw(L.h, L.s.t0 + local, e);
+        L.bar.style.width = (e * 100).toFixed(1) + '%';
+        /* El título no cruza el fundido: el saliente se va antes y el
+           entrante llega cuando su fondo ya tapa al anterior. */
+        L.cap.style.opacity = (i === 0 ? 1 : clamp(local / .35)) * (1 - clamp((local - (SEG - FADE - .3)) / .3));
+      }
+    });
+    var eStart = 3 * SEG, eOp = clamp((s - eStart + FADE) / FADE);
+    end.style.opacity = eOp;
+    if (eOp > 0) trio.forEach(function (h, i) { draw(h, SHOTS[i].t0 + 40 + (s - eStart) * .6, .5); });
+    return true;
+  };
+  go(0);
+</script>
+</body></html>

@@ -43,7 +43,7 @@ function mount(id, el) { current = targets[id]; ReactDOM.flushSync(function () {
 var H = window.HazeFramer;
 function P(o) { return o; }
 mount('A', React.createElement(H, P({})));
-mount('B', React.createElement(H, P({ motif: 'ribbons', palette: 'custom', color1: 'var(--token-7f3a9c2e-1b44, rgb(255, 230, 240))', color2: 'rgb(255, 60, 140)', color3: 'rgba(160, 20, 90, 1)', color4: '#3a0620', background: 'var(--token-bg, rgb(12, 2, 8))' })));
+mount('B', React.createElement(H, P({ motif: 'silk', palette: 'custom', color1: 'var(--token-7f3a9c2e-1b44, rgb(255, 230, 240))', color2: 'rgb(255, 60, 140)', color3: 'rgba(160, 20, 90, 1)', color4: '#3a0620', background: 'var(--token-bg, rgb(12, 2, 8))' })));
 mount('C', React.createElement(H, P({ motif: 'chrome', palette: 'steel' })));
 // React wrapper with NO speed/contrast props: the old code froze and would now paint black
 mount('D', React.createElement(window.HazeReact, { motif: 'chrome', palette: 'magma', style: { height: '300px' } }));

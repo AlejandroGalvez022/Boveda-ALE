@@ -69,7 +69,7 @@ var PALETTES = {
  * ------------------------------------------------------------------ */
 
 var DEFAULTS = {
-  motif: 'caustics',         // 'caustics' | 'ribbons' | 'chrome'
+  motif: 'caustics',         // 'caustics' | 'silk' | 'chrome'
   palette: null,             // name from PALETTES; applied before everything else
   colors: PALETTES.lagoon.colors,
   background: PALETTES.lagoon.background,
@@ -91,7 +91,7 @@ var DEFAULTS = {
   respectReducedMotion: true,
 
   mobileBreakpoint: 700,
-  mobile: { scale: 1.35, quality: 1.5 },
+  mobile: { scale: 1.35, quality: 1.5 }, // scale multiplies yours; other keys replace
 
   onFallback: null           // function (reason) — called if it falls back to CSS.
                              // It has to be listed here: set() only keeps known keys.
@@ -204,46 +204,46 @@ var MOTIFS = {
   ].join('\n'),
 
   /* ---------------------------------------------------------------- *
-   * RIBBONS — silk ribbons drifting and turning over.
+   * SILK — a sheet of shot silk, draped and drifting.
    *
-   * Each ribbon is a curve whose width passes through zero: where it
-   * does, the ribbon has turned over and we are looking at its back.
-   * Front and back get different shades, the fold catches a sharp
-   * highlight, and the ribbons are composited back to front so they
-   * really pass behind one another. That is all it takes to read as 3D.
+   * The sheet is a height field of long folds that curve and run into
+   * one another, the way cloth hangs. Three things make it read as silk
+   * and not as plastic: the folds are LONG (cloth never wrinkles in
+   * dots), the troughs fall into deep shade, and the colour turns with
+   * the angle of the cloth — shot silk, woven from two colours, so it
+   * shows one on the slopes that face the light and the other on the
+   * slopes that face away.
    * ---------------------------------------------------------------- */
-  ribbons: [
+  silk: [
+    'float cr(float x){float s=sin(x);return sqrt(s*s+.012);}',
+    'float S(vec2 q,float t){',
+    ' vec2 r=vec2(q.x*.906+q.y*.423,-q.x*.423+q.y*.906);',
+    ' float u=r.x,v=r.y;',
+    ' v+=(.22+.10*uEnergy)*gnoise(vec2(u*.55+t*.06,v*.45-t*.05));',
+    ' float h=.60*cr(v*1.05+.95*sin(u*.62+t*.21)+t*.10);',
+    ' h+=.30*cr(v*1.95+1.25*sin(u*.85-t*.17)+1.7);',
+    ' h+=.11*sin(v*6.3+1.05*sin(u*1.35+t*.27)+4.1);',
+    ' h+=.32*sin(u*.75+v*.45-t*.12);',
+    ' return h;}',
     'void main(){',
     ' vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y;',
-    ' vec2 q=(p+(uMouse-.5)*uMouseAmt)*(1.25*uScale);',
-    ' float t=uTime*.32;',
-    ' q.y+=.07*gnoise(q*.9+vec2(t*.15,-t*.1));',
-    ' float px=1.6*uScale/uRes.y;',
-    ' vec3 c=uBg+uC3*.55*exp(-2.2*dot(p,p));',
-    ' for(int k=0;k<4;k++){',
-    '  float fk=float(k);',
-    '  float x=q.x;',
-    '  float a1=.20+.05*fk, f1=.95+.18*fk, a2=.085, f2=2.1+.3*fk;',
-    '  float ph1=x*f1+t*(.55+.12*fk)+fk*1.9, ph2=x*f2-t*.7+fk*3.3;',
-    '  float y0=(fk-1.5)*(.16+.06*uEnergy)+a1*sin(ph1)+a2*sin(ph2);',
-    '  float dy=a1*f1*cos(ph1)+a2*f2*cos(ph2);',
-    '  float d=(q.y-y0)/sqrt(1.+dy*dy);',
-    '  float tw=sin(x*(.75+.16*fk)+t*(.8+.1*fk)+fk*2.4);',
-    '  float hw=(.07+.04*uEnergy)*(.10+.90*abs(tw));',
-    '  float ac=d/hw;',
-    '  float inside=1.-smoothstep(1.-px/hw,1.+px/hw,abs(ac));',
-    '  vec3 base=ramp(clamp(.12+.62*(.5+.5*sin(x*.55+fk*1.3+t*.25)),0.,1.));',
-    '  float face=step(0.,tw);',
-    '  float sheen=pow(max(1.-ac*ac,0.),1.6);',
-    '  float thr=.94+.06*sin(ac*7.+x*2.);',
-    '  vec3 front=base*(.45+.75*sheen)*thr;',
-    '  vec3 back=mix(base,uC2,.5)*(.40+.50*sheen);',
-    '  vec3 col=mix(back,front,face);',
-    '  col+=uC0*pow(1.-abs(tw),14.)*(.9+.6*uEnergy);',
-    '  float glow=exp(-abs(d)*11.)*.14*(.6+.8*uEnergy);',
-    '  c+=base*glow*(1.-inside);',
-    '  c=mix(c,col,inside*.96);',
-    ' }',
+    ' vec2 q=(p+(uMouse-.5)*uMouseAmt)*(3.0*uScale);',
+    ' float t=uTime*.36;',
+    ' float e=.004;',
+    ' float h=S(q,t);',
+    ' float hx=(S(q+vec2(e,0.),t)-h)/e;',
+    ' float hy=(S(q+vec2(0.,e),t)-h)/e;',
+    ' float bump=.30+.16*uEnergy;',
+    ' vec3 n=normalize(vec3(-hx*bump,-hy*bump,1.));',
+    ' vec3 L=normalize(vec3(-.45,.55,.70));',
+    ' float dif=max(dot(n,L),0.);',
+    ' float spec=pow(max(dot(n,normalize(L+vec3(0.,0.,1.))),0.),140.);',
+    ' float side=smoothstep(-.35,.35,n.x*1.6-n.y*.6);',
+    ' vec3 body=mix(uC1,uC2,side);',
+    ' float sh=pow(dif,1.5);',
+    ' vec3 c=mix(mix(uBg,uC3,.8),body,smoothstep(.20,.97,sh));',
+    ' c+=uC0*(pow(sh,6.)*.30+pow(sh,40.)*.55+spec*.60);',
+    ' c*=.55+.45*smoothstep(-.6,1.1,h);',
     ' gl_FragColor=vec4(finish(c,p),1.);',
     '}'
   ].join('\n'),
@@ -279,12 +279,12 @@ var MOTIFS = {
     ' return c;}',
     'void main(){',
     ' vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y;',
-    ' vec2 sp=(p+(uMouse-.5)*uMouseAmt)*(2.6*uScale);',
+    ' vec2 sp=(p+(uMouse-.5)*uMouseAmt)*(3.3*uScale);',
     ' float t=uTime*.42;',
     ' float e=.012;',
     ' float hx=(H(sp+vec2(e,0.),t)-H(sp-vec2(e,0.),t))/(2.*e);',
     ' float hy=(H(sp+vec2(0.,e),t)-H(sp-vec2(0.,e),t))/(2.*e);',
-    ' float bump=.50+.35*uEnergy;',
+    ' float bump=.72+.35*uEnergy;',
     ' vec3 n=normalize(vec3(-hx*bump,-hy*bump,1.));',
     ' vec2 r=vec2(p.x*.35+n.x*1.7,p.y*.55+.14+n.y*1.9);',
     ' vec3 c=env(r);',
@@ -381,7 +381,11 @@ Haze.prototype.set = function (options, silent) {
 Haze.prototype._v = function (key) {
   var o = this.o;
   if (o.mobile && this._w && this._w <= o.mobileBreakpoint &&
-      Object.prototype.hasOwnProperty.call(o.mobile, key)) return o.mobile[key];
+      Object.prototype.hasOwnProperty.call(o.mobile, key)) {
+    /* Scale MULTIPLIES: a replaced value would silently throw away the
+       scale the user chose the moment the container got narrow. */
+    return key === 'scale' ? (o.scale || 1) * o.mobile.scale : o.mobile[key];
+  }
   return o[key];
 };
 
@@ -495,11 +499,11 @@ Haze.prototype._bail = function (reason) {
 Haze.prototype._paintFallback = function () {
   var c = this._c, bg = toCss(this._bg);
   var layers;
-  if (this.o.motif === 'ribbons') {
+  if (this.o.motif === 'silk') {
     layers = [
-      'linear-gradient(115deg, transparent 22%, ' + toCss(c[1]) + ' 34%, transparent 46%)',
-      'linear-gradient(100deg, transparent 44%, ' + toCss(c[2]) + ' 56%, transparent 68%)',
-      'linear-gradient(128deg, transparent 60%, ' + toCss(c[0]) + ' 70%, transparent 80%)'
+      /* Satin folds at the same slant as the shader's cloth. */
+      'repeating-linear-gradient(155deg, ' + toCss(c[3]) + ' 0%, ' + toCss(c[2]) + ' 8%, ' +
+        toCss(c[1]) + ' 12.5%, ' + toCss(c[0]) + ' 14%, ' + toCss(c[2]) + ' 17%, ' + toCss(c[3]) + ' 25%)'
     ];
   } else if (this.o.motif === 'chrome') {
     layers = [
@@ -686,12 +690,12 @@ Haze.prototype.destroy = function () {
 };
 
 Haze.palettes = PALETTES;
-Haze.motifs = ['caustics', 'ribbons', 'chrome'];
+Haze.motifs = ['caustics', 'silk', 'chrome'];
 Haze.version = '1.0.0';
 
 /* ------------------------------------------------------------------ *
  * Auto-init — for buyers who never touch JavaScript.
- *   <div data-haze data-haze-motif="ribbons" data-haze-palette="dusk"></div>
+ *   <div data-haze data-haze-motif="silk" data-haze-palette="dusk"></div>
  * Only wired up in the <script> build; the module stays side-effect free.
  * ------------------------------------------------------------------ */
 

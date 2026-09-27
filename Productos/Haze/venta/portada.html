@@ -33,9 +33,9 @@
   }
   if (m === 'trio') {
     var tr = document.createElement('div'); tr.className = 'trio'; document.body.appendChild(tr);
-    [['caustics', 'lagoon'], ['ribbons', 'dusk'], ['chrome', 'steel']].forEach(function (x, i) {
+    [['caustics', 'lagoon', 1], ['silk', 'violet', 1.5], ['chrome', 'steel', 1]].forEach(function (x, i) {
       var d = document.createElement('div'); tr.appendChild(d);
-      still(d, { motif: x[0], palette: x[1], startAt: T + i * 7 });
+      still(d, { motif: x[0], palette: x[1], scale: x[2], startAt: T + i * 7 });
     });
   } else {
     var d = document.createElement('div'); d.className = 'full'; document.body.appendChild(d);

@@ -117,8 +117,8 @@ addPropertyControls(HazeBackground, {
     motif: {
         type: ControlType.Enum,
         title: "Motif",
-        options: ["caustics", "ribbons", "chrome"],
-        optionTitles: ["Caustics", "Ribbons", "Chrome"],
+        options: ["caustics", "silk", "chrome"],
+        optionTitles: ["Caustics", "Silk", "Chrome"],
         defaultValue: "caustics",
     },
     palette: {

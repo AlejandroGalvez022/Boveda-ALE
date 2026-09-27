@@ -13,9 +13,9 @@ First release.
   scales, bent by a slow noise field the way water bends light. Where the
   networks cross the light adds up; each colour channel draws the lines a
   touch wider or thinner for the rainbow fringe of real caustics.
-- **`ribbons`** — four silk ribbons whose width passes through zero, so they
-  turn over: front and back shaded apart, a highlight on every fold, and
-  composited back to front so they pass behind one another.
+- **`silk`** — a height field of long, curving folds with creased troughs,
+  lit as satin: deep shade in the troughs, a sharp sheen on the crests, and
+  shot-silk colour that turns with the angle of the cloth.
 - **`chrome`** — a smooth swell of crossing waves differentiated into a normal,
   reflecting a studio built from the palette (sky, floor, hard horizon, two
   soft-boxes). The hard edges of that studio keep the reflections crisp.
@@ -25,7 +25,7 @@ First release.
 ### Core
 - One fragment shader over one full-screen triangle: a single draw call per
   frame, nothing allocated after setup.
-- `energy` (0–1): the water roughens, ribbons widen and spread, chrome swells. Eased, so raw
+- `energy` (0–1): the water roughens, the silk folds deeper, chrome swells. Eased, so raw
   scroll values can be fed to it every frame.
 - Pointer parallax with its own easing, independent of energy.
 - Switching motif rebuilds only the shader program — the canvas, the buffer and

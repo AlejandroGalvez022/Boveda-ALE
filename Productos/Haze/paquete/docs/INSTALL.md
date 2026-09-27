@@ -20,7 +20,7 @@ Copy `dist/haze.js` next to your page.
 **No JavaScript at all?** Use attributes and the script starts itself:
 
 ```html
-<div data-haze data-haze-motif="ribbons" data-haze-palette="dusk" style="height:100svh"></div>
+<div data-haze data-haze-motif="silk" data-haze-palette="dusk" style="height:100svh"></div>
 <script src="haze.js"></script>
 ```
 
@@ -89,7 +89,7 @@ install, nothing to import.
 
 | Control | What it does |
 |---|---|
-| Motif | Caustics, Ribbons or Chrome. |
+| Motif | Caustics, Silk or Chrome. |
 | Palette | One of the seven, or **Custom** — then four colours and a background appear. Colour styles from your project work too. |
 | Energy | How alive it is, 0–1. |
 | Scroll → Drives it | Energy rises from the value above to 1 as the page scrolls. **Full at** sets how many screens that takes. |
@@ -114,7 +114,7 @@ Then give your section a **Custom attribute** in the Designer:
 | Name | Value |
 |---|---|
 | `data-haze` | *(leave empty)* |
-| `data-haze-motif` | `ribbons` |
+| `data-haze-motif` | `silk` |
 | `data-haze-palette` | `dusk` |
 
 Set the section's height in the Designer (`100vh`) and put your content in a

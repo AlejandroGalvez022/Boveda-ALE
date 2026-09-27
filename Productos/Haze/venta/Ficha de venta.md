@@ -31,6 +31,8 @@ Volver a [[Productos/Haze/Haze|Haze]]
 | `config.json` | Aquí va el enlace de compra de Lemon Squeezy (`buy_url`). Con él puesto, la demo sale con el botón «Buy Haze — $24» |
 | `portadas/` | 8 imágenes para la ficha: 1600×1200 (formato 4:3) y una de 1920×1080. Se regeneran con `portadas.ps1` |
 | `portada.html` | El generador de esas portadas |
+| `haze-video-1920x1080.mp4` | **El vídeo de la ficha** (18,5 s): caustics → silk → chrome con la energía subiendo, y cierre con los tres y el nombre. Se regenera con `video.ps1` (necesita `pip install imageio-ffmpeg`) |
+| `video.html` | El guion del vídeo. Pinta cada fotograma en un instante exacto, así que sale sin tirones aunque la captura sea lenta |
 
 > [!todo] Verificar: el tamaño exacto que pide Framer para las imágenes de la ficha. Las he hecho a 1600×1200 y a 1920×1080 porque es lo habitual, pero no está comprobado en su documentación.
 
@@ -44,14 +46,14 @@ Volver a [[Productos/Haze/Haze|Haze]]
 > Three living WebGL backgrounds. One file, zero dependencies.
 
 **Descripción corta (Framer, ~160 caracteres):**
-> Pool caustics, silk ribbons and liquid chrome. Hand-written WebGL, 9 KB gzipped, every option in the properties panel, scroll-reactive.
+> Pool caustics, draped silk and liquid chrome. Hand-written WebGL, 9 KB gzipped, every option in the properties panel, scroll-reactive.
 
 **Descripción larga:**
 
 > **Haze is three atmospheric backgrounds, hand-written in WebGL and shipped as one file.**
 >
 > - **Caustics** — the light on the floor of a pool: a network of thin bright lines, bent by the water, with the faint rainbow fringe real caustics have.
-> - **Ribbons** — silk ribbons drifting and turning over, catching the light on every fold.
+> - **Silk** — a sheet of shot silk, draped in long folds, with a sheen on every crest and colour that turns with the angle of the cloth.
 > - **Chrome** — liquid metal reflecting a studio built from your palette.
 >
 > Seven palettes, or your own four colours (Framer colour styles work). One control — **Energy** — makes the surface come alive, and you can let the scroll drive it.

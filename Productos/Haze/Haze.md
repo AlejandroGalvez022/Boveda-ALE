@@ -3,7 +3,7 @@ titulo: Haze
 tipo: proyecto
 categoria: Producto
 estado: activo
-siguiente: "27-sep: REHECHO a nivel producto estrella y verificado (63 pruebas, 0 fallos). Los 3 fondos rehechos de cero, componente de Framer nuevo, 3 fallos del motor arreglados. Toca lo suyo, en venta/Ficha de venta.md (pasos 1-9): mirar la demo, email en LICENSE, gestor, nombre libre, Lemon Squeezy, Netlify y Framer. Despues, 60 dias sin tocar."
+siguiente: "27-sep (tarde): investigacion de mercado hecha (canal Framer + Lemon Squeezy CONFIRMADO), ribbons rehecho como SILK, fallo de escala en movil arreglado, VIDEO de la ficha hecho. 64 pruebas, 0 fallos. Toca lo suyo: mirar el video y la demo, DECIDIR EL NOMBRE (propuesta Lustre) y pasos 2-9 de venta/Ficha de venta.md. Despues, 60 dias sin tocar."
 conversaciones: 0
 tags: [proyecto, producto, webgl, pasivo, marketplace]
 ---
@@ -24,7 +24,7 @@ público, y vende sola.
 | Motivo | Qué es |
 |---|---|
 | **`caustics`** | La luz del fondo de una piscina: una **red** de líneas finas y brillantes que se juntan en nudos más brillantes, doblada por el agua y con el filo de arcoíris que tiene la luz de verdad. Son dos redes de Voronoi en movimiento, a distinta escala. |
-| **`ribbons`** | Cintas de **seda que se dan la vuelta**: cara de delante y cara de detrás con tono distinto, un brillo en cada pliegue, y unas pasan por detrás de otras. |
+| **`silk`** | Una **tela de seda tornasolada drapeada**: pliegues largos que se cruzan, sombra en los valles, brillo en las crestas y el color cambiando con la inclinación de la tela. (Hasta el 27-sep se llamaba `ribbons` y eran cintas.) |
 | **`chrome`** | Metal líquido que refleja un **estudio de fotos** hecho con la paleta (cielo, suelo, horizonte y dos focos). Los bordes duros de ese estudio son los que hacen que parezca metal y no plástico. |
 
 ![[Productos/Haze/venta/portadas/01-haze-portada-1600x1200.png]]
@@ -45,6 +45,31 @@ Alejandro pidió tratarlo como **producto estrella**. Mirado con ojos de comprad
 | 📦 **Venta** | [[Productos/Haze/venta/Ficha de venta\|Ficha de venta]]: canal, precio, textos en inglés, portadas, ZIP, demo pública y los pasos para publicar |
 
 **Verificado** con `pruebas/pruebas.ps1` (se puede relanzar siempre): **63 comprobaciones, 0 fallos**. Mide los píxeles del propio WebGL: que pinta, que no es negro ni se quema en blanco, que se mueve, que la energía y la paleta cambian el dibujo, que los 3 motivos son distintos entre sí, `pause`/`play`/`destroy`, el respaldo sin WebGL y su aviso, el movimiento reducido, los tokens de Framer y las 4 páginas de la demo a 1440 y a 390 px (0 errores y 0 desbordes). Además compila el componente de Framer como lo hace Framer, con un `framer` simulado, y el de React.
+
+## 🔬 27-sep-2026 (tarde) — Investigación de mercado y segunda vuelta
+
+Alejandro: *«trátalo como producto estrella, investiga y haz todo lo posible»*. Dos investigaciones en paralelo y, con lo que salió, a por lo que más pesa.
+
+**Lo que dijo el mercado** (fuentes en la conversación de ese día):
+
+| | |
+|---|---|
+| ✅ **Canal confirmado** | Framer Marketplace deja vender componentes de pago, **no se lleva nada** y enlaza a tu pago (doc oficial). Lemon Squeezy **sigue aceptando altas** y sigue siendo *merchant of record*; algún día pedirá pasarse a *Stripe Managed Payments* (mismo Stripe, sin prisa). Alternativa más barata y más joven: Creem (3,9 % + 0,40 $) |
+| 🆕 **Envato** | Desde el 1-jul-2026 ya **no exige exclusividad**, pero se queda el **50 %** a todos. Canal secundario, en paralelo si Framer funciona |
+| ⚠️ **Lo gratis es bueno** | Paper Shaders (30+ efectos, licencia libre, incluye un *liquid metal*), Vanta, ShaderGradient y varios fondos gratis en Framer. **Un degradado o un metal abstracto no se vende.** Lo que NO hay gratis son **motivos reconocibles** (la luz de piscina): ese es el hueco |
+| 🏷️ **Nombre** | En npm están cogidos `haze` y todos los nombres cortos probados (lustre, sheen, glint, verglas, lumen, glaze…). No importa: se vende en Framer y un paquete con usuario delante siempre está libre. **Pendiente de él:** si se queda «Haze» o se cambia (ver abajo) |
+
+**Lo que se hizo:**
+
+| | |
+|---|---|
+| 🧵 **`ribbons` → `silk`, rehecho** | Las cintas parecían tubos de plástico o un fondo de Windows Vista. Ahora es **una tela de seda tornasolada drapeada**: pliegues largos con aristas en el fondo, sombra en los valles, brillo en las crestas y el color que cambia con la inclinación de la tela. Probado en 4 paletas. Renombrado en código, Framer, React, demo, documentación, pruebas y ficha. El respaldo sin WebGL también: bandas satinadas con la misma inclinación |
+| 🐛 **Fallo: en móvil se pisaba la escala del comprador** | Con el contenedor por debajo de 700 px, `mobile.scale` (1,35) **sustituía** la escala que hubiera puesto. Quien pusiera `scale: 0.6` en una tarjeta pequeña la perdía sin aviso (le pasaba al propio `card.html`). Ahora **multiplica**: 0,6 → 0,81. Documentado en `API.md` y con prueba nueva |
+| 🎬 **Vídeo de la ficha** | `venta/haze-video-1920x1080.mp4`: los tres motivos con la energía subiendo y cierre con el nombre. Un fondo animado se vende en movimiento. Lo genera `venta/video.ps1` |
+| 🖼️ **Portadas** | La franja de seda de la portada principal pasa a violeta (en dusk y en una columna estrecha se leía borrosa) |
+| 🔎 **chrome** | Mirado en 4 paletas: en lagoon y mono es metal líquido convincente. Se le subió la curvatura. No se toca más |
+
+**Verificado:** `pruebas/pruebas.ps1` → **64 comprobaciones, 0 fallos** (una más que antes: la de la escala en móvil).
 
 ## ⚠️ Por qué NO es un eclipse
 

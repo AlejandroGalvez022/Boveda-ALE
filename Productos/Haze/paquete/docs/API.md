@@ -26,7 +26,7 @@ and you will think the library is broken.
 
 | Option | Default | What it does |
 |---|---|---|
-| `motif` | `'caustics'` | `caustics` · `ribbons` · `chrome`. Changing it rebuilds the shader; the canvas and GL context are kept. |
+| `motif` | `'caustics'` | `caustics` · `silk` · `chrome`. Changing it rebuilds the shader; the canvas and GL context are kept. |
 | `palette` | `null` | `lagoon` · `dusk` · `forest` · `steel` · `magma` · `violet` · `mono`. Shorthand for `colors` + `background`. Anything passed alongside it wins. |
 | `colors` | lagoon | Four stops: 0 is the highlight, 3 the deep shade. `#rgb`, `#rrggbb`, `rgb()` or `[r,g,b]` 0-255. |
 | `background` | `'#030a14'` | The void behind everything. Also set on the element, so the page never flashes white. |
@@ -44,7 +44,7 @@ What `energy` does per motif:
 | | |
 |---|---|
 | `caustics` | The water gets rougher: lines bend more, widen and brighten. |
-| `ribbons` | Ribbons widen, spread apart and the folds flare. |
+| `silk` | The folds deepen, the cloth drifts more and the sheen sharpens. |
 | `chrome` | The swell gets deeper, so the reflections bend harder. |
 
 ### Motion and texture
@@ -74,8 +74,10 @@ What `energy` does per motif:
 | `mobileBreakpoint` | `700` |
 | `mobile` | `{ scale: 1.35, quality: 1.5 }` |
 
-Any key in `mobile` replaces the top-level one when the container is at or below
-the breakpoint. Pass `mobile: {}` to disable.
+When the container is at or below the breakpoint, `mobile.scale` **multiplies**
+your `scale` (so `scale: 0.6` becomes `0.81` on a phone, never a fixed `1.35`),
+and any other key in `mobile` replaces the top-level one. Pass `mobile: {}` to
+disable.
 
 ---
 
@@ -108,7 +110,7 @@ from a slider handler, which is exactly what the demo does.
 | `haze.gl` | The WebGL context, or `null`. |
 | `haze.destroyed` | `true` after `destroy()`. |
 | `haze.fallbackReason` | Why it fell back, if it did. |
-| `Haze.motifs` | `['caustics','ribbons','chrome']` |
+| `Haze.motifs` | `['caustics','silk','chrome']` |
 | `Haze.palettes` | The palette table. |
 | `Haze.version` | `'1.0.0'` |
 
@@ -122,7 +124,7 @@ converted for you.
 
 ```html
 <div data-haze
-     data-haze-motif="ribbons"
+     data-haze-motif="silk"
      data-haze-palette="dusk"
      data-haze-scale="0.9"
      data-haze-colors="#fff,#8ab,#46f,#204"

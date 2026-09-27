@@ -11,6 +11,14 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ## 2026-09-27
 
+> [!check]+ 🗓️ 2026-09-27 (tarde) — Haze: investigación de mercado y segunda vuelta
+> - **Mercado:** Framer (0 %, enlaza a tu pago) y Lemon Squeezy **confirmados** con doc oficial. Envato sin exclusividad pero al 50 %. Lo gratis (Paper Shaders, Vanta) cubre degradados y metal abstracto: el hueco son **motivos reconocibles**.
+> - **`ribbons` → `silk`:** rehecho como tela de seda tornasolada drapeada (las cintas parecían tubos de plástico). Renombrado en todo el paquete.
+> - **Fallo:** en contenedores de menos de 700 px se pisaba la `scale` del comprador; ahora se multiplica. Con prueba.
+> - **Vídeo de la ficha:** `venta/haze-video-1920x1080.mp4` (18,5 s), generado con `venta/video.ps1`.
+> - **Verificado:** 64 comprobaciones, 0 fallos. Portadas y ZIP regenerados.
+> - **Pendiente (él):** decidir el nombre (propuesta: «Lustre») y pasos 2-9 de la ficha.
+
 > [!check]+ 🗓️ 2026-09-27 — Haze rehecho como producto estrella
 > - **Por qué:** pidió tratarlo como producto estrella. Mirado como comprador, la v1 no lo era (caustics turbio, ribbons borroso, chrome una mancha) y había fondos gratis mejores.
 > - **Fondos rehechos de cero:** caustics = red de luz de piscina con filo de arcoíris; ribbons = cintas de seda que se dan la vuelta; chrome = metal que refleja un estudio de fotos. Coste del caustics ajustado de 2,7× a ~1,3× el viejo.
