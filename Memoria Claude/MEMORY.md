@@ -13,3 +13,4 @@ El **resto** de la memoria —las reglas generales de trabajo— está en `Boved
 
 > Al arrancar en un ordenador nuevo: leer **las dos** carpetas `Memoria Claude/` (la de `Boveda-RELOAD` y esta) y aplicarlas como memoria propia.
 - [Webs con anuncios](webs-con-anuncios.md) — idea personal 27-sep: blog+AdSense no sale; solo herramienta interactiva en inglés, experimento de 90 días
+- [Lo fiscal lo lleva él](fiscal-lo-lleva-el.md) — REGLA: nada de «pregunta al gestor» en sus ventas personales; lo declara él y su madre es abogada

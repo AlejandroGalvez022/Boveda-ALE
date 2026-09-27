@@ -3,7 +3,7 @@ titulo: Lustre
 tipo: proyecto
 categoria: Producto
 estado: activo
-siguiente: "27-sep (tarde): RENOMBRADO A LUSTRE (antes Haze). investigacion de mercado hecha (canal Framer + Lemon Squeezy CONFIRMADO), ribbons rehecho como SILK, fallo de escala en movil arreglado, VIDEO de la ficha hecho. 64 pruebas, 0 fallos. Toca lo suyo: mirar el video y la demo, DECIDIR EL NOMBRE (propuesta Lustre) y pasos 2-9 de venta/Ficha de venta.md. Despues, 60 dias sin tocar."
+siguiente: "27-sep (tarde): RENOMBRADO A LUSTRE (antes Haze). investigacion de mercado hecha (canal Framer + Lemon Squeezy CONFIRMADO), ribbons rehecho como SILK, fallo de escala en movil arreglado, VIDEO de la ficha hecho. 64 pruebas, 0 fallos. Toca lo suyo: mirar el video, email en LICENSE y pasos 5-9 (Lemon Squeezy, Netlify, Framer) — SIN gestor, lo fiscal lo lleva el de venta/Ficha de venta.md. Despues, 60 dias sin tocar."
 conversaciones: 0
 tags: [proyecto, producto, webgl, pasivo, marketplace]
 ---
@@ -113,7 +113,7 @@ un fondo, tres.
 | `../pruebas/` | **Fuera del paquete.** `pruebas.ps1` lanza la batería completa (63 comprobaciones). Relanzarla después de tocar cualquier cosa |
 | `../venta/` | **Fuera del paquete.** ZIP, demo pública, portadas y la [[Productos/Haze/venta/Ficha de venta\|ficha de venta]] |
 | `docs/` | `INSTALL.md` (HTML, React, Next, Framer, Webflow, WordPress) y `API.md` |
-| `LICENSE.md` | ⚠️ Borrador. **Que lo lea un abogado o tu gestor antes de publicar** |
+| `LICENSE.md` | ⚠️ Borrador. Si quiere, que la mire su madre (abogada) |
 
 ## Qué lo hace vendible (y no un script más)
 
@@ -180,9 +180,9 @@ Envato CodeCanyon, más adelante y solo si Framer funciona. Todo en la
 - [ ] **Abrir `demo/index.html`** y cambiar de motivo y de paleta. Si no te gusta, no se publica.
 - [ ] **Comprobar que el nombre está libre**: dominio, y buscar "Lustre" en Envato, Framer y npm.
 - [ ] Poner tu **email** en `LICENSE.md` (pone `[your email here]`) y decidir el precio.
-- [ ] Que un **abogado o tu gestor** lea la licencia. Es un borrador escrito para ser claro, no para ser a prueba de balas.
+- [x] ~~Gestor~~ **Descartado (27-sep):** lo fiscal lo declara él en la renta; la licencia, si acaso, la mira su madre (abogada). Es un borrador escrito para ser claro, no para ser a prueba de balas.
 - [ ] Ojo: si vendes por marketplace, **su licencia manda sobre la tuya**.
-- [ ] Fiscal: **estás en Canarias → IGIC, no IVA**. Si vendes a la UE, mira con tu gestor si compensa un *merchant of record* (Lemon Squeezy, Paddle).
+- [x] Fiscal: **lo lleva él** (27-sep). Lemon Squeezy cobra el IVA de cada comprador. Nota vieja: **Canarias → IGIC, no IVA**. Si vendes a la UE, mira con tu gestor si compensa un *merchant of record* (Lemon Squeezy, Paddle).
 - [ ] Nada de esto toca Reload. El fuente es nuevo y es tuyo — pero **revisa tu contrato** por si hay cláusula de exclusividad.
 
 ## Próximos pasos
