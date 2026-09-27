@@ -13,7 +13,7 @@ Nota-resumen: [[La Brega Studio/La Brega Studio|La Brega Studio]] · Volver al [
 ## Qué se hizo
 Se puso precio a la web (v5) y se preparó el documento para Raúl: una **factura con la explicación de cada partida** — qué se paga y por qué. Emitida a nombre de **Alejandro Gálvez Braña** (trabajo personal, fuera de Reload → sin logo de Reload).
 
-- Documento imprimible: `Factura - La Brega web v5.html` (abrir → *Imprimir* → *Guardar como PDF*).
+- Documento imprimible: `DOCUMENTACIÓN - La Brega web v5.html` (abrir → *Imprimir* → *Guardar como PDF*).
 - Precio aprobado por Alejandro: **2.200 € pago único, todo incluido**, con el primer año de dominio dentro.
 
 ## El precio: 2.200 €
