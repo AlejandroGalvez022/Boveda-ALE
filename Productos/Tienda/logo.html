@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><title>Logo de la tienda</title>
+<!--
+  Logo de la tienda de Lemon Squeezy (alejandrogalvez.lemonsqueezy.com).
+  Lo captura logo.ps1 a 512x512. Lemon Squeezy lo recorta en CIRCULO:
+  todo lo importante va dentro del circulo central.
+  logo.html?v=a  monograma AG
+  logo.html?v=b  monograma AG con la onda de Lustre debajo
+-->
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:512px;height:512px;overflow:hidden;background:#030a14}
+  .mark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 38%,#0b2238 0%,#030a14 70%)}
+  .ag{font-family:"Segoe UI",system-ui,sans-serif;font-weight:800;font-size:210px;letter-spacing:-.07em;
+    color:#f2f4f6;line-height:1;transform:translate(-6px,-4px)}
+  .dot{position:absolute;width:26px;height:26px;border-radius:50%;background:#5fe2c8;left:414px;top:322px}
+  svg{position:absolute;left:0;top:0}
+</style></head><body>
+<div class="mark">
+  <div class="ag">AG</div>
+</div>
+<script>
+  var v = new URLSearchParams(location.search).get('v') || 'a';
+  var m = document.querySelector('.mark');
+  if (v === 'a') {
+    var d = document.createElement('div'); d.className = 'dot'; m.appendChild(d);
+  } else {
+    document.querySelector('.ag').style.transform = 'translate(-6px,-26px)';
+    m.insertAdjacentHTML('beforeend',
+      '<svg width="512" height="512" viewBox="0 0 512 512"><path d="M150 384c40-38 70 10 106-8s66-36 106-10" ' +
+      'stroke="#5fe2c8" stroke-width="14" fill="none" stroke-linecap="round"/></svg>');
+  }
+</script>
+</body></html>
