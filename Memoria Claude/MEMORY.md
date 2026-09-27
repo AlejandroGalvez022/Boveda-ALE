@@ -12,3 +12,4 @@ El **resto** de la memoria —las reglas generales de trabajo— está en `Boved
 - [Bot de trading Revolut X](revolut-trading-bot.md) — el intradía NO tiene ventaja probada; la cartera de TENDENCIA BTC+ETH+XRP sí (papel, tarea BotTendencia); Telegram bidireccional
 
 > Al arrancar en un ordenador nuevo: leer **las dos** carpetas `Memoria Claude/` (la de `Boveda-RELOAD` y esta) y aplicarlas como memoria propia.
+- [Webs con anuncios](webs-con-anuncios.md) — idea personal 27-sep: blog+AdSense no sale; solo herramienta interactiva en inglés, experimento de 90 días
