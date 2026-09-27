@@ -1,6 +1,6 @@
 /*!
  * HAZE — atmospheric WebGL backgrounds for the web.
- * Three motifs, one file, zero dependencies. ~14 KB.
+ * Three motifs, one file, zero dependencies. 9 KB gzipped.
  *
  * Copyright (c) 2026 Alejandro Galvez. See LICENSE.md.
  */
@@ -16,6 +16,13 @@ function parseColor(input, fallback) {
   }
   if (typeof input === 'string') {
     var s = input.trim();
+    /* Design tools hand over colour tokens as var(--token, rgb(...)): the
+       real colour is the fallback after the first comma. */
+    if (/^var\(/i.test(s)) {
+      var cm = s.indexOf(',');
+      if (cm < 0) return fallback;
+      s = s.slice(cm + 1, s.lastIndexOf(')')).trim();
+    }
     var m = s.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
     if (m) {
       var h = m[1];
@@ -72,13 +79,18 @@ var DEFAULTS = {
   vignette: 0.35,
   mouse: 0.10,               // parallax pull; 0 skips the listener entirely
   intro: true,
+  startAt: 6,                // seconds into the loop the first frame shows.
+                             // It is also the still frame for reduced motion.
 
   quality: 1.75,             // device-pixel-ratio cap
   pauseOffscreen: true,
   respectReducedMotion: true,
 
   mobileBreakpoint: 700,
-  mobile: { scale: 1.35, quality: 1.5 }
+  mobile: { scale: 1.35, quality: 1.5 },
+
+  onFallback: null           // function (reason) — called if it falls back to CSS.
+                             // It has to be listed here: set() only keeps known keys.
 };
 
 /* ------------------------------------------------------------------ *
@@ -101,9 +113,15 @@ var PRELUDE = [
   'uniform float uEnergy,uIntro,uGrain,uVignette,uMouseAmt,uScale,uContrast;',
 
   'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
-  'float vnoise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);',
-  ' return mix(mix(hash(i),hash(i+vec2(1.,0.)),u.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),u.x),u.y);}',
-  'float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*vnoise(p);p*=2.03;a*=.5;}return v;}',
+  'vec2 hash2(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return fract(sin(p)*43758.5453);}',
+  /* Gradient noise, not value noise: value noise shows its grid the moment
+     you take a derivative of it. */
+  'float gnoise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*f*(f*(f*6.-15.)+10.);',
+  ' float a=dot(hash2(i)*2.-1.,f);',
+  ' float b=dot(hash2(i+vec2(1.,0.))*2.-1.,f-vec2(1.,0.));',
+  ' float c=dot(hash2(i+vec2(0.,1.))*2.-1.,f-vec2(0.,1.));',
+  ' float d=dot(hash2(i+vec2(1.,1.))*2.-1.,f-vec2(1.,1.));',
+  ' return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);}',
 
   /* Four-stop ramp. Stop 0 is the highlight, stop 3 the deep shade. */
   'vec3 ramp(float t){t=clamp(t,0.,1.);',
@@ -111,11 +129,16 @@ var PRELUDE = [
   ' if(t<.6666) return mix(uC1,uC2,(t-.3333)*3.);',
   ' return mix(uC2,uC3,(t-.6666)*3.);}',
 
-  /* Grain, vignette and the intro fade are identical for every motif, so
-     each one just hands its colour to this and is done. */
+  /* Contrast, a soft shoulder instead of a hard clip at white, vignette,
+     grain and the intro fade. Identical for every motif, so each one just
+     hands its colour to this and is done. The shoulder is what lets every
+     motif add light freely without burning into flat white blobs. */
   'vec3 finish(vec3 c, vec2 p){',
+  ' c*=uContrast;',
+  ' vec3 k=max(c-.78,0.);',
+  ' c=min(c,.78)+.22*(1.-exp(-k*4.5));',
   ' c*=1.-uVignette*smoothstep(.35,1.30,length(p));',
-  ' c+=(hash(gl_FragCoord.xy+uTime*77.)-.5)*uGrain;',
+  ' c+=(hash(gl_FragCoord.xy+fract(uTime)*77.)-.5)*uGrain;',
   ' return mix(uBg,c,uIntro);}'
 ].join('\n');
 
@@ -124,57 +147,99 @@ var MOTIFS = {
   /* ---------------------------------------------------------------- *
    * CAUSTICS — the light on the floor of a pool.
    *
-   * Two layers of fBm, the second warped by the first. Folding the result
-   * around its midpoint (1 - |m-.5|*2) turns smooth blobs into ridges;
-   * raising that to a high power leaves only the thin bright filaments.
+   * Real caustics are a NETWORK: thin bright lines where the ripples on
+   * the surface focus the sun, meeting in brighter knots. That network is
+   * the edge set of a moving Voronoi diagram (distance to the nearest
+   * border, F2 - F1), bent by a slow noise field the way water bends the
+   * light. Two networks at different scales; where they cross, the light
+   * adds up. Each colour channel draws the lines a touch wider or
+   * thinner: that is the thin rainbow fringe real caustics have.
    * ---------------------------------------------------------------- */
   caustics: [
+    'float edge(vec2 p, float t){',
+    ' vec2 i=floor(p),f=fract(p);',
+    ' float d1=8.,d2=8.;',
+    ' for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){',
+    '  vec2 g=vec2(float(x),float(y));',
+    '  vec2 h=hash2(i+g);',
+    '  vec2 o=.5+.42*sin(t*(.6+.5*h.yx)+6.2831*h);',
+    '  float d=length(g+o-f);',
+    '  if(d<d1){d2=d1;d1=d;}else if(d<d2){d2=d;}',
+    ' }',
+    ' return d2-d1;}',
+    /* one channel of light for a given line width */
+    'float net(float e1, float e2, float w){',
+    ' float l1=smoothstep(w,0.,e1);',
+    ' float l2=smoothstep(w*1.25,0.,e2);',
+    ' return l1*l1*.85+l2*l2*.42+l1*l2*1.6+exp(-e1*7.)*.16;}',
     'void main(){',
     ' vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y;',
-    ' vec2 uv=(p+(uMouse-.5)*uMouseAmt)*(2.2*uScale);',
-    ' float t=uTime*.35;',
-    ' float n=fbm(uv+vec2(t*.18,-t*.13));',
-    ' float m=fbm(uv*1.75+n*(1.1+.9*uEnergy)+vec2(-t*.15,t*.11));',
-    ' float ridge=1.-abs(m-.5)*2.;',
-    ' float sharp=6.+10.*uEnergy;',
-    ' float caust=pow(clamp(ridge,0.,1.),sharp);',
-    /* a second, slower set so the pattern never looks like one tiling */
-    ' float m2=fbm(uv*1.15-n*.8+vec2(t*.07,t*.09));',
-    ' float caust2=pow(clamp(1.-abs(m2-.5)*2.,0.,1.),sharp*.6);',
-    ' float light=caust*1.0+caust2*.45;',
-    ' vec3 c=mix(uBg, ramp(1.-clamp(n*1.15,0.,1.)), .55);',
-    ' c+=ramp(clamp(.15+light*.85,0.,1.))*light*(1.1+.9*uEnergy)*uContrast;',
+    ' vec2 uv=(p+(uMouse-.5)*uMouseAmt)*(4.6*uScale);',
+    ' float t=uTime*.55;',
+    ' vec2 wv=vec2(gnoise(uv*.32+vec2(t*.09,0.)),gnoise(uv*.32+vec2(5.2,1.3)-vec2(0.,t*.08)));',
+    ' uv+=wv*(.75+.9*uEnergy);',
+    ' uv+=.22*vec2(gnoise(uv*1.3+vec2(0.,t*.2)),gnoise(uv*1.3+vec2(t*.2,4.1)));',
+    ' float w=.075+.035*uEnergy;',
+    /* The two networks are found ONCE; the rainbow fringe comes from each
+       channel reading them with a slightly different line width, so red
+       spreads wider than blue. Same look as sampling three places, at a
+       third of the cost. */
+    ' float e1=edge(uv,t);',
+    ' float e2=edge(uv*1.63+vec2(3.1,7.7),t*1.27);',
+    ' vec3 L=vec3(net(e1,e2,w*1.14),net(e1,e2,w),net(e1,e2,w*.86));',
+    ' float nb=gnoise(uv*.26+vec2(t*.04,-t*.03));',
+    ' float body=.5+.5*nb;',
+    ' vec3 c=mix(uBg,mix(uC3,uC2,.25+.5*body),.9);',
+    ' c*=.78+.3*smoothstep(-.6,.6,p.y);',
+    ' float lm=(L.r+L.g+L.b)/3.;',
+    ' vec3 tint=mix(uC1,uC0,clamp(lm*1.1,0.,1.));',
+    ' float sun=.55+.45*smoothstep(-.35,.45,nb);',
+    ' c+=tint*L*sun*(.85+.45*uEnergy);',
     ' gl_FragColor=vec4(finish(c,p),1.);',
     '}'
   ].join('\n'),
 
   /* ---------------------------------------------------------------- *
-   * RIBBONS — four bands of light drifting and crossing.
+   * RIBBONS — silk ribbons drifting and turning over.
    *
-   * The trick is domain warping: each band is drawn where it *would* go,
-   * except the coordinate handed to it has already been bent by noise.
-   * Straight sines become cloth.
+   * Each ribbon is a curve whose width passes through zero: where it
+   * does, the ribbon has turned over and we are looking at its back.
+   * Front and back get different shades, the fold catches a sharp
+   * highlight, and the ribbons are composited back to front so they
+   * really pass behind one another. That is all it takes to read as 3D.
    * ---------------------------------------------------------------- */
   ribbons: [
     'void main(){',
     ' vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y;',
-    ' vec2 sp=(p+(uMouse-.5)*uMouseAmt)*uScale;',
-    ' float t=uTime*.30;',
-    ' vec2 w=vec2(fbm(sp*1.25+vec2(t*.16,0.)),fbm(sp*1.25+vec2(9.2,-t*.13)));',
-    ' vec2 q=sp+(w-.5)*(.55+.85*uEnergy);',
-    ' vec3 c=uBg;',
-    ' float glow=0.;',
+    ' vec2 q=(p+(uMouse-.5)*uMouseAmt)*(1.25*uScale);',
+    ' float t=uTime*.32;',
+    ' q.y+=.07*gnoise(q*.9+vec2(t*.15,-t*.1));',
+    ' float px=1.6*uScale/uRes.y;',
+    ' vec3 c=uBg+uC3*.55*exp(-2.2*dot(p,p));',
     ' for(int k=0;k<4;k++){',
-    '   float fk=float(k);',
-    '   float off=sin(q.x*(1.15+fk*.22)+t*(.55+fk*.17)+fk*2.1)*(.20+.06*fk)+(fk-1.5)*.17;',
-    '   float d=abs(q.y-off);',
-    '   float thick=.055+.030*sin(t*.7+fk)+.02*uEnergy;',
-    '   float band=smoothstep(thick,0.,d);',
-    '   vec3 col = fk<.5?uC0 : (fk<1.5?uC1 : (fk<2.5?uC2 : uC3));',
-    '   c+=col*band*(.85+.6*uEnergy)*uContrast;',
-    '   glow+=smoothstep(thick*5.,0.,d)*.16;',
+    '  float fk=float(k);',
+    '  float x=q.x;',
+    '  float a1=.20+.05*fk, f1=.95+.18*fk, a2=.085, f2=2.1+.3*fk;',
+    '  float ph1=x*f1+t*(.55+.12*fk)+fk*1.9, ph2=x*f2-t*.7+fk*3.3;',
+    '  float y0=(fk-1.5)*(.16+.06*uEnergy)+a1*sin(ph1)+a2*sin(ph2);',
+    '  float dy=a1*f1*cos(ph1)+a2*f2*cos(ph2);',
+    '  float d=(q.y-y0)/sqrt(1.+dy*dy);',
+    '  float tw=sin(x*(.75+.16*fk)+t*(.8+.1*fk)+fk*2.4);',
+    '  float hw=(.07+.04*uEnergy)*(.10+.90*abs(tw));',
+    '  float ac=d/hw;',
+    '  float inside=1.-smoothstep(1.-px/hw,1.+px/hw,abs(ac));',
+    '  vec3 base=ramp(clamp(.12+.62*(.5+.5*sin(x*.55+fk*1.3+t*.25)),0.,1.));',
+    '  float face=step(0.,tw);',
+    '  float sheen=pow(max(1.-ac*ac,0.),1.6);',
+    '  float thr=.94+.06*sin(ac*7.+x*2.);',
+    '  vec3 front=base*(.45+.75*sheen)*thr;',
+    '  vec3 back=mix(base,uC2,.5)*(.40+.50*sheen);',
+    '  vec3 col=mix(back,front,face);',
+    '  col+=uC0*pow(1.-abs(tw),14.)*(.9+.6*uEnergy);',
+    '  float glow=exp(-abs(d)*11.)*.14*(.6+.8*uEnergy);',
+    '  c+=base*glow*(1.-inside);',
+    '  c=mix(c,col,inside*.96);',
     ' }',
-    ' c+=ramp(.5)*glow*(.5+.5*uEnergy);',
     ' gl_FragColor=vec4(finish(c,p),1.);',
     '}'
   ].join('\n'),
@@ -182,39 +247,45 @@ var MOTIFS = {
   /* ---------------------------------------------------------------- *
    * CHROME — liquid metal.
    *
-   * An fBm height field, differentiated into a surface normal, then that
-   * normal is used to look up the palette as if it were an environment.
-   * No textures, no lights, no maths beyond a reflect().
+   * Chrome has no colour of its own: it is whatever it reflects, bent by
+   * its shape. The SHAPE is a smooth swell of a few crossing waves (fine
+   * detail turns a reflection into static). The WORLD it reflects is a
+   * photo studio built from the palette: bright sky, dark floor, a hard
+   * horizon between them and two soft-boxes. The hard edges of that world
+   * make the reflections crisp, and crisp reflections are what read as
+   * metal rather than plastic.
    * ---------------------------------------------------------------- */
   chrome: [
-    /* Only three octaves, and gentle ones. Metal is a SMOOTH surface catching
-       light: with the full five-octave fBm the derivatives get so violent that
-       the normal changes every pixel and the whole thing reads as television
-       static instead of liquid metal. */
-    'float hgt(vec2 p, float t){',
-    ' float v=.60*vnoise(p       +vec2(t*.11,-t*.09));',
-    ' v+=.28*vnoise(p*2.05-vec2(t*.08, t*.07));',
-    ' v+=.12*vnoise(p*4.10+vec2(-t*.06,t*.05));',
-    ' return v;}',
+    'float H(vec2 p,float t){',
+    ' vec2 w=p+.38*vec2(sin(p.y*1.3+t*.41),sin(p.x*1.1-t*.33));',
+    ' return .50*sin(w.x*1.15+t*.52)+.42*sin(w.y*1.45-t*.43)',
+    '  +.30*sin((w.x+w.y)*.95+t*.31)+.14*sin((w.x-w.y)*2.05-t*.27);}',
+    'vec3 env(vec2 r){',
+    ' float y=r.y,x=r.x;',
+    ' vec3 sky=mix(uC2,uC1,smoothstep(.0,1.1,y));',
+    ' vec3 gnd=mix(mix(uBg,uC3,.45),uC2*.85,smoothstep(-1.4,-.05,y));',
+    ' vec3 c=mix(gnd,sky,smoothstep(-.012,.012,y));',
+    ' c+=uC0*exp(-abs(y)*26.)*.55;',
+    ' c+=uC0*smoothstep(.16,.02,abs(y-.62))*.85;',
+    ' c=mix(c,uBg,smoothstep(.10,.0,abs(y-.34))*.75);',
+    ' c+=uC0*smoothstep(.08,.0,abs(x-.45))*smoothstep(-.05,.25,y)*.7;',
+    ' c=mix(c,uBg,smoothstep(.14,.0,abs(x+.6))*smoothstep(0.,.3,y)*.85);',
+    ' c+=uC1*smoothstep(.05,.0,abs(y+.45))*.35;',
+    ' c+=uC0*smoothstep(.035,.0,abs(y-.18))*smoothstep(.9,.2,abs(x))*.5;',
+    ' return c;}',
     'void main(){',
     ' vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y;',
-    ' vec2 sp=(p+(uMouse-.5)*uMouseAmt)*(1.05*uScale);',
-    ' float t=uTime*.35;',
-    /* a wide epsilon is the other half of the fix: it averages the slope over
-       a real distance instead of sampling two touching pixels */
-    ' float e=.011;',
-    ' float hx=hgt(sp+vec2(e,0.),t)-hgt(sp-vec2(e,0.),t);',
-    ' float hy=hgt(sp+vec2(0.,e),t)-hgt(sp-vec2(0.,e),t);',
-    ' float relief=.020/(0.45+.85*uEnergy);',
-    ' vec3 n=normalize(vec3(-hx,-hy,relief));',
-    ' vec3 v=vec3(0.,0.,1.);',
-    ' vec3 r=reflect(-v,n);',
-    /* the environment IS the palette, read along the reflected ray */
-    ' vec3 c=ramp(clamp(r.y*.5+.5,0.,1.))*uContrast;',
-    ' float spec=pow(clamp(r.z,0.,1.),14.+26.*(1.-uEnergy));',
-    ' c+=uC0*spec*.75;',
-    ' float fres=pow(1.-clamp(n.z,0.,1.),3.);',
-    ' c=mix(c,uC3,fres*.30);',
+    ' vec2 sp=(p+(uMouse-.5)*uMouseAmt)*(2.6*uScale);',
+    ' float t=uTime*.42;',
+    ' float e=.012;',
+    ' float hx=(H(sp+vec2(e,0.),t)-H(sp-vec2(e,0.),t))/(2.*e);',
+    ' float hy=(H(sp+vec2(0.,e),t)-H(sp-vec2(0.,e),t))/(2.*e);',
+    ' float bump=.50+.35*uEnergy;',
+    ' vec3 n=normalize(vec3(-hx*bump,-hy*bump,1.));',
+    ' vec2 r=vec2(p.x*.35+n.x*1.7,p.y*.55+.14+n.y*1.9);',
+    ' vec3 c=env(r);',
+    ' float fres=pow(1.-n.z,2.);',
+    ' c=mix(c,uC1,fres*.35);',
     ' gl_FragColor=vec4(finish(c,p),1.);',
     '}'
   ].join('\n')
@@ -258,7 +329,14 @@ function Haze(target, options) {
 /* ---- options ---------------------------------------------------- */
 
 Haze.prototype.set = function (options, silent) {
-  options = options || {};
+  /* Wrappers (React, Framer) pass every prop, set or not. An undefined value
+     means "not given", never "set it to nothing": left in, speed would come
+     through as undefined and freeze the loop, contrast as 0 and paint black. */
+  var given = {};
+  for (var g in options || {}) {
+    if (Object.prototype.hasOwnProperty.call(options, g) && options[g] !== undefined) given[g] = options[g];
+  }
+  options = given;
 
   if (options.palette && PALETTES[options.palette]) {
     options = Object.assign({}, PALETTES[options.palette], options);
@@ -457,13 +535,13 @@ Haze.prototype._bindEvents = function () {
     window.addEventListener('mousemove', this._onMove, { passive: true });
   }
 
-  this._onVis = function () { if (document.hidden) self.pause(); else self.play(); };
+  this._onVis = function () { if (document.hidden) self._halt(); else self._resume(); };
   document.addEventListener('visibilitychange', this._onVis);
 
   if (this.o.pauseOffscreen && window.IntersectionObserver) {
     this._io = new IntersectionObserver(function (entries) {
       self._visible = entries[0].isIntersecting;
-      if (self._visible) self.play(); else self.pause();
+      if (self._visible) self._resume(); else self._halt();
     }, { threshold: 0 });
     this._io.observe(this.el);
   }
@@ -494,7 +572,9 @@ Haze.prototype._draw = function () {
 
   gl.useProgram(this.program);
   var now = (window.performance && performance.now) ? performance.now() : Date.now();
-  gl.uniform1f(U.uTime, ((now - this._t0) / 1000) * (o.speed || 0));
+  /* startAt + elapsed * speed: with speed 0 every redraw lands on the same
+     frame, which is what a still image (or a design-tool canvas) needs. */
+  gl.uniform1f(U.uTime, (+o.startAt || 0) + ((now - this._t0) / 1000) * (o.speed || 0));
   gl.uniform2f(U.uMouse, this._mouse[0], this._mouse[1]);
   gl.uniform3fv(U.uC0, this._c[0]);
   gl.uniform3fv(U.uC1, this._c[1]);
@@ -525,8 +605,22 @@ Haze.prototype._frame = function () {
 
 /* ---- public API -------------------------------------------------- */
 
+/* play() and pause() are the buyer's; _resume() and _halt() are what the
+   visibility and scroll observers use. The difference matters: a pause the
+   buyer asked for must survive the element scrolling back into view or the
+   tab coming back, or pause() would quietly stop meaning anything. */
 Haze.prototype.play = function () {
-  if (this.destroyed || this._running || !this.gl || !this._visible) return this;
+  this._held = false;
+  return this._resume();
+};
+
+Haze.prototype.pause = function () {
+  this._held = true;
+  return this._halt();
+};
+
+Haze.prototype._resume = function () {
+  if (this._held || this.destroyed || this._running || !this.gl || !this._visible) return this;
   if (this._reduced && this.o.respectReducedMotion) return this;
   this._running = true;
   var self = this;
@@ -534,7 +628,7 @@ Haze.prototype.play = function () {
   return this;
 };
 
-Haze.prototype.pause = function () {
+Haze.prototype._halt = function () {
   this._running = false;
   if (this._raf) { cancelAnimationFrame(this._raf); this._raf = 0; }
   return this;
@@ -565,7 +659,7 @@ Haze.prototype.motif = function (name) {
 
 Haze.prototype.destroy = function () {
   if (this.destroyed) return;
-  this.pause();
+  this._halt();
   this.destroyed = true;
 
   if (this._ro) this._ro.disconnect();

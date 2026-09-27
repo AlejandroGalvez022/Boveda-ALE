@@ -9,20 +9,23 @@ All notable changes to Haze. Versions follow [semver](https://semver.org/).
 First release.
 
 ### Motifs
-- **`caustics`** — two layers of fBm, the second warped by the first, folded
-  around the midpoint and raised to a high power so only the thin bright
-  filaments survive. A second, slower set is mixed in so the pattern never
-  reads as a single tiling.
-- **`ribbons`** — four bands of light on a domain-warped coordinate, each with
-  its own drift, phase and breathing thickness, plus a soft bloom around each.
-- **`chrome`** — an fBm height field differentiated into a surface normal; the
-  reflected ray reads the palette as if it were an environment map. Specular
-  highlight and a Fresnel edge, no textures and no light sources.
+- **`caustics`** — the edge set of two moving Voronoi networks at different
+  scales, bent by a slow noise field the way water bends light. Where the
+  networks cross the light adds up; each colour channel draws the lines a
+  touch wider or thinner for the rainbow fringe of real caustics.
+- **`ribbons`** — four silk ribbons whose width passes through zero, so they
+  turn over: front and back shaded apart, a highlight on every fold, and
+  composited back to front so they pass behind one another.
+- **`chrome`** — a smooth swell of crossing waves differentiated into a normal,
+  reflecting a studio built from the palette (sky, floor, hard horizon, two
+  soft-boxes). The hard edges of that studio keep the reflections crisp.
+- A soft shoulder at white in the shared finish, so bright light never burns
+  into flat blobs whatever the palette.
 
 ### Core
 - One fragment shader over one full-screen triangle: a single draw call per
   frame, nothing allocated after setup.
-- `energy` (0–1): caustics sharpen, ribbons swell, chrome melts. Eased, so raw
+- `energy` (0–1): the water roughens, ribbons widen and spread, chrome swells. Eased, so raw
   scroll values can be fed to it every frame.
 - Pointer parallax with its own easing, independent of energy.
 - Switching motif rebuilds only the shader program — the canvas, the buffer and
@@ -32,6 +35,9 @@ First release.
 - `dist/haze.js` — classic `<script>`, exposes `window.Haze`, auto-initialises
   `[data-haze]` elements.
 - `dist/haze.esm.js` — ES module for bundlers.
+- `dist/Haze.framer.tsx` — a Framer code component with the engine inlined and
+  every option in the properties panel (colour styles included). Paints a
+  still frame on the Framer canvas, animates in preview and on the site.
 - `react/Haze.jsx` — React wrapper with a ref API, SSR-safe, tears down on
   unmount. Structural options rebuild; cosmetic ones update in place.
 - Seven palettes: lagoon, dusk, forest, steel, magma, violet, mono.

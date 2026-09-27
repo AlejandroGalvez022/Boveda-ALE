@@ -11,6 +11,15 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ## 2026-09-27
 
+> [!check]+ 🗓️ 2026-09-27 — Haze rehecho como producto estrella
+> - **Por qué:** pidió tratarlo como producto estrella. Mirado como comprador, la v1 no lo era (caustics turbio, ribbons borroso, chrome una mancha) y había fondos gratis mejores.
+> - **Fondos rehechos de cero:** caustics = red de luz de piscina con filo de arcoíris; ribbons = cintas de seda que se dan la vuelta; chrome = metal que refleja un estudio de fotos. Coste del caustics ajustado de 2,7× a ~1,3× el viejo.
+> - **Componente de Framer** (`dist/Haze.framer.tsx`) con todos los controles; imagen quieta en el lienzo del editor.
+> - **4 fallos que venían de la v1:** React congelaba la animación; `pause()` no se respetaba; `onFallback` nunca avisaba; `dist/` con 8 caracteres rotos (build en ANSI). Y la demo se salía 10 px en móvil.
+> - **Venta:** Framer Marketplace + Lemon Squeezy, 24 $ / 59 $. ZIP, demo pública para Netlify, 8 portadas y textos en inglés en `Productos/Haze/venta/`.
+> - **Verificado:** `pruebas/pruebas.ps1`, 63 comprobaciones y 0 fallos.
+> - **Pendiente (él):** pasos 1-9 de la ficha de venta (mirar la demo, email en la licencia, gestor, nombre libre, Lemon Squeezy, Netlify, Framer).
+
 > [!check]+ 🗓️ 2026-09-27 — Webs con anuncios: investigación de viabilidad
 > - Idea sacada de un vídeo (webs sencillas llenas de anuncios). Proyecto nuevo en `Productos/Webs con anuncios/`, con estado **idea**.
 > - **Veredicto:** el blog de nicho en español con AdSense no sale a cuenta en 2026 (con resumen de IA, los clics caen un 58 %; a ~4 $ cada 1.000 visitas, 100 €/mes piden ~25-35 mil visitas al mes). Lo que aguanta son las **herramientas interactivas en inglés**, como experimento de 90 días con criterio de corte.

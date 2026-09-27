@@ -43,9 +43,9 @@ What `energy` does per motif:
 
 | | |
 |---|---|
-| `caustics` | Filaments get thinner, sharper and brighter. |
-| `ribbons` | Bands swell and wander further from their path. |
-| `chrome` | Goes from polished and hard-lit to molten and soft. |
+| `caustics` | The water gets rougher: lines bend more, widen and brighten. |
+| `ribbons` | Ribbons widen, spread apart and the folds flare. |
+| `chrome` | The swell gets deeper, so the reflections bend harder. |
 
 ### Motion and texture
 
@@ -56,6 +56,7 @@ What `energy` does per motif:
 | `vignette` | `0.35` | 0–0.9 | Darkens the corners. Raise it to protect text near the edges. |
 | `mouse` | `0.10` | 0–0.4 | Pointer parallax. `0` skips the listener entirely. |
 | `intro` | `true` | | Fade up from the background on first paint. |
+| `startAt` | `6` | seconds | Where in the loop the first frame lands. Also the still frame shown to reduced-motion users, so pick one you like. |
 
 ### Performance and behaviour
 
@@ -85,8 +86,9 @@ haze.set(options)       // change anything except structural flags. Chainable.
 haze.energy(0.8)        // 0–1. Eases towards the value.
 haze.motif('chrome')    // rebuild the shader, keep the context
 haze.palette('magma')   // swap four colours + background
-haze.play()             // resume
-haze.pause()            // stop the frame loop
+haze.play()             // resume (and let off-screen pausing take over again)
+haze.pause()            // stop the frame loop. Stays paused until play(),
+                        // even if the element scrolls back into view
 haze.destroy()          // remove listeners, loop, GL resources and canvas
 ```
 

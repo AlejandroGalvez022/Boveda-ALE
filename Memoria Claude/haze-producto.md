@@ -1,6 +1,6 @@
 ---
 name: haze-producto
-description: Haze — primer producto de Alejandro para ingresos pasivos (3 fondos WebGL para marketplaces) y la regla de no repetir lo entregado a un cliente
+description: Haze — primer producto de ingresos pasivos (3 fondos WebGL); 27-sep rehecho como producto estrella, se vende en Framer + Lemon Squeezy a 24/59 $; regla de no repetir lo entregado a un cliente
 metadata: 
   node_type: memory
   type: project
@@ -22,5 +22,7 @@ Lo que sí se conservó fue **el motor** (respaldos, pausado, movimiento reducid
 ⚠️ **Con 3 piezas no funciona; con 12, sí.** Realista a 2 años: **800–2.500 €/mes**, y **no es recurrente**. Haze es la **pieza 1**. Prueba acordada: **Framer Marketplace**, **60 días sin tocar nada**, y ese número decide.
 
 **Reglas duras:** el `cdp.ps1` y el Radar **son de Reload y no se sacan**. La licencia es un **borrador** (que la lea un abogado) y si vende por marketplace **manda la del marketplace**. Está en **Canarias → IGIC, no IVA**: mirar *merchant of record* con el gestor. **Nunca prometer cumplimiento de accesibilidad** ni de ninguna ley.
+
+**27-sep-2026 — rehecho como «producto estrella»** (lo pidió así). La v1 NO lo era: se veía peor que fondos gratis (ShaderGradient, Vanta). Fondos rehechos de cero (caustics = Voronoi F2-F1 doblado por ruido; ribbons = cintas que se dan la vuelta; chrome = refleja un estudio hecho con la paleta), componente de Framer `dist/Haze.framer.tsx` (lo genera `build.ps1` desde `src/framer.tsx`), y 4 fallos que venían de la v1 arreglados. **Venta: Framer Marketplace (escaparate, no cobra) + Lemon Squeezy (5 %, merchant of record) a 24 $ / 59 $**; todo en `venta/Ficha de venta.md`, ZIP y demo pública con `venta/empaquetar.py`. **Pruebas: `pruebas/pruebas.ps1` (63, todas en verde) — relanzarlas tras tocar cualquier cosa.** Lecciones: juzgar los fondos a TAMAÑO DE CABECERA (en miniatura todo parece nítido); `Select-Object -First` corta el script y deja capturas viejas; el build debe leer en UTF-8. Pendiente, él: pasos 1-9 de la ficha.
 
 Relacionado: [[user-profile]], [[preview-web-changes]], [[boveda-alejandro-personal]], [[labrega-studio]].

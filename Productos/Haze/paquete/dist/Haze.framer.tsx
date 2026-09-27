@@ -1,0 +1,878 @@
+// @ts-nocheck
+/*!
+ * HAZE for Framer — one code file, no packages to install.
+ * Generated from src/framer.tsx + src/haze.js by build.ps1.
+ * Copyright (c) 2026 Alejandro Galvez. See LICENSE.md.
+ *
+ * INSTALL: Assets → Code → "+" → New file → name it Haze → paste this whole
+ * file over the template → save. "Haze" appears in your Assets. Drag it onto
+ * the canvas, set it to fill its parent, and put your content above it.
+ */
+
+import { addPropertyControls, ControlType, RenderTarget } from "framer"
+import { useEffect, useRef } from "react"
+
+/*!
+ * HAZE — atmospheric WebGL backgrounds for the web.
+ * Three motifs, one file, zero dependencies. 9 KB gzipped.
+ *
+ * Copyright (c) 2026 Alejandro Galvez. See LICENSE.md.
+ */
+
+/* ------------------------------------------------------------------ *
+ * Colour helpers
+ * ------------------------------------------------------------------ */
+
+/** Accepts '#rgb', '#rrggbb', 'rgb(r,g,b)' or [r,g,b] 0-255 → [r,g,b] 0-1. */
+function parseColor(input, fallback) {
+  if (Array.isArray(input) && input.length >= 3) {
+    return [input[0] / 255, input[1] / 255, input[2] / 255];
+  }
+  if (typeof input === 'string') {
+    var s = input.trim();
+    /* Design tools hand over colour tokens as var(--token, rgb(...)): the
+       real colour is the fallback after the first comma. */
+    if (/^var\(/i.test(s)) {
+      var cm = s.indexOf(',');
+      if (cm < 0) return fallback;
+      s = s.slice(cm + 1, s.lastIndexOf(')')).trim();
+    }
+    var m = s.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+    if (m) {
+      var h = m[1];
+      if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+      return [
+        parseInt(h.slice(0, 2), 16) / 255,
+        parseInt(h.slice(2, 4), 16) / 255,
+        parseInt(h.slice(4, 6), 16) / 255
+      ];
+    }
+    var n = s.match(/(-?[\d.]+)/g);
+    if (n && n.length >= 3) {
+      return [Math.min(255, +n[0]) / 255, Math.min(255, +n[1]) / 255, Math.min(255, +n[2]) / 255];
+    }
+  }
+  return fallback;
+}
+
+function toCss(c) {
+  return 'rgb(' + Math.round(c[0] * 255) + ',' + Math.round(c[1] * 255) + ',' + Math.round(c[2] * 255) + ')';
+}
+function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
+
+/* ------------------------------------------------------------------ *
+ * Palettes — four stops, dark to light is up to you.
+ * ------------------------------------------------------------------ */
+
+var PALETTES = {
+  lagoon:   { colors: ['#eafff7', '#5fe2c8', '#1f8fb5', '#10275c'], background: '#030a14' },
+  dusk:     { colors: ['#ffe6b0', '#ff9a6b', '#c2508f', '#2b1b57'], background: '#0a0713' },
+  forest:   { colors: ['#e8ffd2', '#8fe36b', '#1f9a72', '#0a2f33'], background: '#03100f' },
+  steel:    { colors: ['#ffffff', '#c3ccd8', '#6b7d93', '#242c3a'], background: '#070a0f' },
+  magma:    { colors: ['#fff0c2', '#ffae3b', '#e0452b', '#3d0d16'], background: '#0b0406' },
+  violet:   { colors: ['#f0e6ff', '#b98cff', '#6f45d6', '#1b1140'], background: '#070514' },
+  mono:     { colors: ['#ffffff', '#cfcfcf', '#7a7a7a', '#2e2e2e'], background: '#070707' }
+};
+
+/* ------------------------------------------------------------------ *
+ * Defaults
+ * ------------------------------------------------------------------ */
+
+var DEFAULTS = {
+  motif: 'caustics',         // 'caustics' | 'ribbons' | 'chrome'
+  palette: null,             // name from PALETTES; applied before everything else
+  colors: PALETTES.lagoon.colors,
+  background: PALETTES.lagoon.background,
+
+  scale: 1,                  // zoom. Smaller = bigger shapes.
+  speed: 1,
+  energy: 0.5,               // 0..1 — how alive it is. Animate this on scroll.
+  contrast: 1,
+
+  grain: 0.03,
+  vignette: 0.35,
+  mouse: 0.10,               // parallax pull; 0 skips the listener entirely
+  intro: true,
+  startAt: 6,                // seconds into the loop the first frame shows.
+                             // It is also the still frame for reduced motion.
+
+  quality: 1.75,             // device-pixel-ratio cap
+  pauseOffscreen: true,
+  respectReducedMotion: true,
+
+  mobileBreakpoint: 700,
+  mobile: { scale: 1.35, quality: 1.5 },
+
+  onFallback: null           // function (reason) — called if it falls back to CSS.
+                             // It has to be listed here: set() only keeps known keys.
+};
+
+/* ------------------------------------------------------------------ *
+ * Shaders
+ *
+ * All three motifs share one prelude (noise, fBm, palette ramp) and one
+ * uniform block, so switching motif only swaps the body.
+ * ------------------------------------------------------------------ */
+
+var VERT = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+
+var PRELUDE = [
+  'precision highp float;',
+  'const float PI=3.14159265;',
+  'uniform vec2  uRes;',
+  'uniform float uTime;',
+  'uniform vec2  uMouse;',
+  'uniform vec3  uC0,uC1,uC2,uC3;',
+  'uniform vec3  uBg;',
+  'uniform float uEnergy,uIntro,uGrain,uVignette,uMouseAmt,uScale,uContrast;',
+
+  'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+  'vec2 hash2(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return fract(sin(p)*43758.5453);}',
+  /* Gradient noise, not value noise: value noise shows its grid the moment
+     you take a derivative of it. */
+  'float gnoise(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*f*(f*(f*6.-15.)+10.);',
+  ' float a=dot(hash2(i)*2.-1.,f);',
+  ' float b=dot(hash2(i+vec2(1.,0.))*2.-1.,f-vec2(1.,0.));',
+  ' float c=dot(hash2(i+vec2(0.,1.))*2.-1.,f-vec2(0.,1.));',
+  ' float d=dot(hash2(i+vec2(1.,1.))*2.-1.,f-vec2(1.,1.));',
+  ' return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);}',
+
+  /* Four-stop ramp. Stop 0 is the highlight, stop 3 the deep shade. */
+  'vec3 ramp(float t){t=clamp(t,0.,1.);',
+  ' if(t<.3333) return mix(uC0,uC1,t*3.);',
+  ' if(t<.6666) return mix(uC1,uC2,(t-.3333)*3.);',
+  ' return mix(uC2,uC3,(t-.6666)*3.);}',
+
+  /* Contrast, a soft shoulder instead of a hard clip at white, vignette,
+     grain and the intro fade. Identical for every motif, so each one just
+     hands its colour to this and is done. The shoulder is what lets every
+     motif add light freely without burning into flat white blobs. */
+  'vec3 finish(vec3 c, vec2 p){',
+  ' c*=uContrast;',
+  ' vec3 k=max(c-.78,0.);',
+  ' c=min(c,.78)+.22*(1.-exp(-k*4.5));',
+  ' c*=1.-uVignette*smoothstep(.35,1.30,length(p));',
+  ' c+=(hash(gl_FragCoord.xy+fract(uTime)*77.)-.5)*uGrain;',
+  ' return mix(uBg,c,uIntro);}'
+].join('\n');
+
+var MOTIFS = {
+
+  /* ---------------------------------------------------------------- *
+   * CAUSTICS — the light on the floor of a pool.
+   *
+   * Real caustics are a NETWORK: thin bright lines where the ripples on
+   * the surface focus the sun, meeting in brighter knots. That network is
+   * the edge set of a moving Voronoi diagram (distance to the nearest
+   * border, F2 - F1), bent by a slow noise field the way water bends the
+   * light. Two networks at different scales; where they cross, the light
+   * adds up. Each colour channel draws the lines a touch wider or
+   * thinner: that is the thin rainbow fringe real caustics have.
+   * ---------------------------------------------------------------- */
+  caustics: [
+    'float edge(vec2 p, float t){',
+    ' vec2 i=floor(p),f=fract(p);',
+    ' float d1=8.,d2=8.;',
+    ' for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++){',
+    '  vec2 g=vec2(float(x),float(y));',
+    '  vec2 h=hash2(i+g);',
+    '  vec2 o=.5+.42*sin(t*(.6+.5*h.yx)+6.2831*h);',
+    '  float d=length(g+o-f);',
+    '  if(d<d1){d2=d1;d1=d;}else if(d<d2){d2=d;}',
+    ' }',
+    ' return d2-d1;}',
+    /* one channel of light for a given line width */
+    'float net(float e1, float e2, float w){',
+    ' float l1=smoothstep(w,0.,e1);',
+    ' float l2=smoothstep(w*1.25,0.,e2);',
+    ' return l1*l1*.85+l2*l2*.42+l1*l2*1.6+exp(-e1*7.)*.16;}',
+    'void main(){',
+    ' vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y;',
+    ' vec2 uv=(p+(uMouse-.5)*uMouseAmt)*(4.6*uScale);',
+    ' float t=uTime*.55;',
+    ' vec2 wv=vec2(gnoise(uv*.32+vec2(t*.09,0.)),gnoise(uv*.32+vec2(5.2,1.3)-vec2(0.,t*.08)));',
+    ' uv+=wv*(.75+.9*uEnergy);',
+    ' uv+=.22*vec2(gnoise(uv*1.3+vec2(0.,t*.2)),gnoise(uv*1.3+vec2(t*.2,4.1)));',
+    ' float w=.075+.035*uEnergy;',
+    /* The two networks are found ONCE; the rainbow fringe comes from each
+       channel reading them with a slightly different line width, so red
+       spreads wider than blue. Same look as sampling three places, at a
+       third of the cost. */
+    ' float e1=edge(uv,t);',
+    ' float e2=edge(uv*1.63+vec2(3.1,7.7),t*1.27);',
+    ' vec3 L=vec3(net(e1,e2,w*1.14),net(e1,e2,w),net(e1,e2,w*.86));',
+    ' float nb=gnoise(uv*.26+vec2(t*.04,-t*.03));',
+    ' float body=.5+.5*nb;',
+    ' vec3 c=mix(uBg,mix(uC3,uC2,.25+.5*body),.9);',
+    ' c*=.78+.3*smoothstep(-.6,.6,p.y);',
+    ' float lm=(L.r+L.g+L.b)/3.;',
+    ' vec3 tint=mix(uC1,uC0,clamp(lm*1.1,0.,1.));',
+    ' float sun=.55+.45*smoothstep(-.35,.45,nb);',
+    ' c+=tint*L*sun*(.85+.45*uEnergy);',
+    ' gl_FragColor=vec4(finish(c,p),1.);',
+    '}'
+  ].join('\n'),
+
+  /* ---------------------------------------------------------------- *
+   * RIBBONS — silk ribbons drifting and turning over.
+   *
+   * Each ribbon is a curve whose width passes through zero: where it
+   * does, the ribbon has turned over and we are looking at its back.
+   * Front and back get different shades, the fold catches a sharp
+   * highlight, and the ribbons are composited back to front so they
+   * really pass behind one another. That is all it takes to read as 3D.
+   * ---------------------------------------------------------------- */
+  ribbons: [
+    'void main(){',
+    ' vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y;',
+    ' vec2 q=(p+(uMouse-.5)*uMouseAmt)*(1.25*uScale);',
+    ' float t=uTime*.32;',
+    ' q.y+=.07*gnoise(q*.9+vec2(t*.15,-t*.1));',
+    ' float px=1.6*uScale/uRes.y;',
+    ' vec3 c=uBg+uC3*.55*exp(-2.2*dot(p,p));',
+    ' for(int k=0;k<4;k++){',
+    '  float fk=float(k);',
+    '  float x=q.x;',
+    '  float a1=.20+.05*fk, f1=.95+.18*fk, a2=.085, f2=2.1+.3*fk;',
+    '  float ph1=x*f1+t*(.55+.12*fk)+fk*1.9, ph2=x*f2-t*.7+fk*3.3;',
+    '  float y0=(fk-1.5)*(.16+.06*uEnergy)+a1*sin(ph1)+a2*sin(ph2);',
+    '  float dy=a1*f1*cos(ph1)+a2*f2*cos(ph2);',
+    '  float d=(q.y-y0)/sqrt(1.+dy*dy);',
+    '  float tw=sin(x*(.75+.16*fk)+t*(.8+.1*fk)+fk*2.4);',
+    '  float hw=(.07+.04*uEnergy)*(.10+.90*abs(tw));',
+    '  float ac=d/hw;',
+    '  float inside=1.-smoothstep(1.-px/hw,1.+px/hw,abs(ac));',
+    '  vec3 base=ramp(clamp(.12+.62*(.5+.5*sin(x*.55+fk*1.3+t*.25)),0.,1.));',
+    '  float face=step(0.,tw);',
+    '  float sheen=pow(max(1.-ac*ac,0.),1.6);',
+    '  float thr=.94+.06*sin(ac*7.+x*2.);',
+    '  vec3 front=base*(.45+.75*sheen)*thr;',
+    '  vec3 back=mix(base,uC2,.5)*(.40+.50*sheen);',
+    '  vec3 col=mix(back,front,face);',
+    '  col+=uC0*pow(1.-abs(tw),14.)*(.9+.6*uEnergy);',
+    '  float glow=exp(-abs(d)*11.)*.14*(.6+.8*uEnergy);',
+    '  c+=base*glow*(1.-inside);',
+    '  c=mix(c,col,inside*.96);',
+    ' }',
+    ' gl_FragColor=vec4(finish(c,p),1.);',
+    '}'
+  ].join('\n'),
+
+  /* ---------------------------------------------------------------- *
+   * CHROME — liquid metal.
+   *
+   * Chrome has no colour of its own: it is whatever it reflects, bent by
+   * its shape. The SHAPE is a smooth swell of a few crossing waves (fine
+   * detail turns a reflection into static). The WORLD it reflects is a
+   * photo studio built from the palette: bright sky, dark floor, a hard
+   * horizon between them and two soft-boxes. The hard edges of that world
+   * make the reflections crisp, and crisp reflections are what read as
+   * metal rather than plastic.
+   * ---------------------------------------------------------------- */
+  chrome: [
+    'float H(vec2 p,float t){',
+    ' vec2 w=p+.38*vec2(sin(p.y*1.3+t*.41),sin(p.x*1.1-t*.33));',
+    ' return .50*sin(w.x*1.15+t*.52)+.42*sin(w.y*1.45-t*.43)',
+    '  +.30*sin((w.x+w.y)*.95+t*.31)+.14*sin((w.x-w.y)*2.05-t*.27);}',
+    'vec3 env(vec2 r){',
+    ' float y=r.y,x=r.x;',
+    ' vec3 sky=mix(uC2,uC1,smoothstep(.0,1.1,y));',
+    ' vec3 gnd=mix(mix(uBg,uC3,.45),uC2*.85,smoothstep(-1.4,-.05,y));',
+    ' vec3 c=mix(gnd,sky,smoothstep(-.012,.012,y));',
+    ' c+=uC0*exp(-abs(y)*26.)*.55;',
+    ' c+=uC0*smoothstep(.16,.02,abs(y-.62))*.85;',
+    ' c=mix(c,uBg,smoothstep(.10,.0,abs(y-.34))*.75);',
+    ' c+=uC0*smoothstep(.08,.0,abs(x-.45))*smoothstep(-.05,.25,y)*.7;',
+    ' c=mix(c,uBg,smoothstep(.14,.0,abs(x+.6))*smoothstep(0.,.3,y)*.85);',
+    ' c+=uC1*smoothstep(.05,.0,abs(y+.45))*.35;',
+    ' c+=uC0*smoothstep(.035,.0,abs(y-.18))*smoothstep(.9,.2,abs(x))*.5;',
+    ' return c;}',
+    'void main(){',
+    ' vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y;',
+    ' vec2 sp=(p+(uMouse-.5)*uMouseAmt)*(2.6*uScale);',
+    ' float t=uTime*.42;',
+    ' float e=.012;',
+    ' float hx=(H(sp+vec2(e,0.),t)-H(sp-vec2(e,0.),t))/(2.*e);',
+    ' float hy=(H(sp+vec2(0.,e),t)-H(sp-vec2(0.,e),t))/(2.*e);',
+    ' float bump=.50+.35*uEnergy;',
+    ' vec3 n=normalize(vec3(-hx*bump,-hy*bump,1.));',
+    ' vec2 r=vec2(p.x*.35+n.x*1.7,p.y*.55+.14+n.y*1.9);',
+    ' vec3 c=env(r);',
+    ' float fres=pow(1.-n.z,2.);',
+    ' c=mix(c,uC1,fres*.35);',
+    ' gl_FragColor=vec4(finish(c,p),1.);',
+    '}'
+  ].join('\n')
+};
+
+/* ------------------------------------------------------------------ *
+ * Haze
+ * ------------------------------------------------------------------ */
+
+var UNIFORMS = ['uRes', 'uTime', 'uMouse', 'uC0', 'uC1', 'uC2', 'uC3', 'uBg',
+  'uEnergy', 'uIntro', 'uGrain', 'uVignette', 'uMouseAmt', 'uScale', 'uContrast'];
+
+function Haze(target, options) {
+  if (!(this instanceof Haze)) return new Haze(target, options);
+
+  var el = typeof target === 'string' ? document.querySelector(target) : target;
+  if (!el) throw new Error('[haze] target element not found: ' + target);
+
+  this.el = el;
+  this.o = {};
+  this.destroyed = false;
+  this._raf = 0;
+  this._running = false;
+  this._visible = true;
+
+  this._reduced = false;
+  try { this._reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+
+  this._mouse = [0.5, 0.5];
+  this._mouseTarget = [0.5, 0.5];
+  this._energy = 0;
+  this._energyTarget = 0;
+  this._intro = 0;
+  this._introTarget = 0;
+  this._t0 = (window.performance && performance.now) ? performance.now() : Date.now();
+
+  this.set(options || {}, true);
+  this._mount();
+}
+
+/* ---- options ---------------------------------------------------- */
+
+Haze.prototype.set = function (options, silent) {
+  /* Wrappers (React, Framer) pass every prop, set or not. An undefined value
+     means "not given", never "set it to nothing": left in, speed would come
+     through as undefined and freeze the loop, contrast as 0 and paint black. */
+  var given = {};
+  for (var g in options || {}) {
+    if (Object.prototype.hasOwnProperty.call(options, g) && options[g] !== undefined) given[g] = options[g];
+  }
+  options = given;
+
+  if (options.palette && PALETTES[options.palette]) {
+    options = Object.assign({}, PALETTES[options.palette], options);
+  }
+
+  var o = this.o;
+  var motifBefore = o.motif;
+  for (var k in DEFAULTS) {
+    if (!Object.prototype.hasOwnProperty.call(DEFAULTS, k)) continue;
+    if (Object.prototype.hasOwnProperty.call(options, k)) o[k] = options[k];
+    else if (!Object.prototype.hasOwnProperty.call(o, k)) o[k] = DEFAULTS[k];
+  }
+  if (!MOTIFS[o.motif]) o.motif = DEFAULTS.motif;
+
+  var cols = Array.isArray(o.colors) && o.colors.length >= 4 ? o.colors : PALETTES.lagoon.colors;
+  this._c = [
+    parseColor(cols[0], [.92, 1, .97]),
+    parseColor(cols[1], [.37, .89, .78]),
+    parseColor(cols[2], [.12, .56, .71]),
+    parseColor(cols[3], [.06, .15, .36])
+  ];
+  this._bg = parseColor(o.background, [.01, .04, .08]);
+
+  this._energyTarget = clamp(+o.energy, 0, 1);
+  if (silent) this._energy = this._energyTarget;
+
+  if (!silent) {
+    this.el.style.backgroundColor = toCss(this._bg);
+    /* Changing motif means a different fragment shader, so the program is
+       rebuilt. Everything else is just uniforms and costs nothing. */
+    if (o.motif !== motifBefore && this.gl) this._buildProgram();
+    if (this._fallback) this._paintFallback();
+    this._resize();
+  }
+  return this;
+};
+
+Haze.prototype._v = function (key) {
+  var o = this.o;
+  if (o.mobile && this._w && this._w <= o.mobileBreakpoint &&
+      Object.prototype.hasOwnProperty.call(o.mobile, key)) return o.mobile[key];
+  return o[key];
+};
+
+/* ---- mounting --------------------------------------------------- */
+
+Haze.prototype._mount = function () {
+  var el = this.el;
+  if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+  el.style.backgroundColor = toCss(this._bg);
+
+  var cv = document.createElement('canvas');
+  cv.setAttribute('aria-hidden', 'true');
+  cv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block;border:0;';
+  el.insertBefore(cv, el.firstChild);
+  this.canvas = cv;
+
+  var gl = null;
+  try {
+    var attrs = { antialias: false, alpha: false, depth: false, stencil: false, powerPreference: 'high-performance' };
+    gl = cv.getContext('webgl', attrs) || cv.getContext('experimental-webgl', attrs);
+  } catch (e) {}
+  if (!gl) return this._bail('webgl-unavailable');
+  this.gl = gl;
+
+  if (!this._buildProgram()) return;
+
+  this._bindEvents();
+  this._resize();
+
+  this._introTarget = 1;
+  if (!this.o.intro || (this._reduced && this.o.respectReducedMotion)) this._intro = 1;
+
+  if (this._reduced && this.o.respectReducedMotion) {
+    this._energy = this._energyTarget;
+    this._mouse = [0.5, 0.5];
+    this._intro = 1;
+    this._draw();
+    return;
+  }
+  this.play();
+};
+
+Haze.prototype._buildProgram = function () {
+  var gl = this.gl;
+  if (!gl) return false;
+
+  var frag = PRELUDE + '\n' + MOTIFS[this.o.motif];
+  var vs = this._shader(gl.VERTEX_SHADER, VERT);
+  var fs = this._shader(gl.FRAGMENT_SHADER, frag);
+  if (!vs || !fs) { this._bail('shader-compile'); return false; }
+
+  var pr = gl.createProgram();
+  gl.attachShader(pr, vs);
+  gl.attachShader(pr, fs);
+  gl.linkProgram(pr);
+  gl.deleteShader(vs);
+  gl.deleteShader(fs);
+  if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) { this._bail('program-link'); return false; }
+
+  if (this.program) gl.deleteProgram(this.program);
+  this.program = pr;
+  gl.useProgram(pr);
+
+  if (!this.buffer) {
+    /* One oversized triangle covers the viewport with no wasted fragments. */
+    this.buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  } else {
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
+  }
+  var loc = gl.getAttribLocation(pr, 'a');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  this.U = {};
+  for (var i = 0; i < UNIFORMS.length; i++) this.U[UNIFORMS[i]] = gl.getUniformLocation(pr, UNIFORMS[i]);
+  return true;
+};
+
+Haze.prototype._shader = function (type, src) {
+  var gl = this.gl;
+  var s = gl.createShader(type);
+  gl.shaderSource(s, src);
+  gl.compileShader(s);
+  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+    if (window.console && console.warn) console.warn('[haze] shader failed:', gl.getShaderInfoLog(s));
+    return null;
+  }
+  return s;
+};
+
+/* ---- graceful degradation --------------------------------------- */
+
+/**
+ * No WebGL, or the shader will not compile. Paint a still approximation in
+ * CSS instead: a buyer must never end up with an empty hero.
+ */
+Haze.prototype._bail = function (reason) {
+  this.fallbackReason = reason;
+  this._fallback = true;
+  if (this.canvas && this.canvas.parentNode) this.canvas.parentNode.removeChild(this.canvas);
+  this.canvas = null;
+  this.gl = null;
+  this._paintFallback();
+  if (typeof this.o.onFallback === 'function') {
+    try { this.o.onFallback(reason); } catch (e) {}
+  }
+};
+
+Haze.prototype._paintFallback = function () {
+  var c = this._c, bg = toCss(this._bg);
+  var layers;
+  if (this.o.motif === 'ribbons') {
+    layers = [
+      'linear-gradient(115deg, transparent 22%, ' + toCss(c[1]) + ' 34%, transparent 46%)',
+      'linear-gradient(100deg, transparent 44%, ' + toCss(c[2]) + ' 56%, transparent 68%)',
+      'linear-gradient(128deg, transparent 60%, ' + toCss(c[0]) + ' 70%, transparent 80%)'
+    ];
+  } else if (this.o.motif === 'chrome') {
+    layers = [
+      'linear-gradient(150deg, ' + toCss(c[0]) + ' 0%, ' + toCss(c[1]) + ' 28%, ' + toCss(c[2]) + ' 58%, ' + toCss(c[3]) + ' 100%)'
+    ];
+  } else {
+    layers = [
+      'radial-gradient(60% 55% at 28% 26%, ' + toCss(c[1]) + ' 0%, transparent 62%)',
+      'radial-gradient(52% 48% at 74% 68%, ' + toCss(c[2]) + ' 0%, transparent 60%)',
+      'radial-gradient(38% 34% at 58% 22%, ' + toCss(c[0]) + ' 0%, transparent 55%)'
+    ];
+  }
+  this.el.style.backgroundImage = layers.join(',');
+  this.el.style.backgroundColor = bg;
+};
+
+/* ---- events ----------------------------------------------------- */
+
+Haze.prototype._bindEvents = function () {
+  var self = this;
+
+  this._onResize = function () { self._resize(); };
+  if (window.ResizeObserver) {
+    this._ro = new ResizeObserver(this._onResize);
+    this._ro.observe(this.el);
+  } else {
+    window.addEventListener('resize', this._onResize, { passive: true });
+  }
+
+  if (this.o.mouse > 0) {
+    this._onMove = function (e) {
+      var r = self.el.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      self._mouseTarget[0] = clamp((e.clientX - r.left) / r.width, 0, 1);
+      self._mouseTarget[1] = 1 - clamp((e.clientY - r.top) / r.height, 0, 1);
+    };
+    window.addEventListener('mousemove', this._onMove, { passive: true });
+  }
+
+  this._onVis = function () { if (document.hidden) self._halt(); else self._resume(); };
+  document.addEventListener('visibilitychange', this._onVis);
+
+  if (this.o.pauseOffscreen && window.IntersectionObserver) {
+    this._io = new IntersectionObserver(function (entries) {
+      self._visible = entries[0].isIntersecting;
+      if (self._visible) self._resume(); else self._halt();
+    }, { threshold: 0 });
+    this._io.observe(this.el);
+  }
+};
+
+Haze.prototype._resize = function () {
+  if (!this.gl || !this.canvas) return;
+  var gl = this.gl;
+  var w = this.el.clientWidth || 1, h = this.el.clientHeight || 1;
+  this._w = w;
+
+  var dpr = Math.min(window.devicePixelRatio || 1, this._v('quality') || 1.75);
+  this.canvas.width = Math.max(1, Math.round(w * dpr));
+  this.canvas.height = Math.max(1, Math.round(h * dpr));
+  gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+  gl.useProgram(this.program);
+  gl.uniform2f(this.U.uRes, this.canvas.width, this.canvas.height);
+
+  if (!this._running) this._draw();
+};
+
+/* ---- the loop --------------------------------------------------- */
+
+Haze.prototype._draw = function () {
+  var gl = this.gl;
+  if (!gl || this.destroyed || !this.program) return;
+  var o = this.o, U = this.U;
+
+  gl.useProgram(this.program);
+  var now = (window.performance && performance.now) ? performance.now() : Date.now();
+  /* startAt + elapsed * speed: with speed 0 every redraw lands on the same
+     frame, which is what a still image (or a design-tool canvas) needs. */
+  gl.uniform1f(U.uTime, (+o.startAt || 0) + ((now - this._t0) / 1000) * (o.speed || 0));
+  gl.uniform2f(U.uMouse, this._mouse[0], this._mouse[1]);
+  gl.uniform3fv(U.uC0, this._c[0]);
+  gl.uniform3fv(U.uC1, this._c[1]);
+  gl.uniform3fv(U.uC2, this._c[2]);
+  gl.uniform3fv(U.uC3, this._c[3]);
+  gl.uniform3fv(U.uBg, this._bg);
+  gl.uniform1f(U.uEnergy, this._energy);
+  gl.uniform1f(U.uIntro, this._intro);
+  gl.uniform1f(U.uGrain, o.grain);
+  gl.uniform1f(U.uVignette, o.vignette);
+  gl.uniform1f(U.uMouseAmt, o.mouse);
+  gl.uniform1f(U.uScale, this._v('scale') || 1);
+  gl.uniform1f(U.uContrast, o.contrast);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+};
+
+Haze.prototype._frame = function () {
+  this._raf = 0;
+  if (!this._running || this.destroyed) return;
+  this._mouse[0] += (this._mouseTarget[0] - this._mouse[0]) * 0.05;
+  this._mouse[1] += (this._mouseTarget[1] - this._mouse[1]) * 0.05;
+  this._energy += (this._energyTarget - this._energy) * 0.08;
+  this._intro += (this._introTarget - this._intro) * 0.035;
+  this._draw();
+  var self = this;
+  this._raf = requestAnimationFrame(function () { self._frame(); });
+};
+
+/* ---- public API -------------------------------------------------- */
+
+/* play() and pause() are the buyer's; _resume() and _halt() are what the
+   visibility and scroll observers use. The difference matters: a pause the
+   buyer asked for must survive the element scrolling back into view or the
+   tab coming back, or pause() would quietly stop meaning anything. */
+Haze.prototype.play = function () {
+  this._held = false;
+  return this._resume();
+};
+
+Haze.prototype.pause = function () {
+  this._held = true;
+  return this._halt();
+};
+
+Haze.prototype._resume = function () {
+  if (this._held || this.destroyed || this._running || !this.gl || !this._visible) return this;
+  if (this._reduced && this.o.respectReducedMotion) return this;
+  this._running = true;
+  var self = this;
+  if (!this._raf) this._raf = requestAnimationFrame(function () { self._frame(); });
+  return this;
+};
+
+Haze.prototype._halt = function () {
+  this._running = false;
+  if (this._raf) { cancelAnimationFrame(this._raf); this._raf = 0; }
+  return this;
+};
+
+/**
+ * How alive it is, 0..1. This is the one to wire to scroll:
+ *   haze.energy(scrollY / innerHeight)
+ * It eases towards the value, so raw scroll every frame is fine.
+ */
+Haze.prototype.energy = function (v) {
+  this._energyTarget = clamp(+v || 0, 0, 1);
+  if (this._reduced && this.o.respectReducedMotion) { this._energy = this._energyTarget; this._draw(); }
+  return this;
+};
+
+/** Swap the four colours and the background in one call. */
+Haze.prototype.palette = function (name) {
+  if (!PALETTES[name]) return this;
+  return this.set({ colors: PALETTES[name].colors, background: PALETTES[name].background });
+};
+
+/** Swap the motif. Rebuilds the shader; the canvas and context are kept. */
+Haze.prototype.motif = function (name) {
+  if (!MOTIFS[name]) return this;
+  return this.set({ motif: name });
+};
+
+Haze.prototype.destroy = function () {
+  if (this.destroyed) return;
+  this._halt();
+  this.destroyed = true;
+
+  if (this._ro) this._ro.disconnect();
+  else window.removeEventListener('resize', this._onResize);
+  if (this._io) this._io.disconnect();
+  if (this._onMove) window.removeEventListener('mousemove', this._onMove);
+  document.removeEventListener('visibilitychange', this._onVis);
+
+  var gl = this.gl;
+  if (gl) {
+    if (this.program) gl.deleteProgram(this.program);
+    if (this.buffer) gl.deleteBuffer(this.buffer);
+    var lose = gl.getExtension('WEBGL_lose_context');
+    if (lose) lose.loseContext();
+  }
+  if (this.canvas && this.canvas.parentNode) this.canvas.parentNode.removeChild(this.canvas);
+  this.canvas = null;
+  this.gl = null;
+  this.program = null;
+};
+
+Haze.palettes = PALETTES;
+Haze.motifs = ['caustics', 'ribbons', 'chrome'];
+Haze.version = '1.0.0';
+
+/* ------------------------------------------------------------------ *
+ * Auto-init — for buyers who never touch JavaScript.
+ *   <div data-haze data-haze-motif="ribbons" data-haze-palette="dusk"></div>
+ * Only wired up in the <script> build; the module stays side-effect free.
+ * ------------------------------------------------------------------ */
+
+function autoInit(root) {
+  var nodes = (root || document).querySelectorAll('[data-haze]');
+  var made = [];
+  for (var i = 0; i < nodes.length; i++) {
+    var el = nodes[i];
+    if (el.__haze) continue;
+    var opts = {};
+    for (var j = 0; j < el.attributes.length; j++) {
+      var at = el.attributes[j];
+      if (at.name.indexOf('data-haze-') !== 0) continue;
+      var key = at.name.slice(10).replace(/-([a-z])/g, function (m, c) { return c.toUpperCase(); });
+      var val = at.value;
+      if (key === 'colors') opts.colors = val.split(',').map(function (s) { return s.trim(); });
+      else if (val === 'true' || val === 'false') opts[key] = (val === 'true');
+      else if (val !== '' && !isNaN(+val)) opts[key] = +val;
+      else opts[key] = val;
+    }
+    try {
+      el.__haze = new Haze(el, opts);
+      made.push(el.__haze);
+    } catch (e) {
+      if (window.console && console.warn) console.warn('[haze] auto-init failed', e);
+    }
+  }
+  return made;
+}
+
+const PALETTE_NAMES = ["lagoon", "dusk", "forest", "steel", "magma", "violet", "mono", "custom"]
+
+/**
+ * @framerSupportedLayoutWidth any-prefer-fixed
+ * @framerSupportedLayoutHeight any-prefer-fixed
+ * @framerIntrinsicWidth 1200
+ * @framerIntrinsicHeight 800
+ * @framerDisableUnlink
+ */
+export default function HazeBackground(props) {
+    /* Defaults live here (and as each control's defaultValue): React is
+       retiring defaultProps on function components. */
+    const {
+        motif = "caustics", palette = "lagoon",
+        color1 = "#eafff7", color2 = "#5fe2c8", color3 = "#1f8fb5", color4 = "#10275c",
+        background = "#030a14", scale = 1, speed = 1, energy = 0.5,
+        scrollEnergy = false, scrollDistance = 1, contrast = 1, grain = 0.03,
+        vignette = 0.35, mouse = 0.1, quality = 1.75, animateOnCanvas = false, style,
+    } = props
+
+    const host = useRef(null)
+    const inst = useRef(null)
+
+    /* On the Framer canvas a live WebGL loop per instance makes the editor
+       sluggish, so by default it paints one still frame there. The preview
+       and the published site always animate. */
+    const onCanvas = RenderTarget.current() === RenderTarget.canvas
+    const still = onCanvas && !animateOnCanvas
+
+    const look = () => {
+        const o = { motif, scale, speed: still ? 0 : speed, contrast, grain, vignette }
+        if (palette === "custom") {
+            o.colors = [color1, color2, color3, color4]
+            o.background = background
+        } else {
+            o.palette = palette
+        }
+        return o
+    }
+
+    useEffect(() => {
+        if (!host.current) return undefined
+        const h = new Haze(host.current, {
+            ...look(),
+            energy,
+            mouse: onCanvas ? 0 : mouse,
+            quality,
+            intro: !onCanvas,
+        })
+        if (still) h.pause()
+        inst.current = h
+        return () => {
+            h.destroy()
+            inst.current = null
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [mouse, quality, still, onCanvas])
+
+    /* Everything cosmetic goes straight into the running instance. */
+    useEffect(() => {
+        const h = inst.current
+        if (!h) return
+        h.set(look())
+        if (still) h._draw()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [motif, palette, color1, color2, color3, color4, background, scale, speed, contrast, grain, vignette])
+
+    /* Energy: a fixed value, or driven by how far the page has scrolled. */
+    useEffect(() => {
+        const h = inst.current
+        if (!h) return undefined
+        if (!scrollEnergy || onCanvas) {
+            h.energy(energy)
+            if (still) h._draw()
+            return undefined
+        }
+        const onScroll = () => {
+            const k = Math.min(1, window.scrollY / Math.max(1, window.innerHeight * scrollDistance))
+            h.energy(energy + (1 - energy) * k)
+        }
+        onScroll()
+        window.addEventListener("scroll", onScroll, { passive: true })
+        return () => window.removeEventListener("scroll", onScroll)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [energy, scrollEnergy, scrollDistance, onCanvas])
+
+    return (
+        <div
+            ref={host}
+            style={{ position: "relative", overflow: "hidden", width: "100%", height: "100%", ...style }}
+        />
+    )
+}
+
+HazeBackground.displayName = "Haze"
+
+
+const notCustom = (p) => p.palette !== "custom"
+
+addPropertyControls(HazeBackground, {
+    motif: {
+        type: ControlType.Enum,
+        title: "Motif",
+        options: ["caustics", "ribbons", "chrome"],
+        optionTitles: ["Caustics", "Ribbons", "Chrome"],
+        defaultValue: "caustics",
+    },
+    palette: {
+        type: ControlType.Enum,
+        title: "Palette",
+        options: PALETTE_NAMES,
+        optionTitles: ["Lagoon", "Dusk", "Forest", "Steel", "Magma", "Violet", "Mono", "Custom"],
+        defaultValue: "lagoon",
+    },
+    color1: { type: ControlType.Color, title: "Highlight", defaultValue: "#eafff7", hidden: notCustom },
+    color2: { type: ControlType.Color, title: "Light", defaultValue: "#5fe2c8", hidden: notCustom },
+    color3: { type: ControlType.Color, title: "Mid", defaultValue: "#1f8fb5", hidden: notCustom },
+    color4: { type: ControlType.Color, title: "Shade", defaultValue: "#10275c", hidden: notCustom },
+    background: { type: ControlType.Color, title: "Background", defaultValue: "#030a14", hidden: notCustom },
+    energy: {
+        type: ControlType.Number, title: "Energy", min: 0, max: 1, step: 0.01, defaultValue: 0.5,
+        description: "How alive it is. With Scroll on, this is where it starts.",
+    },
+    scrollEnergy: {
+        type: ControlType.Boolean, title: "Scroll", enabledTitle: "Drives it", disabledTitle: "Off", defaultValue: false,
+    },
+    scrollDistance: {
+        type: ControlType.Number, title: "Full at", min: 0.25, max: 4, step: 0.25, unit: "× screen", defaultValue: 1,
+        hidden: (p) => !p.scrollEnergy,
+    },
+    scale: { type: ControlType.Number, title: "Scale", min: 0.3, max: 3, step: 0.05, defaultValue: 1 },
+    speed: { type: ControlType.Number, title: "Speed", min: 0, max: 3, step: 0.05, defaultValue: 1 },
+    contrast: { type: ControlType.Number, title: "Contrast", min: 0.3, max: 2, step: 0.05, defaultValue: 1 },
+    grain: { type: ControlType.Number, title: "Grain", min: 0, max: 0.2, step: 0.005, defaultValue: 0.03 },
+    vignette: { type: ControlType.Number, title: "Vignette", min: 0, max: 1, step: 0.01, defaultValue: 0.35 },
+    mouse: { type: ControlType.Number, title: "Mouse", min: 0, max: 0.5, step: 0.01, defaultValue: 0.1 },
+    quality: {
+        type: ControlType.Number, title: "Quality", min: 0.75, max: 2, step: 0.25, defaultValue: 1.75,
+        description: "Pixel-density cap. Lower it for very large sections.",
+    },
+    animateOnCanvas: {
+        type: ControlType.Boolean, title: "On canvas", enabledTitle: "Animate", disabledTitle: "Still", defaultValue: false,
+    },
+})

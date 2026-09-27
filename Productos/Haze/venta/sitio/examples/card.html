@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haze — all three motifs on one page</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font:16px/1.6 ui-sans-serif,system-ui,sans-serif;background:#070a0f;color:#f2f4f6;
+    padding:clamp(24px,6vw,80px)}
+  h1{font-size:clamp(28px,4vw,44px);letter-spacing:-.035em;margin-bottom:10px}
+  .sub{color:#98a1ab;max-width:62ch;margin-bottom:44px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+  .card{position:relative;aspect-ratio:4/5;border-radius:20px;overflow:hidden;
+    border:1px solid rgba(242,244,246,.12);display:flex;align-items:flex-end;padding:26px}
+  .card .fg{position:relative;z-index:2}
+  .card h2{font-size:26px;letter-spacing:-.02em;margin-bottom:4px;text-transform:capitalize}
+  .card p{font-size:13.5px;color:#c3ccd8}
+  /* A floor of shade under the text: the pattern moves, the copy must not
+     stop being readable when it drifts past. */
+  .card::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(transparent 42%,rgba(4,6,10,.92))}
+</style>
+</head>
+<body>
+
+<h1>Three motifs, one file.</h1>
+<p class="sub">Each card is its own instance with its own palette. They pause themselves
+   when they scroll out of view, so three on a page costs about what one costs.</p>
+
+<div class="grid">
+  <div class="card" data-haze data-haze-motif="caustics" data-haze-palette="lagoon" data-haze-scale="1.3" data-haze-energy="0.7">
+    <div class="fg"><h2>Caustics</h2><p>The light on the floor of a pool.</p></div>
+  </div>
+  <div class="card" data-haze data-haze-motif="ribbons" data-haze-palette="violet" data-haze-scale="0.8" data-haze-energy="0.55">
+    <div class="fg"><h2>Ribbons</h2><p>Silk ribbons, drifting and turning over.</p></div>
+  </div>
+  <div class="card" data-haze data-haze-motif="chrome" data-haze-palette="steel" data-haze-scale="1.1" data-haze-energy="0.4">
+    <div class="fg"><h2>Chrome</h2><p>Liquid metal, lit by the palette itself.</p></div>
+  </div>
+</div>
+
+<script src="../dist/haze.js"></script>
+</body>
+</html>

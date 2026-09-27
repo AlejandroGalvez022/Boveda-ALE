@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Haze — cover</title>
+<!--
+  Generador de portadas para la ficha de venta. NO va en el paquete.
+  portada.html?m=caustics&p=lagoon&t=12&e=0.55&label=1
+  m=trio pinta los tres motivos en columnas.
+  Lo captura portadas.ps1 al tamaño de cada tienda.
+-->
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;background:#05070b;overflow:hidden}
+  body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#f2f4f6}
+  .full{position:absolute;inset:0}
+  .trio{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr)}
+  .trio > div{position:relative}
+  .trio > div + div{border-left:2px solid #05070b}
+  .veil{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(5,7,11,0) 40%,rgba(5,7,11,.55) 78%,rgba(5,7,11,.85) 100%)}
+  .label{position:absolute;left:6.5%;bottom:8%;right:6.5%;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+  .label h1{font-size:clamp(64px,11vw,190px);font-weight:800;letter-spacing:-.055em;line-height:.85}
+  .label p{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:clamp(12px,1.25vw,20px);
+    letter-spacing:.18em;text-transform:uppercase;color:rgba(242,244,246,.78);text-align:right;line-height:1.7}
+</style>
+<script src="../paquete/dist/haze.js"></script>
+</head><body>
+<script>
+  var q = new URLSearchParams(location.search);
+  var m = q.get('m') || 'caustics', T = +(q.get('t') || 12), E = q.has('e') ? +q.get('e') : 0.55;
+  function still(el, opts) {
+    var h = new Haze(el, Object.assign({ intro: false, mouse: 0, speed: 0, startAt: T, energy: E, quality: 1, vignette: .25 }, opts));
+    h.pause();
+    return h;
+  }
+  if (m === 'trio') {
+    var tr = document.createElement('div'); tr.className = 'trio'; document.body.appendChild(tr);
+    [['caustics', 'lagoon'], ['ribbons', 'dusk'], ['chrome', 'steel']].forEach(function (x, i) {
+      var d = document.createElement('div'); tr.appendChild(d);
+      still(d, { motif: x[0], palette: x[1], startAt: T + i * 7 });
+    });
+  } else {
+    var d = document.createElement('div'); d.className = 'full'; document.body.appendChild(d);
+    still(d, { motif: m, palette: q.get('p') || 'lagoon', scale: +(q.get('s') || 1) });
+  }
+  if (q.get('label') === '1') {
+    document.body.insertAdjacentHTML('beforeend',
+      '<div class="veil"></div><div class="label"><h1>Haze</h1><p>Three WebGL backgrounds<br>Zero dependencies · 9 KB<br>HTML · React · Framer</p></div>');
+  }
+</script>
+</body></html>

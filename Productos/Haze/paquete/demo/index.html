@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Haze — three atmospheric WebGL backgrounds. Zero dependencies.</title>
-<meta name="description" content="Caustics, ribbons and liquid chrome, hand-written in one WebGL file. No libraries, no build step, 22 KB.">
+<meta name="description" content="Caustics, ribbons and liquid chrome, hand-written in one WebGL file. No libraries, no build step, 9 KB gzipped.">
 <meta name="theme-color" content="#030a14">
 <style>
 /* ==========================================================================
@@ -38,7 +38,7 @@ button,input,select{font:inherit;color:inherit}
 h1{font-size:clamp(52px,10vw,132px);font-weight:800;line-height:.88;letter-spacing:-.055em;margin-bottom:20px}
 .lede{font-size:clamp(16px,1.5vw,19px);color:var(--dim);max-width:52ch}
 .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:100px;cursor:pointer;
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;padding:13px 22px;border-radius:100px;cursor:pointer;
   font-size:14px;font-weight:600;border:1px solid var(--line);background:transparent;
   transition:background .25s,border-color .25s,color .25s}
 .btn:hover{border-color:var(--ink)}
@@ -57,8 +57,8 @@ h1{font-size:clamp(52px,10vw,132px);font-weight:800;line-height:.88;letter-spaci
 h2{font-size:clamp(24px,3.4vw,40px);font-weight:800;letter-spacing:-.03em}
 .hint{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
 
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,56px);align-items:start}
-@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start}
+@media(max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
 
 .card{border:1px solid var(--line-soft);border-radius:16px;padding:clamp(18px,2.4vw,28px);background:rgba(255,255,255,.015)}
 .card + .card{margin-top:18px}
@@ -109,7 +109,7 @@ footer{border-top:1px solid var(--line-soft);padding:34px clamp(24px,5vw,72px);
   <div class="veil" aria-hidden="true"></div>
   <div class="chips motifs" id="motifs"></div>
   <div class="copy">
-    <p class="tagline"><i></i>WebGL · three motifs · zero dependencies · 22 KB</p>
+    <p class="tagline"><i></i>WebGL · three motifs · zero dependencies · 9 KB gzipped</p>
     <h1>Haze</h1>
     <p class="lede">Caustics, ribbons and liquid chrome — hand-written in one WebGL file.
        Drop in a script tag and a <code>div</code>. It sizes itself, pauses when it scrolls out of

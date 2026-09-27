@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Haze — batería de pruebas</title>
+<style>body{margin:0;background:#000}.t{position:relative;width:640px;height:400px}</style>
+<!--
+  Batería de pruebas de Haze. NO va en el paquete que se vende.
+  La lanza pruebas.ps1 (Chrome headless por CDP) y lee window.RESULT.
+  Todo se mide leyendo los píxeles del propio WebGL (readPixels justo
+  después de dibujar), no con capturas.
+-->
+<script>
+  /* reduced motion simulado solo si la URL lo pide, ANTES de cargar Haze */
+  if (location.hash === '#reduced') {
+    var mm = window.matchMedia;
+    window.matchMedia = function (q) { return /reduced-motion/.test(q) ? { matches: true } : mm.call(window, q); };
+  }
+</script>
+<script src="../paquete/dist/haze.js"></script>
+</head><body>
+<div class="t" id="host"></div>
+<script>
+var R = { ok: [], fail: [], data: {} };
+function check(name, cond, info) { (cond ? R.ok : R.fail).push(name + (info !== undefined ? ' [' + info + ']' : '')); }
+var host = document.getElementById('host');
+
+/* dibuja un fotograma en un instante concreto y devuelve sus píxeles */
+function frame(h, t) {
+  if (t !== undefined) h._t0 = performance.now() - t * 1000 / (h.o.speed || 1);
+  h._draw();
+  var gl = h.gl, w = gl.drawingBufferWidth, hh = gl.drawingBufferHeight;
+  var px = new Uint8Array(w * hh * 4);
+  gl.readPixels(0, 0, w, hh, gl.RGBA, gl.UNSIGNED_BYTE, px);
+  return { px: px, w: w, h: hh };
+}
+function stats(f) {
+  var tones = {}, r = 0, g = 0, b = 0, n = 0, dark = 0, white = 0;
+  for (var i = 0; i < f.px.length; i += 4 * 37) {
+    var R_ = f.px[i], G = f.px[i + 1], B = f.px[i + 2];
+    tones[(R_ >> 3) + '-' + (G >> 3) + '-' + (B >> 3)] = 1;
+    r += R_; g += G; b += B; n++;
+    if (R_ + G + B < 30) dark++;
+    if (R_ > 250 && G > 250 && B > 250) white++;
+  }
+  return { tones: Object.keys(tones).length, mean: [r / n, g / n, b / n], dark: dark / n, white: white / n };
+}
+function diff(a, b) {
+  var d = 0, n = 0;
+  for (var i = 0; i < a.px.length; i += 4 * 29) { d += Math.abs(a.px[i] - b.px[i]) + Math.abs(a.px[i + 1] - b.px[i + 1]) + Math.abs(a.px[i + 2] - b.px[i + 2]); n++; }
+  return d / n;
+}
+function fresh(opts) {
+  if (host.__h) { host.__h.destroy(); }
+  var h = new Haze(host, Object.assign({ intro: false, mouse: 0 }, opts));
+  h.pause(); host.__h = h; return h;
+}
+
+if (location.hash === '#reduced') {
+  var h = new Haze(host, { motif: 'caustics' });
+  var a = null, b = null;
+  check('reduced: no arranca el bucle', h._running === false && !h._raf);
+  a = frame(h); b = frame(h, 3);   /* speed da igual: con reduced el tiempo avanza, pero NO se redibuja solo */
+  var raf0 = h._raf;
+  check('reduced: sin requestAnimationFrame', !raf0);
+  check('reduced: pinta algo', stats(a).tones > 40, stats(a).tones);
+  R.done = true;
+} else {
+  var motifs = ['caustics', 'ribbons', 'chrome'];
+  var shots = {};
+  motifs.forEach(function (m) {
+    var h = fresh({ motif: m, palette: 'lagoon', energy: 0.5 });
+    check(m + ': WebGL activo', !!h.gl && !h._fallback);
+    var f1 = frame(h, 5), f2 = frame(h, 9);
+    var s = stats(f1);
+    shots[m] = f1;
+    R.data[m] = s;
+    check(m + ': pinta de verdad (tonos)', s.tones > 80, s.tones);
+    check(m + ': no es negro', s.dark < 0.5, s.dark.toFixed(2));
+    check(m + ': no se quema en blanco', s.white < 0.12, s.white.toFixed(3));
+    check(m + ': se mueve con el tiempo', diff(f1, f2) > 8, diff(f1, f2).toFixed(1));
+    var hE0 = frame((h._energy = 0, h), 5), hE1 = frame((h._energy = 1, h), 5);
+    check(m + ': la energía cambia el dibujo', diff(hE0, hE1) > 8, diff(hE0, hE1).toFixed(1));
+    h.set({ palette: 'magma' });
+    var fp = frame(h, 5);
+    check(m + ': la paleta cambia el dibujo', diff(f1, fp) > 20, diff(f1, fp).toFixed(1));
+    /* coste relativo: 8 fotogramas completos */
+    h.set({ palette: 'lagoon' });
+    var t0 = performance.now();
+    for (var i = 0; i < 8; i++) frame(h, i);
+    R.data[m].ms = Math.round((performance.now() - t0) / 8);
+  });
+  check('caustics ≠ ribbons', diff(shots.caustics, shots.ribbons) > 40, diff(shots.caustics, shots.ribbons).toFixed(1));
+  check('caustics ≠ chrome', diff(shots.caustics, shots.chrome) > 40, diff(shots.caustics, shots.chrome).toFixed(1));
+  check('ribbons ≠ chrome', diff(shots.ribbons, shots.chrome) > 40, diff(shots.ribbons, shots.chrome).toFixed(1));
+
+  /* set() con valores undefined (lo que mandan React y Framer) */
+  var h = fresh({ motif: 'chrome', speed: 1, contrast: 1.2 });
+  h.set({ speed: undefined, contrast: undefined, palette: 'steel', colors: undefined });
+  check('undefined no pisa speed', h.o.speed === 1, h.o.speed);
+  check('undefined no pisa contrast', h.o.contrast === 1.2, h.o.contrast);
+  check('palette + colors:undefined aplica la paleta', h.o.colors === Haze.palettes.steel.colors);
+
+  /* colores de Framer (tokens) */
+  h.set({ colors: ['var(--token-3a9f, rgb(255, 0, 128))', 'rgb(1,2,3)', '#abc', [10, 20, 30]] });
+  var c0 = h._c[0];
+  check('token var() → su color', Math.abs(c0[0] - 1) < .01 && c0[1] < .01 && Math.abs(c0[2] - 128 / 255) < .01, c0.map(function (v) { return v.toFixed(2); }).join(','));
+
+  /* pause() del usuario sobrevive a los vigilantes */
+  var h = fresh({ motif: 'ribbons' });
+  h.play(); check('play() arranca', h._running === true);
+  h.pause(); h._resume();
+  check('pause() aguanta a IntersectionObserver/visibilidad', h._running === false);
+  h.play(); check('play() tras pause() vuelve', h._running === true);
+  h._halt(); h._resume(); check('una pausa automática sí se reanuda sola', h._running === true);
+  h.pause();
+
+  /* speed 0 = mismo fotograma siempre (lienzo de Framer, imagen fija) */
+  var h = fresh({ motif: 'caustics', speed: 0 });
+  var a = frame(h); var b0 = performance.now(); while (performance.now() - b0 < 60) {} var b = frame(h);
+  check('speed 0 → mismo fotograma', diff(a, b) === 0, diff(a, b));
+
+  /* startAt cambia el primer fotograma */
+  var h1 = fresh({ motif: 'ribbons', speed: 0, startAt: 2 }); var A = frame(h1);
+  var h2 = fresh({ motif: 'ribbons', speed: 0, startAt: 20 }); var B = frame(h2);
+  check('startAt elige el fotograma', diff(A, B) > 8, diff(A, B).toFixed(1));
+
+  /* destroy() no deja restos */
+  var h = fresh({ motif: 'chrome' });
+  h.destroy(); host.__h = null;
+  check('destroy(): canvas fuera', !host.querySelector('canvas'));
+  check('destroy(): sin bucle ni GL', !h._running && !h.gl && !h.program);
+
+  /* sin WebGL → respaldo CSS del motivo pedido */
+  var gc = HTMLCanvasElement.prototype.getContext;
+  HTMLCanvasElement.prototype.getContext = function () { return null; };
+  var reason = null;
+  ['caustics', 'ribbons', 'chrome'].forEach(function (m) {
+    host.style.backgroundImage = '';
+    var h = new Haze(host, { motif: m, onFallback: function (r) { reason = r; } });
+    check(m + ': sin WebGL → respaldo CSS', h._fallback && /gradient/.test(host.style.backgroundImage) && !host.querySelector('canvas'));
+    check(m + ': avisa con onFallback', reason === 'webgl-unavailable', reason);
+    reason = null;
+  });
+  HTMLCanvasElement.prototype.getContext = gc;
+  host.style.backgroundImage = '';
+
+  /* auto-init por atributos */
+  var d = document.createElement('div'); d.className = 't';
+  d.setAttribute('data-haze', ''); d.setAttribute('data-haze-motif', 'ribbons'); d.setAttribute('data-haze-palette', 'dusk'); d.setAttribute('data-haze-energy', '0.7');
+  document.body.appendChild(d);
+  var made = Haze.autoInit();
+  check('data-haze arranca solo', made.length === 1 && made[0].o.motif === 'ribbons' && made[0].o.energy === 0.7);
+  made[0].destroy();
+  R.done = true;
+}
+window.RESULT = R;
+</script>
+</body></html>

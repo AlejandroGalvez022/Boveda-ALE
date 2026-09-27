@@ -1,0 +1,71 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Haze — prueba del componente de Framer y del de React</title>
+<!-- Compila dist/Haze.framer.tsx como lo hace Framer (TSX a JS) con un 'framer' simulado, y react/Haze.jsx. La lanza pruebas.ps1. Necesita internet (React y Babel del CDN). -->
+<style>body{margin:0;display:grid;grid-template-columns:600px 600px;background:#000}.p{width:600px;height:300px}</style>
+<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.development.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.26.4/babel.min.js"></script>
+<script src="../paquete/dist/haze.js"></script>
+</head><body>
+<div class="p" id="A"></div><div class="p" id="B"></div><div class="p" id="C"></div><div class="p" id="D"></div>
+<script>
+window.log = []; window.errs = [];
+window.addEventListener('error', function (e) { errs.push(String(e.message)); });
+var _w = console.warn; console.warn = function () { errs.push([].slice.call(arguments).join(' ').slice(0, 300)); _w.apply(console, arguments); };
+var _e = console.error; console.error = function () { errs.push('E:' + [].slice.call(arguments).join(' ').slice(0, 300)); _e.apply(console, arguments); };
+
+function load(p) { var x = new XMLHttpRequest(); x.open('GET', p, false); x.send(); return x.responseText; }
+var CT = {}; ['Enum','Color','Number','Boolean','String'].forEach(function (k) { CT[k] = k; });
+window.FramerStub = { ControlType: CT, RenderTarget: { canvas: 'CANVAS', preview: 'PREVIEW', current: function () { return window.__target(); } },
+  addPropertyControls: function (c, ctl) { window.__controls = ctl; } };
+
+// --- Framer file, compiled the way Framer does (TSX -> JS) ---
+var src = load('../paquete/dist/Haze.framer.tsx');
+src = src.replace(/^import \{[^}]*\} from "framer"\s*$/m, 'const { addPropertyControls, ControlType, RenderTarget } = window.FramerStub')
+         .replace(/^import \{[^}]*\} from "react"\s*$/m, 'const { useEffect, useRef } = React')
+         .replace('export default function HazeBackground', 'function HazeBackground') + '\nwindow.HazeFramer = HazeBackground; window.__HI = Haze;';
+try { eval(Babel.transform(src, { presets: ['typescript', 'react'], filename: 'Haze.tsx' }).code); } catch (e) { errs.push('compile framer: ' + e.message); }
+
+// --- React wrapper, with the engine from the classic build ---
+var rs = load('../paquete/react/Haze.jsx');
+rs = rs.replace(/^import \{[^}]*\} from "react";\s*$/m, 'const { useEffect, useRef, useImperativeHandle, forwardRef } = React;')
+       .replace(/^import Haze from [^\n]*$/m, 'const Haze = window.Haze;')
+       .replace('export default HazeBackground;', 'window.HazeReact = HazeBackground;');
+try { eval(Babel.transform(rs, { presets: ['react'], filename: 'Haze.jsx' }).code); } catch (e) { errs.push('compile react: ' + e.message); }
+
+window.draws={};
+if (window.__HI) { var od=__HI.prototype._draw; __HI.prototype._draw=function(){ var id=this.el&&this.el.parentNode&&this.el.parentNode.id; draws[id]=(draws[id]||0)+1; return od.apply(this,arguments); }; }
+var oh=window.Haze.prototype._draw; window.Haze.prototype._draw=function(){ var id=this.el&&this.el.parentNode&&this.el.parentNode.id; draws['R'+id]=(draws['R'+id]||0)+1; return oh.apply(this,arguments); };
+window.__inst={}; var om=window.Haze.prototype._mount; window.Haze.prototype._mount=function(){ var id=this.el.parentNode&&this.el.parentNode.id; (__inst[id]=__inst[id]||[]).push(this); return om.apply(this,arguments); };
+var targets = { A: 'PREVIEW', B: 'PREVIEW', C: 'CANVAS', D: 'PREVIEW' };
+var current = 'PREVIEW';
+window.__target = function () { return current; };
+function mount(id, el) { current = targets[id]; ReactDOM.flushSync(function () { ReactDOM.createRoot(document.getElementById(id)).render(el); }); }
+var H = window.HazeFramer;
+function P(o) { return o; }
+mount('A', React.createElement(H, P({})));
+mount('B', React.createElement(H, P({ motif: 'ribbons', palette: 'custom', color1: 'var(--token-7f3a9c2e-1b44, rgb(255, 230, 240))', color2: 'rgb(255, 60, 140)', color3: 'rgba(160, 20, 90, 1)', color4: '#3a0620', background: 'var(--token-bg, rgb(12, 2, 8))' })));
+mount('C', React.createElement(H, P({ motif: 'chrome', palette: 'steel' })));
+// React wrapper with NO speed/contrast props: the old code froze and would now paint black
+mount('D', React.createElement(window.HazeReact, { motif: 'chrome', palette: 'magma', style: { height: '300px' } }));
+log.push('hiddenLagoon=' + __controls.color1.hidden({ palette: 'lagoon' }) + ' hiddenCustom=' + __controls.color1.hidden({ palette: 'custom' }) + ' scrollHidden=' + __controls.scrollDistance.hidden({ scrollEnergy: false }));
+log.push('canvases=' + document.querySelectorAll('canvas').length);
+
+/* veredicto: se lee desde pruebas.ps1 tras esperar */
+window.verdict = function () {
+  var R = { ok: [], fail: [] };
+  function check(n, c, i) { (c ? R.ok : R.fail).push('framer/react: ' + n + (i !== undefined ? ' [' + i + ']' : '')); }
+  check('compila sin errores', errs.length === 0, errs.join(' | '));
+  check('4 lienzos', document.querySelectorAll('canvas').length === 4);
+  check('colores propios ocultos salvo Custom', __controls.color1.hidden({ palette: 'lagoon' }) === true && __controls.color1.hidden({ palette: 'custom' }) === false);
+  check('Full at oculto sin Scroll', __controls.scrollDistance.hidden({ scrollEnergy: false }) === true);
+  var st = {}; for (var k in __inst) st[k] = __inst[k][0];
+  check('preview anima', st.A && st.A._running === true);
+  check('lienzo quieto (speed 0 y en pausa)', st.C && st.C._running === false && st.C.o.speed === 0);
+  check('lienzo: sin redibujar', window.__c0 === draws.C, window.__c0 + '→' + draws.C);
+  check('React sin speed: se mueve', st.D && st.D._running === true && st.D.o.speed === 1);
+  var c = st.B && st.B._c[1];
+  check('Custom con token var(): rosa', c && c[0] > .9 && c[1] < .3, c && c.map(function (v) { return v.toFixed(2); }).join(','));
+  return R;
+};
+setTimeout(function () { window.__c0 = draws.C; }, 500);
+</script></body></html>

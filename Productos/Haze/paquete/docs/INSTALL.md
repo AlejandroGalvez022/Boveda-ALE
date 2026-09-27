@@ -76,25 +76,26 @@ it from a server component normally. No `dynamic()`, no `ssr: false`.
 
 ## 4. Framer
 
-1. **Assets → upload `haze.esm.js`.**
-2. New code component:
+Framer gets its own file, `dist/Haze.framer.tsx`: the whole engine and a
+ready-made component with every option in the properties panel. Nothing to
+install, nothing to import.
 
-```jsx
-import { useEffect, useRef } from 'react';
-import Haze from './haze.esm.js';
+1. In Framer: **Assets → Code → “+” → New file**, name it **Haze**.
+2. Open `dist/Haze.framer.tsx` in any text editor, copy all of it, paste it
+   over Framer's template and save.
+3. **Haze** now appears under Code in your Assets. Drag it into your hero, set
+   width and height to **Fill**, and send it to the back so your content sits
+   on top.
 
-export default function Background({ motif = 'caustics', palette = 'lagoon', scale = 1 }) {
-  const host = useRef(null);
-  useEffect(() => {
-    const h = new Haze(host.current, { motif, palette, scale });
-    return () => h.destroy();
-  }, [motif, palette, scale]);
-  return <div ref={host} style={{ width: '100%', height: '100%' }} />;
-}
-```
-
-3. Add `addPropertyControls` with an enum for `motif` and `palette` so both are
-   editable on the canvas.
+| Control | What it does |
+|---|---|
+| Motif | Caustics, Ribbons or Chrome. |
+| Palette | One of the seven, or **Custom** — then four colours and a background appear. Colour styles from your project work too. |
+| Energy | How alive it is, 0–1. |
+| Scroll → Drives it | Energy rises from the value above to 1 as the page scrolls. **Full at** sets how many screens that takes. |
+| Scale · Speed · Contrast · Grain · Vignette · Mouse | As in the [API](API.md). |
+| Quality | Pixel-density cap. Lower it for very large sections. |
+| On canvas | **Still** (default) paints one frame in the editor so Framer stays fast; **Animate** runs it live. The preview and the published site always animate. |
 
 Framer resizes frames constantly; the `ResizeObserver` inside handles it.
 
@@ -190,11 +191,12 @@ One draw call per frame, one triangle, no allocations. If you need more headroom
 | Change | Effect |
 |---|---|
 | `quality: 1` | Biggest win on 4K and Retina. |
-| `motif: 'ribbons'` | The cheapest of the three (no second fBm layer). |
+| `motif: 'chrome'` | The cheapest of the three. |
 | `speed: 0` | Static image, still rendered once. |
 
-`chrome` is the most expensive — it evaluates the height field four extra times
-per pixel to build the normal. Still one pass, but budget for it on old phones.
+`caustics` is the most expensive — it finds the nearest cells of two moving
+networks for every pixel. Still one pass, but on old phones consider
+`mobile: { quality: 1 }`.
 
 `pauseOffscreen` is on by default, so instances below the fold cost nothing
 until they are reached.

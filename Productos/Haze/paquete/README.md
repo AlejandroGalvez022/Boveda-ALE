@@ -1,7 +1,7 @@
 # Haze
 
 **Three atmospheric WebGL backgrounds, hand-written in one file.**
-No dependencies. No build step. 22 KB.
+No dependencies. No build step. 9 KB gzipped (26 KB as shipped, comments and all).
 
 ```html
 <script src="haze.js"></script>
@@ -17,9 +17,9 @@ That is the whole integration.
 
 | | |
 |---|---|
-| **`caustics`** | The light on the floor of a pool. Two layers of fBm, the second warped by the first, folded around the midpoint so smooth blobs become thin bright filaments. |
-| **`ribbons`** | Four bands of light drifting and crossing. Domain-warped: each band is drawn on a coordinate that has already been bent by noise, which is what turns a sine wave into cloth. |
-| **`chrome`** | Liquid metal. An fBm height field differentiated into a surface normal, then that normal reads the palette as if it were an environment map. No textures, no lights. |
+| **`caustics`** | The light on the floor of a pool. A network of thin bright lines meeting in brighter knots, bent by the water, with the faint rainbow fringe real caustics have. |
+| **`ribbons`** | Silk ribbons drifting and turning over. Each one twists, shows its back, catches a highlight on the fold and passes behind the others. |
+| **`chrome`** | Liquid metal. A smooth swell reflecting a photo studio built from your palette — sky, floor, a hard horizon and two soft-boxes — so the reflections stay crisp. No textures, no lights. |
 
 Swap between them at runtime with `.motif('ribbons')` — the canvas and the GL
 context are kept, only the shader is rebuilt.
@@ -32,9 +32,11 @@ context are kept, only the shader is rebuilt.
 haze/
 ├── dist/
 │   ├── haze.js           ← drop-in <script>. Sets window.Haze + auto-init.
-│   └── haze.esm.js       ← ES module, for bundlers.
-├── react/Haze.jsx        ← React / Next.js / Framer wrapper.
+│   ├── haze.esm.js       ← ES module, for bundlers.
+│   └── Haze.framer.tsx   ← Framer: paste into a new code file. Every option in the panel.
+├── react/Haze.jsx        ← React / Next.js wrapper.
 ├── src/haze.js           ← commented source. Yours to modify.
+├── src/framer.tsx        ← the Framer component, before the engine is inlined.
 ├── demo/
 │   ├── index.html        ← live control room: every knob, plus copyable code.
 │   └── examples/
@@ -75,8 +77,8 @@ of the work went into the parts you only notice when they are missing:
 
 ## The one option that matters
 
-`energy` (0 → 1) is how alive the surface is: caustics sharpen and brighten,
-ribbons swell and wander further, chrome goes from polished to molten. Wire it
+`energy` (0 → 1) is how alive the surface is: the water in caustics gets rougher
+and brighter, ribbons widen and spread apart, chrome swells deeper. Wire it
 to scroll and you have the effect people actually buy this for:
 
 ```js
