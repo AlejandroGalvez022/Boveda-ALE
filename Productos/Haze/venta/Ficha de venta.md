@@ -38,6 +38,18 @@ Volver a [[Productos/Haze/Lustre|Lustre]]
 
 ---
 
+## 🍋 Estado de Lemon Squeezy (27-sep-2026)
+
+| | |
+|---|---|
+| Tienda | `alejandrogalvez.lemonsqueezy.com` · nombre «Alejandro Gálvez Braña» · logo AG (`Productos/Tienda/logo-a.png`) · moneda **USD** |
+| Identidad | Enviada, **en revisión** |
+| Fiscal | W-8BEN enviado (persona física, no residente en EE. UU.) |
+| Cobros | Al IBAN de Revolut en EUR · mínimo 50 $ por transferencia |
+| Producto | «Lustre — WebGL backgrounds for Framer, React & HTML»: variantes **Single project 24 $** y **Unlimited 59 $**, las dos con el ZIP · categoría *Digital Goods or Services* · 4 imágenes 1600×1200 |
+| Enlace de compra | **MODO PRUEBA:** `https://alejandrogalvez.lemonsqueezy.com/checkout/buy/4adac8a0-ce7d-4311-bb3e-fa2ff64fd66a` (el del producto: el comprador elige la licencia en el pago). Metido en `config.json` para los dos botones |
+| ⚠️ Pendiente | Cuando activen la tienda: **Copy to live mode** y cambiar el enlace en `config.json` (+ regenerar y subir a Netlify). Mejor aún: un enlace por variante, para que «Buy unlimited» llegue con la de 59 $ marcada |
+
 ## ✍️ Textos para pegar (en inglés)
 
 **Nombre:** Lustre
