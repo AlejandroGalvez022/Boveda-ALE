@@ -1,8 +1,8 @@
 """
-Haze - empaqueta la venta. Uso:  python empaquetar.py
+Lustre - empaqueta la venta. Uso:  python empaquetar.py
 
-1. venta/Haze-vX.Y.Z.zip  -> lo que recibe el comprador (todo paquete/ dentro
-   de una carpeta haze/). Rutas con "/" (Compress-Archive de PowerShell 5.1
+1. venta/Lustre-vX.Y.Z.zip  -> lo que recibe el comprador (todo paquete/ dentro
+   de una carpeta lustre/). Rutas con "/" (Compress-Archive de PowerShell 5.1
    las guarda con "\" y el ZIP sale roto en Mac).
 2. venta/sitio/           -> la demo publica para Netlify (arrastrar la carpeta).
    Si venta/config.json tiene "buy_url", mete el boton de comprar con "price".
@@ -16,8 +16,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PKG = os.path.normpath(os.path.join(HERE, '..', 'paquete'))
 SITE = os.path.join(HERE, 'sitio')
 
-src = io.open(os.path.join(PKG, 'src', 'haze.js'), encoding='utf-8').read()
-version = re.search(r"Haze\.version\s*=\s*'([^']+)'", src).group(1)
+src = io.open(os.path.join(PKG, 'src', 'lustre.js'), encoding='utf-8').read()
+version = re.search(r"Lustre\.version\s*=\s*'([^']+)'", src).group(1)
 
 cfg = {}
 cfg_path = os.path.join(HERE, 'config.json')
@@ -25,7 +25,7 @@ if os.path.exists(cfg_path):
     cfg = json.load(io.open(cfg_path, encoding='utf-8'))
 
 # ---------------------------------------------------------------- 1. ZIP
-must = ['dist/haze.js', 'dist/haze.esm.js', 'dist/Haze.framer.tsx', 'README.md', 'LICENSE.md']
+must = ['dist/lustre.js', 'dist/lustre.esm.js', 'dist/Lustre.framer.tsx', 'README.md', 'LICENSE.md']
 for m in must:
     if not os.path.exists(os.path.join(PKG, m)):
         raise SystemExit('Falta ' + m + ' en paquete/: corre build.ps1 antes.')
@@ -37,7 +37,7 @@ if '[your email here]' in lic:
 if 'Draft' in lic:
     warnings.append('LICENSE.md todavia lleva el aviso de BORRADOR')
 
-zpath = os.path.join(HERE, 'Haze-v%s.zip' % version)
+zpath = os.path.join(HERE, 'Lustre-v%s.zip' % version)
 n = 0
 with zipfile.ZipFile(zpath, 'w', zipfile.ZIP_DEFLATED) as z:
     for root, dirs, files in os.walk(PKG):
@@ -47,7 +47,7 @@ with zipfile.ZipFile(zpath, 'w', zipfile.ZIP_DEFLATED) as z:
                 continue
             full = os.path.join(root, f)
             rel = os.path.relpath(full, PKG).replace(os.sep, '/')
-            z.write(full, 'haze/' + rel)
+            z.write(full, 'lustre/' + rel)
             n += 1
 print('ZIP  %s  (%d archivos, %.1f KB)' % (os.path.basename(zpath), n, os.path.getsize(zpath) / 1024))
 
@@ -56,14 +56,14 @@ if os.path.exists(SITE):
     shutil.rmtree(SITE)
 os.makedirs(os.path.join(SITE, 'dist'))
 os.makedirs(os.path.join(SITE, 'examples'))
-shutil.copy(os.path.join(PKG, 'dist', 'haze.js'), os.path.join(SITE, 'dist', 'haze.js'))
+shutil.copy(os.path.join(PKG, 'dist', 'lustre.js'), os.path.join(SITE, 'dist', 'lustre.js'))
 
 idx = io.open(os.path.join(PKG, 'demo', 'index.html'), encoding='utf-8').read()
-idx = idx.replace('src="../dist/haze.js"', 'src="dist/haze.js"')
+idx = idx.replace('src="../dist/lustre.js"', 'src="dist/lustre.js"')
 buy = cfg.get('buy_url', '').strip()
 if buy:
     price = cfg.get('price', '').strip()
-    label = 'Buy Haze' + (' — ' + price if price else '')
+    label = 'Buy Lustre' + (' — ' + price if price else '')
     idx = idx.replace('<button class="btn solid" id="toRoom">',
                       '<a class="btn solid" href="%s">%s</a>\n      <button class="btn" id="toRoom">' % (buy, label), 1)
     idx = idx.replace('<span>WebGL · commercial licence</span>',
@@ -74,7 +74,7 @@ io.open(os.path.join(SITE, 'index.html'), 'w', encoding='utf-8', newline='').wri
 
 for f in os.listdir(os.path.join(PKG, 'demo', 'examples')):
     t = io.open(os.path.join(PKG, 'demo', 'examples', f), encoding='utf-8').read()
-    t = t.replace('src="../../dist/haze.js"', 'src="../dist/haze.js"')
+    t = t.replace('src="../../dist/lustre.js"', 'src="../dist/lustre.js"')
     io.open(os.path.join(SITE, 'examples', f), 'w', encoding='utf-8', newline='').write(t)
 
 # enlaces rotos: todo src/href relativo del sitio tiene que existir

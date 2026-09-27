@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Haze — three atmospheric WebGL backgrounds. Zero dependencies.</title>
+<title>Lustre — three atmospheric WebGL backgrounds. Zero dependencies.</title>
 <meta name="description" content="Caustics, silk and liquid chrome, hand-written in one WebGL file. No libraries, no build step, 9 KB gzipped.">
 <meta name="theme-color" content="#030a14">
 <style>
 /* ==========================================================================
-   Haze — demo & control room.
+   Lustre — demo & control room.
    This page IS the pitch: every knob is a slider away and the code for
    whatever the buyer builds is one click. Dependency-free, like the product.
    ========================================================================== */
@@ -110,7 +110,7 @@ footer{border-top:1px solid var(--line-soft);padding:34px clamp(24px,5vw,72px);
   <div class="chips motifs" id="motifs"></div>
   <div class="copy">
     <p class="tagline"><i></i>WebGL · three motifs · zero dependencies · 9 KB gzipped</p>
-    <h1>Haze</h1>
+    <h1>Lustre</h1>
     <p class="lede">Caustics, silk and liquid chrome — hand-written in one WebGL file.
        Drop in a script tag and a <code>div</code>. It sizes itself, pauses when it scrolls out of
        view, falls back to CSS where WebGL is missing, and sits still for anyone who asked their
@@ -176,17 +176,17 @@ footer{border-top:1px solid var(--line-soft);padding:34px clamp(24px,5vw,72px);
 </section>
 
 <footer>
-  <span>Haze v1.0.0</span>
+  <span>Lustre v1.0.0</span>
   <span>WebGL · commercial licence</span>
 </footer>
 
-<script src="dist/haze.js"></script>
+<script src="dist/lustre.js"></script>
 <script>
 (function () {
   "use strict";
 
   var stage = document.getElementById('stage');
-  var bg = new Haze(stage, { motif: 'caustics', palette: 'lagoon', energy: 0.5 });
+  var bg = new Lustre(stage, { motif: 'caustics', palette: 'lagoon', energy: 0.5 });
 
   /* Taken here, before anything else: the sliders call paintCode() the moment
      they are created, and a `var` declared further down would still be
@@ -201,7 +201,7 @@ footer{border-top:1px solid var(--line-soft);padding:34px clamp(24px,5vw,72px);
   function buildMotifs() {
     motifBoxes.forEach(function (box) {
       box.innerHTML = '';
-      Haze.motifs.forEach(function (name) {
+      Lustre.motifs.forEach(function (name) {
         var b = document.createElement('button');
         b.className = 'chip';
         b.type = 'button';
@@ -226,13 +226,13 @@ footer{border-top:1px solid var(--line-soft);padding:34px clamp(24px,5vw,72px);
   buildMotifs();
 
   document.getElementById('cycle').addEventListener('click', function () {
-    var i = Haze.motifs.indexOf(motif);
-    setMotif(Haze.motifs[(i + 1) % Haze.motifs.length]);
+    var i = Lustre.motifs.indexOf(motif);
+    setMotif(Lustre.motifs[(i + 1) % Lustre.motifs.length]);
   });
 
   /* ---------- palettes ---------- */
   var palBox = document.getElementById('palettes');
-  Object.keys(Haze.palettes).forEach(function (name) {
+  Object.keys(Lustre.palettes).forEach(function (name) {
     var b = document.createElement('button');
     b.className = 'chip';
     b.type = 'button';
@@ -300,11 +300,11 @@ footer{border-top:1px solid var(--line-soft);padding:34px clamp(24px,5vw,72px);
   function paintCode() {
     var o = bg.o;
     var L = [];
-    L.push('&lt;script src="haze.js"&gt;&lt;/script&gt;');
+    L.push('&lt;script src="lustre.js"&gt;&lt;/script&gt;');
     L.push('&lt;div id="hero" style="height:100svh"&gt;&lt;/div&gt;');
     L.push('');
     L.push('&lt;script&gt;');
-    L.push('new <span class="k">Haze</span>(<span class="k3">"#hero"</span>, {');
+    L.push('new <span class="k">Lustre</span>(<span class="k3">"#hero"</span>, {');
     L.push('  <span class="k2">motif</span>:     <span class="k3">"' + motif + '"</span>,');
     if (palette !== 'custom') {
       L.push('  <span class="k2">palette</span>:   <span class="k3">"' + palette + '"</span>,');

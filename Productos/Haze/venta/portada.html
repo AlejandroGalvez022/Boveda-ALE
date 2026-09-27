@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><title>Haze — cover</title>
+<html lang="en"><head><meta charset="utf-8"><title>Lustre — cover</title>
 <!--
   Generador de portadas para la ficha de venta. NO va en el paquete.
   portada.html?m=caustics&p=lagoon&t=12&e=0.55&label=1
@@ -21,13 +21,13 @@
   .label p{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:clamp(12px,1.25vw,20px);
     letter-spacing:.18em;text-transform:uppercase;color:rgba(242,244,246,.78);text-align:right;line-height:1.7}
 </style>
-<script src="../paquete/dist/haze.js"></script>
+<script src="../paquete/dist/lustre.js"></script>
 </head><body>
 <script>
   var q = new URLSearchParams(location.search);
   var m = q.get('m') || 'caustics', T = +(q.get('t') || 12), E = q.has('e') ? +q.get('e') : 0.55;
   function still(el, opts) {
-    var h = new Haze(el, Object.assign({ intro: false, mouse: 0, speed: 0, startAt: T, energy: E, quality: 1, vignette: .25 }, opts));
+    var h = new Lustre(el, Object.assign({ intro: false, mouse: 0, speed: 0, startAt: T, energy: E, quality: 1, vignette: .25 }, opts));
     h.pause();
     return h;
   }
@@ -43,7 +43,7 @@
   }
   if (q.get('label') === '1') {
     document.body.insertAdjacentHTML('beforeend',
-      '<div class="veil"></div><div class="label"><h1>Haze</h1><p>Three WebGL backgrounds<br>Zero dependencies · 9 KB<br>HTML · React · Framer</p></div>');
+      '<div class="veil"></div><div class="label"><h1>Lustre</h1><p>Three WebGL backgrounds<br>Zero dependencies · 9 KB<br>HTML · React · Framer</p></div>');
   }
 </script>
 </body></html>

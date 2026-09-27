@@ -1,12 +1,12 @@
-# Haze
+# Lustre
 
 **Three atmospheric WebGL backgrounds, hand-written in one file.**
 No dependencies. No build step. 9 KB gzipped (26 KB as shipped, comments and all).
 
 ```html
-<script src="haze.js"></script>
+<script src="lustre.js"></script>
 <div id="hero" style="height:100svh"></div>
-<script>new Haze('#hero', { motif: 'caustics', palette: 'lagoon' });</script>
+<script>new Lustre('#hero', { motif: 'caustics', palette: 'lagoon' });</script>
 ```
 
 That is the whole integration.
@@ -29,13 +29,13 @@ context are kept, only the shader is rebuilt.
 ## What you get
 
 ```
-haze/
+lustre/
 ├── dist/
-│   ├── haze.js           ← drop-in <script>. Sets window.Haze + auto-init.
-│   ├── haze.esm.js       ← ES module, for bundlers.
-│   └── Haze.framer.tsx   ← Framer: paste into a new code file. Every option in the panel.
-├── react/Haze.jsx        ← React / Next.js wrapper.
-├── src/haze.js           ← commented source. Yours to modify.
+│   ├── lustre.js           ← drop-in <script>. Sets window.Lustre + auto-init.
+│   ├── lustre.esm.js       ← ES module, for bundlers.
+│   └── Lustre.framer.tsx   ← Framer: paste into a new code file. Every option in the panel.
+├── react/Lustre.jsx        ← React / Next.js wrapper.
+├── src/lustre.js           ← commented source. Yours to modify.
 ├── src/framer.tsx        ← the Framer component, before the engine is inlined.
 ├── demo/
 │   ├── index.html        ← live control room: every knob, plus copyable code.
@@ -82,7 +82,7 @@ and brighter, the silk folds deeper, chrome swells deeper. Wire it
 to scroll and you have the effect people actually buy this for:
 
 ```js
-const bg = new Haze('#hero', { motif: 'caustics' });
+const bg = new Lustre('#hero', { motif: 'caustics' });
 addEventListener('scroll', () => {
   bg.energy(scrollY / innerHeight);
 }, { passive: true });
@@ -132,7 +132,7 @@ Anything older gets the CSS fallback automatically. No polyfills, ever.
 
 ## Rebuilding
 
-Edit `src/haze.js`, then:
+Edit `src/lustre.js`, then:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File build.ps1

@@ -1,4 +1,4 @@
-# Haze — installing it
+# Lustre — installing it
 
 Pick your stack. Every route below is complete on its own.
 
@@ -6,40 +6,40 @@ Pick your stack. Every route below is complete on its own.
 
 ## 1. Plain HTML
 
-Copy `dist/haze.js` next to your page.
+Copy `dist/lustre.js` next to your page.
 
 ```html
 <div id="hero" style="height:100svh"></div>
 
-<script src="haze.js"></script>
+<script src="lustre.js"></script>
 <script>
-  new Haze('#hero', { motif: 'caustics', palette: 'lagoon' });
+  new Lustre('#hero', { motif: 'caustics', palette: 'lagoon' });
 </script>
 ```
 
 **No JavaScript at all?** Use attributes and the script starts itself:
 
 ```html
-<div data-haze data-haze-motif="silk" data-haze-palette="dusk" style="height:100svh"></div>
-<script src="haze.js"></script>
+<div data-lustre data-lustre-motif="silk" data-lustre-palette="dusk" style="height:100svh"></div>
+<script src="lustre.js"></script>
 ```
 
 ---
 
 ## 2. React / Vite / Remix
 
-Copy `dist/haze.esm.js` and `react/Haze.jsx` into your source tree, keeping them
-in sibling folders (the wrapper imports `../dist/haze.esm.js` — adjust the path
+Copy `dist/lustre.esm.js` and `react/Lustre.jsx` into your source tree, keeping them
+in sibling folders (the wrapper imports `../dist/lustre.esm.js` — adjust the path
 if you move them).
 
 ```jsx
-import HazeBackground from './Haze';
+import LustreBackground from './Lustre';
 
 export default function Hero() {
   return (
-    <HazeBackground motif="chrome" palette="steel" style={{ height: '100svh' }}>
+    <LustreBackground motif="chrome" palette="steel" style={{ height: '100svh' }}>
       <h1>Your hero</h1>
-    </HazeBackground>
+    </LustreBackground>
   );
 }
 ```
@@ -54,7 +54,7 @@ useEffect(() => {
   return () => window.removeEventListener('scroll', onScroll);
 }, []);
 
-<HazeBackground ref={ref} motif="caustics" style={{ height: '100svh' }} />
+<LustreBackground ref={ref} motif="caustics" style={{ height: '100svh' }} />
 ```
 
 ---
@@ -66,24 +66,24 @@ but the file needs the client directive:
 
 ```jsx
 'use client';
-import HazeBackground from '@/components/Haze';
+import LustreBackground from '@/components/Lustre';
 ```
 
-In the App Router, put `'use client'` at the top of `Haze.jsx` itself and import
+In the App Router, put `'use client'` at the top of `Lustre.jsx` itself and import
 it from a server component normally. No `dynamic()`, no `ssr: false`.
 
 ---
 
 ## 4. Framer
 
-Framer gets its own file, `dist/Haze.framer.tsx`: the whole engine and a
+Framer gets its own file, `dist/Lustre.framer.tsx`: the whole engine and a
 ready-made component with every option in the properties panel. Nothing to
 install, nothing to import.
 
-1. In Framer: **Assets → Code → “+” → New file**, name it **Haze**.
-2. Open `dist/Haze.framer.tsx` in any text editor, copy all of it, paste it
+1. In Framer: **Assets → Code → “+” → New file**, name it **Lustre**.
+2. Open `dist/Lustre.framer.tsx` in any text editor, copy all of it, paste it
    over Framer's template and save.
-3. **Haze** now appears under Code in your Assets. Drag it into your hero, set
+3. **Lustre** now appears under Code in your Assets. Drag it into your hero, set
    width and height to **Fill**, and send it to the back so your content sits
    on top.
 
@@ -106,16 +106,16 @@ Framer resizes frames constantly; the `ResizeObserver` inside handles it.
 **Project settings → Custom code → Footer:**
 
 ```html
-<script src="https://YOUR-CDN/haze.js"></script>
+<script src="https://YOUR-CDN/lustre.js"></script>
 ```
 
 Then give your section a **Custom attribute** in the Designer:
 
 | Name | Value |
 |---|---|
-| `data-haze` | *(leave empty)* |
-| `data-haze-motif` | `silk` |
-| `data-haze-palette` | `dusk` |
+| `data-lustre` | *(leave empty)* |
+| `data-lustre-motif` | `silk` |
+| `data-lustre-palette` | `dusk` |
 
 Set the section's height in the Designer (`100vh`) and put your content in a
 child div with `position: relative`.
@@ -124,28 +124,28 @@ child div with `position: relative`.
 
 ## 6. WordPress / Elementor
 
-1. Upload `haze.js` to your theme folder (or use a CDN link).
+1. Upload `lustre.js` to your theme folder (or use a CDN link).
 2. Enqueue it in the child theme's `functions.php`:
 
 ```php
 add_action('wp_enqueue_scripts', function () {
-  wp_enqueue_script('haze', get_stylesheet_directory_uri() . '/js/haze.js', [], '1.0.0', true);
+  wp_enqueue_script('lustre', get_stylesheet_directory_uri() . '/js/lustre.js', [], '1.0.0', true);
 });
 ```
 
 3. On the Elementor Section → **Advanced → Attributes**:
 
 ```
-data-haze|
-data-haze-motif|chrome
-data-haze-palette|steel
+data-lustre|
+data-lustre-motif|chrome
+data-lustre-palette|steel
 ```
 
 4. Give the section a minimum height and set its background to your `background`
    colour so nothing flashes while the script loads.
 
 > Elementor builds some sections after `DOMContentLoaded`. If a section stays
-> empty, call `Haze.autoInit()` once more from a small inline script at the end
+> empty, call `Lustre.autoInit()` once more from a small inline script at the end
 > of the page.
 
 ---

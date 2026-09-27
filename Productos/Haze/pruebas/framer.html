@@ -1,10 +1,10 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>Haze — prueba del componente de Framer y del de React</title>
-<!-- Compila dist/Haze.framer.tsx como lo hace Framer (TSX a JS) con un 'framer' simulado, y react/Haze.jsx. La lanza pruebas.ps1. Necesita internet (React y Babel del CDN). -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Lustre — prueba del componente de Framer y del de React</title>
+<!-- Compila dist/Lustre.framer.tsx como lo hace Framer (TSX a JS) con un 'framer' simulado, y react/Lustre.jsx. La lanza pruebas.ps1. Necesita internet (React y Babel del CDN). -->
 <style>body{margin:0;display:grid;grid-template-columns:600px 600px;background:#000}.p{width:600px;height:300px}</style>
 <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.development.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.development.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.26.4/babel.min.js"></script>
-<script src="../paquete/dist/haze.js"></script>
+<script src="../paquete/dist/lustre.js"></script>
 </head><body>
 <div class="p" id="A"></div><div class="p" id="B"></div><div class="p" id="C"></div><div class="p" id="D"></div>
 <script>
@@ -19,34 +19,34 @@ window.FramerStub = { ControlType: CT, RenderTarget: { canvas: 'CANVAS', preview
   addPropertyControls: function (c, ctl) { window.__controls = ctl; } };
 
 // --- Framer file, compiled the way Framer does (TSX -> JS) ---
-var src = load('../paquete/dist/Haze.framer.tsx');
+var src = load('../paquete/dist/Lustre.framer.tsx');
 src = src.replace(/^import \{[^}]*\} from "framer"\s*$/m, 'const { addPropertyControls, ControlType, RenderTarget } = window.FramerStub')
          .replace(/^import \{[^}]*\} from "react"\s*$/m, 'const { useEffect, useRef } = React')
-         .replace('export default function HazeBackground', 'function HazeBackground') + '\nwindow.HazeFramer = HazeBackground; window.__HI = Haze;';
-try { eval(Babel.transform(src, { presets: ['typescript', 'react'], filename: 'Haze.tsx' }).code); } catch (e) { errs.push('compile framer: ' + e.message); }
+         .replace('export default function LustreBackground', 'function LustreBackground') + '\nwindow.LustreFramer = LustreBackground; window.__HI = Lustre;';
+try { eval(Babel.transform(src, { presets: ['typescript', 'react'], filename: 'Lustre.tsx' }).code); } catch (e) { errs.push('compile framer: ' + e.message); }
 
 // --- React wrapper, with the engine from the classic build ---
-var rs = load('../paquete/react/Haze.jsx');
+var rs = load('../paquete/react/Lustre.jsx');
 rs = rs.replace(/^import \{[^}]*\} from "react";\s*$/m, 'const { useEffect, useRef, useImperativeHandle, forwardRef } = React;')
-       .replace(/^import Haze from [^\n]*$/m, 'const Haze = window.Haze;')
-       .replace('export default HazeBackground;', 'window.HazeReact = HazeBackground;');
-try { eval(Babel.transform(rs, { presets: ['react'], filename: 'Haze.jsx' }).code); } catch (e) { errs.push('compile react: ' + e.message); }
+       .replace(/^import Lustre from [^\n]*$/m, 'const Lustre = window.Lustre;')
+       .replace('export default LustreBackground;', 'window.LustreReact = LustreBackground;');
+try { eval(Babel.transform(rs, { presets: ['react'], filename: 'Lustre.jsx' }).code); } catch (e) { errs.push('compile react: ' + e.message); }
 
 window.draws={};
 if (window.__HI) { var od=__HI.prototype._draw; __HI.prototype._draw=function(){ var id=this.el&&this.el.parentNode&&this.el.parentNode.id; draws[id]=(draws[id]||0)+1; return od.apply(this,arguments); }; }
-var oh=window.Haze.prototype._draw; window.Haze.prototype._draw=function(){ var id=this.el&&this.el.parentNode&&this.el.parentNode.id; draws['R'+id]=(draws['R'+id]||0)+1; return oh.apply(this,arguments); };
-window.__inst={}; var om=window.Haze.prototype._mount; window.Haze.prototype._mount=function(){ var id=this.el.parentNode&&this.el.parentNode.id; (__inst[id]=__inst[id]||[]).push(this); return om.apply(this,arguments); };
+var oh=window.Lustre.prototype._draw; window.Lustre.prototype._draw=function(){ var id=this.el&&this.el.parentNode&&this.el.parentNode.id; draws['R'+id]=(draws['R'+id]||0)+1; return oh.apply(this,arguments); };
+window.__inst={}; var om=window.Lustre.prototype._mount; window.Lustre.prototype._mount=function(){ var id=this.el.parentNode&&this.el.parentNode.id; (__inst[id]=__inst[id]||[]).push(this); return om.apply(this,arguments); };
 var targets = { A: 'PREVIEW', B: 'PREVIEW', C: 'CANVAS', D: 'PREVIEW' };
 var current = 'PREVIEW';
 window.__target = function () { return current; };
 function mount(id, el) { current = targets[id]; ReactDOM.flushSync(function () { ReactDOM.createRoot(document.getElementById(id)).render(el); }); }
-var H = window.HazeFramer;
+var H = window.LustreFramer;
 function P(o) { return o; }
 mount('A', React.createElement(H, P({})));
 mount('B', React.createElement(H, P({ motif: 'silk', palette: 'custom', color1: 'var(--token-7f3a9c2e-1b44, rgb(255, 230, 240))', color2: 'rgb(255, 60, 140)', color3: 'rgba(160, 20, 90, 1)', color4: '#3a0620', background: 'var(--token-bg, rgb(12, 2, 8))' })));
 mount('C', React.createElement(H, P({ motif: 'chrome', palette: 'steel' })));
 // React wrapper with NO speed/contrast props: the old code froze and would now paint black
-mount('D', React.createElement(window.HazeReact, { motif: 'chrome', palette: 'magma', style: { height: '300px' } }));
+mount('D', React.createElement(window.LustreReact, { motif: 'chrome', palette: 'magma', style: { height: '300px' } }));
 log.push('hiddenLagoon=' + __controls.color1.hidden({ palette: 'lagoon' }) + ' hiddenCustom=' + __controls.color1.hidden({ palette: 'custom' }) + ' scrollHidden=' + __controls.scrollDistance.hidden({ scrollEnergy: false }));
 log.push('canvases=' + document.querySelectorAll('canvas').length);
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><title>Haze — video</title>
+<html lang="en"><head><meta charset="utf-8"><title>Lustre — video</title>
 <!--
   Generador del vídeo de la ficha de venta. NO va en el paquete.
   Lo graba video.ps1 fotograma a fotograma llamando a go(n): cada fotograma
@@ -31,7 +31,7 @@
   .end p{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:clamp(12px,1.25vw,20px);
     letter-spacing:.18em;text-transform:uppercase;color:rgba(242,244,246,.78);text-align:right;line-height:1.7}
 </style>
-<script src="../paquete/dist/haze.js"></script>
+<script src="../paquete/dist/lustre.js"></script>
 </head><body>
 <script>
   var FPS = 30, SEG = 5, FADE = 0.8, END = 3.5;
@@ -41,8 +41,8 @@
     { motif: 'silk',     palette: 'violet', t0: 20, name: 'Silk',     sub: 'Draped shot silk' },
     { motif: 'chrome',   palette: 'steel',  t0: 3,  name: 'Chrome',   sub: 'Liquid metal' }
   ];
-  function haze(el, o) {
-    var h = new Haze(el, Object.assign({ intro: false, mouse: 0, speed: 0, quality: 1, vignette: .25 }, o));
+  function lustre(el, o) {
+    var h = new Lustre(el, Object.assign({ intro: false, mouse: 0, speed: 0, quality: 1, vignette: .25 }, o));
     h.pause(); return h;
   }
   function clamp(x) { return Math.max(0, Math.min(1, x)); }
@@ -53,15 +53,15 @@
     L.innerHTML = '<div class="bg"></div><div class="veil"></div><div class="cap"><div><h2>' + s.name +
       '</h2><small>' + s.sub + '</small></div><div class="meter">Energy<i><b></b></i></div></div>';
     document.body.appendChild(L);
-    return { el: L, cap: L.querySelector('.cap'), bar: L.querySelector('b'), s: s, h: haze(L.querySelector('.bg'), { motif: s.motif, palette: s.palette }) };
+    return { el: L, cap: L.querySelector('.cap'), bar: L.querySelector('b'), s: s, h: lustre(L.querySelector('.bg'), { motif: s.motif, palette: s.palette }) };
   });
 
   var end = document.createElement('div'); end.className = 'layer';
   end.innerHTML = '<div class="bg trio"><div></div><div></div><div></div></div><div class="veil"></div>' +
-    '<div class="cap end"><h1>Haze</h1><p>Three WebGL backgrounds<br>Zero dependencies · 9 KB<br>HTML · React · Framer</p></div>';
+    '<div class="cap end"><h1>Lustre</h1><p>Three WebGL backgrounds<br>Zero dependencies · 9 KB<br>HTML · React · Framer</p></div>';
   document.body.appendChild(end);
   var trio = [].map.call(end.querySelectorAll('.trio > div'), function (d, i) {
-    return haze(d, { motif: SHOTS[i].motif, palette: SHOTS[i].palette, energy: .5 });
+    return lustre(d, { motif: SHOTS[i].motif, palette: SHOTS[i].palette, energy: .5 });
   });
 
   function draw(h, t, e) { h.o.startAt = t; h._energy = h._energyTarget = e; h._draw(); }

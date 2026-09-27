@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Haze. Versions follow [semver](https://semver.org/).
+All notable changes to Lustre. Versions follow [semver](https://semver.org/).
 
 ---
 
@@ -32,13 +32,13 @@ First release.
   the GL context are kept.
 
 ### Integration
-- `dist/haze.js` — classic `<script>`, exposes `window.Haze`, auto-initialises
-  `[data-haze]` elements.
-- `dist/haze.esm.js` — ES module for bundlers.
-- `dist/Haze.framer.tsx` — a Framer code component with the engine inlined and
+- `dist/lustre.js` — classic `<script>`, exposes `window.Lustre`, auto-initialises
+  `[data-lustre]` elements.
+- `dist/lustre.esm.js` — ES module for bundlers.
+- `dist/Lustre.framer.tsx` — a Framer code component with the engine inlined and
   every option in the properties panel (colour styles included). Paints a
   still frame on the Framer canvas, animates in preview and on the site.
-- `react/Haze.jsx` — React wrapper with a ref API, SSR-safe, tears down on
+- `react/Lustre.jsx` — React wrapper with a ref API, SSR-safe, tears down on
   unmount. Structural options rebuild; cosmetic ones update in place.
 - Seven palettes: lagoon, dusk, forest, steel, magma, violet, mono.
 - Per-breakpoint mobile overrides.

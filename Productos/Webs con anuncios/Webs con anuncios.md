@@ -13,7 +13,7 @@ tags: [proyecto, producto, pasivo, anuncios, seo]
 Volver al [[Indice]]
 
 > [!info] De dónde sale
-> Un vídeo que vendía como fácil hacer **webs sencillas llenas de anuncios** y cobrar por las visitas. Es otra pieza del mismo viaje que [[Bot de trading/Bot de trading|el bot]] y [[Productos/Haze/Haze|Haze]]: **ganar dinero sin estar delante**. Y se mide igual: **si no da beneficio, no se hace**.
+> Un vídeo que vendía como fácil hacer **webs sencillas llenas de anuncios** y cobrar por las visitas. Es otra pieza del mismo viaje que [[Bot de trading/Bot de trading|el bot]] y [[Productos/Haze/Lustre|Lustre]]: **ganar dinero sin estar delante**. Y se mide igual: **si no da beneficio, no se hace**.
 
 ## 🎯 El veredicto (27-sep-2026)
 
@@ -73,7 +73,7 @@ El tráfico de EE. UU., Reino Unido, Canadá y Australia paga **entre un 40 % y 
 
 ## 🧪 Si se prueba: el experimento
 
-Con las mismas reglas que Haze (poner un plazo, no tocar nada y que lo decida un número):
+Con las mismas reglas que Lustre (poner un plazo, no tocar nada y que lo decida un número):
 
 1. **Una sola herramienta** útil y en inglés, de un tema con buen RPM (dinero, tecnología…). Estática, en Netlify, sin base de datos.
 2. Que cada página **aporte algo de verdad**. Nada de 500 páginas iguales con otro nombre, que es lo que hunde Google.

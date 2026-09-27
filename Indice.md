@@ -26,11 +26,15 @@ Tu bóveda **por fuera de Reload**: tus clientes propios y tus demos. Separada d
 
 ## 💰 Productos (ingresos pasivos)
 
-- 🌫️ [[Productos/Haze/Haze|Haze]] — **tres fondos WebGL** (caustics, ribbons, chrome) para vender en **Framer + Lemon Squeezy** (24 $ / 59 $). **27-sep: rehecho como producto estrella** (fondos nuevos, componente de Framer, 63 pruebas y 0 fallos). Falta lo tuyo: los pasos de la [[Productos/Haze/venta/Ficha de venta|ficha de venta]]. **Es la pieza 1 de 12**: la apuesta es un catálogo, no una pieza suelta.
+- ✨ [[Productos/Haze/Lustre|Lustre]] (antes Haze) — **tres fondos WebGL** (caustics, silk, chrome) para vender en **Framer + Lemon Squeezy** (24 $ / 59 $). **27-sep: rehecho como producto estrella** (fondos nuevos, componente de Framer, 63 pruebas y 0 fallos). Falta lo tuyo: los pasos de la [[Productos/Haze/venta/Ficha de venta|ficha de venta]]. **Es la pieza 1 de 12**: la apuesta es un catálogo, no una pieza suelta.
   > ⚠️ **Regla del catálogo:** lo que se vende **no puede parecerse** a lo entregado a un cliente. El eclipse se queda en La Brega.
 - 📢 [[Productos/Webs con anuncios/Webs con anuncios|Webs con anuncios]] — idea de un vídeo, **investigada el 27-sep**. El blog con AdSense no sale a cuenta en 2026 (la IA de Google se lleva los clics). Si se prueba: **una herramienta interactiva en inglés**, 90 días y criterio de corte.
 
 ---
+
+## 🌟 Inspiración
+
+- [[Inspiracion/Referencias web|Referencias web]] — webs que he visto y me gustan, para hacer algo parecido algún día.
 
 ## 🧪 Laboratorio web
 

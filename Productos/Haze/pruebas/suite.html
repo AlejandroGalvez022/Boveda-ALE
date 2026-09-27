@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>Haze — batería de pruebas</title>
+<html><head><meta charset="utf-8"><title>Lustre — batería de pruebas</title>
 <style>body{margin:0;background:#000}.t{position:relative;width:640px;height:400px}</style>
 <!--
-  Batería de pruebas de Haze. NO va en el paquete que se vende.
+  Batería de pruebas de Lustre. NO va en el paquete que se vende.
   La lanza pruebas.ps1 (Chrome headless por CDP) y lee window.RESULT.
   Todo se mide leyendo los píxeles del propio WebGL (readPixels justo
   después de dibujar), no con capturas.
 -->
 <script>
-  /* reduced motion simulado solo si la URL lo pide, ANTES de cargar Haze */
+  /* reduced motion simulado solo si la URL lo pide, ANTES de cargar Lustre */
   if (location.hash === '#reduced') {
     var mm = window.matchMedia;
     window.matchMedia = function (q) { return /reduced-motion/.test(q) ? { matches: true } : mm.call(window, q); };
   }
 </script>
-<script src="../paquete/dist/haze.js"></script>
+<script src="../paquete/dist/lustre.js"></script>
 </head><body>
 <div class="t" id="host"></div>
 <script>
@@ -49,12 +49,12 @@ function diff(a, b) {
 }
 function fresh(opts) {
   if (host.__h) { host.__h.destroy(); }
-  var h = new Haze(host, Object.assign({ intro: false, mouse: 0 }, opts));
+  var h = new Lustre(host, Object.assign({ intro: false, mouse: 0 }, opts));
   h.pause(); host.__h = h; return h;
 }
 
 if (location.hash === '#reduced') {
-  var h = new Haze(host, { motif: 'caustics' });
+  var h = new Lustre(host, { motif: 'caustics' });
   var a = null, b = null;
   check('reduced: no arranca el bucle', h._running === false && !h._raf);
   a = frame(h); b = frame(h, 3);   /* speed da igual: con reduced el tiempo avanza, pero NO se redibuja solo */
@@ -96,7 +96,7 @@ if (location.hash === '#reduced') {
   h.set({ speed: undefined, contrast: undefined, palette: 'steel', colors: undefined });
   check('undefined no pisa speed', h.o.speed === 1, h.o.speed);
   check('undefined no pisa contrast', h.o.contrast === 1.2, h.o.contrast);
-  check('palette + colors:undefined aplica la paleta', h.o.colors === Haze.palettes.steel.colors);
+  check('palette + colors:undefined aplica la paleta', h.o.colors === Lustre.palettes.steel.colors);
 
   /* colores de Framer (tokens) */
   h.set({ colors: ['var(--token-3a9f, rgb(255, 0, 128))', 'rgb(1,2,3)', '#abc', [10, 20, 30]] });
@@ -139,7 +139,7 @@ if (location.hash === '#reduced') {
   var reason = null;
   ['caustics', 'silk', 'chrome'].forEach(function (m) {
     host.style.backgroundImage = '';
-    var h = new Haze(host, { motif: m, onFallback: function (r) { reason = r; } });
+    var h = new Lustre(host, { motif: m, onFallback: function (r) { reason = r; } });
     check(m + ': sin WebGL → respaldo CSS', h._fallback && /gradient/.test(host.style.backgroundImage) && !host.querySelector('canvas'));
     check(m + ': avisa con onFallback', reason === 'webgl-unavailable', reason);
     reason = null;
@@ -149,10 +149,10 @@ if (location.hash === '#reduced') {
 
   /* auto-init por atributos */
   var d = document.createElement('div'); d.className = 't';
-  d.setAttribute('data-haze', ''); d.setAttribute('data-haze-motif', 'silk'); d.setAttribute('data-haze-palette', 'dusk'); d.setAttribute('data-haze-energy', '0.7');
+  d.setAttribute('data-lustre', ''); d.setAttribute('data-lustre-motif', 'silk'); d.setAttribute('data-lustre-palette', 'dusk'); d.setAttribute('data-lustre-energy', '0.7');
   document.body.appendChild(d);
-  var made = Haze.autoInit();
-  check('data-haze arranca solo', made.length === 1 && made[0].o.motif === 'silk' && made[0].o.energy === 0.7);
+  var made = Lustre.autoInit();
+  check('data-lustre arranca solo', made.length === 1 && made[0].o.motif === 'silk' && made[0].o.energy === 0.7);
   made[0].destroy();
   R.done = true;
 }

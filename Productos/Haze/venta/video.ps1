@@ -1,4 +1,4 @@
-# Haze - graba el video de la ficha de venta (venta/haze-video-WxH.mp4).
+# Lustre - graba el video de la ficha de venta (venta/lustre-video-WxH.mp4).
 # Uso: powershell -ExecutionPolicy Bypass -File video.ps1 [-W 1920 -H 1080]
 # Necesita ffmpeg: lo trae el paquete de Python imageio-ffmpeg (pip install imageio-ffmpeg).
 param([int]$W = 1920, [int]$H = 1080)
@@ -7,11 +7,11 @@ $ErrorActionPreference = 'Stop'
 $port = 9404
 $ffmpeg = (& python -c "import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())").Trim()
 if (-not (Test-Path $ffmpeg)) { throw "Falta ffmpeg: pip install imageio-ffmpeg" }
-$frames = Join-Path $env:TEMP "haze-video-frames"
+$frames = Join-Path $env:TEMP "lustre-video-frames"
 if (Test-Path $frames) { Remove-Item $frames -Recurse -Force }
 New-Item -ItemType Directory -Path $frames | Out-Null
 $page = "file:///" + (Join-Path $PSScriptRoot "video.html").Replace([char]92, [char]47)
-$out = Join-Path $PSScriptRoot ("haze-video-" + $W + "x" + $H + ".mp4")
+$out = Join-Path $PSScriptRoot ("lustre-video-" + $W + "x" + $H + ".mp4")
 
 $S = Start-Cdp $port
 try {

@@ -1,4 +1,4 @@
-# Haze - batería de pruebas. Uso: powershell -ExecutionPolicy Bypass -File pruebas.ps1
+# Lustre - batería de pruebas. Uso: powershell -ExecutionPolicy Bypass -File pruebas.ps1
 # Construye dist/, abre suite.html en Chrome headless (WebGL por SwiftShader)
 # y enseña lo que pasa y lo que falla. Sale con código 1 si algo falla.
 # Además comprueba las páginas de la demo a 1440 y 390: errores de consola y

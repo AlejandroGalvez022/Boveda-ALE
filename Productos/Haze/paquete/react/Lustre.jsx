@@ -1,24 +1,24 @@
 /**
- * Haze — React wrapper.
+ * Lustre — React wrapper.
  *
  * Works in Next.js, Vite, Remix, Framer and anything else running React 17+.
  * A thin shell: all the work happens in the class, so the canvas is created
  * once and never re-created by a re-render.
  *
- *   import HazeBackground from "./Haze";
+ *   import LustreBackground from "./Lustre";
  *
- *   <HazeBackground motif="silk" palette="dusk" style={{ height: "100svh" }}>
+ *   <LustreBackground motif="silk" palette="dusk" style={{ height: "100svh" }}>
  *     <h1>Your hero</h1>
- *   </HazeBackground>
+ *   </LustreBackground>
  *
  * SSR-safe: nothing touches `window` until the effect runs, which only ever
  * happens in the browser.
  */
 
 import { useEffect, useRef, useImperativeHandle, forwardRef } from "react";
-import Haze from "../dist/haze.esm.js";
+import Lustre from "../dist/lustre.esm.js";
 
-const HazeBackground = forwardRef(function HazeBackground(
+const LustreBackground = forwardRef(function LustreBackground(
   {
     motif = "caustics",
     palette,
@@ -64,7 +64,7 @@ const HazeBackground = forwardRef(function HazeBackground(
   useEffect(() => {
     if (!host.current) return undefined;
 
-    const instance = new Haze(host.current, {
+    const instance = new Lustre(host.current, {
       motif,
       palette,
       colors,
@@ -102,7 +102,7 @@ const HazeBackground = forwardRef(function HazeBackground(
   }, [energy]);
 
   useImperativeHandle(ref, () => ({
-    /** The live Haze instance, if you need the raw API. */
+    /** The live Lustre instance, if you need the raw API. */
     get instance() {
       return inst.current;
     },
@@ -125,7 +125,7 @@ const HazeBackground = forwardRef(function HazeBackground(
   );
 });
 
-export default HazeBackground;
+export default LustreBackground;
 
 /* --------------------------------------------------------------------------
  * Driving energy from scroll — the effect most buyers are after.
@@ -136,7 +136,7 @@ export default HazeBackground;
  *     window.addEventListener("scroll", onScroll, { passive: true });
  *     return () => window.removeEventListener("scroll", onScroll);
  *   }, []);
- *   <HazeBackground ref={ref} style={{ height: "100svh" }} />
+ *   <LustreBackground ref={ref} style={{ height: "100svh" }} />
  *
  * .energy() eases towards whatever you give it, so raw scroll values are fine —
  * there is no need to throttle or smooth them yourself.

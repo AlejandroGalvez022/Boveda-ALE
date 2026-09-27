@@ -1,6 +1,6 @@
 ---
-name: haze-producto
-description: Haze — primer producto de ingresos pasivos (3 fondos WebGL); 27-sep rehecho como producto estrella, se vende en Framer + Lemon Squeezy a 24/59 $; regla de no repetir lo entregado a un cliente
+name: lustre-producto
+description: Lustre (antes Haze, renombrado 27-sep) — producto de ingresos pasivos, 3 fondos WebGL (caustics, silk, chrome); Framer + Lemon Squeezy a 24/59 $; regla de no repetir lo entregado a un cliente
 metadata: 
   node_type: memory
   type: project
@@ -8,7 +8,7 @@ metadata:
   modified: 2026-08-09T19:44:47.837Z
 ---
 
-**Haze** es el **primer producto** de Alejandro pensado como **ingreso pasivo** (9-ago-2026). Vive en `C:\Users\galve\Documents\Ale\Productos\Haze\` (repo `Boveda-ALE`). Nota: [[Haze]].
+**Lustre** (hasta el 27-sep se llamó **Haze**) es el **primer producto** de Alejandro pensado como **ingreso pasivo** (9-ago-2026). Vive en `C:\Users\galve\Documents\Ale\Productos\Haze\` (repo `Boveda-ALE`). Nota: [[Lustre]].
 
 **Qué es:** **tres** fondos atmosféricos en WebGL escritos a mano —`caustics` (luz de piscina), `ribbons` (cintas de luz) y `chrome` (metal líquido)— en **un archivo, cero dependencias, 23 KB**, un triángulo y una llamada de dibujo por fotograma. Siete paletas, envoltorio de React, auto-arranque por `data-haze`, y una demo-sala-de-control que copia el código de lo que montes.
 
@@ -25,6 +25,6 @@ Lo que sí se conservó fue **el motor** (respaldos, pausado, movimiento reducid
 
 **27-sep-2026 — rehecho como «producto estrella»** (lo pidió así). La v1 NO lo era: se veía peor que fondos gratis (ShaderGradient, Vanta). Fondos rehechos de cero (caustics = Voronoi F2-F1 doblado por ruido; ribbons = cintas que se dan la vuelta; chrome = refleja un estudio hecho con la paleta), componente de Framer `dist/Haze.framer.tsx` (lo genera `build.ps1` desde `src/framer.tsx`), y 4 fallos que venían de la v1 arreglados. **Venta: Framer Marketplace (escaparate, no cobra) + Lemon Squeezy (5 %, merchant of record) a 24 $ / 59 $**; todo en `venta/Ficha de venta.md`, ZIP y demo pública con `venta/empaquetar.py`. **Pruebas: `pruebas/pruebas.ps1` (63, todas en verde) — relanzarlas tras tocar cualquier cosa.** Lecciones: juzgar los fondos a TAMAÑO DE CABECERA (en miniatura todo parece nítido); `Select-Object -First` corta el script y deja capturas viejas; el build debe leer en UTF-8. Pendiente, él: pasos 1-9 de la ficha.
 
-**27-sep (tarde) — investigación + segunda vuelta.** Mercado: Framer (0 %, enlaza a tu pago) + Lemon Squeezy **confirmados** con doc oficial; Envato ya sin exclusividad pero 50 %. **Lo gratis es bueno** (Paper Shaders con *liquid metal*, Vanta, ShaderGradient): el hueco defendible son **motivos reconocibles**, no degradados. `ribbons` **rehecho y renombrado a `silk`** (tela tornasolada drapeada; las cintas parecían tubos de plástico). Fallo arreglado: `mobile.scale` **pisaba** la escala del comprador → ahora multiplica. **Vídeo de la ficha** con `venta/video.ps1` (ffmpeg vía `pip install imageio-ffmpeg`; `video.html` pinta cada fotograma en un instante exacto). 64 pruebas, 0 fallos. Nombre: en npm están cogidos todos los cortos; decisión de marca pendiente de él. Truco: `Invoke-Js` de cdp.ps1 espera un CUERPO de función → `return X`.
+**27-sep (tarde) — investigación + segunda vuelta.** Mercado: Framer (0 %, enlaza a tu pago) + Lemon Squeezy **confirmados** con doc oficial; Envato ya sin exclusividad pero 50 %. **Lo gratis es bueno** (Paper Shaders con *liquid metal*, Vanta, ShaderGradient): el hueco defendible son **motivos reconocibles**, no degradados. `ribbons` **rehecho y renombrado a `silk`** (tela tornasolada drapeada; las cintas parecían tubos de plástico). Fallo arreglado: `mobile.scale` **pisaba** la escala del comprador → ahora multiplica. **Vídeo de la ficha** con `venta/video.ps1` (ffmpeg vía `pip install imageio-ffmpeg`; `video.html` pinta cada fotograma en un instante exacto). 64 pruebas, 0 fallos. Nombre: en npm están cogidos todos los cortos; decisión de marca pendiente de él. **Renombrado a Lustre el 27-sep** (lo eligió él): carpeta aún `Productos/Haze/` (renombrarla a `Productos/Lustre/` cuando VS Code suelte `paquete/`; los enlaces apuntan a Haze hasta entonces), `data-lustre`, `window.Lustre`, `LustreBackground`, `Lustre.framer.tsx`. Ojo al renombrar: `autoInit` tenía `slice(10)` = largo de `data-haze-` escrito a mano; ahora se calcula. Truco: `Invoke-Js` de cdp.ps1 espera un CUERPO de función → `return X`.
 
 Relacionado: [[user-profile]], [[preview-web-changes]], [[boveda-alejandro-personal]], [[labrega-studio]].

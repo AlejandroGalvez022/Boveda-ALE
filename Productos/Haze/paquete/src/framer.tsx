@@ -1,18 +1,18 @@
 // @ts-nocheck
 /*!
- * HAZE for Framer — one code file, no packages to install.
- * Generated from src/framer.tsx + src/haze.js by build.ps1.
+ * LUSTRE for Framer — one code file, no packages to install.
+ * Generated from src/framer.tsx + src/lustre.js by build.ps1.
  * Copyright (c) 2026 Alejandro Galvez. See LICENSE.md.
  *
- * INSTALL: Assets → Code → "+" → New file → name it Haze → paste this whole
- * file over the template → save. "Haze" appears in your Assets. Drag it onto
+ * INSTALL: Assets → Code → "+" → New file → name it Lustre → paste this whole
+ * file over the template → save. "Lustre" appears in your Assets. Drag it onto
  * the canvas, set it to fill its parent, and put your content above it.
  */
 
 import { addPropertyControls, ControlType, RenderTarget } from "framer"
 import { useEffect, useRef } from "react"
 
-/*__HAZE_ENGINE__*/
+/*__LUSTRE_ENGINE__*/
 
 const PALETTE_NAMES = ["lagoon", "dusk", "forest", "steel", "magma", "violet", "mono", "custom"]
 
@@ -23,7 +23,7 @@ const PALETTE_NAMES = ["lagoon", "dusk", "forest", "steel", "magma", "violet", "
  * @framerIntrinsicHeight 800
  * @framerDisableUnlink
  */
-export default function HazeBackground(props) {
+export default function LustreBackground(props) {
     /* Defaults live here (and as each control's defaultValue): React is
        retiring defaultProps on function components. */
     const {
@@ -56,7 +56,7 @@ export default function HazeBackground(props) {
 
     useEffect(() => {
         if (!host.current) return undefined
-        const h = new Haze(host.current, {
+        const h = new Lustre(host.current, {
             ...look(),
             energy,
             mouse: onCanvas ? 0 : mouse,
@@ -108,12 +108,12 @@ export default function HazeBackground(props) {
     )
 }
 
-HazeBackground.displayName = "Haze"
+LustreBackground.displayName = "Lustre"
 
 
 const notCustom = (p) => p.palette !== "custom"
 
-addPropertyControls(HazeBackground, {
+addPropertyControls(LustreBackground, {
     motif: {
         type: ControlType.Enum,
         title: "Motif",

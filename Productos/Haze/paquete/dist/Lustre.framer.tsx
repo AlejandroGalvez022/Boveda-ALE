@@ -1,5 +1,19 @@
+// @ts-nocheck
 /*!
- * HAZE — atmospheric WebGL backgrounds for the web.
+ * LUSTRE for Framer — one code file, no packages to install.
+ * Generated from src/framer.tsx + src/lustre.js by build.ps1.
+ * Copyright (c) 2026 Alejandro Galvez. See LICENSE.md.
+ *
+ * INSTALL: Assets → Code → "+" → New file → name it Lustre → paste this whole
+ * file over the template → save. "Lustre" appears in your Assets. Drag it onto
+ * the canvas, set it to fill its parent, and put your content above it.
+ */
+
+import { addPropertyControls, ControlType, RenderTarget } from "framer"
+import { useEffect, useRef } from "react"
+
+/*!
+ * LUSTRE — atmospheric WebGL backgrounds for the web.
  * Three motifs, one file, zero dependencies. 9 KB gzipped.
  *
  * Copyright (c) 2026 Alejandro Galvez. See LICENSE.md.
@@ -292,17 +306,17 @@ var MOTIFS = {
 };
 
 /* ------------------------------------------------------------------ *
- * Haze
+ * Lustre
  * ------------------------------------------------------------------ */
 
 var UNIFORMS = ['uRes', 'uTime', 'uMouse', 'uC0', 'uC1', 'uC2', 'uC3', 'uBg',
   'uEnergy', 'uIntro', 'uGrain', 'uVignette', 'uMouseAmt', 'uScale', 'uContrast'];
 
-function Haze(target, options) {
-  if (!(this instanceof Haze)) return new Haze(target, options);
+function Lustre(target, options) {
+  if (!(this instanceof Lustre)) return new Lustre(target, options);
 
   var el = typeof target === 'string' ? document.querySelector(target) : target;
-  if (!el) throw new Error('[haze] target element not found: ' + target);
+  if (!el) throw new Error('[lustre] target element not found: ' + target);
 
   this.el = el;
   this.o = {};
@@ -328,7 +342,7 @@ function Haze(target, options) {
 
 /* ---- options ---------------------------------------------------- */
 
-Haze.prototype.set = function (options, silent) {
+Lustre.prototype.set = function (options, silent) {
   /* Wrappers (React, Framer) pass every prop, set or not. An undefined value
      means "not given", never "set it to nothing": left in, speed would come
      through as undefined and freeze the loop, contrast as 0 and paint black. */
@@ -374,7 +388,7 @@ Haze.prototype.set = function (options, silent) {
   return this;
 };
 
-Haze.prototype._v = function (key) {
+Lustre.prototype._v = function (key) {
   var o = this.o;
   if (o.mobile && this._w && this._w <= o.mobileBreakpoint &&
       Object.prototype.hasOwnProperty.call(o.mobile, key)) {
@@ -387,7 +401,7 @@ Haze.prototype._v = function (key) {
 
 /* ---- mounting --------------------------------------------------- */
 
-Haze.prototype._mount = function () {
+Lustre.prototype._mount = function () {
   var el = this.el;
   if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
   el.style.backgroundColor = toCss(this._bg);
@@ -424,7 +438,7 @@ Haze.prototype._mount = function () {
   this.play();
 };
 
-Haze.prototype._buildProgram = function () {
+Lustre.prototype._buildProgram = function () {
   var gl = this.gl;
   if (!gl) return false;
 
@@ -462,13 +476,13 @@ Haze.prototype._buildProgram = function () {
   return true;
 };
 
-Haze.prototype._shader = function (type, src) {
+Lustre.prototype._shader = function (type, src) {
   var gl = this.gl;
   var s = gl.createShader(type);
   gl.shaderSource(s, src);
   gl.compileShader(s);
   if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-    if (window.console && console.warn) console.warn('[haze] shader failed:', gl.getShaderInfoLog(s));
+    if (window.console && console.warn) console.warn('[lustre] shader failed:', gl.getShaderInfoLog(s));
     return null;
   }
   return s;
@@ -480,7 +494,7 @@ Haze.prototype._shader = function (type, src) {
  * No WebGL, or the shader will not compile. Paint a still approximation in
  * CSS instead: a buyer must never end up with an empty hero.
  */
-Haze.prototype._bail = function (reason) {
+Lustre.prototype._bail = function (reason) {
   this.fallbackReason = reason;
   this._fallback = true;
   if (this.canvas && this.canvas.parentNode) this.canvas.parentNode.removeChild(this.canvas);
@@ -492,7 +506,7 @@ Haze.prototype._bail = function (reason) {
   }
 };
 
-Haze.prototype._paintFallback = function () {
+Lustre.prototype._paintFallback = function () {
   var c = this._c, bg = toCss(this._bg);
   var layers;
   if (this.o.motif === 'silk') {
@@ -518,7 +532,7 @@ Haze.prototype._paintFallback = function () {
 
 /* ---- events ----------------------------------------------------- */
 
-Haze.prototype._bindEvents = function () {
+Lustre.prototype._bindEvents = function () {
   var self = this;
 
   this._onResize = function () { self._resize(); };
@@ -551,7 +565,7 @@ Haze.prototype._bindEvents = function () {
   }
 };
 
-Haze.prototype._resize = function () {
+Lustre.prototype._resize = function () {
   if (!this.gl || !this.canvas) return;
   var gl = this.gl;
   var w = this.el.clientWidth || 1, h = this.el.clientHeight || 1;
@@ -569,7 +583,7 @@ Haze.prototype._resize = function () {
 
 /* ---- the loop --------------------------------------------------- */
 
-Haze.prototype._draw = function () {
+Lustre.prototype._draw = function () {
   var gl = this.gl;
   if (!gl || this.destroyed || !this.program) return;
   var o = this.o, U = this.U;
@@ -595,7 +609,7 @@ Haze.prototype._draw = function () {
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 };
 
-Haze.prototype._frame = function () {
+Lustre.prototype._frame = function () {
   this._raf = 0;
   if (!this._running || this.destroyed) return;
   this._mouse[0] += (this._mouseTarget[0] - this._mouse[0]) * 0.05;
@@ -613,17 +627,17 @@ Haze.prototype._frame = function () {
    visibility and scroll observers use. The difference matters: a pause the
    buyer asked for must survive the element scrolling back into view or the
    tab coming back, or pause() would quietly stop meaning anything. */
-Haze.prototype.play = function () {
+Lustre.prototype.play = function () {
   this._held = false;
   return this._resume();
 };
 
-Haze.prototype.pause = function () {
+Lustre.prototype.pause = function () {
   this._held = true;
   return this._halt();
 };
 
-Haze.prototype._resume = function () {
+Lustre.prototype._resume = function () {
   if (this._held || this.destroyed || this._running || !this.gl || !this._visible) return this;
   if (this._reduced && this.o.respectReducedMotion) return this;
   this._running = true;
@@ -632,7 +646,7 @@ Haze.prototype._resume = function () {
   return this;
 };
 
-Haze.prototype._halt = function () {
+Lustre.prototype._halt = function () {
   this._running = false;
   if (this._raf) { cancelAnimationFrame(this._raf); this._raf = 0; }
   return this;
@@ -640,28 +654,28 @@ Haze.prototype._halt = function () {
 
 /**
  * How alive it is, 0..1. This is the one to wire to scroll:
- *   haze.energy(scrollY / innerHeight)
+ *   lustre.energy(scrollY / innerHeight)
  * It eases towards the value, so raw scroll every frame is fine.
  */
-Haze.prototype.energy = function (v) {
+Lustre.prototype.energy = function (v) {
   this._energyTarget = clamp(+v || 0, 0, 1);
   if (this._reduced && this.o.respectReducedMotion) { this._energy = this._energyTarget; this._draw(); }
   return this;
 };
 
 /** Swap the four colours and the background in one call. */
-Haze.prototype.palette = function (name) {
+Lustre.prototype.palette = function (name) {
   if (!PALETTES[name]) return this;
   return this.set({ colors: PALETTES[name].colors, background: PALETTES[name].background });
 };
 
 /** Swap the motif. Rebuilds the shader; the canvas and context are kept. */
-Haze.prototype.motif = function (name) {
+Lustre.prototype.motif = function (name) {
   if (!MOTIFS[name]) return this;
   return this.set({ motif: name });
 };
 
-Haze.prototype.destroy = function () {
+Lustre.prototype.destroy = function () {
   if (this.destroyed) return;
   this._halt();
   this.destroyed = true;
@@ -685,27 +699,27 @@ Haze.prototype.destroy = function () {
   this.program = null;
 };
 
-Haze.palettes = PALETTES;
-Haze.motifs = ['caustics', 'silk', 'chrome'];
-Haze.version = '1.0.0';
+Lustre.palettes = PALETTES;
+Lustre.motifs = ['caustics', 'silk', 'chrome'];
+Lustre.version = '1.0.0';
 
 /* ------------------------------------------------------------------ *
  * Auto-init — for buyers who never touch JavaScript.
- *   <div data-haze data-haze-motif="silk" data-haze-palette="dusk"></div>
+ *   <div data-lustre data-lustre-motif="silk" data-lustre-palette="dusk"></div>
  * Only wired up in the <script> build; the module stays side-effect free.
  * ------------------------------------------------------------------ */
 
 function autoInit(root) {
-  var nodes = (root || document).querySelectorAll('[data-haze]');
+  var nodes = (root || document).querySelectorAll('[data-lustre]');
   var made = [];
   for (var i = 0; i < nodes.length; i++) {
     var el = nodes[i];
-    if (el.__haze) continue;
+    if (el.__lustre) continue;
     var opts = {};
     for (var j = 0; j < el.attributes.length; j++) {
       var at = el.attributes[j];
-      if (at.name.indexOf('data-haze-') !== 0) continue;
-      var key = at.name.slice(10).replace(/-([a-z])/g, function (m, c) { return c.toUpperCase(); });
+      if (at.name.indexOf('data-lustre-') !== 0) continue;
+      var key = at.name.slice('data-lustre-'.length).replace(/-([a-z])/g, function (m, c) { return c.toUpperCase(); });
       var val = at.value;
       if (key === 'colors') opts.colors = val.split(',').map(function (s) { return s.trim(); });
       else if (val === 'true' || val === 'false') opts[key] = (val === 'true');
@@ -713,13 +727,156 @@ function autoInit(root) {
       else opts[key] = val;
     }
     try {
-      el.__haze = new Haze(el, opts);
-      made.push(el.__haze);
+      el.__lustre = new Lustre(el, opts);
+      made.push(el.__lustre);
     } catch (e) {
-      if (window.console && console.warn) console.warn('[haze] auto-init failed', e);
+      if (window.console && console.warn) console.warn('[lustre] auto-init failed', e);
     }
   }
   return made;
 }
 
-export { Haze as default, autoInit, PALETTES, MOTIFS };
+const PALETTE_NAMES = ["lagoon", "dusk", "forest", "steel", "magma", "violet", "mono", "custom"]
+
+/**
+ * @framerSupportedLayoutWidth any-prefer-fixed
+ * @framerSupportedLayoutHeight any-prefer-fixed
+ * @framerIntrinsicWidth 1200
+ * @framerIntrinsicHeight 800
+ * @framerDisableUnlink
+ */
+export default function LustreBackground(props) {
+    /* Defaults live here (and as each control's defaultValue): React is
+       retiring defaultProps on function components. */
+    const {
+        motif = "caustics", palette = "lagoon",
+        color1 = "#eafff7", color2 = "#5fe2c8", color3 = "#1f8fb5", color4 = "#10275c",
+        background = "#030a14", scale = 1, speed = 1, energy = 0.5,
+        scrollEnergy = false, scrollDistance = 1, contrast = 1, grain = 0.03,
+        vignette = 0.35, mouse = 0.1, quality = 1.75, animateOnCanvas = false, style,
+    } = props
+
+    const host = useRef(null)
+    const inst = useRef(null)
+
+    /* On the Framer canvas a live WebGL loop per instance makes the editor
+       sluggish, so by default it paints one still frame there. The preview
+       and the published site always animate. */
+    const onCanvas = RenderTarget.current() === RenderTarget.canvas
+    const still = onCanvas && !animateOnCanvas
+
+    const look = () => {
+        const o = { motif, scale, speed: still ? 0 : speed, contrast, grain, vignette }
+        if (palette === "custom") {
+            o.colors = [color1, color2, color3, color4]
+            o.background = background
+        } else {
+            o.palette = palette
+        }
+        return o
+    }
+
+    useEffect(() => {
+        if (!host.current) return undefined
+        const h = new Lustre(host.current, {
+            ...look(),
+            energy,
+            mouse: onCanvas ? 0 : mouse,
+            quality,
+            intro: !onCanvas,
+        })
+        if (still) h.pause()
+        inst.current = h
+        return () => {
+            h.destroy()
+            inst.current = null
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [mouse, quality, still, onCanvas])
+
+    /* Everything cosmetic goes straight into the running instance. */
+    useEffect(() => {
+        const h = inst.current
+        if (!h) return
+        h.set(look())
+        if (still) h._draw()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [motif, palette, color1, color2, color3, color4, background, scale, speed, contrast, grain, vignette])
+
+    /* Energy: a fixed value, or driven by how far the page has scrolled. */
+    useEffect(() => {
+        const h = inst.current
+        if (!h) return undefined
+        if (!scrollEnergy || onCanvas) {
+            h.energy(energy)
+            if (still) h._draw()
+            return undefined
+        }
+        const onScroll = () => {
+            const k = Math.min(1, window.scrollY / Math.max(1, window.innerHeight * scrollDistance))
+            h.energy(energy + (1 - energy) * k)
+        }
+        onScroll()
+        window.addEventListener("scroll", onScroll, { passive: true })
+        return () => window.removeEventListener("scroll", onScroll)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [energy, scrollEnergy, scrollDistance, onCanvas])
+
+    return (
+        <div
+            ref={host}
+            style={{ position: "relative", overflow: "hidden", width: "100%", height: "100%", ...style }}
+        />
+    )
+}
+
+LustreBackground.displayName = "Lustre"
+
+
+const notCustom = (p) => p.palette !== "custom"
+
+addPropertyControls(LustreBackground, {
+    motif: {
+        type: ControlType.Enum,
+        title: "Motif",
+        options: ["caustics", "silk", "chrome"],
+        optionTitles: ["Caustics", "Silk", "Chrome"],
+        defaultValue: "caustics",
+    },
+    palette: {
+        type: ControlType.Enum,
+        title: "Palette",
+        options: PALETTE_NAMES,
+        optionTitles: ["Lagoon", "Dusk", "Forest", "Steel", "Magma", "Violet", "Mono", "Custom"],
+        defaultValue: "lagoon",
+    },
+    color1: { type: ControlType.Color, title: "Highlight", defaultValue: "#eafff7", hidden: notCustom },
+    color2: { type: ControlType.Color, title: "Light", defaultValue: "#5fe2c8", hidden: notCustom },
+    color3: { type: ControlType.Color, title: "Mid", defaultValue: "#1f8fb5", hidden: notCustom },
+    color4: { type: ControlType.Color, title: "Shade", defaultValue: "#10275c", hidden: notCustom },
+    background: { type: ControlType.Color, title: "Background", defaultValue: "#030a14", hidden: notCustom },
+    energy: {
+        type: ControlType.Number, title: "Energy", min: 0, max: 1, step: 0.01, defaultValue: 0.5,
+        description: "How alive it is. With Scroll on, this is where it starts.",
+    },
+    scrollEnergy: {
+        type: ControlType.Boolean, title: "Scroll", enabledTitle: "Drives it", disabledTitle: "Off", defaultValue: false,
+    },
+    scrollDistance: {
+        type: ControlType.Number, title: "Full at", min: 0.25, max: 4, step: 0.25, unit: "× screen", defaultValue: 1,
+        hidden: (p) => !p.scrollEnergy,
+    },
+    scale: { type: ControlType.Number, title: "Scale", min: 0.3, max: 3, step: 0.05, defaultValue: 1 },
+    speed: { type: ControlType.Number, title: "Speed", min: 0, max: 3, step: 0.05, defaultValue: 1 },
+    contrast: { type: ControlType.Number, title: "Contrast", min: 0.3, max: 2, step: 0.05, defaultValue: 1 },
+    grain: { type: ControlType.Number, title: "Grain", min: 0, max: 0.2, step: 0.005, defaultValue: 0.03 },
+    vignette: { type: ControlType.Number, title: "Vignette", min: 0, max: 1, step: 0.01, defaultValue: 0.35 },
+    mouse: { type: ControlType.Number, title: "Mouse", min: 0, max: 0.5, step: 0.01, defaultValue: 0.1 },
+    quality: {
+        type: ControlType.Number, title: "Quality", min: 0.75, max: 2, step: 0.25, defaultValue: 1.75,
+        description: "Pixel-density cap. Lower it for very large sections.",
+    },
+    animateOnCanvas: {
+        type: ControlType.Boolean, title: "On canvas", enabledTitle: "Animate", disabledTitle: "Still", defaultValue: false,
+    },
+})

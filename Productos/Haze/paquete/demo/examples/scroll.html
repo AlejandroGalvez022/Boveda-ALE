@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Haze — energy driven by scroll</title>
+<title>Lustre — energy driven by scroll</title>
 <style>
   :root{--ink:#f2f4f6;--dim:#98a1ab}
   *{margin:0;padding:0;box-sizing:border-box}
@@ -31,15 +31,15 @@
 <section class="after">
   <p>The caustics above got sharper and brighter as you scrolled. That is one
      value, driven by one line.</p>
-  <p><code>haze.energy(scrollY / innerHeight)</code></p>
+  <p><code>lustre.energy(scrollY / innerHeight)</code></p>
   <p><code>.energy()</code> eases towards whatever number you give it, so feeding it
      raw scroll values every frame is fine. No throttling, no smoothing, no
      animation library.</p>
 </section>
 
-<script src="../../dist/haze.js"></script>
+<script src="../../dist/lustre.js"></script>
 <script>
-  var bg = new Haze('#hero', { motif: 'caustics', palette: 'forest', energy: 0.05, scale: 1.1 });
+  var bg = new Lustre('#hero', { motif: 'caustics', palette: 'forest', energy: 0.05, scale: 1.1 });
 
   // The whole effect. That is all of it.
   var ticking = false;

@@ -1,9 +1,9 @@
-# Haze — API reference
+# Lustre — API reference
 
 ## Constructor
 
 ```js
-new Haze(target, options)
+new Lustre(target, options)
 ```
 
 | Argument | Type | Notes |
@@ -84,14 +84,14 @@ disable.
 ## Methods
 
 ```js
-haze.set(options)       // change anything except structural flags. Chainable.
-haze.energy(0.8)        // 0–1. Eases towards the value.
-haze.motif('chrome')    // rebuild the shader, keep the context
-haze.palette('magma')   // swap four colours + background
-haze.play()             // resume (and let off-screen pausing take over again)
-haze.pause()            // stop the frame loop. Stays paused until play(),
+lustre.set(options)       // change anything except structural flags. Chainable.
+lustre.energy(0.8)        // 0–1. Eases towards the value.
+lustre.motif('chrome')    // rebuild the shader, keep the context
+lustre.palette('magma')   // swap four colours + background
+lustre.play()             // resume (and let off-screen pausing take over again)
+lustre.pause()            // stop the frame loop. Stays paused until play(),
                         // even if the element scrolls back into view
-haze.destroy()          // remove listeners, loop, GL resources and canvas
+lustre.destroy()          // remove listeners, loop, GL resources and canvas
 ```
 
 All chainable except `destroy()`.
@@ -105,34 +105,34 @@ from a slider handler, which is exactly what the demo does.
 
 | | |
 |---|---|
-| `haze.o` | Live options object (read it, do not mutate it — use `set()`). |
-| `haze.canvas` | The canvas, or `null` in fallback mode. |
-| `haze.gl` | The WebGL context, or `null`. |
-| `haze.destroyed` | `true` after `destroy()`. |
-| `haze.fallbackReason` | Why it fell back, if it did. |
-| `Haze.motifs` | `['caustics','silk','chrome']` |
-| `Haze.palettes` | The palette table. |
-| `Haze.version` | `'1.0.0'` |
+| `lustre.o` | Live options object (read it, do not mutate it — use `set()`). |
+| `lustre.canvas` | The canvas, or `null` in fallback mode. |
+| `lustre.gl` | The WebGL context, or `null`. |
+| `lustre.destroyed` | `true` after `destroy()`. |
+| `lustre.fallbackReason` | Why it fell back, if it did. |
+| `Lustre.motifs` | `['caustics','silk','chrome']` |
+| `Lustre.palettes` | The palette table. |
+| `Lustre.version` | `'1.0.0'` |
 
 ---
 
 ## Auto-init (no JavaScript)
 
-The `<script>` build scans for `[data-haze]` on load and starts each one.
-Attributes are camel-cased from `data-haze-*`; numbers and booleans are
+The `<script>` build scans for `[data-lustre]` on load and starts each one.
+Attributes are camel-cased from `data-lustre-*`; numbers and booleans are
 converted for you.
 
 ```html
-<div data-haze
-     data-haze-motif="silk"
-     data-haze-palette="dusk"
-     data-haze-scale="0.9"
-     data-haze-colors="#fff,#8ab,#46f,#204"
+<div data-lustre
+     data-lustre-motif="silk"
+     data-lustre-palette="dusk"
+     data-lustre-scale="0.9"
+     data-lustre-colors="#fff,#8ab,#46f,#204"
      style="height:100svh"></div>
 ```
 
-The instance is stashed on the element as `el.__haze` if you need it later. For
-content added after load (page builders, modals), call `Haze.autoInit(container)`
+The instance is stashed on the element as `el.__lustre` if you need it later. For
+content added after load (page builders, modals), call `Lustre.autoInit(container)`
 yourself — already-initialised elements are skipped.
 
 ---
@@ -146,6 +146,6 @@ yourself — already-initialised elements are skipped.
 - **`speed: 0` still renders** a full, correct frame — it just stops moving.
 - **`scale` is inverted from what you might expect:** smaller number, bigger
   shapes. It is a zoom factor on the coordinate space, not a size.
-- **The shaders are yours.** `src/haze.js` is commented and each motif is a
+- **The shaders are yours.** `src/lustre.js` is commented and each motif is a
   separate string in the `MOTIFS` table. Add a fourth one — the engine will
   pick it up with no other changes.

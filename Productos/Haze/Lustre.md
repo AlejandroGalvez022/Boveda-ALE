@@ -1,16 +1,18 @@
 ---
-titulo: Haze
+titulo: Lustre
 tipo: proyecto
 categoria: Producto
 estado: activo
-siguiente: "27-sep (tarde): investigacion de mercado hecha (canal Framer + Lemon Squeezy CONFIRMADO), ribbons rehecho como SILK, fallo de escala en movil arreglado, VIDEO de la ficha hecho. 64 pruebas, 0 fallos. Toca lo suyo: mirar el video y la demo, DECIDIR EL NOMBRE (propuesta Lustre) y pasos 2-9 de venta/Ficha de venta.md. Despues, 60 dias sin tocar."
+siguiente: "27-sep (tarde): RENOMBRADO A LUSTRE (antes Haze). investigacion de mercado hecha (canal Framer + Lemon Squeezy CONFIRMADO), ribbons rehecho como SILK, fallo de escala en movil arreglado, VIDEO de la ficha hecho. 64 pruebas, 0 fallos. Toca lo suyo: mirar el video y la demo, DECIDIR EL NOMBRE (propuesta Lustre) y pasos 2-9 de venta/Ficha de venta.md. Despues, 60 dias sin tocar."
 conversaciones: 0
 tags: [proyecto, producto, webgl, pasivo, marketplace]
 ---
 
-# 🌫️ Haze
+# ✨ Lustre
 
 Volver al [[Indice]]
+
+> [!info] Hasta el 27-sep-2026 se llamó **Lustre**. Se cambió porque «haze» es neblina y ningún fondo lo es; «lustre» es el brillo de una superficie, que es lo que comparten el agua, la seda y el metal. (Autodesk Lustre se retiró en abril de 2024; en Framer hay una **plantilla** gratis con ese nombre, pero los componentes van aparte.)
 
 ## Qué es
 
@@ -37,7 +39,7 @@ Alejandro pidió tratarlo como **producto estrella**. Mirado con ojos de comprad
 |---|---|
 | 🎨 **Los 3 fondos, rehechos de cero** | Ver la tabla de arriba. Probados a tamaño de cabecera (no en miniatura: en miniatura todo parece nítido), en 7 paletas, en varios momentos y con la energía a 0 y a 1 |
 | ⚡ **Coste** | El caustics nuevo costaba **2,7×** el viejo; con el truco de sacar el arcoíris del grosor de la línea (y no de tres muestras) queda en ~1,3×. Chrome es ahora el más barato |
-| 🧩 **Componente de Framer** | `dist/Haze.framer.tsx`: un solo archivo con el motor dentro y **todos los controles en el panel** (motivo, paleta o colores propios con los tokens de Framer, energía, «Scroll lo mueve», etc.). En el lienzo del editor pinta **una imagen quieta** para no ralentizar Framer; en la vista previa y en la web, anima. Lo genera `build.ps1` |
+| 🧩 **Componente de Framer** | `dist/Lustre.framer.tsx`: un solo archivo con el motor dentro y **todos los controles en el panel** (motivo, paleta o colores propios con los tokens de Framer, energía, «Scroll lo mueve», etc.). En el lienzo del editor pinta **una imagen quieta** para no ralentizar Framer; en la vista previa y en la web, anima. Lo genera `build.ps1` |
 | 🐛 **3 fallos del motor que venían de la v1** | (1) El componente de **React congelaba la animación**: pasaba `speed: undefined` y el motor lo tomaba por 0. Con el motor nuevo además la habría pintado en negro (`contrast` 0). (2) **`pause()` no servía**: al volver el fondo a la pantalla o la pestaña, el motor arrancaba solo. (3) **`onFallback` nunca avisaba**: el motor solo guarda las opciones que conoce y esa no estaba en la lista |
 | 🔤 **`dist/` con caracteres rotos** | El build leía el fuente como ANSI (la trampa de PowerShell 5.1): 8 `â€”` en el archivo que recibe el comprador. Ahora lee y escribe en UTF-8 y **se niega a terminar** si encuentra uno |
 | 📱 **La demo se salía 10 px en móvil** | Rejilla con `1fr` que no encogía: `minmax(0,1fr)` |
@@ -57,7 +59,7 @@ Alejandro: *«trátalo como producto estrella, investiga y haz todo lo posible»
 | ✅ **Canal confirmado** | Framer Marketplace deja vender componentes de pago, **no se lleva nada** y enlaza a tu pago (doc oficial). Lemon Squeezy **sigue aceptando altas** y sigue siendo *merchant of record*; algún día pedirá pasarse a *Stripe Managed Payments* (mismo Stripe, sin prisa). Alternativa más barata y más joven: Creem (3,9 % + 0,40 $) |
 | 🆕 **Envato** | Desde el 1-jul-2026 ya **no exige exclusividad**, pero se queda el **50 %** a todos. Canal secundario, en paralelo si Framer funciona |
 | ⚠️ **Lo gratis es bueno** | Paper Shaders (30+ efectos, licencia libre, incluye un *liquid metal*), Vanta, ShaderGradient y varios fondos gratis en Framer. **Un degradado o un metal abstracto no se vende.** Lo que NO hay gratis son **motivos reconocibles** (la luz de piscina): ese es el hueco |
-| 🏷️ **Nombre** | En npm están cogidos `haze` y todos los nombres cortos probados (lustre, sheen, glint, verglas, lumen, glaze…). No importa: se vende en Framer y un paquete con usuario delante siempre está libre. **Pendiente de él:** si se queda «Haze» o se cambia (ver abajo) |
+| 🏷️ **Nombre** | En npm están cogidos `haze` y todos los nombres cortos probados (lustre, sheen, glint, verglas, lumen, glaze…). No importa: se vende en Framer y un paquete con usuario delante siempre está libre. **Pendiente de él:** si se queda «Lustre» o se cambia (ver abajo) |
 
 **Lo que se hizo:**
 
@@ -102,12 +104,12 @@ un fondo, tres.
 |---|---|
 | `demo/index.html` | **Ábrela primero.** Sala de control: cambia de motivo y de paleta, mueve todos los mandos, y un botón te copia el código de lo que hayas montado. Esto es lo que vende. |
 | `demo/examples/` | `minimal` (cero líneas de JS), `scroll` (la energía sube al bajar), `card` (los tres motivos a la vez) |
-| `dist/haze.js` | El `<script>` de toda la vida. Deja `window.Haze` y arranca solo los `[data-haze]` |
-| `dist/haze.esm.js` | Módulo ES, para quien use empaquetador |
-| `react/Haze.jsx` | Envoltorio de React / Next / Framer, seguro en servidor y con limpieza al desmontar |
-| `src/haze.js` | El fuente comentado. **Es el único sitio donde se edita.** Cada motivo es una entrada de la tabla `MOTIFS`: si añades una cuarta, el motor la coge sin tocar nada más |
+| `dist/lustre.js` | El `<script>` de toda la vida. Deja `window.Lustre` y arranca solo los `[data-haze]` |
+| `dist/lustre.esm.js` | Módulo ES, para quien use empaquetador |
+| `react/Lustre.jsx` | Envoltorio de React / Next / Framer, seguro en servidor y con limpieza al desmontar |
+| `src/lustre.js` | El fuente comentado. **Es el único sitio donde se edita.** Cada motivo es una entrada de la tabla `MOTIFS`: si añades una cuarta, el motor la coge sin tocar nada más |
 | `build.ps1` | Regenera `dist/` desde `src/`. Sin Node ni empaquetador: el producto promete cero dependencias y su build también |
-| `dist/Haze.framer.tsx` | **El componente de Framer.** El comprador lo pega en un archivo de código nuevo y ya está. Lo genera `build.ps1` a partir de `src/framer.tsx` |
+| `dist/Lustre.framer.tsx` | **El componente de Framer.** El comprador lo pega en un archivo de código nuevo y ya está. Lo genera `build.ps1` a partir de `src/framer.tsx` |
 | `../pruebas/` | **Fuera del paquete.** `pruebas.ps1` lanza la batería completa (63 comprobaciones). Relanzarla después de tocar cualquier cosa |
 | `../venta/` | **Fuera del paquete.** ZIP, demo pública, portadas y la [[Productos/Haze/venta/Ficha de venta\|ficha de venta]] |
 | `docs/` | `INSTALL.md` (HTML, React, Next, Framer, Webflow, WordPress) y `API.md` |
@@ -176,7 +178,7 @@ Envato CodeCanyon, más adelante y solo si Framer funciona. Todo en la
 > [!tip] La lista buena ahora es la de la [[Productos/Haze/venta/Ficha de venta|ficha de venta]] (pasos 1-9). Esta se queda por historia.
 
 - [ ] **Abrir `demo/index.html`** y cambiar de motivo y de paleta. Si no te gusta, no se publica.
-- [ ] **Comprobar que el nombre está libre**: dominio, y buscar "Haze" en Envato, Framer y npm.
+- [ ] **Comprobar que el nombre está libre**: dominio, y buscar "Lustre" en Envato, Framer y npm.
 - [ ] Poner tu **email** en `LICENSE.md` (pone `[your email here]`) y decidir el precio.
 - [ ] Que un **abogado o tu gestor** lea la licencia. Es un borrador escrito para ser claro, no para ser a prueba de balas.
 - [ ] Ojo: si vendes por marketplace, **su licencia manda sobre la tuya**.
