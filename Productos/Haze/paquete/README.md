@@ -145,7 +145,7 @@ deliberately. The product promises zero dependencies; so does its build.
 
 ## Licence
 
-One licence per end product. Commercial use included, source included and
+Single-project licence ($24): one end product. Unlimited licence ($59): as many as you like, your own or for clients. Commercial use included, source included and
 modifiable. Reselling it as a component library is not. Full terms in
 [LICENSE.md](LICENSE.md).
 

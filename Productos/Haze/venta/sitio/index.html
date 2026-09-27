@@ -117,7 +117,8 @@ footer{border-top:1px solid var(--line-soft);padding:34px clamp(24px,5vw,72px);
        view, falls back to CSS where WebGL is missing, and sits still for anyone who asked their
        system to stop animations.</p>
     <div class="cta">
-      <button class="btn solid" id="toRoom">Play with it ↓</button>
+      <a class="btn solid" href="#pricing">Buy — from $24</a>
+      <button class="btn" id="toRoom">Play with it ↓</button>
       <button class="btn" id="cycle">Next motif</button>
     </div>
   </div>
@@ -176,9 +177,88 @@ footer{border-top:1px solid var(--line-soft);padding:34px clamp(24px,5vw,72px);
   </div>
 </section>
 
+<style>
+.sale{position:relative;z-index:2;background:#030a14;border-top:1px solid var(--line-soft);
+  padding:clamp(40px,7vw,96px) clamp(24px,5vw,72px)}
+.sale .head{max-width:640px;margin-bottom:38px}
+.sale .head p{color:var(--dim);margin-top:10px}
+.plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2.4vw,24px);max-width:900px}
+@media(max-width:700px){.plans{grid-template-columns:minmax(0,1fr)}}
+.plan{border:1px solid var(--line-soft);border-radius:16px;padding:clamp(22px,2.6vw,30px);background:rgba(255,255,255,.015);
+  display:flex;flex-direction:column}
+.plan.best{border-color:var(--line)}
+.plan h3{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);font-weight:700}
+.plan .price{font-size:clamp(40px,5vw,56px);font-weight:800;letter-spacing:-.04em;margin:14px 0 4px}
+.plan .price small{font-size:14px;font-weight:600;color:var(--dim);letter-spacing:0;margin-left:6px}
+.plan .for{color:var(--dim);font-size:14.5px;margin-bottom:20px}
+.plan ul{list-style:none;display:grid;gap:9px;margin-bottom:26px;font-size:14.5px}
+.plan li{padding-left:22px;position:relative}
+.plan li::before{content:"";position:absolute;left:2px;top:.62em;width:8px;height:2px;background:#5fe2c8;border-radius:2px}
+.plan .btn{margin-top:auto;justify-content:center}
+.plan .btn[aria-disabled=true]{opacity:.55;pointer-events:none}
+.fine{font-size:13px;color:var(--faint);margin-top:18px;max-width:900px}
+.fine a{color:var(--dim)}
+.faq{max-width:900px;margin-top:clamp(48px,6vw,72px);border-top:1px solid var(--line-soft)}
+.faq details{border-bottom:1px solid var(--line-soft);padding:18px 0}
+.faq summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--dim);font-family:var(--mono)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{color:var(--dim);margin-top:10px;max-width:70ch}
+footer a{color:var(--dim);text-decoration:none}
+footer a:hover{color:var(--ink)}
+footer nav{display:flex;gap:20px;flex-wrap:wrap}
+</style>
+<section class="sale" id="pricing">
+  <div class="head">
+    <h2>One payment. Yours to keep.</h2>
+    <p>Everything is in the download: the Framer component, a plain script, an ES module, the React wrapper, the commented source and the docs. Free updates for every 1.x release.</p>
+  </div>
+  <div class="plans">
+    <div class="plan">
+      <h3>Single project</h3>
+      <div class="price">$24<small>once</small></div>
+      <p class="for">One website: yours or one client's.</p>
+      <ul>
+        <li>All three motifs and seven palettes</li>
+        <li>Framer, React, Next.js, Webflow, WordPress, HTML</li>
+        <li>Full source, commercial use</li>
+      </ul>
+      <a class="btn solid" href="#pricing" aria-disabled="true" title="Checkout opening soon">Buy single — $24</a>
+    </div>
+    <div class="plan best">
+      <h3>Unlimited</h3>
+      <div class="price">$59<small>once</small></div>
+      <p class="for">Every website you build, for yourself or for clients.</p>
+      <ul>
+        <li>Everything in Single project</li>
+        <li>Unlimited end products, no per-site counting</li>
+        <li>Made for freelancers and studios</li>
+      </ul>
+      <a class="btn solid" href="#pricing" aria-disabled="true" title="Checkout opening soon">Buy unlimited — $59</a>
+    </div>
+  </div>
+  <p class="fine">Secure checkout by Lemon Squeezy, who handle payment, tax and your invoice. Instant download after purchase. 14-day refund if it doesn't do what the docs say — see <a href="terms.html">terms &amp; refunds</a> and the <a href="license.html">licence</a>.</p>
+
+  <div class="faq">
+    <details><summary>Does it work without Framer?</summary>
+      <p>Yes. The download includes a plain &lt;script&gt;, an ES module and a React component, with setup notes for HTML, React, Next.js, Webflow and WordPress.</p></details>
+    <details><summary>Will it slow my site down?</summary>
+      <p>It is one draw call per frame, it stops drawing when nobody can see it, and the pixel density is capped. On very large sections you can lower Quality.</p></details>
+    <details><summary>What if the visitor's browser has no WebGL?</summary>
+      <p>They see a CSS gradient in the same motif and colours. Never an empty hero. Visitors who asked their system to reduce motion get a still frame.</p></details>
+    <details><summary>Can I use it for client work?</summary>
+      <p>Yes. Single project covers one client site; Unlimited covers as many as you build.</p></details>
+    <details><summary>Can I change the colours?</summary>
+      <p>Seven palettes are built in, or pick your own four colours and background — Framer colour styles work too.</p></details>
+    <details><summary>How do I get help?</summary>
+      <p>Email <a href="mailto:galvezbranaa@gmail.com">galvezbranaa@gmail.com</a>. Questions about Lustre itself are answered; integrating it into your codebase is not included.</p></details>
+  </div>
+</section>
+
 <footer>
-  <span>Lustre v1.0.0</span>
-  <span>WebGL · commercial licence</span>
+  <span>Lustre v1.0.0 · by Alejandro Gálvez Braña</span>
+  <nav><a href="#pricing">Pricing</a><a href="license.html">Licence</a><a href="terms.html">Terms &amp; refunds</a><a href="mailto:galvezbranaa@gmail.com">Contact</a></nav>
 </footer>
 
 <script src="js/lustre.js"></script>

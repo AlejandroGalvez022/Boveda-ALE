@@ -40,8 +40,14 @@ If what you are building is one of these, you need an **extended licence**. Ask.
 
 ## Multiple products
 
-One licence, one end product. Building five client sites means five licences.
-Volume and agency licences are available — ask.
+There are two licences:
+
+- **Single project ($24)** — one end product. Building five client sites
+  means five single licences.
+- **Unlimited ($59)** — any number of end products, your own or for clients,
+  for as long as you like.
+
+Everything else in this document applies to both.
 
 ---
 
