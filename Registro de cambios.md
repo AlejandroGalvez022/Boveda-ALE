@@ -9,6 +9,13 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ---
 
+## 2026-09-27
+
+> [!check]+ 🗓️ 2026-09-27 — Webs con anuncios: investigación de viabilidad
+> - Idea sacada de un vídeo (webs sencillas llenas de anuncios). Proyecto nuevo en `Productos/Webs con anuncios/`, con estado **idea**.
+> - **Veredicto:** el blog de nicho en español con AdSense no sale a cuenta en 2026 (con resumen de IA, los clics caen un 58 %; a ~4 $ cada 1.000 visitas, 100 €/mes piden ~25-35 mil visitas al mes). Lo que aguanta son las **herramientas interactivas en inglés**, como experimento de 90 días con criterio de corte.
+> - Pendiente: decidir si se prueba; preguntar al gestor por el alta de autónomo, el IGIC y el modelo 349.
+
 ## 2026-09-26
 
 > [!check]+ 🗓️ 2026-09-26 (tarde) — Bot de trading: órdenes maker y ejecutor real (apagado)
