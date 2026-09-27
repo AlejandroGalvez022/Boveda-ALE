@@ -54,12 +54,14 @@ print('ZIP  %s  (%d archivos, %.1f KB)' % (os.path.basename(zpath), n, os.path.g
 # ---------------------------------------------------------------- 2. sitio
 if os.path.exists(SITE):
     shutil.rmtree(SITE)
-os.makedirs(os.path.join(SITE, 'dist'))
+# El motor va en js/, NO en dist/: Netlify Drop se salta las carpetas 'dist'
+# al arrastrar (27-sep: la web salio sin fondo, dist/lustre.js daba 404).
+os.makedirs(os.path.join(SITE, 'js'))
 os.makedirs(os.path.join(SITE, 'examples'))
-shutil.copy(os.path.join(PKG, 'dist', 'lustre.js'), os.path.join(SITE, 'dist', 'lustre.js'))
+shutil.copy(os.path.join(PKG, 'dist', 'lustre.js'), os.path.join(SITE, 'js', 'lustre.js'))
 
 idx = io.open(os.path.join(PKG, 'demo', 'index.html'), encoding='utf-8').read()
-idx = idx.replace('src="../dist/lustre.js"', 'src="dist/lustre.js"')
+idx = idx.replace('src="../dist/lustre.js"', 'src="js/lustre.js"')
 buy = cfg.get('buy_url', '').strip()
 if buy:
     price = cfg.get('price', '').strip()
@@ -74,7 +76,7 @@ io.open(os.path.join(SITE, 'index.html'), 'w', encoding='utf-8', newline='').wri
 
 for f in os.listdir(os.path.join(PKG, 'demo', 'examples')):
     t = io.open(os.path.join(PKG, 'demo', 'examples', f), encoding='utf-8').read()
-    t = t.replace('src="../../dist/lustre.js"', 'src="../dist/lustre.js"')
+    t = t.replace('src="../../dist/lustre.js"', 'src="../js/lustre.js"')
     io.open(os.path.join(SITE, 'examples', f), 'w', encoding='utf-8', newline='').write(t)
 
 # enlaces rotos: todo src/href relativo del sitio tiene que existir

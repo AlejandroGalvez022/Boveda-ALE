@@ -15,7 +15,7 @@ Volver a [[Productos/Haze/Lustre|Lustre]]
 |---|---|
 | **Escaparate** | **Framer Marketplace**, como componente. Framer **no cobra**: pone el botón «Buy» y lo manda a tu pago. Se queda un 0 % |
 | **Cobro** | **Lemon Squeezy**. Se queda un 5 % + 0,50 $ y es *merchant of record*: cobra y declara el IVA de cada país por ti. Eso resuelve lo del IGIC y la UE que estaba pendiente con el gestor |
-| **Demo pública** | `venta/sitio/` en Netlify. La licencia promete que todo se puede probar antes de comprar, así que **tiene que estar en internet** |
+| **Demo pública** | **https://lustre-backgrounds.netlify.app/** (cuenta de Netlify personal, 27-sep). Se sube arrastrando `venta/sitio/` (el motor va en `js/`, NO en `dist/`: Netlify Drop se salta las carpetas `dist`). La licencia promete que todo se puede probar antes de comprar, así que **tiene que estar en internet** |
 | **Precio** | **24 $** para un proyecto · **59 $** para proyectos ilimitados |
 | **Segundo canal (más adelante)** | Envato CodeCanyon: trae mucho tráfico pero se queda el 37,5 % y revisa con lupa. Solo si Framer funciona |
 
