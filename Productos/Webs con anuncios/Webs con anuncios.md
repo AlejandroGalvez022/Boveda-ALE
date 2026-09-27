@@ -98,6 +98,6 @@ Con las mismas reglas que Haze (poner un plazo, no tocar nada y que lo decida un
 - [ ] Si se hace: elegir la herramienta (buscar qué se busca mucho y tiene poca competencia)
 - [ ] Preguntar al gestor lo de Hacienda antes de activar AdSense
 
-## Conversaciones (1)
+## Conversaciones (2)
 - [[Productos/Webs con anuncios/2026-09-27 - Investigacion de viabilidad|2026-09-27 — Investigación de viabilidad]]
 - [[Productos/Webs con anuncios/2026-09-27 - Estudio de mercado|2026-09-27 — Estudio de mercado]]
