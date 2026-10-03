@@ -1,8 +1,8 @@
 # Configuración de Netlify para La Brega Estudio
-# Web estática de un solo archivo (index.html) — no necesita build.
+# Web estática, sin build. Se publica SOLO la v5 (v5_DEF/): la raíz y v2-v4 son versiones viejas.
 
 [build]
-  publish = "."
+  publish = "v5_DEF"
 
 # Cabeceras: cachea los assets, no cachea el HTML (para que los cambios se vean al instante)
 [[headers]]

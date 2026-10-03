@@ -9,6 +9,12 @@
 <meta property="og:title" content="La Brega Estudio">
 <meta property="og:description" content="No hacemos ruido. Hacemos marcas.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;700;900&family=Instrument+Serif:ital@0;1&family=Pinyon+Script&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -944,6 +950,12 @@ html:not(.js) .salto{display:none}
 .de-v3 .marca-v3.visto svg{clip-path:inset(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){ .de-v3 .marca-v3 svg{clip-path:inset(0 0 0 0)} }
 
+
+/* Zona táctil de 44 px en los enlaces pequeños (redes y correo), sin cambiar cómo se ven */
+.m-pie a,.pie-rejilla .redes a,.de-v3 .redes-v3 a{position:relative}
+.m-pie a::before,.pie-rejilla .redes a::before,.de-v3 .redes-v3 a::before{content:'';position:absolute;left:-6px;right:-6px;top:50%;height:44px;transform:translateY(-50%)}
+/* Los números romanos del menú no bajan de 10 px (a .22em se quedaban en 7 px en el móvil) */
+.menu nav a .romano{font-size:max(.22em,10px)}
 </style>
 </head>
 <body>
@@ -1072,7 +1084,7 @@ html:not(.js) .salto{display:none}
 <!-- ===================== 5. MANIFIESTO ===================== -->
 <section class="manif" id="manifiesto">
   <div class="foto" id="manifFoto" aria-hidden="true">
-    <img src="img/rebeldia.jpg" alt="" width="1000" height="1250" loading="lazy">
+    <img src="img/rebeldia.webp" alt="" width="1000" height="1250" loading="lazy">
   </div>
   <div class="dentro env">
     <!-- MAQUETACION DE LA V3 (el pliego): filete arriba, rotulo grande a la
@@ -1133,10 +1145,10 @@ html:not(.js) .salto{display:none}
 
         <article class="lam" data-lam
           data-tit="Saltimbanqui" data-cat="Identidad de marca" data-rom="I" data-ano="2026"
-          data-img="img/saltimbanqui.jpg" data-que="Naming, logotipo, sistema gráfico y aplicaciones"
+          data-img="img/saltimbanqui.webp" data-que="Naming, logotipo, sistema gráfico y aplicaciones"
           data-txt="Hay marcas que pisan fuerte. Que aterrizan de pie. Una identidad diseñada para dar el salto: logotipo de peso, un verde que no pide permiso y un sistema que funciona igual en un cartel de tres metros que en una camiseta.">
           <button class="marco" aria-label="Ver la ficha de Saltimbanqui">
-            <img src="img/saltimbanqui.jpg" alt="Cartel de Saltimbanqui: tipografía amarilla gigante sobre verde ácido con una figura en semitono haciendo el pino" width="1000" height="1250" loading="lazy" data-par="0.06">
+            <img src="img/saltimbanqui.webp" alt="Cartel de Saltimbanqui: tipografía amarilla gigante sobre verde ácido con una figura en semitono haciendo el pino" width="1000" height="1250" loading="lazy" data-par="0.06">
             <span class="trama"></span>
             <span class="num mono"><span class="romano">Lámina I</span></span>
             <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
@@ -1146,10 +1158,10 @@ html:not(.js) .salto{display:none}
 
         <article class="lam" data-lam
           data-tit="Omnia" data-cat="Identidad y dirección de arte" data-rom="II" data-ano="2026"
-          data-img="img/omnia.jpg" data-que="Logotipo modular, paleta y dirección de arte"
+          data-img="img/omnia.webp" data-que="Logotipo modular, paleta y dirección de arte"
           data-txt="Algo potente y divertido, como sus fiestas de afro-techno. Un logotipo modular que encaja como un puzzle y una paleta de degradados con grano que se puede estirar hasta donde llegue la noche.">
           <button class="marco" aria-label="Ver la ficha de Omnia">
-            <img src="img/omnia.jpg" alt="Cartel de Omnia: logotipo blanco modular sobre un eclipse negro con degradado naranja, magenta y verde" width="1000" height="1250" loading="lazy" data-par="-0.05">
+            <img src="img/omnia.webp" alt="Cartel de Omnia: logotipo blanco modular sobre un eclipse negro con degradado naranja, magenta y verde" width="1000" height="1250" loading="lazy" data-par="-0.05">
             <span class="trama"></span>
             <span class="num mono"><span class="romano">Lámina II</span></span>
             <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
@@ -1159,10 +1171,10 @@ html:not(.js) .salto{display:none}
 
         <article class="lam" data-lam
           data-tit="Revela" data-cat="Campaña propia" data-rom="III" data-ano="2026"
-          data-img="img/revela.jpg" data-que="Concepto, dirección de arte y cartelería"
+          data-img="img/revela.webp" data-que="Concepto, dirección de arte y cartelería"
           data-txt="El diseño no maquilla. Revela. Una pieza para decir en voz alta lo que pensamos: la marca ya estaba ahí, y nuestro trabajo es quitarle la capa que no la dejaba verse.">
           <button class="marco" aria-label="Ver la ficha de Revela">
-            <img src="img/revela.jpg" alt="Cartel Revela: torso de escultura clásica en blanco y negro con la frase El diseño no maquilla. Revela." width="1000" height="1250" loading="lazy" data-par="0.05">
+            <img src="img/revela.webp" alt="Cartel Revela: torso de escultura clásica en blanco y negro con la frase El diseño no maquilla. Revela." width="1000" height="1250" loading="lazy" data-par="0.05">
             <span class="trama"></span>
             <span class="num mono"><span class="romano">Lámina III</span></span>
             <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
@@ -1172,10 +1184,10 @@ html:not(.js) .salto{display:none}
 
         <article class="lam" data-lam
           data-tit="Día de Brega" data-cat="Campaña propia · Día de Canarias" data-rom="IV" data-ano="2026"
-          data-img="img/dia-de-canarias.jpg" data-que="Concepto, símbolo y piezas para redes"
+          data-img="img/dia-de-canarias.webp" data-que="Concepto, símbolo y piezas para redes"
           data-txt="Nuestra salida a escena el Día de Canarias. Una bandera negra con nuestro sistema de estrellas y un canario en el mástil. Porque esta tierra nos enseñó algo antes que el diseño: nos enseñó a bregar.">
           <button class="marco" aria-label="Ver la ficha de Día de Brega">
-            <img src="img/dia-de-canarias.jpg" alt="Cartel del Día de Canarias: bandera negra con las estrellas de La Brega y un canario amarillo" width="1000" height="1250" loading="lazy" data-par="-0.06">
+            <img src="img/dia-de-canarias.webp" alt="Cartel del Día de Canarias: bandera negra con las estrellas de La Brega y un canario amarillo" width="1000" height="1250" loading="lazy" data-par="-0.06">
             <span class="trama"></span>
             <span class="num mono"><span class="romano">Lámina IV</span></span>
             <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
@@ -1185,10 +1197,10 @@ html:not(.js) .salto{display:none}
 
         <article class="lam" data-lam
           data-tit="San Borondón 1840" data-cat="Dirección de arte" data-rom="V" data-ano="2026"
-          data-img="img/san-borondon.jpg" data-que="Dirección de arte, archivo intervenido y tipografía"
+          data-img="img/san-borondon.webp" data-que="Dirección de arte, archivo intervenido y tipografía"
           data-txt="La isla que aparece y desaparece. Archivo intervenido, grano de plata y anotaciones a mano: la dirección de arte entendida como una excavación, no como un filtro.">
           <button class="marco" aria-label="Ver la ficha de San Borondón 1840">
-            <img src="img/san-borondon.jpg" alt="Cartel San Borondón 1840: fotografía antigua en blanco y negro muy granulada con tipografía display apilada" width="1000" height="1250" loading="lazy" data-par="0.05">
+            <img src="img/san-borondon.webp" alt="Cartel San Borondón 1840: fotografía antigua en blanco y negro muy granulada con tipografía display apilada" width="1000" height="1250" loading="lazy" data-par="0.05">
             <span class="trama"></span>
             <span class="num mono"><span class="romano">Lámina V</span></span>
             <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
@@ -1198,10 +1210,10 @@ html:not(.js) .salto{display:none}
 
         <article class="lam" data-lam
           data-tit="Superbia" data-cat="Identidad de marca" data-rom="VI" data-ano="2026"
-          data-img="img/superbia.jpg" data-que="Naming, logotipo y sistema de marca"
+          data-img="img/superbia.webp" data-que="Naming, logotipo y sistema de marca"
           data-txt="SUPERBIA no necesitaba un logo. Necesitaba piel. Piedra. Forja. Sin adornos innecesarios. Sin pedir permiso. Sin bajar la voz. SUPERBIA. Nueva marca. Nueva piel. Mismo carácter.">
           <button class="marco" aria-label="Ver la ficha de Superbia">
-            <img src="img/superbia.jpg" alt="Cartel de Superbia Studio: logotipo azul geométrico sobre panel gris texturado con borde azul sólido" width="1000" height="1250" loading="lazy" data-par="0.06">
+            <img src="img/superbia.webp" alt="Cartel de Superbia Studio: logotipo azul geométrico sobre panel gris texturado con borde azul sólido" width="1000" height="1250" loading="lazy" data-par="0.06">
             <span class="trama"></span>
             <span class="num mono"><span class="romano">Lámina VI</span></span>
             <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
@@ -1211,10 +1223,10 @@ html:not(.js) .salto{display:none}
 
         <article class="lam" data-lam
           data-tit="Raíz" data-cat="Identidad de marca" data-rom="VII" data-ano="2026"
-          data-img="img/raiz.jpg" data-que="Naming, logotipo y sistema de marca"
+          data-img="img/raiz.webp" data-que="Naming, logotipo y sistema de marca"
           data-txt="Branding para Raíz, un proyecto que quiere entender y mostrar desde donde crea cada artista y de dónde nace su inspiración. Como defensores y amantes del arte no podíamos no contribuir a la causa.">
           <button class="marco" aria-label="Ver la ficha de Raíz">
-            <img src="img/raiz.jpg" alt="Cartel de Raíz: icono de una mano en negro sobre fondo mostaza con el rótulo Raíz" width="1000" height="1250" loading="lazy" data-par="-0.05">
+            <img src="img/raiz.webp" alt="Cartel de Raíz: icono de una mano en negro sobre fondo mostaza con el rótulo Raíz" width="1000" height="1250" loading="lazy" data-par="-0.05">
             <span class="trama"></span>
             <span class="num mono"><span class="romano">Lámina VII</span></span>
             <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>

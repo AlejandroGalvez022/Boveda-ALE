@@ -9,6 +9,17 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ---
 
+## 2026-10-03
+
+> [!check]+ 🗓️ 2026-10-03 — La Brega v5: repaso y arreglos antes de publicar
+> - **Netlify publicaba la versión equivocada:** `web/netlify.toml` tenía `publish = "."` → salía el `index.html` de julio y v2-v4 quedaban públicas. Ahora `publish = "v5_DEF"`. (Si se sube a mano con Netlify Drop, arrastrar **la carpeta `v5_DEF/`**, no `web/`.)
+> - **Fotos en WebP** (las 8 que usa la web): 1,5 MB → 0,87 MB. Los JPG originales se quedan en `img/`.
+> - **Imagen para compartir** (`og-image.jpg`, 1200×630, el propio hero) + `og:image` y `twitter:card`. **Favicon** con la estrella amarilla (`favicon.svg` + `apple-touch-icon.png`).
+> - **Zona táctil de 44 px** en Instagram/TikTok/correo (menú, contacto y pie) sin cambiar cómo se ven; medían 17 px de alto.
+> - **Romanos del menú** de 7 px → mínimo 10 px.
+> - Verificado en Chrome a 390 px: 0 errores JS, sin scroll lateral, las 8 fotos cargan, zonas táctiles OK.
+> - **Pendiente al publicar:** poner la URL absoluta en `og:image` (Facebook/WhatsApp la piden) + `canonical` + `sitemap` cuando haya dominio.
+
 ## 2026-09-27
 
 > [!check]+ 🗓️ 2026-09-27 (noche, 2) — Lustre: tienda montada y compra de prueba OK
