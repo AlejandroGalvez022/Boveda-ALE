@@ -44,7 +44,7 @@
   --negro-2:#101013;
   --hueso:#F2EFE6;
   --humo:#9A948A;   /* 6,6:1 sobre el negro */
-  --tenue:#7C776D;  /* 4,2:1 — solo rotulos cortos en versalita */
+  --tenue:#827D73;  /* 4,6:1 sobre --negro-2 (antes #7C776D, se quedaba en 4,49) */
   --linea:rgba(242,239,230,.14);
   --linea-suave:rgba(242,239,230,.07);
 
@@ -684,7 +684,7 @@ html:not(.js) .taller .sello,html:not(.js) .taller .barra{display:none}
 .js .ocho.visto .estrella{animation-play-state:running}
 /* al tocarla se yergue y se enciende */
 .ocho li.viva{rotate:12deg}
-@media (prefers-reduced-motion:reduce){ .ocho .estrella{animation:none} }
+@media (prefers-reduced-motion:reduce){ .ocho .estrella{animation:none} .baja .raya::after{animation:none; transform:none} }
 
 /* la linea de las ocho: se enciende la isla de la estrella que tocas */
 .ocho-areas{display:flex; flex-wrap:wrap; justify-content:center; gap:0 clamp(10px,1.6vw,20px);
@@ -742,7 +742,7 @@ footer{border-top:1px solid var(--linea); padding-block:clamp(40px,6vw,72px)}
 .pie-rejilla .redes a{color:var(--humo); transition:color .3s}
 .pie-rejilla .redes a:hover{color:var(--canario)}
 .pie-rejilla .fino{color:var(--tenue); max-width:34ch; line-height:1.9}
-.arriba{color:var(--humo); transition:color .3s}
+.arriba{color:var(--humo); transition:color .3s; padding-block:14px; margin-block:-14px}
 .arriba:hover{color:var(--canario)}
 
 /* ==========================================================================
@@ -989,10 +989,10 @@ html:not(.js) .salto{display:none}
   <div class="c-in">
     <span class="logo"><i>La</i><b>Brega</b><i>Estudio<span class="pt">.</span></i></span>
     <div class="c-estrellas" aria-hidden="true">
-      <svg class="estrella"><use href="#s1"/></svg><svg class="estrella"><use href="#s2"/></svg>
-      <svg class="estrella"><use href="#s3"/></svg><svg class="estrella"><use href="#s4"/></svg>
-      <svg class="estrella"><use href="#s5"/></svg><svg class="estrella"><use href="#s6"/></svg>
-      <svg class="estrella"><use href="#s7"/></svg><svg class="estrella"><use href="#s8"/></svg>
+      <svg class="estrella" aria-hidden="true" focusable="false"><use href="#s1"/></svg><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s2"/></svg>
+      <svg class="estrella" aria-hidden="true" focusable="false"><use href="#s3"/></svg><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s4"/></svg>
+      <svg class="estrella" aria-hidden="true" focusable="false"><use href="#s5"/></svg><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s6"/></svg>
+      <svg class="estrella" aria-hidden="true" focusable="false"><use href="#s7"/></svg><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s8"/></svg>
     </div>
     <p class="c-frase">Esta tierra nos enseñó algo antes que el diseño:<br>nos enseñó a <em class="script" style="font-size:1.5em">bregar</em>.</p>
   </div>
@@ -1013,20 +1013,20 @@ html:not(.js) .salto{display:none}
   </div>
 </header>
 
-<div class="menu" id="menu" aria-hidden="true">
+<div class="menu" id="menu" aria-hidden="true" inert>
   <div class="m-estrellas" aria-hidden="true">
-    <svg class="estrella gira" style="width:16%;height:16%;top:12%;left:6%"><use href="#s1"/></svg>
-    <svg class="estrella late" style="width:10%;height:10%;top:64%;left:74%"><use href="#s3"/></svg>
-    <svg class="estrella gira-r" style="width:13%;height:13%;top:78%;left:12%"><use href="#s4"/></svg>
-    <svg class="estrella gira" style="width:9%;height:9%;top:26%;left:82%"><use href="#s6"/></svg>
+    <svg class="estrella gira" aria-hidden="true" focusable="false" style="width:16%;height:16%;top:12%;left:6%"><use href="#s1"/></svg>
+    <svg class="estrella late" aria-hidden="true" focusable="false" style="width:10%;height:10%;top:64%;left:74%"><use href="#s3"/></svg>
+    <svg class="estrella gira-r" aria-hidden="true" focusable="false" style="width:13%;height:13%;top:78%;left:12%"><use href="#s4"/></svg>
+    <svg class="estrella gira" aria-hidden="true" focusable="false" style="width:9%;height:9%;top:26%;left:82%"><use href="#s6"/></svg>
   </div>
   <nav aria-label="Principal">
-    <a href="#manifiesto"><span class="romano">I</span>Manifiesto<svg class="estrella"><use href="#s3"/></svg></a>
-    <a href="#hacemos"><span class="romano">II</span>Lo que hacemos<svg class="estrella"><use href="#s1"/></svg></a>
-    <a href="#taller"><span class="romano">III</span>El taller<svg class="estrella"><use href="#s4"/></svg></a>
-    <a href="#bregamos"><span class="romano">IV</span>Cómo bregamos<svg class="estrella"><use href="#s2"/></svg></a>
-    <a href="#ocho"><span class="romano">V</span>Ocho estrellas<svg class="estrella"><use href="#s5"/></svg></a>
-    <a href="#contacto"><span class="romano">VI</span>Contacto<svg class="estrella"><use href="#s8"/></svg></a>
+    <a href="#manifiesto"><span class="romano">I</span>Manifiesto<svg class="estrella" aria-hidden="true" focusable="false"><use href="#s3"/></svg></a>
+    <a href="#hacemos"><span class="romano">II</span>Lo que hacemos<svg class="estrella" aria-hidden="true" focusable="false"><use href="#s1"/></svg></a>
+    <a href="#taller"><span class="romano">III</span>El taller<svg class="estrella" aria-hidden="true" focusable="false"><use href="#s4"/></svg></a>
+    <a href="#bregamos"><span class="romano">IV</span>Cómo bregamos<svg class="estrella" aria-hidden="true" focusable="false"><use href="#s2"/></svg></a>
+    <a href="#ocho"><span class="romano">V</span>Ocho estrellas<svg class="estrella" aria-hidden="true" focusable="false"><use href="#s5"/></svg></a>
+    <a href="#contacto"><span class="romano">VI</span>Contacto<svg class="estrella" aria-hidden="true" focusable="false"><use href="#s8"/></svg></a>
   </nav>
   <div class="m-pie mono">
     <a href="https://www.instagram.com/labrega_estudio/" target="_blank" rel="noopener">Instagram</a>
@@ -1076,8 +1076,8 @@ html:not(.js) .salto{display:none}
 <!-- ===================== 4. CINTA ===================== -->
 <div class="cinta" aria-hidden="true">
   <div class="via" id="via1">
-    <span>Branding<svg class="estrella"><use href="#s1"/></svg>Dirección de arte<svg class="estrella"><use href="#s3"/></svg>Publicidad<svg class="estrella"><use href="#s4"/></svg>Diseño gráfico<svg class="estrella"><use href="#s6"/></svg></span>
-    <span>Branding<svg class="estrella"><use href="#s1"/></svg>Dirección de arte<svg class="estrella"><use href="#s3"/></svg>Publicidad<svg class="estrella"><use href="#s4"/></svg>Diseño gráfico<svg class="estrella"><use href="#s6"/></svg></span>
+    <span>Branding<svg class="estrella" aria-hidden="true" focusable="false"><use href="#s1"/></svg>Dirección de arte<svg class="estrella" aria-hidden="true" focusable="false"><use href="#s3"/></svg>Publicidad<svg class="estrella" aria-hidden="true" focusable="false"><use href="#s4"/></svg>Diseño gráfico<svg class="estrella" aria-hidden="true" focusable="false"><use href="#s6"/></svg></span>
+    <span>Branding<svg class="estrella" aria-hidden="true" focusable="false"><use href="#s1"/></svg>Dirección de arte<svg class="estrella" aria-hidden="true" focusable="false"><use href="#s3"/></svg>Publicidad<svg class="estrella" aria-hidden="true" focusable="false"><use href="#s4"/></svg>Diseño gráfico<svg class="estrella" aria-hidden="true" focusable="false"><use href="#s6"/></svg></span>
   </div>
 </div>
 
@@ -1093,7 +1093,7 @@ html:not(.js) .salto{display:none}
          derecha. El contenido es el de la v4, sin tocar. -->
     <div class="cab" data-sube>
       <h2>Manifiesto</h2>
-      <span class="num mono"><span class="romano">I</span><svg class="estrella"><use href="#s3"/></svg></span>
+      <span class="num mono"><span class="romano">I</span><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s3"/></svg></span>
     </div>
     <div class="dos-col">
       <blockquote data-sube>
@@ -1115,18 +1115,18 @@ html:not(.js) .salto{display:none}
 <section class="pliego env" id="hacemos">
   <div class="cabecera">
     <h2 data-sube>Lo que hacemos</h2>
-    <div class="lado mono" data-sube><span class="romano">II</span><svg class="estrella"><use href="#s1"/></svg>Ocho maneras de bregar</div>
+    <div class="lado mono" data-sube><span class="romano">II</span><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s1"/></svg>Ocho maneras de bregar</div>
   </div>
   <!-- OCHO areas, una por estrella. Los textos son de Alejandro (14-ago). -->
   <ul class="hacemos">
-    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">01</span><h3>Branding</h3><p class="desc">Creamos marcas desde la estrategia hasta su identidad completa.</p><svg class="estrella"><use href="#s1"/></svg></div></li>
-    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">02</span><h3>Diseño gráfico</h3><p class="desc">Damos forma visual a ideas, negocios y proyectos.</p><svg class="estrella"><use href="#s2"/></svg></div></li>
-    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">03</span><h3>Publicidad</h3><p class="desc">Desarrollamos campañas que buscan impacto, recuerdo y respuesta.</p><svg class="estrella"><use href="#s3"/></svg></div></li>
-    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">04</span><h3>Creatividad</h3><p class="desc">Conceptos, ideas y soluciones que se salen de lo previsible.</p><svg class="estrella"><use href="#s4"/></svg></div></li>
-    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">05</span><h3>Dirección de arte</h3><p class="desc">Construimos universos visuales coherentes y reconocibles.</p><svg class="estrella"><use href="#s5"/></svg></div></li>
-    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">06</span><h3>Diseño editorial</h3><p class="desc">Dossiers, catálogos, publicaciones y piezas corporativas.</p><svg class="estrella"><use href="#s6"/></svg></div></li>
-    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">07</span><h3>Diseño digital</h3><p class="desc">Webs, redes sociales y experiencias visuales para entornos digitales.</p><svg class="estrella"><use href="#s7"/></svg></div></li>
-    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">08</span><h3>Estrategia de marca</h3><p class="desc">Posicionamiento, tono, narrativa y criterio para que una marca tenga algo que decir.</p><svg class="estrella"><use href="#s8"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">01</span><h3>Branding</h3><p class="desc">Creamos marcas desde la estrategia hasta su identidad completa.</p><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s1"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">02</span><h3>Diseño gráfico</h3><p class="desc">Damos forma visual a ideas, negocios y proyectos.</p><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s2"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">03</span><h3>Publicidad</h3><p class="desc">Desarrollamos campañas que buscan impacto, recuerdo y respuesta.</p><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s3"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">04</span><h3>Creatividad</h3><p class="desc">Conceptos, ideas y soluciones que se salen de lo previsible.</p><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s4"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">05</span><h3>Dirección de arte</h3><p class="desc">Construimos universos visuales coherentes y reconocibles.</p><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s5"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">06</span><h3>Diseño editorial</h3><p class="desc">Dossiers, catálogos, publicaciones y piezas corporativas.</p><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s6"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">07</span><h3>Diseño digital</h3><p class="desc">Webs, redes sociales y experiencias visuales para entornos digitales.</p><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s7"/></svg></div></li>
+    <li data-sube><span class="tinta"></span><div class="fila"><span class="n">08</span><h3>Estrategia de marca</h3><p class="desc">Posicionamiento, tono, narrativa y criterio para que una marca tenga algo que decir.</p><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s8"/></svg></div></li>
   </ul>
 </section>
 
@@ -1135,7 +1135,7 @@ html:not(.js) .salto{display:none}
   <div class="t-cab env">
     <div class="cabecera">
       <h2 data-sube>El taller</h2>
-      <div class="lado mono" data-sube><span class="romano">III</span><svg class="estrella"><use href="#s4"/></svg>Siete láminas</div>
+      <div class="lado mono" data-sube><span class="romano">III</span><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s4"/></svg>Siete láminas</div>
     </div>
   </div>
   <div class="pin" id="pin">
@@ -1151,7 +1151,7 @@ html:not(.js) .salto{display:none}
             <img src="img/saltimbanqui.webp" alt="Cartel de Saltimbanqui: tipografía amarilla gigante sobre verde ácido con una figura en semitono haciendo el pino" width="1000" height="1250" loading="lazy" data-par="0.06">
             <span class="trama"></span>
             <span class="num mono"><span class="romano">Lámina I</span></span>
-            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
+            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s3"/></svg></span>
           </button>
           <div class="datos"><h3>Saltimbanqui</h3><span class="cat mono">Identidad</span></div>
         </article>
@@ -1164,7 +1164,7 @@ html:not(.js) .salto{display:none}
             <img src="img/omnia.webp" alt="Cartel de Omnia: logotipo blanco modular sobre un eclipse negro con degradado naranja, magenta y verde" width="1000" height="1250" loading="lazy" data-par="-0.05">
             <span class="trama"></span>
             <span class="num mono"><span class="romano">Lámina II</span></span>
-            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
+            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s3"/></svg></span>
           </button>
           <div class="datos"><h3>Omnia</h3><span class="cat mono">Identidad</span></div>
         </article>
@@ -1177,7 +1177,7 @@ html:not(.js) .salto{display:none}
             <img src="img/revela.webp" alt="Cartel Revela: torso de escultura clásica en blanco y negro con la frase El diseño no maquilla. Revela." width="1000" height="1250" loading="lazy" data-par="0.05">
             <span class="trama"></span>
             <span class="num mono"><span class="romano">Lámina III</span></span>
-            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
+            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s3"/></svg></span>
           </button>
           <div class="datos"><h3>Revela</h3><span class="cat mono">Campaña</span></div>
         </article>
@@ -1190,7 +1190,7 @@ html:not(.js) .salto{display:none}
             <img src="img/dia-de-canarias.webp" alt="Cartel del Día de Canarias: bandera negra con las estrellas de La Brega y un canario amarillo" width="1000" height="1250" loading="lazy" data-par="-0.06">
             <span class="trama"></span>
             <span class="num mono"><span class="romano">Lámina IV</span></span>
-            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
+            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s3"/></svg></span>
           </button>
           <div class="datos"><h3>Día de Brega</h3><span class="cat mono">Campaña</span></div>
         </article>
@@ -1203,7 +1203,7 @@ html:not(.js) .salto{display:none}
             <img src="img/san-borondon.webp" alt="Cartel San Borondón 1840: fotografía antigua en blanco y negro muy granulada con tipografía display apilada" width="1000" height="1250" loading="lazy" data-par="0.05">
             <span class="trama"></span>
             <span class="num mono"><span class="romano">Lámina V</span></span>
-            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
+            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s3"/></svg></span>
           </button>
           <div class="datos"><h3>San Borondón</h3><span class="cat mono">Dirección de arte</span></div>
         </article>
@@ -1216,7 +1216,7 @@ html:not(.js) .salto{display:none}
             <img src="img/superbia.webp" alt="Cartel de Superbia Studio: logotipo azul geométrico sobre panel gris texturado con borde azul sólido" width="1000" height="1250" loading="lazy" data-par="0.06">
             <span class="trama"></span>
             <span class="num mono"><span class="romano">Lámina VI</span></span>
-            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
+            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s3"/></svg></span>
           </button>
           <div class="datos"><h3>Superbia</h3><span class="cat mono">Identidad</span></div>
         </article>
@@ -1229,7 +1229,7 @@ html:not(.js) .salto{display:none}
             <img src="img/raiz.webp" alt="Cartel de Raíz: icono de una mano en negro sobre fondo mostaza con el rótulo Raíz" width="1000" height="1250" loading="lazy" data-par="-0.05">
             <span class="trama"></span>
             <span class="num mono"><span class="romano">Lámina VII</span></span>
-            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella"><use href="#s3"/></svg></span>
+            <span class="abrir mono"><span>Ver la ficha</span><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s3"/></svg></span>
           </button>
           <div class="datos"><h3>Raíz</h3><span class="cat mono">Identidad</span></div>
         </article>
@@ -1284,14 +1284,14 @@ html:not(.js) .salto{display:none}
          secuencia y no como una pantalla que aparece de golpe. -->
     <div class="salto-contenido">
       <ul class="ocho salto-ocho">
-        <li style="--i:0"><svg class="estrella"><use href="#s1"/></svg></li>
-        <li style="--i:1"><svg class="estrella"><use href="#s2"/></svg></li>
-        <li style="--i:2"><svg class="estrella"><use href="#s3"/></svg></li>
-        <li style="--i:3"><svg class="estrella"><use href="#s4"/></svg></li>
-        <li style="--i:4"><svg class="estrella"><use href="#s5"/></svg></li>
-        <li style="--i:5"><svg class="estrella"><use href="#s6"/></svg></li>
-        <li style="--i:6"><svg class="estrella"><use href="#s7"/></svg></li>
-        <li style="--i:7"><svg class="estrella"><use href="#s8"/></svg></li>
+        <li style="--i:0"><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s1"/></svg></li>
+        <li style="--i:1"><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s2"/></svg></li>
+        <li style="--i:2"><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s3"/></svg></li>
+        <li style="--i:3"><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s4"/></svg></li>
+        <li style="--i:4"><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s5"/></svg></li>
+        <li style="--i:5"><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s6"/></svg></li>
+        <li style="--i:6"><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s7"/></svg></li>
+        <li style="--i:7"><svg class="estrella" aria-hidden="true" focusable="false"><use href="#s8"/></svg></li>
       </ul>
 
       <p class="ocho-areas mono">
@@ -1320,7 +1320,7 @@ html:not(.js) .salto{display:none}
         <circle cx="100" cy="100" r="62" fill="none" stroke="currentColor" stroke-width="1"/>
         <text class="sello-txt"><textPath href="#aro">LA BREGA ESTUDIO · LAS PALMAS DE GRAN CANARIA · DESDE 2026 · </textPath></text>
       </svg>
-      <svg class="estrella gira"><use href="#s1"/></svg>
+      <svg class="estrella gira" aria-hidden="true" focusable="false"><use href="#s1"/></svg>
     </div>
 
     <p class="mono" data-sube style="margin-top:26px">¿Bregamos juntos?</p>
@@ -1340,10 +1340,10 @@ html:not(.js) .salto{display:none}
 <!-- ===================== 11. PIE ===================== -->
 <footer class="env">
   <div class="pie-estrellas" aria-hidden="true">
-    <svg class="estrella gira"><use href="#s1"/></svg><svg class="estrella late"><use href="#s2"/></svg>
-    <svg class="estrella gira-r"><use href="#s3"/></svg><svg class="estrella gira"><use href="#s4"/></svg>
-    <svg class="estrella late"><use href="#s5"/></svg><svg class="estrella gira-r"><use href="#s6"/></svg>
-    <svg class="estrella gira"><use href="#s7"/></svg><svg class="estrella late"><use href="#s8"/></svg>
+    <svg class="estrella gira" aria-hidden="true" focusable="false"><use href="#s1"/></svg><svg class="estrella late" aria-hidden="true" focusable="false"><use href="#s2"/></svg>
+    <svg class="estrella gira-r" aria-hidden="true" focusable="false"><use href="#s3"/></svg><svg class="estrella gira" aria-hidden="true" focusable="false"><use href="#s4"/></svg>
+    <svg class="estrella late" aria-hidden="true" focusable="false"><use href="#s5"/></svg><svg class="estrella gira-r" aria-hidden="true" focusable="false"><use href="#s6"/></svg>
+    <svg class="estrella gira" aria-hidden="true" focusable="false"><use href="#s7"/></svg><svg class="estrella late" aria-hidden="true" focusable="false"><use href="#s8"/></svg>
   </div>
   <div class="pie-rejilla">
     <span class="logo"><i>La</i><b>Brega</b><i>Estudio<span class="pt">.</span></i></span>
@@ -1358,7 +1358,7 @@ html:not(.js) .salto{display:none}
 </footer>
 
 <!-- ===================== FICHA DE LAMINA ===================== -->
-<div class="ficha" id="ficha" role="dialog" aria-modal="true" aria-labelledby="fichaTitulo" aria-hidden="true">
+<div class="ficha" id="ficha" role="dialog" aria-modal="true" aria-labelledby="fichaTitulo" aria-hidden="true" inert>
   <button class="f-cerrar" id="fichaCerrar" aria-label="Cerrar la ficha">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
   </button>
@@ -1386,6 +1386,14 @@ html:not(.js) .salto{display:none}
    0. BASES
    ========================================================================= */
 var raiz   = document.documentElement;
+/* --vel y --vel-s solo las usan el grano, las tramas de las laminas y el titular del hero:
+   se escriben en ELLOS. En la raiz obligaban a recalcular los estilos de toda la pagina en cada fotograma. */
+var conVel = null;
+function ponVel(nombre, valor){
+  if(!conVel) conVel = { '--vel': [].slice.call(document.querySelectorAll('.grano, .lam .trama')),
+                         '--vel-s': [].slice.call(document.querySelectorAll('.hero h1 .p')) };
+  conVel[nombre].forEach(function(el){ el.style.setProperty(nombre, valor); });
+}
 var mqQuieto = matchMedia('(prefers-reduced-motion: reduce)');
 var quieto = mqQuieto.matches;
 var fino   = matchMedia('(hover:hover) and (pointer:fine)').matches;
@@ -1422,7 +1430,9 @@ var suave = { on:(fino && !quieto), meta:0, act:0, parado:false };
   window.addEventListener('keydown', function(e){
     if(suave.parado) return;
     var t = e.target.tagName;
-    if(t === 'INPUT' || t === 'TEXTAREA') return;
+    if(t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT' || e.target.isContentEditable) return;
+    if(e.altKey || e.ctrlKey || e.metaKey) return;
+    if(e.key === ' ' && (t === 'BUTTON' || t === 'A' || t === 'SUMMARY')) return;   // espacio = pulsar, no bajar
     var h = window.innerHeight, d = null;
     if(e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) d = h*0.9;
     else if(e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) d = -h*0.9;
@@ -1490,7 +1500,7 @@ document.addEventListener('click', function(e){
     }
     ponerEnMarcha();
   }
-  if(quieto || !caja){ if(caja) caja.style.display='none'; arrancarHero(); return; }
+  if(quieto || !caja){ if(caja) caja.style.display='none'; setTimeout(arrancarHero, 0); return; }  // en diferido: ponerEnMarcha() usa variables que se declaran mas abajo
 
   document.body.classList.add('bloqueado');
   caja.classList.add('pinta');
@@ -1754,10 +1764,10 @@ function bucle(){
   var vn  = lim(vel/58, 0, 1);
   var vns = lim(velCruda/58, -1, 1);
   if(Math.abs(vn - velNorm) > 0.004 || (vn === 0 && velNorm !== 0)){
-    velNorm = vn; raiz.style.setProperty('--vel', vn.toFixed(3));
+    velNorm = vn; ponVel('--vel', vn.toFixed(3));
   }
   if(Math.abs(vns - velSig) > 0.004 || (vns === 0 && velSig !== 0)){
-    velSig = vns; raiz.style.setProperty('--vel-s', vns.toFixed(3));
+    velSig = vns; ponVel('--vel-s', vns.toFixed(3));
   }
 
   if(suave.paso) suave.paso();
@@ -2077,13 +2087,20 @@ setTimeout(function(){ medirTaller(); repasar(); }, 1500);
    7. MENU
    ========================================================================= */
 var menu = document.getElementById('menu'), abrirMenu = document.getElementById('abrirMenu');
+/* con el menu o la ficha abiertos, lo de detras no se puede tabular ni lo lee el lector de pantalla */
+function fondoInerte(si){
+  document.querySelectorAll('main, footer, #cabecera .logo, #cabecera .enl, #cabecera .boton').forEach(function(el){ el.inert = si; });
+}
 function cerrarMenu(){
   if(!document.body.classList.contains('menu-abierto')) return;
   document.body.classList.remove('menu-abierto','bloqueado');
   suave.parado = false;
   if(suave.on){ suave.meta = suave.act = window.scrollY; }
-  if(menu) menu.setAttribute('aria-hidden','true');
+  var dentro = menu && menu.contains(document.activeElement);
+  if(menu){ menu.setAttribute('aria-hidden','true'); menu.inert = true; }
+  fondoInerte(false);
   if(abrirMenu){ abrirMenu.setAttribute('aria-expanded','false'); abrirMenu.setAttribute('aria-label','Abrir el menú'); }
+  if(dentro && abrirMenu) abrirMenu.focus({preventScroll:true});
 }
 if(abrirMenu){
   abrirMenu.addEventListener('click', function(){
@@ -2092,7 +2109,8 @@ if(abrirMenu){
     // con el menu abierto la pagina de detras no se mueve
     document.body.classList.add('menu-abierto','bloqueado');
     suave.parado = true;
-    menu.setAttribute('aria-hidden','false');
+    menu.setAttribute('aria-hidden','false'); menu.inert = false;
+    fondoInerte(true);
     abrirMenu.setAttribute('aria-expanded','true');
     abrirMenu.setAttribute('aria-label','Cerrar el menú');
   });
@@ -2126,6 +2144,9 @@ if(abrirMenu){
     ficha.classList.add('abierta');
     ficha.setAttribute('aria-hidden','false');
     ficha.scrollTop = 0;
+    ficha.inert = false;
+    fondoInerte(true);
+    document.getElementById('cabecera').inert = true;
 
     // FLIP: la imagen sale exactamente de donde estaba la lamina
     if(origen && !quieto){
@@ -2141,17 +2162,21 @@ if(abrirMenu){
         });
       }
     }
-    cerrar.focus();
+    cerrar.focus({preventScroll:true});
+    setTimeout(function(){ if(ficha.classList.contains('abierta')) cerrar.focus({preventScroll:true}); }, 60);   // por si aun no era visible
   }
   function cerrarFicha(){
     ficha.classList.remove('abierta');
     ficha.setAttribute('aria-hidden','true');
+    ficha.inert = true;
+    fondoInerte(false);
+    document.getElementById('cabecera').inert = false;
     document.body.classList.remove('bloqueado');
     document.body.style.paddingRight = '';
     suave.parado = false;
     if(suave.on){ suave.meta = suave.act = window.scrollY; }
     img.style.transition = 'none'; img.style.transform = 'none';
-    if(previo && previo.focus) previo.focus();
+    if(previo && previo.focus) previo.focus({preventScroll:true});
   }
   document.querySelectorAll('.lam .marco').forEach(function(b){
     b.addEventListener('click', function(){

@@ -18,6 +18,14 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 > - **Zona táctil de 44 px** en Instagram/TikTok/correo (menú, contacto y pie) sin cambiar cómo se ven; medían 17 px de alto.
 > - **Romanos del menú** de 7 px → mínimo 10 px.
 > - Verificado en Chrome a 390 px: 0 errores JS, sin scroll lateral, las 8 fotos cargan, zonas táctiles OK.
+> - **Test completo (teclado, menú, fichas, movimiento reducido, scroll, carga, 7 anchos de 320 a 1920) y arreglos:**
+>     - 🔴 **Con movimiento reducido el JS se rompía al cargar** (`arrancarHero()` llamaba a `ponerEnMarcha()` antes de que existiera `porRevelar`) → **no funcionaban ni el menú ni las fichas**. Ahora en diferido; verificado que abren.
+>     - La **barra espaciadora** no pulsaba botones (el scroll suave se la comía).
+>     - **Menú cerrado** se podía tabular (9 enlaces invisibles) → `inert`. Abierto: lo de detrás inerte y Escape devuelve el foco al botón.
+>     - **Fichas:** el foco entra en «Cerrar», no se escapa a la página y vuelve a la lámina al cerrar.
+>     - **Rendimiento:** `--vel`/`--vel-s` se escribían en la raíz cada fotograma (recalculaba toda la página) → ahora solo en los 3 elementos que las usan. CPU 4×, escritorio: fotograma típico 145 → 55 ms, tareas largas 88 → 0; móvil: P95 150 → 80 ms.
+>     - Gris `--tenue` #7C776D → #827D73 (4,49 → 4,64:1). «Volver arriba» con zona táctil de 44 px. La raya de «Baja para ver» quieta con movimiento reducido. 61 estrellas decorativas con `aria-hidden`.
+>     - Sin fallos: ids, títulos, `alt`, anclas, `noopener`, scroll lateral, CLS 0, Instagram/TikTok 200. Los «1,02:1» de contraste eran falsos positivos (negro sobre la plancha/marcador amarillo, comprobado en captura).
 > - **Pendiente al publicar:** poner la URL absoluta en `og:image` (Facebook/WhatsApp la piden) + `canonical` + `sitemap` cuando haya dominio.
 
 ## 2026-09-27
