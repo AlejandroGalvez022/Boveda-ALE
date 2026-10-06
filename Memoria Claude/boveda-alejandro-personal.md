@@ -10,10 +10,11 @@ metadata:
 
 Los **proyectos de fuera de Reload** (clientes propios de Alejandro, ideas y demos) viven en la bóveda de Obsidian **"Ale"**: carpeta **`C:\Users\galve\Documents\Ale`**.
 
-☁️ **Ya está en GitHub**: repo privado **`AlejandroGalvez022/Boveda-ALE`** (rama `main`). Es un repo git APARTE del de Reload (`Boveda-RELOAD`). El `git push` lo lanza siempre Alejandro (yo no puedo subir a remoto). Sincronización **solo por GitHub** (Obsidian Sync desactivado tras la incidencia de fusión).
+☁️ **Ya está en GitHub**: repo privado **`AlejandroGalvez022/Boveda-ALE`** (rama `main`). Es un repo git APARTE del de Reload (`Boveda-RELOAD`). El `git push` lo hago yo, automático tras cada commit y verificando local = remoto (comprobado el 6-oct-2026; lo de «solo puede Alejandro» era de antes). Sincronización **solo por GitHub** (Obsidian Sync desactivado tras la incidencia de fusión).
 
 **Contiene** (cada proyecto: carpeta + resumen; hay `Indice.md` + `Panel.base`):
 - **La Brega Studio** — cliente Raúl Vega (amigo). → [[labrega-studio]]
+- **Schleife Studio** — Leonor, tatuadora (amiga); web v1 «La cinta y la aguja» (6-oct-2026). → [[schleife-studio]]
 - **Chatbot Psicologo / Web Calma + Aura** — la psicóloga (prioridad). → [[web-calma-preview]]
 - **Estudio Alisio** — demo de estudio creativo (estado demo).
 - **Clínica dental** — encargo freelance de mantenimiento web (estado idea).
