@@ -6,6 +6,7 @@ El **resto** de la memoria —las reglas generales de trabajo— está en `Boved
 
 - [Bóveda personal](boveda-alejandro-personal.md) — qué hay en `Ale/` y cómo se sincroniza (repo `Boveda-ALE`)
 - [La Brega Estudio](labrega-studio.md) — cliente Raúl Vega: su marca real (ojo: el logo NO es circular), sus proyectos y las **cinco versiones** de la web (14-ago: v2 con sus pósters y foto de fondo; **v5** = la v4 con la maquetación de la v3)
+- [Schleife Studio](schleife-studio.md) — clienta Leonor, tatuadora (@schleifestudio): su marca real (magenta #C50457, S + lazo + aguja), la web v1 «La cinta y la aguja» y sus trampas (Instagram por CDP, solapes, rendimiento)
 - [Web Calma + Aura](web-calma-preview.md) — la web y el chatbot de la psicóloga
 - [Laboratorio web](laboratorio-web-demos.md) — las demos guardadas y para qué sirve cada una
 - [Lustre (antes Haze)](lustre-producto.md) — primer producto de **ingresos pasivos** (fondos WebGL caustics/silk/chrome); 27-sep: silk rehecho, vídeo y renombrado a Lustre; Framer + Lemon Squeezy 24/59 $

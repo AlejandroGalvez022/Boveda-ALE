@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-06T00:00:00Z",
+  "title": "Design System: SCHLEIFE",
+  "extensions": {
+    "colorMeta": {
+      "magenta": { "role": "primary", "displayName": "Logo Magenta", "canonical": "#c50457", "tonalRamp": ["oklch(15% 0.06 4)", "oklch(26% 0.10 4)", "oklch(38% 0.15 4)", "oklch(51.5% 0.197 4)", "oklch(62% 0.17 4)", "oklch(73% 0.12 4)", "oklch(84% 0.07 4)", "oklch(95% 0.02 4)"] },
+      "negro": { "role": "neutral", "displayName": "Velvet Black", "canonical": "#000000", "tonalRamp": ["oklch(0% 0 0)", "oklch(15% 0.005 350)", "oklch(26% 0.008 350)", "oklch(38% 0.01 350)", "oklch(51% 0.012 350)", "oklch(65% 0.012 350)", "oklch(80% 0.01 350)", "oklch(95% 0.005 350)"] },
+      "papel": { "role": "neutral", "displayName": "Drawing Paper", "canonical": "#ffffff", "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(51% 0 0)", "oklch(65% 0 0)", "oklch(80% 0 0)", "oklch(92% 0 0)", "oklch(100% 0 0)"] },
+      "tinta": { "role": "neutral", "displayName": "Paper Ink", "canonical": "#0b0a0b", "tonalRamp": ["oklch(13% 0.003 330)", "oklch(24% 0.004 330)", "oklch(36% 0.005 330)", "oklch(48% 0.006 330)", "oklch(60% 0.006 330)", "oklch(72% 0.005 330)", "oklch(84% 0.004 330)", "oklch(95% 0.003 330)"] },
+      "texto": { "role": "neutral", "displayName": "Bone", "canonical": "#f4f0f1", "tonalRamp": ["oklch(15% 0.006 355)", "oklch(27% 0.006 355)", "oklch(40% 0.006 355)", "oklch(53% 0.006 355)", "oklch(66% 0.006 355)", "oklch(79% 0.006 355)", "oklch(90% 0.006 355)", "oklch(95.5% 0.006 355)"] },
+      "texto-2": { "role": "neutral", "displayName": "Ash", "canonical": "#b9adb2", "tonalRamp": ["oklch(15% 0.015 350)", "oklch(27% 0.015 350)", "oklch(40% 0.016 350)", "oklch(53% 0.016 350)", "oklch(65% 0.016 350)", "oklch(75.5% 0.016 350)", "oklch(86% 0.012 350)", "oklch(95% 0.006 350)"] },
+      "texto-campo-2": { "role": "neutral", "displayName": "Blush on Field", "canonical": "#ffe3ee", "tonalRamp": ["oklch(15% 0.03 355)", "oklch(28% 0.04 355)", "oklch(42% 0.05 355)", "oklch(56% 0.05 355)", "oklch(70% 0.05 355)", "oklch(82% 0.04 355)", "oklch(93.5% 0.03 355)", "oklch(97% 0.012 355)"] },
+      "texto-papel-2": { "role": "neutral", "displayName": "Graphite on Paper", "canonical": "#5c5357", "tonalRamp": ["oklch(15% 0.01 350)", "oklch(27% 0.012 350)", "oklch(36% 0.013 350)", "oklch(45.5% 0.013 350)", "oklch(58% 0.012 350)", "oklch(71% 0.01 350)", "oklch(84% 0.007 350)", "oklch(95% 0.004 350)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display (Fraktur)", "purpose": "Her name in the hero only." },
+      "headline": { "displayName": "Banner word (Fraktur)", "purpose": "Section names on a flat stretch of ribbon, sized from the ribbon width; also the phone menu." },
+      "title": { "displayName": "Title", "purpose": "Plain lines around her name in the hero." },
+      "title-piece": { "displayName": "Piece title", "purpose": "Name of each tattoo under its photo." },
+      "body-lead": { "displayName": "Lead", "purpose": "Section intros and booking steps, max 34ch." },
+      "body": { "displayName": "Body", "purpose": "Running copy, 30 to 46ch." },
+      "label": { "displayName": "Label", "purpose": "Uppercase piece meta (style, zone, date) and drawing captions, tabular lining figures, width 82." },
+      "button": { "displayName": "Button", "purpose": "Button text, width 88." },
+      "wordmark": { "displayName": "Wordmark (Cinzel)", "purpose": "SCHLEIFE beside the monogram in header and footer." },
+      "ribbon-lettering": { "displayName": "Ribbon lettering (Cinzel)", "purpose": "SCHLEIFE carried on the hero ribbon's flat front panel, 0.4 x ribbon width." },
+      "numeral": { "displayName": "Step numeral (Cinzel)", "purpose": "Booking step numbers." }
+    },
+    "shadows": [
+      { "name": "field-gap", "value": "drop-shadow(3px 0 0 #c50457) drop-shadow(-3px 0 0 #c50457) drop-shadow(0 3px 0 #c50457) drop-shadow(0 -3px 0 #c50457)", "purpose": "Not a shadow: a zero-blur 3px halo in the field colour that cuts the ribbon where it passes behind the bow button on the magenta field. The system is otherwise flat." }
+    ],
+    "motion": [
+      { "name": "ease", "value": "cubic-bezier(.16,1,.3,1)", "purpose": "House ease-out for settles, hero text rise, ribbon lettering, bow-button swing." },
+      { "name": "photo-reveal", "value": "opacity 1.15s cubic-bezier(.22,.61,.36,1); transform scale(1.045)->none 1.8s cubic-bezier(.16,1,.3,1); placeholder fades out after .9s", "purpose": "Photo fades and settles over its pre-blurred placeholder." },
+      { "name": "caption-follow", "value": "opacity .9s + translateY(12px)->0 1.1s, delay .18s", "purpose": "Caption follows its photo." },
+      { "name": "ribbon-entry", "value": "2600ms easeInOutCubic", "purpose": "On load, the ribbon leaves the needle's eye and winds round the hero arm (until the visitor scrolls)." },
+      { "name": "ribbon-unwind", "value": "draw-length follows the deepest point reached (scroll + 86% viewport); chase 1 - exp(-3.2 dt), at least 900px/s; never rewinds", "purpose": "The one authored moment: the ribbon unwinds along its length with the scroll." },
+      { "name": "bow-tie", "value": "1500ms once the band reaches the knot: tails and loops draw, then the knot scales .4->1 with back-ease overshoot (1.70158); button swing 'etiqueta' 1.4s at 62%", "purpose": "The bow ties over the last button." },
+      { "name": "hero-rise", "value": "translateY(.55em)->0 + fade, 1.1s ease, staggered .25s to .78s (footnote 1.4s)", "purpose": "Quiet entrance of the hero copy." },
+      { "name": "state", "value": "dotwork opacity .25s; band colour .2s; header ground .35s; banner word colour .5s", "purpose": "State transitions." },
+      { "name": "reduced-motion", "value": "prefers-reduced-motion: reduce -> full ribbon and tied bow drawn static; photos and captions at rest; no smooth scroll", "purpose": "Finished state without motion." }
+    ],
+    "breakpoints": [
+      { "name": "tiny", "value": "max-width: 359px (header wordmark text hidden)" },
+      { "name": "phone-hero", "value": "(max-width: 899px) and (max-aspect-ratio: 4/3), (max-width: 639px)" },
+      { "name": "desktop", "value": "900px (gallery grid, header nav, side-by-side Leonor)" },
+      { "name": "short-landscape", "value": "(max-height: 520px) and (min-aspect-ratio: 4/3)" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Magenta ribbon band with swallowtail ends; dotwork on hover, inverted on press, dotted stencil focus.",
+      "html": "<a class=\"ds-boton\" href=\"#\">Escríbeme por Instagram</a>",
+      "css": ".ds-boton{--fondo:var(--magenta,#c50457);--letra:#fff;--punto:rgba(0,0,0,.5);position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:.8em 1.9em;font-family:var(--f-texto,'Archivo',system-ui,sans-serif);font-weight:650;font-stretch:88%;font-size:1.0625rem;line-height:1.1;letter-spacing:.015em;color:var(--letra);text-decoration:none;transition:color .2s}.ds-boton::before,.ds-boton::after{content:\"\";position:absolute;inset:0;z-index:-1;clip-path:polygon(0 0,100% 0,calc(100% - 13px) 50%,100% 100%,0 100%,13px 50%)}.ds-boton::before{background:var(--fondo);transition:background-color .2s}.ds-boton::after{background-image:radial-gradient(circle,var(--punto) 0 1.05px,transparent 1.45px);background-size:5px 5px;opacity:0;transition:opacity .25s}.ds-boton:hover::after{opacity:1}.ds-boton:active::before{background:var(--letra)}.ds-boton:active{color:var(--fondo)}.ds-boton:active::after{opacity:0}.ds-boton:focus-visible{outline:2px dotted currentColor;outline-offset:5px}"
+    },
+    {
+      "name": "Field Button",
+      "kind": "button",
+      "refersTo": "button-field",
+      "description": "White band with magenta text, large size, used on the magenta booking field; carries the field-gap halo.",
+      "html": "<div class=\"ds-campo\"><a class=\"ds-boton-blanco\" href=\"#\">Escríbeme por Instagram</a></div>",
+      "css": ".ds-campo{background:#c50457;padding:40px;display:flex;justify-content:center}.ds-boton-blanco{--fondo:#fff;--letra:#c50457;--punto:rgba(197,4,87,.42);position:relative;isolation:isolate;display:inline-flex;align-items:center;min-height:60px;padding:.9em 2.3em;font-family:'Archivo',system-ui,sans-serif;font-weight:650;font-stretch:88%;font-size:1.1875rem;line-height:1.1;color:var(--letra);text-decoration:none;transition:color .2s;filter:drop-shadow(3px 0 0 #c50457) drop-shadow(-3px 0 0 #c50457) drop-shadow(0 3px 0 #c50457) drop-shadow(0 -3px 0 #c50457)}.ds-boton-blanco::before,.ds-boton-blanco::after{content:\"\";position:absolute;inset:0;z-index:-1;clip-path:polygon(0 0,100% 0,calc(100% - 13px) 50%,100% 100%,0 100%,13px 50%)}.ds-boton-blanco::before{background:var(--fondo)}.ds-boton-blanco::after{background-image:radial-gradient(circle,var(--punto) 0 1.05px,transparent 1.45px);background-size:5px 5px;opacity:0;transition:opacity .25s}.ds-boton-blanco:hover::after{opacity:1}.ds-boton-blanco:active::before{background:var(--letra)}.ds-boton-blanco:active{color:var(--fondo)}.ds-boton-blanco:active::after{opacity:0}.ds-boton-blanco:focus-visible{outline:2px dotted #fff;outline-offset:5px}"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "refersTo": "button-header",
+      "description": "Cinzel wordmark (the monogram image sits before it in the build), four Archivo anchors with dotted underline on hover, header booking button.",
+      "html": "<header class=\"ds-cabecera\"><a class=\"ds-marca\" href=\"#\"><span>Schleife</span></a><nav><a href=\"#\">Tattoos</a><a href=\"#\">Diseños</a><a href=\"#\">Leonor</a><a href=\"#\">Cita</a></nav><a class=\"ds-btn-cab\" href=\"#\">Escríbeme</a></header>",
+      "css": ".ds-cabecera{display:flex;align-items:center;gap:32px;height:64px;padding:0 40px;background:#000;color:#f4f0f1;font-family:'Archivo',system-ui,sans-serif}.ds-marca{display:flex;align-items:center;gap:.7rem;margin-right:auto;color:inherit;text-decoration:none;min-height:44px}.ds-marca span{font-family:'Cinzel',serif;font-weight:500;font-size:.9375rem;letter-spacing:.26em;text-transform:uppercase}.ds-cabecera nav{display:flex;gap:28px}.ds-cabecera nav a{display:inline-flex;align-items:center;min-height:44px;font-weight:550;font-size:.9688rem;color:inherit;text-decoration:none}.ds-cabecera nav a:hover{text-decoration:underline dotted 1.5px;text-underline-offset:.35em}.ds-cabecera a:focus-visible{outline:2px dotted currentColor;outline-offset:5px}.ds-btn-cab{position:relative;isolation:isolate;display:inline-flex;align-items:center;min-height:44px;padding:.55em 1.45em;font-weight:650;font-stretch:88%;font-size:.9375rem;color:#fff;text-decoration:none}.ds-btn-cab::before{content:\"\";position:absolute;inset:0;z-index:-1;background:#c50457;clip-path:polygon(0 0,100% 0,calc(100% - 13px) 50%,100% 100%,0 100%,13px 50%)}.ds-btn-cab:active::before{background:#fff}.ds-btn-cab:active{color:#c50457}"
+    },
+    {
+      "name": "Banner Word",
+      "kind": "custom",
+      "refersTo": "banner-word",
+      "description": "Section name in Fraktur at ribbon height on a flat stretch of ribbon (shown here as the no-script fallback block).",
+      "html": "<h2 class=\"ds-banderin\">Tattoos</h2>",
+      "css": ".ds-banderin{display:inline-block;margin:0;height:clamp(50px,5.6vw,84px);padding:0 .4em;background:#c50457;color:#fff;font-family:'UnifrakturMaguntia',serif;font-weight:400;font-size:calc(clamp(50px,5.6vw,84px) * .98);line-height:calc(clamp(50px,5.6vw,84px) * 1.06);letter-spacing:.005em;white-space:nowrap}"
+    },
+    {
+      "name": "Ribbon Segment",
+      "kind": "custom",
+      "refersTo": "banner-word",
+      "description": "Flat magenta front face beside its reverse, shaded only by 45-degree black hatching.",
+      "html": "<svg class=\"ds-cinta\" viewBox=\"0 0 320 70\" aria-hidden=\"true\"><defs><pattern id=\"ds-ray\" patternUnits=\"userSpaceOnUse\" width=\"6.6\" height=\"6.6\"><rect width=\"6.6\" height=\"6.6\" fill=\"#c50457\"/><path d=\"M-3.3,3.3L3.3,-3.3M0,6.6L6.6,0M3.3,9.9L9.9,3.3\" stroke=\"#000\" stroke-width=\"1.6\"/></pattern></defs><path d=\"M0 10 L40 10 L60 30 L60 60 L20 60 L0 40 Z\" fill=\"url(#ds-ray)\"/><path d=\"M40 10 L300 10 L285 35 L300 60 L60 60 L60 30 Z\" fill=\"#c50457\"/></svg>",
+      "css": ".ds-cinta{display:block;width:320px;height:70px;background:#000}"
+    },
+    {
+      "name": "Piece Caption",
+      "kind": "card",
+      "refersTo": "piece-meta",
+      "description": "Photo on black with piece title, her own words in italic, and tabular uppercase meta.",
+      "html": "<figure class=\"ds-pieza\"><div class=\"ds-foto\"></div><figcaption><h3>Loto</h3><q>Fine line</q><ul><li>Fine line</li><li>Detrás de la oreja</li><li>26·09·2026</li></ul></figcaption></figure>",
+      "css": ".ds-pieza{margin:0;padding:24px;background:#000;color:#f4f0f1;font-family:'Archivo',system-ui,sans-serif;max-width:360px}.ds-foto{aspect-ratio:4/5;background:#1a1718}.ds-pieza figcaption{display:grid;gap:.3rem;margin-top:1.05rem;max-width:44ch}.ds-pieza h3{margin:0;font-size:1.1875rem;font-weight:620;line-height:1.25}.ds-pieza q{font-style:italic;color:#f4f0f1}.ds-pieza ul{display:flex;flex-wrap:wrap;gap:.2rem .9rem;margin:.15rem 0 0;padding:0;list-style:none;font-size:.8125rem;font-weight:560;font-stretch:82%;letter-spacing:.11em;text-transform:uppercase;color:#b9adb2;font-variant-numeric:tabular-nums lining-nums}"
+    },
+    {
+      "name": "Booking Steps",
+      "kind": "custom",
+      "refersTo": "section-field",
+      "description": "Numbered steps on the magenta field: Cinzel numerals in a 2.6rem gutter, bold lead phrase.",
+      "html": "<ol class=\"ds-pasos\"><li><span>1</span><p><strong>Escríbeme por Instagram</strong>, por privado.</p></li><li><span>2</span><p><strong>Cuéntame tu idea</strong>: qué quieres, en qué zona y de qué tamaño.</p></li><li><span>3</span><p><strong>Lo hablamos</strong> y buscamos fecha.</p></li></ol>",
+      "css": ".ds-pasos{list-style:none;margin:0;padding:40px;display:grid;gap:1.5rem;background:#c50457;color:#fff;font-family:'Archivo',system-ui,sans-serif}.ds-pasos li{display:grid;grid-template-columns:2.6rem minmax(0,1fr);gap:1rem;align-items:baseline}.ds-pasos span{font-family:'Cinzel',serif;font-weight:600;font-size:1.5rem;line-height:1;text-align:right}.ds-pasos p{margin:0;font-size:1.25rem;line-height:1.45}.ds-pasos strong{font-weight:680}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Ribbon Round the Needle",
+    "overview": "The whole system is one object taken from her logo: an S drawn as a ribbon wound round a vertical needle (Schleife is German for bow). On the page that ribbon is literal. It leaves the needle's eye in the first viewport, winds behind and in front of her work, flattens into a traditional tattoo banner behind every section word, and ties itself into a bow over the last booking button. Everything else holds still so the ribbon and her photographs carry the page.\n\nThe ground is velvet black, taken from the backdrop of her own photos, so the work appears to sit in the same space it was shot in. Her exact logo magenta is the only colour with a voice. Paper white appears only where her drawings live, and one section is drenched in magenta, where the ribbon turns white exactly as it does in the logo. States change technique, not tint: dotwork on hover, an inverted field on press, a dotted stencil line for focus. Type runs from billboard Fraktur down to footnote-sized tabular labels, and the practical copy stays in a plain grotesk.\n\nThe world refuses the dark-studio default: no grunge texture, no masonry Instagram grid, no neon accent, no clip-art iconography.",
+    "keyCharacteristics": [
+      "One continuous SVG ribbon, generated from the layout, is the signature and the only decoration.",
+      "Flat colour only. Depth comes from the ribbon passing in front of and behind content, never from shadows.",
+      "Three grounds with fixed jobs: black for photographs, paper for drawings, magenta field for booking.",
+      "Square corners everywhere. The one non-rectangular silhouette is the swallowtail ribbon end.",
+      "One authored motion: the ribbon unwinding with the scroll and tying the bow. Reduced motion shows it whole and still."
+    ],
+    "rules": [
+      { "name": "The One Magenta Rule", "body": "Magenta is the brand colour at its exact value or it is absent. Shade comes from black hatching and highlight from white, never from a derived tint of the magenta.", "section": "colors" },
+      { "name": "The Three Grounds Rule", "body": "Black holds photographs, paper holds drawings, the magenta field holds booking. A new section takes the ground of what it shows. Paper does not become a card on black.", "section": "colors" },
+      { "name": "The Banner Word Rule", "body": "Fraktur only appears on a banner (section names, the phone menu) or as her name. It is never used for sentences, buttons or labels.", "section": "typography" },
+      { "name": "The Ribbon-Sized Type Rule", "body": "Banner words are sized from the ribbon width (spacing.ribbon), never on their own scale. Change the ribbon and the banners follow.", "section": "typography" },
+      { "name": "The Plain Register Rule", "body": "Anything practical (steps, captions, buttons, navigation) is set in Archivo. Facts such as dates and steps use tabular lining figures.", "section": "typography" },
+      { "name": "The Field Gap Rule", "body": "Where two white or magenta things overlap on the magenta field, they are separated by a gap of field colour, as in her monogram, never by an outline or a shadow. The knot carries a magenta stroke painted under its fill. The last button wears a zero-blur 3px magenta halo on all four sides (four drop-shadow offsets of 3px in the field colour), so the ribbon passing behind it reads as cut.", "section": "elevation" },
+      { "name": "The Ink Outline Rule", "body": "A black ink outline (1.3px, round joins) on the ribbon appears only over paper, where flat magenta against white needs a drawn edge. It never appears on black or on the field.", "section": "elevation" },
+      { "name": "The Swallowtail Rule", "body": "A shape that is not a rectangle is a piece of ribbon: swallowtail ends, never rounded pills.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do use the logo magenta at its exact value (colors.magenta) for the ribbon front, primary buttons and the booking field.",
+      "Do shade the ribbon's reverse with 45° hatching only: black on magenta, magenta on white.",
+      "Do separate overlapping shapes on the magenta field with a field-colour gap, as her monogram does.",
+      "Do size banner words from the ribbon width, so type and ribbon move together.",
+      "Do change state by technique: dotwork on hover, inversion on press, a 2px dotted line 5px off for focus.",
+      "Do give every photo a blurred placeholder in its exact box and reveal it with the fade-and-settle.",
+      "Do make reduced motion a finished state: the full ribbon and the tied bow, drawn and still.",
+      "Do keep every target at least 44px tall, and keep the first booking button inside the first phone screen from 320×640 up."
+    ],
+    "donts": [
+      "Don't tint, lighten or gradient the magenta. Shading is hatching, never a derived tone.",
+      "Don't put Fraktur on sentences, buttons or labels. It belongs to banner words, the phone menu and her name.",
+      "Don't add soft or offset shadows, blur or rounded corners. The only halo is the zero-blur field-colour gap.",
+      "Don't draw the ink outline on the ribbon anywhere but over paper.",
+      "Don't use paper white as a card on black. Paper is a full section, for drawings.",
+      "Don't add grunge texture, a masonry grid, a neon accent or stock clip-art. Her own drawings, skull girl included, are the only illustrations.",
+      "Don't add a second authored animation. The ribbon unwinding and the bow tying are the moment; everything else is a quiet reveal."
+    ]
+  }
+}

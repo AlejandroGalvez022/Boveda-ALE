@@ -16,6 +16,7 @@ Tu bóveda **por fuera de Reload**: tus clientes propios y tus demos. Separada d
 ## 🔥 En marcha
 
 - 🌿 [[Chatbot Psicologo/Chatbot Psicologo|Web Calma + Aura]] — web y chatbot de la **psicóloga** (tu prioridad).
+- 🎀 [[Schleife Studio/Schleife Studio|Schleife Studio]] — web para **Leonor**, tatuadora (Gran Canaria). **v1 «La cinta y la aguja»** (6-oct): la S de su logo es una cinta enrollada a una aguja; la web es esa cinta, que rodea su tigre, se desenrolla al bajar y se anuda en un lazo sobre el botón de cita.
 - 🌐 [[La Brega Studio/La Brega Studio|La Brega Studio]] — web para **Raúl Vega**. Hay **cuatro versiones** (v1, v2, v3 y v4) y falta que elijas. ⭐ Lo último: la **v4 «La Carta»** — la oscura llevada a nivel Awwwards: su negro entendido como **lámina impresa**, con la luna en **semitono de puntos** cuyo grano lo manda la velocidad del scroll (*la velocidad hace ruido, la calma revela*).
 - 🦷 [[Clinica dental/Clinica dental|Clínica dental]] — mantenimiento web (encargo por cerrar).
 - 🎨 [[Estudio Alisio/Estudio Alisio|Estudio Alisio]] — demo de estudio creativo.

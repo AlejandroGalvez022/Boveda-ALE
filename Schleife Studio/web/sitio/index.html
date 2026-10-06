@@ -1,0 +1,1293 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>document.documentElement.classList.add('js')</script>
+<title>Schleife · Tatuajes de Leonor en Gran Canaria</title>
+<meta name="description" content="Schleife es el estudio de tatuaje de Leonor en Gran Canaria: fine line, japonés, blackwork, covers y diseños propios. Pide tu cita por Instagram.">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Schleife">
+<meta property="og:title" content="Schleife · Tatuajes de Leonor en Gran Canaria">
+<meta property="og:description" content="Fine line, japonés, blackwork, covers y diseños propios. Pide tu cita por Instagram.">
+<meta property="og:image" content="og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"TattooParlor","name":"Schleife","alternateName":"Schleife Studio","description":"Estudio de tatuaje de Leonor en Gran Canaria.","areaServed":"Gran Canaria","sameAs":["https://www.instagram.com/schleifestudio/"]}
+</script>
+<style>
+@font-face{font-family:"Schleife Fraktur";src:url(fonts/fraktur.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Schleife Romana";src:url(fonts/cinzel.woff2) format("woff2");font-weight:400 700;font-style:normal;font-display:swap}
+@font-face{font-family:"Schleife Texto";src:url(fonts/archivo.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-style:normal;font-display:swap}
+@font-face{font-family:"Schleife Texto";src:url(fonts/archivo-italic.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-style:italic;font-display:swap}
+
+:root{
+  --negro:#000;
+  --magenta:#c50457;
+  --papel:#fff;
+  --tinta:#0b0a0b;
+  --texto:#f4f0f1;
+  --texto-2:#b9adb2;
+  --texto-campo-2:#ffe3ee;
+  --texto-papel-2:#5c5357;
+  --f-gotica:"Schleife Fraktur","UnifrakturMaguntia",serif;
+  --f-romana:"Schleife Romana","Cinzel",serif;
+  --f-texto:"Schleife Texto","Archivo",system-ui,sans-serif;
+  --borde:clamp(18px,5vw,72px);
+  --cinta:clamp(50px,5.6vw,84px);
+  --cabecera:64px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scrollbar-color:var(--magenta) var(--negro);scroll-padding-top:var(--cabecera)}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{position:relative;margin:0;min-height:100vh;background:var(--negro);color:var(--texto);font-family:var(--f-texto);font-size:clamp(1.0625rem,.98rem + .25vw,1.125rem);line-height:1.55;font-weight:400;overflow-x:clip;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit;text-decoration-line:underline;text-decoration-style:dotted;text-decoration-thickness:1.5px;text-underline-offset:.28em}
+a:hover{text-decoration-style:solid}
+::selection{background:var(--magenta);color:#fff}
+:focus-visible{outline:2px dotted currentColor;outline-offset:5px}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.sonda-cinta{position:absolute;left:0;top:0;width:var(--cinta);height:0;visibility:hidden;pointer-events:none}
+.saltar{position:fixed;left:12px;top:-80px;z-index:50;padding:.7em 1.1em;background:var(--magenta);color:#fff;font-weight:600;text-decoration:none}
+.saltar:focus{top:12px}
+
+/* ── la cinta (la dibuja el script) ─────────────────────────────── */
+.cinta{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:hidden}
+.cinta--atras{z-index:1}
+.cinta--delante{z-index:3}
+.cinta-paso{position:absolute;width:2px;height:2px;pointer-events:none;visibility:hidden}
+
+/* ── botones: un trozo de cinta con los extremos en cola de golondrina ── */
+.boton{--fondo:var(--magenta);--letra:#fff;--punto:rgba(0,0,0,.5);position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:52px;padding:.8em 1.9em;font-family:var(--f-texto);font-weight:650;font-stretch:88%;font-size:1.0625rem;line-height:1.1;letter-spacing:.015em;color:var(--letra);text-decoration:none;text-align:center;transition:color .2s}
+.boton::before,.boton::after{content:"";position:absolute;inset:0;z-index:-1;clip-path:polygon(0 0,100% 0,calc(100% - 13px) 50%,100% 100%,0 100%,13px 50%)}
+.boton::before{background:var(--fondo);transition:background-color .2s}
+.boton::after{background-image:radial-gradient(circle,var(--punto) 0 1.05px,transparent 1.45px);background-size:5px 5px;opacity:0;transition:opacity .25s}
+.boton:hover{text-decoration:none}
+.boton:hover::after{opacity:1}
+.boton:active::before{background:var(--letra)}
+.boton:active{color:var(--fondo)}
+.boton:active::after{opacity:0}
+.boton--blanco{--fondo:#fff;--letra:var(--magenta);--punto:rgba(197,4,87,.42)}
+.boton--grande{min-height:60px;font-size:1.1875rem;padding:.9em 2.3em}
+.enlace-flecha{display:inline-flex;align-items:center;gap:.45em;min-height:44px;font-weight:550}
+.enlace-flecha svg{width:1em;height:1em;flex:none}
+
+/* ── cabecera ───────────────────────────────────────────────────── */
+.cabecera{position:fixed;inset:0 0 auto 0;z-index:10;height:var(--cabecera);display:flex;align-items:center;gap:clamp(12px,3vw,40px);padding:0 var(--borde);transition:background-color .35s}
+.cabecera.solida{background:var(--negro)}
+.marca{display:flex;align-items:center;gap:.7rem;text-decoration:none;min-height:44px;margin-right:auto}
+.marca img{width:auto;height:38px}
+.marca-nombre{font-family:var(--f-romana);font-weight:500;font-size:.9375rem;letter-spacing:.26em;text-transform:uppercase}
+.menu ul{display:flex;gap:clamp(16px,2.4vw,34px);list-style:none;margin:0;padding:0}
+.menu a{display:inline-flex;align-items:center;min-height:44px;font-weight:550;font-size:.9688rem;text-decoration:none}
+.menu a:hover,.menu a[aria-current="true"]{text-decoration:underline dotted 1.5px;text-underline-offset:.35em}
+.boton-cabecera{min-height:44px;font-size:.9375rem;padding:.55em 1.45em}
+.menu-boton{display:none;align-items:center;justify-content:center;gap:.5em;min-width:44px;min-height:44px;margin-right:-10px;padding:0 10px;border:0;background:none;color:inherit;font:inherit;font-weight:550;cursor:pointer}
+.menu-boton svg{width:22px;height:22px}
+.menu-movil{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;justify-content:center;gap:2.4rem;padding:calc(var(--cabecera) + 24px) var(--borde) 40px;background:var(--negro)}
+.menu-movil[hidden]{display:none}
+.menu-movil ul{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.menu-movil a:not(.boton){display:inline-block;font-family:var(--f-gotica);font-size:clamp(2.8rem,13vw,4rem);line-height:1.12;text-decoration:none}
+.menu-movil .boton{align-self:flex-start}
+.menu-cerrar{position:absolute;top:10px;right:calc(var(--borde) - 10px)}
+@media (max-width:899px){
+  .menu{display:none}
+  .menu-boton{display:inline-flex}
+  .cabecera{gap:10px}
+  .cabecera .boton-cabecera{min-height:42px;font-size:.9375rem;padding:.5em 1.25em}
+}
+@media (max-width:359px){
+  .marca-nombre{display:none}
+}
+
+/* ── portada ───────────────────────────────────────────────────── */
+.portada{position:relative;min-height:100svh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);align-items:end;padding:var(--cabecera) var(--borde) 0}
+.portada-texto{position:relative;z-index:4;align-self:center;max-width:35rem;padding-bottom:16vh}
+.portada h1{margin:0;font-weight:400}
+.h1-linea{display:block;font-weight:520;font-size:clamp(1.45rem,1rem + 1.35vw,2.15rem);line-height:1.15;letter-spacing:-.01em}
+.h1-nombre{display:block;font-family:var(--f-gotica);font-size:clamp(4.4rem,2.2rem + 6.4vw,6rem);line-height:.98;color:#fff;margin:.06em 0 .1em -.03em;letter-spacing:.005em}
+.entradilla{margin:1.6rem 0 0;max-width:30ch;font-size:clamp(1.0625rem,.98rem + .3vw,1.1875rem);color:var(--texto-2)}
+.acciones{display:flex;flex-wrap:wrap;align-items:center;gap:.9rem 1.6rem;margin-top:2rem}
+.nota-lazo{margin:2.6rem 0 0;font-size:.875rem;color:var(--texto-2);font-style:italic}
+.nota-lazo b{font-family:var(--f-romana);font-style:normal;font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:.8125rem;color:var(--texto)}
+.portada-brazo{position:relative;z-index:2;margin:0;justify-self:center;align-self:end;height:calc(100svh - var(--cabecera));max-height:980px;aspect-ratio:1408/1681}
+.portada-brazo img{width:100%;height:100%;object-fit:contain}
+.rotulo-cinta{position:absolute;z-index:4;left:0;top:0;display:none;font-family:var(--f-romana);font-weight:600;font-size:calc(var(--cinta) * .4);line-height:1;letter-spacing:.24em;text-indent:.24em;text-transform:uppercase;color:#fff;white-space:nowrap;pointer-events:none;transform:translate(-50%,-52%)}
+.cinta-lista .rotulo-cinta{display:block;opacity:0;transition:opacity .9s var(--ease),letter-spacing 1.2s var(--ease)}
+.cinta-lista .rotulo-cinta.visible{opacity:1}
+@media (max-width:899px) and (max-aspect-ratio:4/3),(max-width:639px){
+  .portada{grid-template-columns:minmax(0,1fr);align-items:start;padding-top:calc(var(--cabecera) - 4px);padding-bottom:2.2rem}
+  .portada-brazo{--salida:84%;grid-row:1;height:auto;width:min(100%,calc(clamp(250px,100svh - max(372px,372px + (100vw - 390px) * .25),66svh) * 1408 / 1681));max-height:none;margin-top:0}
+  .portada-texto{grid-row:2;align-self:start;padding-bottom:0;margin-top:.1rem}
+  .h1-nombre{font-size:clamp(3.9rem,17vw,5rem)}
+  .entradilla{margin-top:1rem}
+  .acciones{margin-top:1.4rem}
+  .nota-lazo{margin-top:1.6rem}
+}
+
+@media (max-height:520px) and (min-aspect-ratio:4/3){
+  .portada-brazo{--salida:112%}
+  .portada-texto{padding-bottom:0}
+  .h1-linea{font-size:1.2rem}
+  .h1-nombre{font-size:3.3rem}
+  .entradilla{margin-top:.7rem;font-size:1rem;line-height:1.45}
+  .acciones{margin-top:.9rem}
+  .nota-lazo{display:none}
+}
+
+/* ── secciones ─────────────────────────────────────────────────── */
+.seccion{position:relative;padding:clamp(96px,13vw,190px) 0 clamp(80px,10vw,150px)}
+.seccion-papel{background:var(--papel);color:var(--tinta);color-scheme:light}
+.seccion-campo{background:var(--magenta);color:#fff}
+.seccion-cabeza{position:relative;z-index:4;padding:0 var(--borde);margin-bottom:clamp(48px,7vw,104px)}
+.banderin{display:inline-block;position:relative;z-index:4;margin:0;height:var(--cinta);padding:0 .14em;font-family:var(--f-gotica);font-weight:400;font-size:calc(var(--cinta) * .98);line-height:calc(var(--cinta) * 1.06);letter-spacing:.005em;white-space:nowrap;color:var(--texto);transition:color .5s}
+html:not(.cinta-lista) .banderin{background:var(--magenta);color:#fff;padding:0 .4em}
+html:not(.cinta-lista) .seccion-campo .banderin{background:#fff;color:var(--magenta)}
+.cinta-lista .seccion-papel .banderin{color:var(--tinta)}
+.cinta-lista .banderin.con-cinta{color:#fff}
+.cinta-lista .seccion-campo .banderin.con-cinta{color:var(--magenta)}
+.seccion-intro{margin:1.4rem 0 0;max-width:34ch;font-size:clamp(1.125rem,1rem + .4vw,1.3125rem);line-height:1.45;color:var(--texto-2)}
+.seccion-papel .seccion-intro{color:var(--texto-papel-2)}
+.seccion-intro q,.cita-suya{font-style:italic;color:var(--texto)}
+.seccion-papel .seccion-intro q{color:var(--tinta)}
+
+/* ── galería ───────────────────────────────────────────────────── */
+.galeria{position:relative;list-style:none;margin:0;padding:0 var(--borde)}
+.pieza{position:relative}
+.pieza figure{position:relative;margin:0 0 clamp(56px,8vw,128px);width:var(--ancho,100%)}
+.pieza--der figure{margin-left:auto}
+/* las fotos: una miniatura desenfocada ocupa su hueco desde el primer instante; la buena se revela encima, en crema */
+.foto{position:relative;z-index:2;display:block;overflow:hidden;isolation:isolate;background:#000}
+.foto::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--lqip) center/cover no-repeat}
+.foto img{width:100%;height:auto}
+.foto--papel{background:#fff}
+.foto--brazo{background:none;overflow:visible}
+.foto--brazo::before{background-size:contain;opacity:.9}
+.js .foto img{opacity:0;transform:scale(1.045);transition:opacity 1.15s cubic-bezier(.22,.61,.36,1),transform 1.8s cubic-bezier(.16,1,.3,1)}
+.js .foto.lista img{opacity:1;transform:none}
+.js .foto.lista::before{transition:opacity .6s .9s;opacity:0}
+.js .pie-foto{opacity:0;transform:translateY(12px);transition:opacity .9s cubic-bezier(.22,.61,.36,1) .18s,transform 1.1s cubic-bezier(.16,1,.3,1) .18s}
+.js .foto.lista + .pie-foto{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .js .foto img,.js .pie-foto{opacity:1;transform:none;transition:none}
+  .js .foto.lista::before{transition:none}
+}
+.pie-foto{position:relative;z-index:4;display:grid;gap:.3rem;margin-top:1.05rem;max-width:44ch}
+.pie-foto h3{margin:0;font-size:1.1875rem;font-weight:620;line-height:1.25}
+.pie-foto q{font-style:italic;color:var(--texto)}
+.pie-foto .aparte{font-style:italic;color:var(--texto-2)}
+.ficha{display:flex;flex-wrap:wrap;gap:.2rem .9rem;margin:.15rem 0 0;padding:0;list-style:none;font-size:.8125rem;font-weight:560;font-stretch:82%;letter-spacing:.11em;text-transform:uppercase;color:var(--texto-2);font-variant-numeric:tabular-nums lining-nums}
+.ver-ig{display:inline-flex;align-items:center;gap:.35em;min-height:44px;width:max-content;font-size:.9375rem;font-weight:550}
+.ver-ig svg{width:.8em;height:.8em}
+.galeria-marco{position:relative}
+.galeria-fin{position:absolute;left:0;bottom:calc(var(--cinta) * -.9);width:2px;height:2px}
+.galeria-mas{position:relative;z-index:4;width:fit-content;max-width:calc(100% - 2 * var(--borde));margin:clamp(8px,2vw,24px) var(--borde) 0;font-size:1.0625rem;color:var(--texto-2)}
+@media (min-width:900px){
+  .galeria{--canal:calc(var(--cinta) * 2.1);display:grid;grid-template-columns:minmax(0,1fr) var(--canal) minmax(0,1fr)}
+  .pieza{grid-row:var(--f) / span 2}
+  .pieza:nth-child(odd){grid-column:1}
+  .pieza:nth-child(even){grid-column:3}
+  .pieza figure{width:var(--ancho-e,100%)}
+  .pieza--e-der figure{margin-left:auto}
+  .pieza--e-izq figure{margin-left:0}
+  .canal-izq{left:calc(100% + var(--canal) / 2);top:var(--y,50%)}
+  .canal-der{left:calc(var(--canal) / -2);top:var(--y,50%)}
+  .solo-movil{display:none}
+}
+@media (max-width:899px){
+  .pieza figure{margin-bottom:clamp(44px,12vw,72px)}
+  .pieza--sangre figure{width:auto;margin-left:calc(-1 * var(--borde));margin-right:calc(-1 * var(--borde))}
+  .pieza--sangre .pie-foto{padding:0 var(--borde)}
+  .pie-foto h3{font-size:1.125rem}
+  .pieza--cruce figure{margin-bottom:calc(var(--cinta) * 2.4 + 24px)}
+  .cruce{top:calc(100% + var(--cinta) * 1.2 + 12px)}
+  .solo-escritorio{display:none}
+}
+
+/* ── diseños ───────────────────────────────────────────────────── */
+.disenos{position:relative;z-index:4;list-style:none;margin:0;padding:0 var(--borde);display:grid;grid-template-columns:1fr 1.22fr 1fr;align-items:end;gap:clamp(16px,3vw,56px)}
+.diseno figure{margin:0}
+.diseno img{width:100%}
+.diseno figcaption{margin-top:.8rem;font-size:.875rem;font-weight:560;font-stretch:82%;letter-spacing:.11em;text-transform:uppercase;color:var(--texto-papel-2)}
+.barrido{position:relative;height:calc(var(--cinta) * 2.2);margin:clamp(24px,4vw,56px) 0 0}
+.barrido .cinta-paso{top:50%}
+.ofertas{position:relative;z-index:4;margin:0 var(--borde);max-width:46ch;font-size:clamp(1.0625rem,1rem + .25vw,1.1875rem);color:var(--texto-papel-2)}
+.ofertas a{color:var(--tinta);font-weight:600}
+@media (max-width:899px){
+  .disenos{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:16px;padding:0 var(--borde) 18px;scroll-padding-inline:var(--borde);scrollbar-color:var(--magenta) #eee}
+  .diseno{flex:0 0 min(78%,420px);scroll-snap-align:start}
+  .disenos:focus-visible{outline-offset:-4px}
+}
+
+/* ── Leonor ───────────────────────────────────────────────────── */
+.leonor{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,104px);align-items:start;padding:0 var(--borde)}
+.leonor-foto{position:relative;z-index:2;margin:0}
+.leonor-texto{position:relative;z-index:4;padding-top:clamp(0px,4vw,64px)}
+.leonor-texto .banderin{margin-bottom:clamp(28px,4vw,52px)}
+.leonor-texto p{margin:0 0 1.1em;max-width:40ch}
+.leonor-texto .grande{font-size:clamp(1.3rem,1rem + 1vw,1.75rem);line-height:1.35;font-weight:480;color:#fff}
+.leonor-texto h3{margin:2.4rem 0 .8rem;font-size:.875rem;font-weight:600;font-stretch:82%;letter-spacing:.13em;text-transform:uppercase;color:var(--texto-2)}
+.estilos{display:flex;flex-wrap:wrap;gap:.2rem 1.4rem;list-style:none;margin:0;padding:0}
+.estilos a{display:inline-flex;align-items:center;min-height:44px;font-size:1.1875rem;font-weight:560}
+.leonor-tinteros{position:relative;z-index:2;margin:clamp(40px,6vw,88px) 0 0 auto;width:min(64%,360px)}
+.leonor-tinteros figcaption{margin-top:.7rem;font-size:.875rem;color:var(--texto-2)}
+@media (max-width:899px){
+  .leonor{grid-template-columns:minmax(0,1fr)}
+  .leonor-foto{width:auto;margin:0 calc(-1 * var(--borde))}
+  .leonor-texto{padding-top:0}
+}
+
+/* ── cita ─────────────────────────────────────────────────────── */
+.cita-dentro{position:relative;z-index:4;max-width:44rem;margin:0 auto;padding:0 var(--borde)}
+.seccion-campo .seccion-cabeza{text-align:center;margin-bottom:clamp(40px,5vw,72px)}
+.pasos{list-style:none;margin:0;padding:0;display:grid;gap:1.5rem}
+.pasos li{display:grid;grid-template-columns:2.6rem minmax(0,1fr);gap:1rem;align-items:baseline}
+.paso-n{font-family:var(--f-romana);font-weight:600;font-size:1.5rem;line-height:1;text-align:right;font-variant-numeric:lining-nums}
+.pasos p{margin:0;font-size:clamp(1.125rem,1rem + .35vw,1.3125rem);line-height:1.45}
+.pasos strong{font-weight:680}
+.lazo{position:relative;height:calc(var(--cinta) * 3.7);margin-top:clamp(36px,5vw,64px)}
+.cita-accion{position:relative;z-index:4;display:flex;justify-content:center;padding:0 var(--borde)}
+.boton-lazo{filter:drop-shadow(3px 0 0 #c50457) drop-shadow(-3px 0 0 #c50457) drop-shadow(0 3px 0 #c50457) drop-shadow(0 -3px 0 #c50457)}
+.cita-nota{position:relative;z-index:4;margin:calc(var(--cinta) * 1.9) 0 0;text-align:center;color:var(--texto-campo-2);font-size:1.0625rem}
+.cita-nota a{color:#fff;font-weight:600}
+.seccion-campo :focus-visible{outline-color:#fff}
+
+/* ── pie ──────────────────────────────────────────────────────── */
+.pie{position:relative;z-index:4;display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.4rem 2rem;align-items:center;padding:clamp(56px,7vw,96px) var(--borde) calc(40px + env(safe-area-inset-bottom));background:var(--negro);color:var(--texto-2);font-size:.9375rem}
+.pie img{height:64px;width:auto}
+.pie-marca{margin:0;font-family:var(--f-romana);font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--texto);font-size:1rem}
+.pie ul{list-style:none;margin:.5rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:0 1.6rem}
+.pie ul a{display:inline-flex;align-items:center;min-height:44px}
+.pie-legal{grid-column:1 / -1;margin:0;padding-top:1.4rem;border-top:1px solid #2a2427;font-size:.875rem}
+
+/* ── movimiento (solo con script y sin movimiento reducido) ────────── */
+@media (prefers-reduced-motion:no-preference){
+  .anima .h1-linea,.anima .h1-nombre,.anima .entradilla,.anima .acciones,.anima .nota-lazo{animation:subir 1.1s var(--ease) both}
+  .anima .h1-linea:first-child{animation-delay:.25s}
+  .anima .h1-nombre{animation-delay:.38s}
+  .anima .h1-linea:last-child{animation-delay:.5s}
+  .anima .entradilla{animation-delay:.64s}
+  .anima .acciones{animation-delay:.78s}
+  .anima .nota-lazo{animation-delay:1.4s}
+  .js .boton-lazo.atado{animation:etiqueta 1.4s var(--ease)}
+}
+@keyframes subir{from{opacity:0;transform:translateY(.55em)}to{opacity:1;transform:none}}
+@keyframes etiqueta{0%{transform:rotate(-3deg) translateY(-6px)}45%{transform:rotate(1.6deg)}100%{transform:none}}
+
+@media print{.cinta,.cabecera,.menu-movil{display:none}.seccion{padding:24px 0}}
+</style>
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+<div class="sonda-cinta" aria-hidden="true"></div>
+
+<header class="cabecera" id="cabecera">
+  <a class="marca" href="#inicio">
+    <img src="img/monograma.png" width="48" height="86" alt="">
+    <span class="marca-nombre">Schleife</span>
+  </a>
+  <nav class="menu" aria-label="Secciones">
+    <ul>
+      <li><a href="#tattoos">Tattoos</a></li>
+      <li><a href="#disenos">Diseños</a></li>
+      <li><a href="#leonor">Leonor</a></li>
+      <li><a href="#cita">Cita</a></li>
+    </ul>
+  </nav>
+  <a class="boton boton-cabecera" href="https://ig.me/m/schleifestudio" target="_blank" rel="noopener">Escríbeme<span class="sr-only"> por Instagram (se abre en otra pestaña)</span></a>
+  <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir el menú">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
+  </button>
+</header>
+
+<div class="menu-movil" id="menu-movil" hidden>
+  <button class="menu-boton menu-cerrar" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    Cerrar
+  </button>
+  <nav aria-label="Secciones">
+    <ul>
+      <li><a href="#tattoos">Tattoos</a></li>
+      <li><a href="#disenos">Diseños</a></li>
+      <li><a href="#leonor">Leonor</a></li>
+      <li><a href="#cita">Cita</a></li>
+    </ul>
+  </nav>
+  <a class="boton boton--grande" href="https://ig.me/m/schleifestudio" target="_blank" rel="noopener">Escríbeme por Instagram<span class="sr-only"> (se abre en otra pestaña)</span></a>
+</div>
+
+<main id="contenido">
+
+<section class="portada" id="inicio" aria-label="Portada">
+  <div class="portada-texto">
+    <h1><span class="sr-only">Schleife. </span><span class="h1-linea">Tatuajes de</span><span class="h1-nombre">Leonor</span><span class="h1-linea">en Gran Canaria</span></h1>
+    <p class="entradilla">Fine line, japonés, blackwork y covers. Y diseños míos, por si te enamora alguno.</p>
+    <div class="acciones">
+      <a class="boton" href="https://ig.me/m/schleifestudio" target="_blank" rel="noopener">Escríbeme por Instagram<span class="sr-only"> (se abre en otra pestaña)</span></a>
+      <a class="enlace-flecha" href="#tattoos">Ver tatuajes <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v11M3.5 8.5 8 13l4.5-4.5"/></svg></a>
+    </div>
+    <p class="nota-lazo"><b>Schleife</b>, en alemán: lazo.</p>
+  </div>
+  <figure class="portada-brazo foto foto--brazo" data-cinta="helice" style="--lqip:url(data:image/webp;base64,UklGRgICAABXRUJQVlA4WAoAAAAQAAAAJwAALwAAQUxQSCUBAAARf6CgbRs2VgDdSxcRockMwIZfDLjVti1r/p8JdIBgA3jv9PHUOLXTx2tPapzeB/ABfAGbwHnfB5kgov8TIOxLVWpWLgqszGB3kCYNoLry07cmGaePfv+QCZeckdq+qjXy1w1clocjsngHeJqzOdm4R1qr9f6i4QYiXAlQRfqABBgAIvd4RmuqeBzLufxjq7PTARFm8g5cRPrUGJF6WpwWaTIp5LK85ARkxigBW4bqIYI1M6XCCkD/yYSgj2OoHgcr4kGORKjGPSKNtPYWB3iax7isLAk3Vp7tlTBbhpEAgj493Su6ReiTskCqx8ExIoPVer34x6SR1jE8zfkRLsuz+Xx8iC3TGY2672ZI0D/la7VCUoepvM8vLy93Wkxm9/n9fqeCAABWUDggtgAAANAGAJ0BKigAMAA+vU6fS6ckoyG8dAgA4BeJZQDLLEwalSVW4RVaaDCtaMXanAEmHttcL56iqaGXyaL+nMl/OAD++l+q5F6KqV17snYyZcIkWLeIrJdiBUVV3NsgWUQj56/y5M9HdNtkKQ38j4Lkc9MAteixrz2CJrwQJHs4Jl/IHMsIkVfbqRx8vhXVsM2a2N+dglFCOhx3hf0HD/pgLzhF6nljTb0sK7SJtQHOlkKDSnYLBAAA)">
+    <img src="img/tigre-1408.webp" srcset="img/tigre-760.webp 760w, img/tigre-1408.webp 1408w" sizes="(min-width: 900px) 760px, 100vw" width="1408" height="1681" alt="Tatuaje de un tigre japonés en negro, con el kanji 英 en rojo debajo" fetchpriority="high" decoding="async">
+    <span class="cinta-paso salida-izq" data-cinta="paso" data-fuera="izq" data-giro="0" style="left:0;top:var(--salida,90%)"></span>
+  </figure>
+  <span class="rotulo-cinta" aria-hidden="true">Schleife</span>
+</section>
+
+<section class="seccion" id="tattoos" aria-labelledby="t-tattoos">
+  <div class="seccion-cabeza">
+    <h2 class="banderin" id="t-tattoos" data-cinta="banner">Tattoos</h2>
+    <p class="seccion-intro">Lo último que ha salido del estudio.</p>
+  </div>
+  <div class="galeria-marco">
+  <ol class="galeria">
+    <li class="pieza pieza--sangre" id="pieza-manga" style="--f:1;--ancho:100%">
+      <span class="cinta-paso canal-izq solo-escritorio" data-cinta="paso" data-giro="0" style="--y:6%"></span><span class="cinta-paso solo-escritorio" data-cinta="paso" data-giro="0" style="left:82%;top:30%"></span><span class="cinta-paso canal-izq solo-escritorio" data-cinta="paso" data-giro="0" style="--y:58%"></span>
+      <figure>
+        <div class="foto" style="--lqip:url(data:image/webp;base64,UklGRggBAABXRUJQVlA4IPwAAAAQCQCdASooADIAPsFOn0unpKKhurTYAPAYCWUAvNfDUUETgKtcjYNkWjfBljzbMu0v5/As7EJXNOcf71CZ0Ws3JYAHxnMVE3yIC1ZLd+RTXgAA/vd4ak7Y6cmTpwSAythBM+UBusCFLp9kn25E9PHB+L+ripMu2VFI2zQdcx2QsWPve+AeP25Ahyym/iJmsr4RlNCEwxNVVdXriWKUf/s+iRfgLMr+Sh0B/bmcL/4Lp8UIN83C/Gn56/H8XCV17r8gcei6V24I+xh/O68ZpWZVKUfky1bWN3+I+F0odXlzHO7/Mdr88LC3YMXHbACn1Dw9A4hNk+GQRn4AAAA=)"><img src="img/manga-dragon-896.webp" srcset="img/manga-dragon-720.webp 720w, img/manga-dragon-896.webp 896w" sizes="(min-width: 900px) 44vw, 100vw" width="896" height="1127" loading="eager" decoding="async" alt="Manga japonesa en proceso: un dragón entre nubes y una máscara de samurái, en línea negra sobre el brazo"></div>
+        <figcaption class="pie-foto">
+          <h3>Manga japonesa</h3>
+          <q>Segunda sesión de esta manga 😭💕</q>
+          <ul class="ficha"><li>Japonés</li><li>Brazo</li><li>2.ª sesión</li><li><time datetime="2026-09-28">28·09·2026</time></li></ul>
+          <a class="ver-ig" href="https://www.instagram.com/p/Dd1zBoMEXPo/" target="_blank" rel="noopener">Ver en Instagram<span class="sr-only">: Manga japonesa (se abre en otra pestaña)</span> <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></a>
+        </figcaption>
+      </figure>
+    </li>
+    <li class="pieza pieza--der pieza--e-der" id="pieza-loto" style="--f:2;--ancho:86%;--ancho-e:78%">
+      <span class="cinta-paso canal-der solo-escritorio" data-cinta="paso" data-giro="180" style="--y:46%"></span>
+      <figure>
+        <div class="foto" style="--lqip:url(data:image/webp;base64,UklGRrgAAABXRUJQVlA4IKwAAABwBwCdASooACsAPq1GmUumJCKhvHv4AMAViUAXnA14WuDqQWxXAOcnMtlkN1LiWFFrzJzycrSSJ+B9HPlWREZaVaXnKAD+95gbkg9jDwXd30IMCdjj/amnXUEZ6e0Pr6WZt2LyGtGS8hNmuUPqMZtyA2MhSMUy5+pK5ZFv0mUA/KqC5Rz+03PKfsi8DHU9CbT/WGi3ZQSIqP36aJem210BasJ+v/pnl2OomgAA)"><img src="img/loto-1280.webp" srcset="img/loto-720.webp 720w, img/loto-1280.webp 1280w" sizes="(min-width: 900px) 36vw, 86vw" width="1280" height="1391" loading="lazy" decoding="async" alt="Flor de loto en fine line detrás de la oreja, con un colgante de puntos"></div>
+        <figcaption class="pie-foto">
+          <h3>Loto</h3>
+          <q>Fine line 🥰</q>
+          <ul class="ficha"><li>Fine line</li><li>Detrás de la oreja</li><li><time datetime="2026-09-26">26·09·2026</time></li></ul>
+          <a class="ver-ig" href="https://www.instagram.com/p/DdxPukaMpJI/" target="_blank" rel="noopener">Ver en Instagram<span class="sr-only">: Loto (se abre en otra pestaña)</span> <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></a>
+        </figcaption>
+      </figure>
+    </li>
+    <li class="pieza pieza--sangre pieza--cruce" id="pieza-cerezo" style="--f:3;--ancho:100%;--ancho-e:100%">
+      <span class="cinta-paso canal-izq solo-escritorio" data-cinta="paso" data-giro="180" style="--y:50%"></span><span class="cinta-paso cruce solo-movil" data-cinta="paso" data-fuera="der" data-giro="0" style="left:0"></span><span class="cinta-paso cruce solo-movil" data-cinta="paso" data-giro="180" style="left:50%"></span><span class="cinta-paso cruce solo-movil" data-cinta="paso" data-fuera="izq" data-giro="360" style="left:0"></span>
+      <figure>
+        <div class="foto" style="--lqip:url(data:image/webp;base64,UklGRtYAAABXRUJQVlA4IMoAAAAQCQCdASooAEMAPr1UnkunJSKht3RsAOAXiWMAzD14Ba8o/eYbZDgJ4WA3Gd3V+AONGh2H2+H3ox8YS2+30OIWHCHJqkLuBXS9sZe0hud3twAA/vrq5Xj0w+PDcXpau6axwWOH2zhcf5eU1avNcBMqZXaywdtlgP+sf1tbEIvTq+/xvUy1YiHecZPQtLh0R2lyJh7rHN/xc1+FdGu+Z2Ss/kW5wKVpLESc6Q+VUyMr9ZZAHUbi5e28zPblwa3CeDpnPbh9P6LgAAAA)"><img src="img/cerezo-manga-640.webp" srcset="img/cerezo-manga-480.webp 480w, img/cerezo-manga-640.webp 640w" sizes="(min-width: 900px) 44vw, 100vw" width="640" height="1073" loading="lazy" decoding="async" alt="Manga de ramas de cerezo con flores rosas y rojas, del hombro a la muñeca"></div>
+        <figcaption class="pie-foto">
+          <h3>Cerezo</h3>
+          <ul class="ficha"><li>Color</li><li>Manga completa</li><li><time datetime="2026-09-21">21·09·2026</time></li></ul>
+          <a class="ver-ig" href="https://www.instagram.com/p/DdjjvsuNs_1/" target="_blank" rel="noopener">Ver en Instagram<span class="sr-only">: Cerezo (se abre en otra pestaña)</span> <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></a>
+        </figcaption>
+      </figure>
+    </li>
+    <li class="pieza pieza--der pieza--sangre" id="pieza-humo" style="--f:4;--ancho:100%">
+      <span class="cinta-paso canal-der solo-escritorio" data-cinta="paso" data-giro="360" style="--y:44%"></span>
+      <figure>
+        <div class="foto" style="--lqip:url(data:image/webp;base64,UklGRrAAAABXRUJQVlA4IKQAAABwBwCdASooAC4APsFUpUunpSQhtVVaqPAYCWMA0MOwUXz1kaPZEoudTVe0CmoC9qSMcLFl1fHzS91wKLpVXPUuO0QTwAD+92aIJVEPazch1L2Oj+EsN+TmAWz23Esqjzx+Q8briHpkY7DzfNvGRs1GMB1SJDBJMIW0k6yu8MUzUFOqa24SSMj6zWHmEMcDaNMsYa7i3z8x8ZpKv/jHH6Bq68AAAA==)"><img src="img/humo-cover-896.webp" srcset="img/humo-cover-720.webp 720w, img/humo-cover-896.webp 896w" sizes="(min-width: 900px) 44vw, 100vw" width="896" height="1035" loading="lazy" decoding="async" alt="Humo en negro y gris con una mariposa, tatuado encima de un tatuaje anterior"></div>
+        <figcaption class="pie-foto">
+          <h3>Humo y mariposa</h3>
+          <q>Cover 🩷</q>
+          <ul class="ficha"><li>Cover</li><li>Black &amp; grey</li><li><time datetime="2026-09-26">26·09·2026</time></li></ul>
+          <a class="ver-ig" href="https://www.instagram.com/p/DdxPhJqjMNt/" target="_blank" rel="noopener">Ver en Instagram<span class="sr-only">: Humo y mariposa (se abre en otra pestaña)</span> <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></a>
+        </figcaption>
+      </figure>
+    </li>
+    <li class="pieza pieza--e-der pieza--sangre" id="pieza-sol-luna" style="--f:5;--ancho:100%;--ancho-e:90%">
+      <span class="cinta-paso canal-izq solo-escritorio" data-cinta="paso" data-giro="360" style="--y:48%"></span>
+      <figure>
+        <div class="foto" style="--lqip:url(data:image/webp;base64,UklGRhIBAABXRUJQVlA4IAYBAACQCgCdASooADUAPsFQnkunpKKit/joAPAYCUAYA/q4yn1UL+p3YL8m8SUmgDvfe/LdKy1zQlAKXxpk/MhjEJ6sd9Inc++4sVW8w/Wdkss3irRMP2uRSc9x8wZplgAA+pyinkfdzM22MU/8T68FxVr5rgXjh9utoX7A8jC9z7Atykji8DnfOfDfTGhc/n/L9/5FoU3UheiS4BU307OXPYyBmoEjuJ2MYPlNTybvjVFDYKDgNYQEiypP1ez79ZM5JSgOhqeDXe1X4xsJrmPiL+n6coo71RWJyMnWM7tOv9zbakIr0S/Dv+WtXcyihvIDq7IyUIrdUb6vN9WVpe5AAJHlZpikAAAA)"><img src="img/sol-luna-1195.webp" srcset="img/sol-luna-720.webp 720w, img/sol-luna-1195.webp 1195w" sizes="(min-width: 900px) 40vw, 100vw" width="1195" height="1593" loading="lazy" decoding="async" alt="Una luna y un sol en fine line en el costado de dos mujeres, madre e hija"></div>
+        <figcaption class="pie-foto">
+          <h3>Sol y luna</h3>
+          <q>Madre e hija!! ☀️🌙</q>
+          <ul class="ficha"><li>Fine line</li><li>Costado</li><li><time datetime="2026-09-18">18·09·2026</time></li></ul>
+          <a class="ver-ig" href="https://www.instagram.com/p/Ddb3etuQtF4/" target="_blank" rel="noopener">Ver en Instagram<span class="sr-only">: Sol y luna (se abre en otra pestaña)</span> <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></a>
+        </figcaption>
+      </figure>
+    </li>
+    <li class="pieza pieza--der pieza--e-izq" id="pieza-cala" style="--f:6;--ancho:76%;--ancho-e:68%">
+      <span class="cinta-paso canal-der solo-escritorio" data-cinta="paso" data-giro="540" style="--y:42%"></span>
+      <figure>
+        <div class="foto" style="--lqip:url(data:image/webp;base64,UklGRrAAAABXRUJQVlA4IKQAAADwBgCdASooADAAPrlSnkunJSKhuNkoAOAXCWMAxrhVVLEmvMFOm0J44v3tbvLPVDtWyb6tCZ8XtN3U0ABgGyAAAP766uSuIihUm6Wt7C0TkMZT1Ry+nI0Gp+5BETsDc27aF3Krzww/hVD+sdHLLFS8K3qfq88/x0KNHmHjKPzPwS1gQ23W3EO5cNcoVaEipSS5XBjv+TKi6V76yeH6OTK2/RbgAA==)"><img src="img/cala-1079.webp" srcset="img/cala-720.webp 720w, img/cala-1079.webp 1079w" sizes="(min-width: 900px) 30vw, 76vw" width="1079" height="1298" loading="lazy" decoding="async" alt="Una cala en fine line sobre el tobillo, con cuatro corazones pequeños debajo"></div>
+        <figcaption class="pie-foto">
+          <h3>Cala</h3>
+          <ul class="ficha"><li>Fine line</li><li>Tobillo</li><li><time datetime="2026-09-25">25·09·2026</time></li></ul>
+          <a class="ver-ig" href="https://www.instagram.com/p/Dduq5QrsCCZ/" target="_blank" rel="noopener">Ver en Instagram<span class="sr-only">: Cala (se abre en otra pestaña)</span> <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></a>
+        </figcaption>
+      </figure>
+    </li>
+    <li class="pieza pieza--cruce" id="pieza-orilla" style="--f:7;--ancho:88%;--ancho-e:80%">
+      <span class="cinta-paso canal-izq solo-escritorio" data-cinta="paso" data-giro="540" style="--y:8%"></span><span class="cinta-paso solo-escritorio" data-cinta="paso" data-giro="540" style="left:80%;top:30%"></span><span class="cinta-paso canal-izq solo-escritorio" data-cinta="paso" data-giro="540" style="--y:60%"></span><span class="cinta-paso cruce solo-movil" data-cinta="paso" data-fuera="izq" data-giro="360" style="left:0"></span><span class="cinta-paso cruce solo-movil" data-cinta="paso" data-giro="540" style="left:50%"></span><span class="cinta-paso cruce solo-movil" data-cinta="paso" data-fuera="der" data-giro="720" style="left:0"></span>
+      <figure>
+        <div class="foto" style="--lqip:url(data:image/webp;base64,UklGRvIAAABXRUJQVlA4IOYAAADQCACdASooADIAPrlOn0unJKMht/cdUOAXCUAZAwhh931JJusZN7tGPofOuzDfrDow+xpPp/XklbIzMXKt0ppmz9ZkHFjfd2HoNEFdvQIAAP7vzq7xPCIOK81hhLHw6QZAAv/ka2P+WzE/Re7kKUMQTarfDT4FjEIrnBNC7E5YSGzNaZ8C9g9XegVOMJoLZOsk9Wy73dDml2HRcKliwnysYeFGGk9ofaNdRBHI5r78KPHqgC2SV3v9LYY72sDXJ3B5hSJptwmV5luLbEkmrFB+P/zqHtWKU4dwodmqQceTvBcLQCAAAA==)"><img src="img/orilla-1300.webp" srcset="img/orilla-720.webp 720w, img/orilla-1300.webp 1300w" sizes="(min-width: 900px) 36vw, 88vw" width="1453" height="1819" loading="lazy" decoding="async" alt="Un adulto y una niña de la mano en la orilla del mar, junto a un corazón, en fine line sobre el brazo"></div>
+        <figcaption class="pie-foto">
+          <h3>De la mano</h3>
+          <ul class="ficha"><li>Fine line</li><li>Brazo</li><li><time datetime="2026-09-11">11·09·2026</time></li></ul>
+          <a class="ver-ig" href="https://www.instagram.com/p/DdIubdxtzcs/" target="_blank" rel="noopener">Ver en Instagram<span class="sr-only">: De la mano (se abre en otra pestaña)</span> <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></a>
+        </figcaption>
+      </figure>
+    </li>
+    <li class="pieza pieza--der pieza--e-der pieza--sangre" id="pieza-tigre" style="--f:8;--ancho:100%;--ancho-e:86%">
+      <span class="cinta-paso canal-der solo-escritorio" data-cinta="paso" data-giro="720" style="--y:44%"></span>
+      <figure>
+        <div class="foto" style="--lqip:url(data:image/webp;base64,UklGRq4AAABXRUJQVlA4IKIAAADwBgCdASooADAAPs1SoUunpKMhuNJIAPAZiWcAzFg8qPJawGZoG3hXR6Ry7BccxrtaQS88N47PNI+MxKI1o/PAAP766tH/XPrnCLO8JcvXoKlg26YC4H2O6YRz11ZcqFCTxmbKlPt3oUZIB599LFeT64FkGmN763juEKJmf9EhkNzKQJ1bhIJEhfRB5NHUzgDIFd96oRxcP35HmtNxXuYAAAA=)"><img src="img/tigre-foto-1300.webp" srcset="img/tigre-foto-720.webp 720w, img/tigre-foto-1300.webp 1300w" sizes="(min-width: 900px) 38vw, 100vw" width="1408" height="1681" loading="lazy" decoding="async" alt="El tigre japonés completo, en negro, con el kanji 英 en rojo"></div>
+        <figcaption class="pie-foto">
+          <h3>Tigre</h3>
+          <span class="aparte">El de arriba, sin la cinta.</span>
+          <ul class="ficha"><li>Japonés</li><li>Blackwork</li><li><time datetime="2026-09-11">11·09·2026</time></li></ul>
+          <a class="ver-ig" href="https://www.instagram.com/p/DdIuMB6NgRi/" target="_blank" rel="noopener">Ver en Instagram<span class="sr-only">: Tigre (se abre en otra pestaña)</span> <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></a>
+        </figcaption>
+      </figure>
+    </li>
+    <li class="pieza pieza--e-der" id="pieza-conejo" style="--f:9;--ancho:84%;--ancho-e:66%">
+      <span class="cinta-paso canal-izq solo-escritorio" data-cinta="paso" data-giro="720" style="--y:10%"></span><span class="cinta-paso solo-escritorio" data-cinta="paso" data-giro="720" style="left:84%;top:34%"></span><span class="cinta-paso canal-izq solo-escritorio" data-cinta="paso" data-giro="720" style="--y:64%"></span>
+      <figure>
+        <div class="foto" style="--lqip:url(data:image/webp;base64,UklGRtwAAABXRUJQVlA4INAAAADwCACdASooADEAPrFMmkunJKKhurmcAOAWCUAZIQfQaBBBhrjtXENpIZ7oRIrp0hbEz2n+O9w5LNpvcl1+6cPUtGeNi2whF2aFfvPS/CjY4AD++LMbxzDmujogIWn4FZ6TtwncEVQ9BGy0KEp2g5FfMP7Jz45BeMA3G46BSaaH45xkCsPwSK4hrCNsOiAmWeYA/jfJyIifmz+wIruzoQrtT/Fk8KF9RMdaAMj9ysveXEgrM736kIr6ufGwWRgNEFG65YflUeRd4gh+qmgMRSAA)"><img src="img/conejo-1179.webp" srcset="img/conejo-720.webp 720w, img/conejo-1179.webp 1179w" sizes="(min-width: 900px) 30vw, 84vw" width="1179" height="1456" loading="lazy" decoding="async" alt="Un conejo de trapo con costuras y estrellas, en fine line sobre el brazo"></div>
+        <figcaption class="pie-foto">
+          <h3>Conejo de trapo</h3>
+          <ul class="ficha"><li>Fine line</li><li>Brazo</li><li><time datetime="2026-09-11">11·09·2026</time></li></ul>
+          <a class="ver-ig" href="https://www.instagram.com/p/DdIuQf7jRNO/" target="_blank" rel="noopener">Ver en Instagram<span class="sr-only">: Conejo de trapo (se abre en otra pestaña)</span> <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></a>
+        </figcaption>
+      </figure>
+    </li>
+    <li class="pieza pieza--der pieza--e-izq" id="pieza-iniciales" style="--f:10;--ancho:72%;--ancho-e:62%">
+      <span class="cinta-paso canal-der solo-escritorio" data-cinta="paso" data-giro="900" style="--y:40%"></span>
+      <figure>
+        <div class="foto" style="--lqip:url(data:image/webp;base64,UklGRsoAAABXRUJQVlA4IL4AAABwBwCdASooADEAPtFen0uoJiKhsBgKqQAaCWUAuZA1BSH96uc9x6lDW12xkuAuJufiOZmALEo2NKCSH5HPXqjjRgabgAD+9oiuTfEkAPuqzDsnrFYmzYTx+HxnLYeqUjyOs/7dtDx/pKTHsZ4oy9ZiLhfdMil+4WC4rnmoliiFceyLxpWCoO9Mobj9CTcSWNO/046UJQvWiYZeXiWgjVeRxq5dX/+As6HRx7SK6n9pQCKUNlVgCE5euAQUAAAA)"><img src="img/iniciales-1300.webp" srcset="img/iniciales-720.webp 720w, img/iniciales-1300.webp 1300w" sizes="(min-width: 900px) 28vw, 72vw" width="1445" height="1770" loading="lazy" decoding="async" alt="Unas iniciales en letra caligráfica con un corazón, en la muñeca"></div>
+        <figcaption class="pie-foto">
+          <h3>Iniciales</h3>
+          <ul class="ficha"><li>Lettering</li><li>Muñeca</li><li><time datetime="2026-09-11">11·09·2026</time></li></ul>
+          <a class="ver-ig" href="https://www.instagram.com/p/DdIuXy9NLwG/" target="_blank" rel="noopener">Ver en Instagram<span class="sr-only">: Iniciales (se abre en otra pestaña)</span> <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></a>
+        </figcaption>
+      </figure>
+    </li>
+  </ol>
+  <span class="galeria-fin cinta-paso solo-escritorio" data-cinta="paso" data-giro="900" aria-hidden="true" style="left:50%"></span>
+  <span class="galeria-fin cinta-paso" data-cinta="paso" data-fuera="der" data-giro="1080" aria-hidden="true"></span>
+  </div>
+  <p class="galeria-mas">Hay mucho más en <a href="https://www.instagram.com/schleifestudio/" target="_blank" rel="noopener">@schleifestudio<span class="sr-only"> (se abre en otra pestaña)</span></a>.</p>
+</section>
+
+<section class="seccion seccion-papel" id="disenos" aria-labelledby="t-disenos">
+  <div class="seccion-cabeza">
+    <h2 class="banderin" id="t-disenos" data-cinta="banner">Diseños</h2>
+    <p class="seccion-intro"><q>Algunos diseños 💕</q> Dibujos míos. Si alguno te llama, pregúntame por él.</p>
+  </div>
+  <ul class="disenos" tabindex="0" aria-label="Diseños de Leonor">
+    <li class="diseno"><figure><div class="foto foto--papel" style="--lqip:url(data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAACwBwCdASooADkAPr1InkunJCKhtV38AOAXiWkACG+kbzI2n02HpeSChpaBUxxWmqtotOavh+Al6p5sdQW9m6UF1/fFJ6qAAP7342gvU5FRjxmqquQ5BbURPwLABDCLsi9CHAw0y+pvxEYrAxQRnD23TLQaCmhpxO4/Zoz9tBiRD30Fy4hAZbvvWKnPAAAA)"><img src="img/diseno-bufon-dibujo-1600.webp" srcset="img/diseno-bufon-dibujo-720.webp 720w, img/diseno-bufon-dibujo-1600.webp 1600w" sizes="(min-width: 900px) 30vw, 78vw" width="2290" height="3263" loading="lazy" decoding="async" alt="Diseño de un bufón en dos mitades, como una carta de la baraja"></div><figcaption>Bufón</figcaption></figure></li>
+    <li class="diseno"><figure><div class="foto foto--papel" style="--lqip:url(data:image/webp;base64,UklGRu4AAABXRUJQVlA4IOIAAADwCACdASooADUAPsFQo0unpSOhtVQN+PAYCWkAAJ3rQERNp9nPl1aYtP3hfy2m1f7zO4YtaJkK2S/rwWDTdCRZZV1n98FO1PIbbnqVHp3RwAD++hETIQS5vBEGoU//MaPn6unMET/d6x0TJKMLP5GO8mlIMKEJiYMcLKIj+KKd6WS2VPm8exvlrdPOGgou0/BJfGdsYzaDVaCu13jdwgrHy0HMpSn4jlC1LI0280NbeUMINY7w88SwTvmPYXdHXonvcxGKr5lUuX+fYp/GalLtjlOyqEzMqchpkLbCTmFfsAAA)"><img src="img/diseno-fumadora-1179.webp" srcset="img/diseno-fumadora-720.webp 720w, img/diseno-fumadora-1179.webp 1179w" sizes="(min-width: 900px) 36vw, 78vw" width="1179" height="1571" loading="lazy" decoding="async" alt="Diseño de una chica tatuada con un cigarro, dentro de un círculo negro"></div><figcaption>Fumadora</figcaption></figure></li>
+    <li class="diseno"><figure><div class="foto foto--papel" style="--lqip:url(data:image/webp;base64,UklGRqwAAABXRUJQVlA4IKAAAAAwCACdASooADUAPr1MmkunJKIhtUoA4BeJaQAAel97+95B6nEFCQ0DI2FayyMvsAW6XoouCZ7u5VHqzBOrUchI4p+KOFsduslIAAD+9+mA6+YPY+MEMcrxbgkaQlhKcKf6qkiJENK1DHrV2L2ORYH1FyHmYf6pCe1tzBFDv1A4KJMMcqZPGlhAAK8d8kwg+YrT6aMw4Ik6QOkJ2DI4AAAA)"><img src="img/diseno-calavera-1179.webp" srcset="img/diseno-calavera-720.webp 720w, img/diseno-calavera-1179.webp 1179w" sizes="(min-width: 900px) 30vw, 78vw" width="1179" height="1572" loading="lazy" decoding="async" alt="Diseño de un rostro de mujer cuya mitad de arriba es una calavera, con un girasol"></div><figcaption>Calavera</figcaption></figure></li>
+  </ul>
+  <div class="barrido" aria-hidden="true">
+    <span class="cinta-paso" data-cinta="paso" data-fuera="izq" data-giro="0" style="left:0"></span>
+    <span class="cinta-paso" data-cinta="paso" data-giro="180" style="left:50%"></span>
+    <span class="cinta-paso" data-cinta="paso" data-fuera="der" data-giro="360" style="left:0"></span>
+  </div>
+  <p class="ofertas">¿Buscas ofertas? Las cuelgo en las historias destacadas de mi Instagram. <a href="https://www.instagram.com/schleifestudio/" target="_blank" rel="noopener">Verlas en Instagram<span class="sr-only"> (se abre en otra pestaña)</span></a></p>
+</section>
+
+<section class="seccion" id="leonor" aria-labelledby="t-leonor">
+  <div class="leonor">
+    <figure class="leonor-foto">
+      <div class="foto" style="--lqip:url(data:image/webp;base64,UklGRsYAAABXRUJQVlA4ILoAAADQCACdASooADUAPsVUnkunpSKht/VYAPAYiWkA0nA+qteVOmYxJrsDbbhFPWacpJhwzdgqQ8qgFEl8qija33VGDCPn8tWNA0BhCUCKw/QAAP7cYHJU+9REe6wV4HOie3OBem8ptmpeGxzvjue+eK4p8PoJ6SjWsyzO5lU4tPfxpPkeWUFC5I/DZRoFvMfEbbRgVHRIX7QGWAHt16/uzugfCayvqTQbeIiQQdGfIN0LlUAIbMhaX0gxQAA=)"><img src="img/leonor-estudio-1184.webp" srcset="img/leonor-estudio-720.webp 720w, img/leonor-estudio-1184.webp 1184w" sizes="(min-width: 900px) 44vw, 100vw" width="1184" height="1568" loading="lazy" decoding="async" alt="Leonor en su estudio, sujetando un bote de tinta que, por la perspectiva, parece enorme, junto a una mesa con calcos y tinteros rosas"></div>
+    </figure>
+    <div class="leonor-texto">
+      <h2 class="banderin" id="t-leonor" data-cinta="banner">Leonor</h2>
+      <p class="grande">Soy Leonor. Dibujo mis propios diseños y tatúo en Schleife, mi estudio en Gran Canaria.</p>
+      <p>Hago desde lo más pequeño —unas iniciales, un sol y una luna para una madre y su hija— hasta mangas japonesas que se trabajan sesión a sesión.</p>
+      <h3>Estilos</h3>
+      <ul class="estilos">
+        <li><a href="#pieza-loto">Fine line</a></li>
+        <li><a href="#pieza-manga">Japonés</a></li>
+        <li><a href="#pieza-tigre">Blackwork</a></li>
+        <li><a href="#pieza-humo">Covers</a></li>
+        <li><a href="#disenos">Ilustración</a></li>
+      </ul>
+      <figure class="leonor-tinteros">
+        <div class="foto" style="--lqip:url(data:image/webp;base64,UklGRtYAAABXRUJQVlA4IMoAAABQCQCdASooADYAPtFgp06oJaMiJWwBABoJYwDNhHanORqWt+KUV2+RG+wJLv5R5710ABUMRMEjeoeWFsQDMmF3B7xewDyqVzpwVMqz350CsbSZwAD+9qTtGICqn3kU9i210SPpEZNs/qQiquUH1RLa+7NXEh6qB6g+dUCsANKitcAQOoMU9ruc9ssneoEcrgSQtlWbJwsq3zoPpSwEuh0DvXDHANVepW2rOy71VgjuEKbqFoA7K8pSjeLMx8tu8L2arSmTehWh2wAA)"><img src="img/tinteros-896.webp" srcset="img/tinteros-720.webp 720w, img/tinteros-896.webp 896w" sizes="(min-width: 900px) 360px, 64vw" width="896" height="1200" loading="lazy" decoding="async" alt="Tinteros con tinta rosa, roja y negra sobre calcos de flores de cerezo"></div>
+        <figcaption>Rosa, rojo y negro.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="seccion seccion-campo" id="cita" aria-labelledby="t-cita">
+  <div class="seccion-cabeza">
+    <h2 class="banderin" id="t-cita" data-cinta="banner">Cita</h2>
+  </div>
+  <div class="cita-dentro">
+    <ol class="pasos">
+      <li><span class="paso-n" aria-hidden="true">1</span><p><strong>Escríbeme por Instagram</strong>, por privado.</p></li>
+      <li><span class="paso-n" aria-hidden="true">2</span><p><strong>Cuéntame tu idea</strong>: qué quieres, en qué zona y de qué tamaño. Si tienes fotos de referencia, mándamelas.</p></li>
+      <li><span class="paso-n" aria-hidden="true">3</span><p><strong>Lo hablamos</strong> y buscamos fecha.</p></li>
+    </ol>
+  </div>
+  <div class="lazo" data-cinta="lazo" aria-hidden="true"></div>
+  <div class="cita-accion">
+    <a class="boton boton--blanco boton--grande boton-lazo" href="https://ig.me/m/schleifestudio" target="_blank" rel="noopener">Escríbeme por Instagram<span class="sr-only"> (se abre en otra pestaña)</span></a>
+  </div>
+  <p class="cita-nota"><a href="https://www.instagram.com/schleifestudio/" target="_blank" rel="noopener">@schleifestudio<span class="sr-only"> (se abre en otra pestaña)</span></a> · Gran Canaria</p>
+</section>
+
+</main>
+
+<footer class="pie">
+  <img src="img/monograma.png" width="48" height="86" alt="">
+  <div>
+    <p class="pie-marca">Schleife · Tattoo art</p>
+    <ul>
+      <li><a href="https://www.instagram.com/schleifestudio/" target="_blank" rel="noopener">Instagram del estudio<span class="sr-only"> (se abre en otra pestaña)</span></a></li>
+      <li><a href="https://www.instagram.com/leonorglezzz/" target="_blank" rel="noopener">Cuenta personal de Leonor<span class="sr-only"> (se abre en otra pestaña)</span></a></li>
+    </ul>
+  </div>
+  <p class="pie-legal">Estudio de tatuaje en Gran Canaria · © 2026 Schleife</p>
+</footer>
+
+<script>
+(() => {
+'use strict';
+const d = document, html = d.documentElement;
+html.classList.add('js');
+const mqReducir = matchMedia('(prefers-reduced-motion: reduce)');
+let reducir = mqReducir.matches;
+if (!reducir) html.classList.add('anima');
+
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const lerp = (a, b, t) => a + (b - a) * t;
+const suave = t => t * t * (3 - 2 * t);
+const enOut = t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+const enInOut = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+/* ── cabecera ───────────────────────────────────────────── */
+const cabecera = d.getElementById('cabecera');
+const fijarCabecera = () => cabecera.classList.toggle('solida', scrollY > 12);
+fijarCabecera();
+addEventListener('scroll', fijarCabecera, { passive: true });
+
+/* ── menú del móvil ──────────────────────────────────────── */
+const menu = d.getElementById('menu-movil');
+const abrir = cabecera.querySelector('.menu-boton');
+const cerrar = menu.querySelector('.menu-cerrar');
+const fuera = [d.querySelector('main'), d.querySelector('footer'), cabecera];
+function abrirMenu() {
+  menu.hidden = false;
+  abrir.setAttribute('aria-expanded', 'true');
+  fuera.forEach(el => el.inert = true);
+  d.body.style.overflow = 'hidden';
+  menu.querySelector('nav a').focus();
+}
+function cerrarMenu(volver) {
+  if (menu.hidden) return;
+  menu.hidden = true;
+  abrir.setAttribute('aria-expanded', 'false');
+  fuera.forEach(el => el.inert = false);
+  d.body.style.overflow = '';
+  if (volver) abrir.focus();
+}
+abrir.addEventListener('click', abrirMenu);
+cerrar.addEventListener('click', () => cerrarMenu(true));
+menu.addEventListener('click', e => { if (e.target.closest('a')) cerrarMenu(false); });
+d.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarMenu(true); });
+matchMedia('(min-width: 900px)').addEventListener('change', e => { if (e.matches) cerrarMenu(false); });
+
+/* ── fotos: revelado en crema ────────────────────────────────
+   Cada foto empieza con su miniatura desenfocada. Se descarga y se decodifica con
+   mucha antelación (pantalla y media antes) y se enfoca justo al asomar: sin esperas
+   y con el revelado a la vista. */
+const fotos = [...d.querySelectorAll('.foto')];
+const lista = f => f.classList.add('lista');
+function preparar(f) {
+  const img = f.querySelector('img');
+  if (!img) return lista(f);
+  const ir = () => (img.decode ? img.decode().catch(() => {}) : Promise.resolve()).then(() => requestAnimationFrame(() => lista(f)));
+  if (img.complete && img.naturalWidth) ir();
+  else { img.addEventListener('load', ir, { once: true }); img.addEventListener('error', () => lista(f), { once: true }); }
+}
+if (reducir || !('IntersectionObserver' in window)) fotos.forEach(lista);
+else {
+  const io = new IntersectionObserver(es => {
+    for (const e of es) if (e.isIntersecting) { io.unobserve(e.target); const i = e.target.querySelector('img'); if (i) i.loading = 'eager'; preparar(e.target); }
+  }, { threshold: .04 });
+  fotos.forEach(f => io.observe(f));
+  // las que vienen después se piden y se decodifican con tiempo (sin revelarlas aún)
+  const cerca = new IntersectionObserver(es => {
+    for (const e of es) {
+      if (!e.isIntersecting) continue;
+      cerca.unobserve(e.target);
+      const i = e.target.querySelector('img');
+      if (!i) continue;
+      i.loading = 'eager';
+      const calentar = () => i.decode && i.decode().catch(() => {});
+      if (i.complete && i.naturalWidth) calentar(); else i.addEventListener('load', calentar, { once: true });
+    }
+  }, { rootMargin: '0px 0px 160% 0px' });
+  fotos.forEach(f => cerca.observe(f));
+}
+// la fila de diseños solo es una zona con scroll (y con tabulador) cuando de verdad se desliza
+const fila = d.querySelector('.disenos');
+const ajustarFila = () => {
+  if (!fila) return;
+  const desliza = fila.scrollWidth > fila.clientWidth + 2;
+  if (desliza) { fila.tabIndex = 0; fila.setAttribute('role', 'region'); } else { fila.removeAttribute('tabindex'); fila.removeAttribute('role'); }
+};
+ajustarFila();
+addEventListener('resize', ajustarFila);
+
+/* ══ LA CINTA ════════════════════════════════════════════════
+   Una sola cinta, en 3D proyectado: cada muestra lleva su punto,
+   el medio ancho proyectado (ox, oy), qué cara se ve (c > 0: la cara;
+   c < 0: el revés, rayado a línea fina) y si va delante o detrás (z).
+   ═════════════════════════════════════════════════════════════ */
+const NS = 'http://www.w3.org/2000/svg';
+// silueta del brazo del tigre: 41 filas, bordes izquierdo y derecho en fracción del ancho de la foto
+const PERFIL = [[.3224,.7969],[.3196,.7912],[.3153,.7841],[.3125,.777],[.3068,.7699],[.3026,.7642],[.2983,.7599],[.2955,.7571],[.2912,.7543],[.2884,.7543],[.2855,.7543],[.2827,.7528],[.2827,.7528],[.2827,.7514],[.2827,.75],[.2855,.7472],[.2869,.7457],[.2869,.7415],[.2912,.7386],[.2997,.7358],[.304,.733],[.3111,.7315],[.3153,.7287],[.3196,.7259],[.3267,.7244],[.3324,.7202],[.3381,.7188],[.3452,.7159],[.3509,.7131],[.358,.7102],[.3636,.706],[.3693,.7031],[.3764,.7017],[.3835,.7003],[.3906,.6989],[.3977,.6989],[.4034,.6989],[.4119,.7003],[.4176,.7031],[.4233,.706],[.429,.7088]];
+const N_TIRAS = 5;          // principal; del lazo: 2 colas y 2 lazadas (el nudo es una forma aparte)
+const sonda = d.querySelector('.sonda-cinta');
+const portada = d.querySelector('.portada');
+const rotulo = d.querySelector('.rotulo-cinta');
+const campo = d.querySelector('.seccion-campo');
+const papel = d.querySelector('.seccion-papel');
+const botonLazo = d.querySelector('.boton-lazo');
+
+let W = 64, VW = 1000;
+let tiras = [], prin = null, prefY = null, vis = null;
+let sHero = 0, sRotulo = Infinity, banners = [], nudo = null;
+let entrada = reducir ? 1 : 0, t0 = 0;
+let yAlcanzado = 0, sObjetivo = 0, vMostrado = 0, sMostrado = 0;
+let lazoT = reducir ? 1 : 0, lazoInicio = 0;
+let capas = null, agujas = null, girando = false, listo = false;
+
+function interpMonotona(xs, ys) {
+  const n = xs.length, m = new Array(n), dx = [], sl = [];
+  for (let i = 0; i < n - 1; i++) { dx[i] = xs[i + 1] - xs[i]; sl[i] = (ys[i + 1] - ys[i]) / dx[i]; }
+  m[0] = sl[0]; m[n - 1] = sl[n - 2];
+  for (let i = 1; i < n - 1; i++) m[i] = sl[i - 1] * sl[i] <= 0 ? 0 : (sl[i - 1] + sl[i]) / 2;
+  for (let i = 0; i < n - 1; i++) {
+    if (sl[i] === 0) { m[i] = m[i + 1] = 0; continue; }
+    const a = m[i] / sl[i], b = m[i + 1] / sl[i], h = a * a + b * b;
+    if (h > 9) { const t = 3 / Math.sqrt(h); m[i] = t * a * sl[i]; m[i + 1] = t * b * sl[i]; }
+  }
+  return x => {
+    if (x <= xs[0]) return ys[0];
+    if (x >= xs[n - 1]) return ys[n - 1];
+    let i = 0; while (x > xs[i + 1]) i++;
+    const h = dx[i], t = (x - xs[i]) / h, t2 = t * t, t3 = t2 * t;
+    return (2 * t3 - 3 * t2 + 1) * ys[i] + (t3 - 2 * t2 + t) * h * m[i] + (-2 * t3 + 3 * t2) * ys[i + 1] + (t3 - t2) * h * m[i + 1];
+  };
+}
+function perfilEn(f) {
+  const p = clamp(f, 0, 1) * 40, a = Math.min(39, Math.floor(p)), u = p - a, A = PERFIL[a], B = PERFIL[a + 1];
+  return [A[0] + (B[0] - A[0]) * u, A[1] + (B[1] - A[1]) * u];
+}
+function rectDoc(el) {
+  const r = el.getBoundingClientRect();
+  return { x: r.left + scrollX, y: r.top + scrollY, w: r.width, h: r.height };
+}
+const visible = el => el.getClientRects().length > 0;
+
+function nuevaTira(libre) { return { x: [], y: [], z: [], ox: [], oy: [], c: [], s: [], v: [], libre: !!libre, fin: 0, total: 0 }; }
+function enPantalla(x, o) { return x + o > -W * .5 && x - o < VW + W * .5; }
+// añade una muestra; si cambia la cara o la capa, mete antes el punto exacto del cambio
+function empuja(t, x, y, z, ox, oy, c) {
+  const n = t.x.length;
+  if (n) {
+    const pc = t.c[n - 1], pz = t.z[n - 1];
+    let u = -1;
+    if ((pc >= 0) !== (c >= 0) && pc !== c) u = pc / (pc - c);
+    else if ((pz >= 0) !== (z >= 0) && pz !== z) u = pz / (pz - z);
+    if (u > 0 && u < 1) {
+      const mx = lerp(t.x[n - 1], x, u), my = lerp(t.y[n - 1], y, u);
+      const zc = (pz >= 0) !== (z >= 0) && u === pz / (pz - z) ? 0 : lerp(pz, z, u);
+      const cc = (pc >= 0) !== (c >= 0) && u === pc / (pc - c) ? 0 : lerp(pc, c, u);
+      añadir(t, mx, my, zc, lerp(t.ox[n - 1], ox, u), lerp(t.oy[n - 1], oy, u), cc);
+    }
+  }
+  añadir(t, x, y, z, ox, oy, c);
+}
+function añadir(t, x, y, z, ox, oy, c) {
+  const n = t.x.length;
+  if (n) {
+    const dx = x - t.x[n - 1], dy = y - t.y[n - 1], ds = Math.hypot(dx, dy);
+    if (ds < .05 && Math.abs(c - t.c[n - 1]) < .01 && (z >= 0) === (t.z[n - 1] >= 0)) return;
+    t.s.push(t.s[n - 1] + ds);
+    t.v.push(t.v[n - 1] + (enPantalla(x, Math.hypot(ox, oy)) || enPantalla(t.x[n - 1], 0) ? ds : 0));
+  } else { t.s.push(0); t.v.push(0); }
+  t.x.push(x); t.y.push(y); t.z.push(z); t.ox.push(ox); t.oy.push(oy); t.c.push(c);
+}
+// muestra en forma "θ": giro respecto a la normal de la curva proyectada
+function empujaGiro(t, x, y, tx, ty, th, z) {
+  const l = Math.hypot(tx, ty) || 1, nx = -ty / l, ny = tx / l, k = Math.cos(th * Math.PI / 180);
+  empuja(t, x, y, z, nx * k * W / 2, ny * k * W / 2, k);
+}
+// curva de Bézier cúbica entre dos nodos, con giro y capa interpolados
+function conectar(t, A, B, cp1, cp2) {
+  const dist = Math.hypot(B.x - A.x, B.y - A.y);
+  const k = Math.min(dist * .42, W * 7);
+  const P1 = cp1 || { x: A.x + A.tx * k, y: A.y + A.ty * k };
+  const P2 = cp2 || { x: B.x - B.tx * k, y: B.y - B.ty * k };
+  const fueraA = !enPantalla(A.x, W), fueraB = !enPantalla(B.x, W);
+  const paso = fueraA && fueraB && Math.sign(A.x - VW / 2) === Math.sign(B.x - VW / 2) ? 36 : 4.2;
+  const n = Math.max(2, Math.ceil((dist + Math.hypot(P1.x - A.x, P1.y - A.y) + Math.hypot(B.x - P2.x, B.y - P2.y)) / 2 / paso));
+  for (let i = 1; i <= n; i++) {
+    const u = i / n, v = 1 - u;
+    const x = v * v * v * A.x + 3 * v * v * u * P1.x + 3 * v * u * u * P2.x + u * u * u * B.x;
+    const y = v * v * v * A.y + 3 * v * v * u * P1.y + 3 * v * u * u * P2.y + u * u * u * B.y;
+    let tx = 3 * v * v * (P1.x - A.x) + 6 * v * u * (P2.x - P1.x) + 3 * u * u * (B.x - P2.x);
+    let ty = 3 * v * v * (P1.y - A.y) + 6 * v * u * (P2.y - P1.y) + 3 * u * u * (B.y - P2.y);
+    if (Math.hypot(tx, ty) < 1e-6) { tx = B.x - A.x; ty = B.y - A.y; }
+    const e = suave(u);
+    empujaGiro(t, x, y, tx, ty, lerp(A.th, B.th, e), lerp(A.z, B.z, e));
+  }
+}
+// tramo recto horizontal con perfil de giro por x
+function recta(t, xa, xb, y, claves, z, onda) {
+  const dir = Math.sign(xb - xa) || 1, len = Math.abs(xb - xa);
+  const n = Math.max(2, Math.ceil(len / 4.2));
+  const xs = claves.map(c => c[0] * dir), ths = claves.map(c => c[1]);
+  const giro = x => {
+    const q = x * dir;
+    if (q <= xs[0]) return ths[0];
+    for (let i = 0; i < xs.length - 1; i++) if (q <= xs[i + 1]) return lerp(ths[i], ths[i + 1], suave((q - xs[i]) / (xs[i + 1] - xs[i] || 1)));
+    return ths[ths.length - 1];
+  };
+  for (let i = 1; i <= n; i++) {
+    const x = lerp(xa, xb, i / n);
+    const yy = onda ? y + onda(x) : y;
+    const ty = onda ? (onda(x + dir) - onda(x - dir)) / 2 : 0;
+    empujaGiro(t, x, yy, dir, ty, giro(x), z);
+  }
+}
+// la hélice alrededor del brazo de la portada
+function helice(t, fig) {
+  const r = rectDoc(fig);
+  const fx = r.x, fy = r.y, fw = r.w, fh = r.h;
+  // el ojo de la aguja, justo debajo de la cabecera; la cinta empieza a enrollarse un poco más abajo
+  const hdr = cabecera.offsetHeight || 64;
+  const ojoY = hdr + Math.max(26, W * .42);
+  const y0 = clamp((ojoY + W * 1.15 - fy) / fh, .095, .2);
+  const claves = [ // [φ/π, altura (fracción de la foto), holgura (× ancho de cinta)]
+    [-.32, y0, .42], [0, y0 + .018, .42], [.5, Math.max(y0 + .07, .2), .45], [1, .34, .5], [1.5, .53, .62],
+    [1.74, .612, .98], [2.26, .618, .98], [2.5, .64, .62], [3, .765, .5]
+  ];
+  const fY = interpMonotona(claves.map(c => c[0] * Math.PI), claves.map(c => c[1]));
+  const fG = interpMonotona(claves.map(c => c[0] * Math.PI), claves.map(c => c[2]));
+  const P = ph => {
+    const yf = fY(ph), [l, rr] = perfilEn(yf), cx = fx + (l + rr) / 2 * fw, hw = (rr - l) / 2 * fw;
+    const R = hw + fG(ph) * W;
+    return [cx + R * Math.sin(ph), fy + yf * fh, R * Math.cos(ph), R];
+  };
+  // la aguja: punta, ojo alargado y el hilo, que entra por el ojo, baja fino y se abre en cinta
+  const ojoX = fx + .545 * fw;
+  const ph0 = claves[0][0] * Math.PI, ph1 = claves[claves.length - 1][0] * Math.PI;
+  agujas.push({ x: ojoX, y0: ojoY - W * .55, y1: fy + fh * 1.035, ojo: ojoY, encima: true });
+  const p0 = P(ph0), p0b = P(ph0 + .02);
+  const tx0 = p0b[0] - p0[0], ty0 = p0b[1] - p0[1], l0 = Math.hypot(tx0, ty0);
+  const hiloA = ojoY - W * .4, hiloB = ojoY + W * .42;
+  empujaGiro(t, ojoX, hiloA, 0, 1, 88, -1);
+  conectar(t, { x: ojoX, y: hiloA, tx: 0, ty: 1, th: 88, z: -1 }, { x: ojoX, y: hiloB + W * .3, tx: 0, ty: 1, th: 88, z: 1 });
+  conectar(t, { x: ojoX, y: hiloB + W * .3, tx: 0, ty: 1, th: 88, z: 1 }, { x: p0[0], y: p0[1], tx: tx0 / l0, ty: ty0 / l0, th: 0, z: 1 });
+  // la hélice
+  let ph = ph0, panel = null;
+  while (ph < ph1) {
+    const R = P(ph)[3];
+    ph = Math.min(ph1, ph + 2.6 / Math.max(R, 30));
+    const a = P(ph - .006), b = P(ph), c = P(ph + .006);
+    let Tx = c[0] - a[0], Ty = c[1] - a[1], Tz = c[2] - a[2];
+    const Tl = Math.hypot(Tx, Ty, Tz); Tx /= Tl; Ty /= Tl; Tz /= Tl;
+    // ancho: el eje vertical del brazo, ortogonalizado respecto a la tangente
+    let Bx = -Ty * Tx, By = 1 - Ty * Ty, Bz = -Ty * Tz;
+    const Bl = Math.hypot(Bx, By, Bz); Bx /= Bl; By /= Bl; Bz /= Bl;
+    const Nz = Tx * By - Ty * Bx;   // componente z de T × B: qué cara se ve
+    empuja(t, b[0], b[1], b[2] >= 0 ? 1 : -1, Bx * W / 2, By * W / 2, Nz);
+    if (!panel && ph >= 2 * Math.PI) panel = { x: b[0], y: b[1], R: b[3] };
+  }
+  sHero = t.s[t.s.length - 1];
+  return { panel, salida: (() => {
+    const n = t.x.length, tx = t.x[n - 1] - t.x[n - 3], ty = t.y[n - 1] - t.y[n - 3], l = Math.hypot(tx, ty) || 1;
+    return { x: t.x[n - 1], y: t.y[n - 1], tx: tx / l, ty: ty / l, th: 180, z: -1 };
+  })() };
+}
+
+function construir() {
+  VW = html.clientWidth;
+  W = sonda.offsetWidth || 64;
+  agujas = [];
+  banners = [];
+  nudo = null;
+  sRotulo = Infinity;
+  const marcas = [...d.querySelectorAll('[data-cinta]')].filter(visible);
+  const t = nuevaTira();
+  const extra = [];
+  let prev = null, rot = null;
+  const entradaDe = (m, desde) => {
+    const tipo = m.dataset.cinta, r = rectDoc(m);
+    if (tipo === 'paso') return puntoPaso(m, r);
+    const y = tipo === 'lazo' ? r.y + W * 2 : r.y + r.h / 2;
+    return { x: desde.x < VW / 2 ? -1.6 * W : VW + 1.6 * W, y };
+  };
+  const puntoPaso = (m, r) => {
+    const f = m.dataset.fuera;
+    return { x: f === 'izq' ? -1.6 * W : f === 'der' ? VW + 1.6 * W : r.x + r.w / 2, y: r.y + r.h / 2 };
+  };
+  for (let i = 0; i < marcas.length; i++) {
+    const m = marcas[i], tipo = m.dataset.cinta;
+    if (tipo === 'helice') {
+      const h = helice(t, m);
+      prev = h.salida; rot = h.panel;
+      continue;
+    }
+    if (!prev) continue;
+    if (tipo === 'paso') {
+      const r = rectDoc(m), p = puntoPaso(m, r);
+      const sig = marcas[i + 1] ? entradaDe(marcas[i + 1], p) : { x: p.x, y: p.y + 100 };
+      const th = parseFloat(m.dataset.giro || 0), z = m.dataset.z ? parseFloat(m.dataset.z) : -1;
+      let txIn, tyIn, txOut, tyOut;
+      if (m.dataset.fuera) {
+        const li = Math.hypot(p.x - prev.x, p.y - prev.y) || 1, lo = Math.hypot(sig.x - p.x, sig.y - p.y) || 1;
+        txIn = (p.x - prev.x) / li; tyIn = (p.y - prev.y) / li; txOut = (sig.x - p.x) / lo; tyOut = (sig.y - p.y) / lo;
+        // en un borde, la cinta entra y sale en horizontal o en vertical
+        if (Math.abs(txOut) > Math.abs(tyOut)) { txOut = Math.sign(txOut); tyOut = 0; } else { txOut = 0; tyOut = Math.sign(tyOut) || 1; }
+        if (Math.abs(txIn) > Math.abs(tyIn)) { txIn = Math.sign(txIn); tyIn = 0; } else { txIn = 0; tyIn = Math.sign(tyIn) || 1; }
+      } else {
+        const l = Math.hypot(sig.x - prev.x, sig.y - prev.y) || 1;
+        txIn = txOut = (sig.x - prev.x) / l; tyIn = tyOut = (sig.y - prev.y) / l;
+      }
+      conectar(t, prev, { x: p.x, y: p.y, tx: txIn, ty: tyIn, th, z });
+      prev = { x: p.x, y: p.y, tx: txOut, ty: tyOut, th, z };
+    } else if (tipo === 'banner') {
+      const r = rectDoc(m), yc = r.y + r.h / 2, izq = prev.x < VW / 2, dir = izq ? 1 : -1;
+      const xIn = izq ? -1.6 * W : VW + 1.6 * W, xOut = -xIn + VW;
+      conectar(t, prev, { x: xIn, y: yc, tx: dir, ty: 0, th: 180, z: -1 });
+      const xa = izq ? r.x - .15 * W : r.x + r.w + .15 * W;       // borde de la palabra por donde llega
+      const xb = izq ? r.x + r.w + .15 * W : r.x - .15 * W;
+      const amp = W * .22, f = 2 * Math.PI / (W * 9);
+      const lejos = x => { const q = (x - xa) * dir, q2 = (x - xb) * dir; return q < -W * 1.6 ? 1 : q2 > W * 1.6 ? 1 : 0; };
+      const onda = x => {
+        const q = (x - xa) * dir, q2 = (x - xb) * dir;
+        const e = q < 0 ? suave(clamp(-q / (W * 3), 0, 1)) : q2 > 0 ? suave(clamp(q2 / (W * 3), 0, 1)) : 0;
+        return e * amp * Math.sin((x - xa) * f);
+      };
+      const s0 = t.s[t.s.length - 1];
+      const ini = Math.abs(xa - xIn);
+      recta(t, xIn, xOut, yc, [[xIn, 180], [xa - dir * 1.7 * W, 180], [xa - dir * .3 * W, 0], [xOut, 0]], -1, onda);
+      banners.push({ el: m, s: s0 + ini + Math.abs(xb - xa) });
+      prev = { x: xOut, y: yc, tx: dir, ty: 0, th: 0, z: -1 };
+      void lejos;
+    } else if (tipo === 'lazo') {
+      const r = rectDoc(m), kx = r.x + r.w / 2, ky = r.y + W * 2;
+      const izq = prev.x < VW / 2, dir = izq ? 1 : -1;
+      const xIn = izq ? -1.6 * W : VW + 1.6 * W, xOut = -xIn + VW;
+      conectar(t, prev, { x: xIn, y: ky, tx: dir, ty: 0, th: 0, z: -1 });
+      const s0 = t.s[t.s.length - 1];
+      recta(t, xIn, xOut, ky, [[xIn, 0], [xOut, 0]], -1);
+      nudo = { x: kx, y: ky, s: s0 + Math.abs(kx - xIn) };
+      agujas.push({ x: kx, y0: ky - 2.45 * W, y1: ky + 4.1 * W, ojo: ky - 2.15 * W });
+      extra.push(...lazo(kx, ky));
+      prev = { x: xOut, y: ky, tx: dir, ty: 0, th: 0, z: -1 };
+    }
+  }
+  t.total = t.s[t.s.length - 1] || 0;
+  tiras = [t, ...extra];
+  for (const e of extra) e.total = e.s[e.s.length - 1] || 0;
+  prin = t;
+  // y máxima acumulada (para saber hasta dónde se ha desenrollado con el scroll)
+  prefY = new Float64Array(t.y.length);
+  let mx = -Infinity;
+  for (let i = 0; i < t.y.length; i++) { mx = Math.max(mx, t.y[i]); prefY[i] = mx; }
+  vis = t.v;
+  // rótulo SCHLEIFE sobre el panel de la portada
+  if (rot && rotulo) {
+    const pr = rectDoc(portada);
+    rotulo.style.left = (rot.x - pr.x) + 'px';
+    rotulo.style.top = (rot.y - pr.y) + 'px';
+    rotulo.style.fontSize = '';
+    const ancho = rotulo.offsetWidth, cabe = rot.R * 1.45;
+    if (ancho > cabe) rotulo.style.fontSize = (parseFloat(getComputedStyle(rotulo).fontSize) * cabe / ancho) + 'px';
+    for (let i = 0; i < t.x.length; i++) if (t.y[i] >= rot.y - 1 && Math.abs(t.x[i] - rot.x) < 4) { sRotulo = t.s[i] + rot.R; break; }
+  }
+  NZ = Math.max(1, Math.ceil((d.body.scrollHeight + 200) / ZONA));
+  for (const tt of tiras) clasificar(tt);
+  estados = tiras.map(estadoNuevo);
+  pintarCapas();
+}
+
+// el lazo: dos lazadas, dos colas en cola de golondrina y el nudo
+function lazo(kx, ky) {
+  const U = W, out = [];
+  const P = (x, y) => ({ x: kx + x * U, y: ky + y * U });
+  const bez = (t, a, c1, c2, b, th0, th1, z) => {
+    const A = { ...P(a[0], a[1]), th: th0, z }, B = { ...P(b[0], b[1]), th: th1, z };
+    const C1 = P(c1[0], c1[1]), C2 = P(c2[0], c2[1]);
+    if (!t.x.length) {
+      const tx = C1.x - A.x, ty = C1.y - A.y;
+      empujaGiro(t, A.x, A.y, tx, ty, th0, z);
+    }
+    conectar(t, A, B, C1, C2);
+  };
+  // lazadas: salen del nudo hacia arriba y afuera, doblan en la punta (ahí asoma el revés) y vuelven de cara
+  for (const s of [-1, 1]) {
+    const t = nuevaTira();
+    bez(t, [-.22 * s, -.3], [-1.15 * s, -2.1], [-3.05 * s, -2.32], [-3.2 * s, -1.25], 0, 118, -1);
+    bez(t, [-3.2 * s, -1.25], [-3.25 * s, -.6], [-1.55 * s, -.5], [-.24 * s, -.12], 118, 0, -1);
+    out.push(t);
+  }
+  // colas: salen de debajo del nudo y pasan por detrás del botón
+  const colas = [[-1, [-.12, .32], [-.5, 1.3], [-1.35, 2.1], [-1.8, 3.1], 15, -25], [1, [.14, .32], [.62, 1.4], [1.6, 2.4], [2.1, 3.4], -12, 28]];
+  for (const [s, a, c1, c2, b, th0, th1] of colas) {
+    const t = nuevaTira(true);
+    bez(t, a, c1, c2, b, th0, th1, -1);
+    out.push(t);
+  }
+  // el nudo: corto y ceñido; de frente, liso; solo en sus dos vueltas asoma el revés rayado
+  // orden de pintado: colas y lazadas; el nudo va encima, dibujado aparte (pintarNudo)
+  return [out[2], out[3], out[0], out[1]];
+}
+
+/* ── pintar ───────────────────────────────────────────────── */
+// Cada tira tiene dos juegos de caminos: lo ya hecho (no se toca más) y la punta que crece.
+// Así, mientras se desenrolla, en cada fotograma solo se rehace la punta.
+const VACIO = { da: '', dr: '', ta: '', tr: '' };
+const ZONA = 1600;
+let NZ = 1;
+const zonaDe = y => clamp(Math.floor(y / ZONA), 0, NZ - 1);
+function capa(nombre, reparto) {
+  const svg = d.createElementNS(NS, 'svg');
+  svg.setAttribute('class', 'cinta cinta--' + nombre);
+  svg.setAttribute('aria-hidden', 'true');
+  svg.setAttribute('focusable', 'false');
+  const id = k => 'c' + nombre[0] + '-' + k;
+  // rayado a 45°: separación entre líneas = raya; el lado de la baldosa es raya·√2
+  const raya = clamp(W / 15, 3.6, 5.6), lado = Math.round(raya * Math.SQRT2 * 10) / 10, gr = (raya * .34).toFixed(2);
+  const linea = `M${-lado / 2},${lado / 2}L${lado / 2},${-lado / 2}M0,${lado}L${lado},0M${lado / 2},${lado * 1.5}L${lado * 1.5},${lado / 2}`;
+  let h = '<defs>';
+  h += `<pattern id="${id('ray')}" patternUnits="userSpaceOnUse" width="${lado}" height="${lado}"><rect width="${lado}" height="${lado}" fill="#c50457"/><path d="${linea}" stroke="#000" stroke-width="${gr}"/></pattern>`;
+  h += `<pattern id="${id('rayb')}" patternUnits="userSpaceOnUse" width="${lado}" height="${lado}"><rect width="${lado}" height="${lado}" fill="#fff"/><path d="${linea}" stroke="#c50457" stroke-width="${(raya * .3).toFixed(2)}"/></pattern>`;
+  h += `<clipPath id="${id('fuera')}"><path class="clip-fuera" clip-rule="evenodd"/></clipPath>`;
+  h += `<clipPath id="${id('campo')}"><rect class="clip-campo"/></clipPath>`;
+  h += `<clipPath id="${id('papel')}"><rect class="clip-papel"/></clipPath>`;
+  const zonas = k => k === 0 ? NZ : 1;
+  for (let k = 0; k < N_TIRAS; k++) {
+    for (let z = 0; z < zonas(k); z++) h += `<path id="${id('h' + k + 'z' + z + 'r')}"/><path id="${id('h' + k + 'z' + z + 'a')}"/>`;
+    h += `<path id="${id('p' + k + 'r')}"/><path id="${id('p' + k + 'a')}"/>`;
+  }
+  h += '</defs>';
+  if (nombre === 'atras') h += '<g class="agujas" fill="#fff"></g>';
+  const encima = nombre === 'atras' ? '<g class="nudo" opacity="0"></g><g class="agujas-encima" fill="#fff"></g>' : '';
+  // reparto[grupo] = { zonas: Set de zonas de la tira principal que caen en ese grupo, lazo: si lleva las tiras del lazo }
+  const usos = (rev, car, g) => {
+    let u = '';
+    for (let k = 0; k < N_TIRAS; k++) {
+      if (k > 0 && !g.lazo) continue;
+      const zs = [];
+      for (let z = 0; z < zonas(k); z++) if (k > 0 || g.zonas.has(z)) zs.push(z);
+      for (const z of zs) u += `<use href="#${id('h' + k + 'z' + z + 'r')}" fill="${rev}"/>`;
+      u += `<use href="#${id('p' + k + 'r')}" fill="${rev}"/>`;
+      for (const z of zs) u += `<use href="#${id('h' + k + 'z' + z + 'a')}" fill="${car}"/>`;
+      u += `<use href="#${id('p' + k + 'a')}" fill="${car}"/>`;
+    }
+    return u;
+  };
+  h += `<g clip-path="url(#${id('fuera')})">${usos(`url(#${id('ray')})`, '#c50457', reparto.fuera)}</g>`;
+  h += `<g clip-path="url(#${id('campo')})">${usos(`url(#${id('rayb')})`, '#fff', reparto.campo)}</g>`;
+  if (reparto.papel.zonas.size) h += `<g clip-path="url(#${id('papel')})" stroke="#000" stroke-width="1.3" stroke-linejoin="round">${usos('none', 'none', reparto.papel)}</g>`;
+  h += encima;
+  svg.innerHTML = h;
+  d.body.appendChild(svg);
+  const paths = [];
+  const el = q => svg.getElementById(id(q));
+  for (let k = 0; k < N_TIRAS; k++) {
+    const hr = [], ha = [];
+    for (let z = 0; z < zonas(k); z++) { hr.push(el('h' + k + 'z' + z + 'r')); ha.push(el('h' + k + 'z' + z + 'a')); }
+    paths.push({ hr, ha, pr: el('p' + k + 'r'), pa: el('p' + k + 'a') });
+  }
+  return { svg, paths, nombre };
+}
+function pintarCapas() {
+  const H = d.body.scrollHeight;
+  const rc = campo ? rectDoc(campo) : { x: 0, y: -10, w: 0, h: 0 };
+  const rp = papel ? rectDoc(papel) : { x: 0, y: -10, w: 0, h: 0 };
+  if (!capas) {
+    // qué zonas de 1600 px tocan cada sección de color (con un margen de una cinta)
+    const toca = (r, z) => z * ZONA < r.y + r.h + W && (z + 1) * ZONA > r.y - W;
+    const reparto = { fuera: { zonas: new Set(), lazo: false }, campo: { zonas: new Set(), lazo: true }, papel: { zonas: new Set(), lazo: false } };
+    for (let z = 0; z < NZ; z++) {
+      const dentroCampo = z * ZONA >= rc.y && (z + 1) * ZONA <= rc.y + rc.h;
+      if (!dentroCampo) reparto.fuera.zonas.add(z);
+      if (toca(rc, z)) reparto.campo.zonas.add(z);
+      if (toca(rp, z)) reparto.papel.zonas.add(z);
+    }
+    capas = { atras: capa('atras', reparto), delante: capa('delante', reparto) };
+  }
+  for (const c of Object.values(capas)) {
+    const sv = c.svg;
+    sv.querySelector('.clip-fuera').setAttribute('d', `M-10,-10H${VW + 10}V${H + 10}H-10Z M0,${rc.y}H${VW}V${rc.y + rc.h}H0Z`);
+    const a = sv.querySelector('.clip-campo'); a.setAttribute('x', 0); a.setAttribute('y', rc.y); a.setAttribute('width', VW); a.setAttribute('height', rc.h);
+    const q = sv.querySelector('.clip-papel'); q.setAttribute('x', 0); q.setAttribute('y', rp.y); q.setAttribute('width', VW); q.setAttribute('height', rp.h);
+  }
+  // la aguja (en la capa de atrás: el brazo y el botón la tapan)
+  const g = capas.atras.svg.querySelector('.agujas'), g2 = capas.atras.svg.querySelector('.agujas-encima');
+  let ag = '', ag2 = '';
+  for (const a of agujas) {
+    const antes = ag; ag = '';
+    // cuerpo: punta, cabeza más ancha con el ojo, caña y punta de abajo
+    const x = a.x, gr = Math.max(1.2, W / 50), cab = gr * 2.4, o = a.ojo, r = n => n.toFixed(1);
+    const ex = cab * .62, ey = W * .19;      // el ojo: hueco alargado, por el que asoma el hilo
+    const ojo = `M${x},${r(o - ey)} C${r(x + ex)},${r(o - ey)} ${r(x + ex)},${r(o - ey * .6)} ${r(x + ex)},${r(o)} C${r(x + ex)},${r(o + ey * .6)} ${r(x + ex)},${r(o + ey)} ${x},${r(o + ey)} C${r(x - ex)},${r(o + ey)} ${r(x - ex)},${r(o + ey * .6)} ${r(x - ex)},${r(o)} C${r(x - ex)},${r(o - ey * .6)} ${r(x - ex)},${r(o - ey)} ${x},${r(o - ey)} Z`;
+    ag += `<path fill-rule="evenodd" d="M${x},${r(a.y0)} L${r(x + cab)},${r(a.y0 + W * .25)} L${r(x + cab)},${r(o + W * .32)} L${r(x + gr)},${r(o + W * .6)} L${r(x + gr)},${r(a.y1 - W * .4)} L${x},${r(a.y1)} L${r(x - gr)},${r(a.y1 - W * .4)} L${r(x - gr)},${r(o + W * .6)} L${r(x - cab)},${r(o + W * .32)} L${r(x - cab)},${r(a.y0 + W * .25)} Z ${ojo}" opacity=".9"/>`;
+    if (a.encima) { ag2 += ag; ag = antes; } else ag = antes + ag;
+  }
+  g.innerHTML = ag;
+  g2.innerHTML = ag2;
+  pintarNudo();
+  pintar(true);
+}
+// la clase de cada tramo (delante/detrás × cara/revés, o nada si está fuera de pantalla) no depende
+// de cuánto se haya desenrollado: se calcula una vez
+function clasificar(t) {
+  const n = t.x.length, cl = new Array(Math.max(0, n - 1));
+  for (let i = 0; i < n - 1; i++) {
+    const oa = Math.abs(t.ox[i]) + Math.abs(t.oy[i]), ob = Math.abs(t.ox[i + 1]) + Math.abs(t.oy[i + 1]);
+    cl[i] = !enPantalla(t.x[i], oa) && !enPantalla(t.x[i + 1], ob) ? null
+      : ((t.z[i] + t.z[i + 1]) >= 0 ? 'd' : 't') + ((t.c[i] + t.c[i + 1]) >= 0 ? 'a' : 'r');
+  }
+  t.cl = cl;
+}
+const r1 = v => Math.round(v * 10) / 10;
+function poligono(t, a, b, P, cola) {
+  let q = P(a), s = 'M' + r1(q[0] + q[2]) + ',' + r1(q[1] + q[3]);
+  for (let i = a + 1; i <= b; i++) { q = P(i); s += 'L' + r1(q[0] + q[2]) + ',' + r1(q[1] + q[3]); }
+  if (cola) {                                   // cola de golondrina
+    const tx = t.x[b] - t.x[b - 2], ty = t.y[b] - t.y[b - 2], l = Math.hypot(tx, ty) || 1;
+    s += 'L' + r1(t.x[b] - tx / l * W * .55) + ',' + r1(t.y[b] - ty / l * W * .55);
+  }
+  for (let i = b; i >= a; i--) { q = P(i); s += 'L' + r1(q[0] - q[2]) + ',' + r1(q[1] - q[3]); }
+  return s + 'Z';
+}
+function estadoNuevo() { return { i: 0, ini: 0, clase: null, hecho: { da: [], dr: [], ta: [], tr: [] }, sucio: new Set(), cerrado: false, lim: 0 }; }
+function guardar(t, st, cl, trozo) {
+  const z = t === prin ? zonaDe(t.y[st.ini]) : 0;
+  st.hecho[cl][z] = (st.hecho[cl][z] || '') + trozo;
+  st.sucio.add(cl + z);
+}
+function avanzar(t, st, lim) {
+  const n = t.x.length;
+  if (n < 2 || lim <= 0 || st.cerrado) return VACIO;
+  if (lim < st.lim) Object.assign(st, estadoNuevo());
+  st.lim = lim;
+  let fin = n - 1, px = null;
+  if (lim < t.total) {
+    let lo = 0, hi = n - 1;
+    while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (t.s[mid] <= lim) lo = mid; else hi = mid - 1; }
+    fin = lo;
+    if (fin < n - 1) {
+      const u = (lim - t.s[fin]) / ((t.s[fin + 1] - t.s[fin]) || 1);
+      px = [lerp(t.x[fin], t.x[fin + 1], u), lerp(t.y[fin], t.y[fin + 1], u), lerp(t.ox[fin], t.ox[fin + 1], u), lerp(t.oy[fin], t.oy[fin + 1], u)];
+    }
+  }
+  const P = i => i > fin ? px : [t.x[i], t.y[i], t.ox[i], t.oy[i]];
+  // 1. lo que ya ha quedado completo pasa a «hecho»
+  for (let i = st.i; i < fin; i++) {
+    const cl = t.cl[i];
+    if (cl !== st.clase) {
+      if (st.clase) guardar(t, st, st.clase, poligono(t, st.ini, i, P, false));
+      st.ini = i; st.clase = cl;
+    }
+  }
+  if (fin > st.i) st.i = fin;
+  if (!px && fin === n - 1) {                   // tira terminada
+    if (st.clase) guardar(t, st, st.clase, poligono(t, st.ini, n - 1, P, t.libre));
+    st.cerrado = true; st.clase = null;
+    return VACIO;
+  }
+  // 2. la punta: la tirada abierta y el trozo parcial
+  const punta = { da: '', dr: '', ta: '', tr: '' };
+  const clP = px ? t.cl[fin] : null;
+  if (!px || clP === st.clase) {
+    const ult = px ? fin + 1 : fin;
+    if (st.clase && ult > st.ini) punta[st.clase] = poligono(t, st.ini, ult, P, false);
+  } else {
+    if (st.clase && fin > st.ini) punta[st.clase] = poligono(t, st.ini, fin, P, false);
+    if (clP) punta[clP] += poligono(t, fin, fin + 1, P, false);
+  }
+  return punta;
+}
+const poner = (el, v) => { if (el.__d !== v) { el.setAttribute('d', v); el.__d = v; } };
+let pintadoS = -1, pintadoL = -1;
+function pintar(forzar) {
+  if (!capas || !prin) return;
+  if (!forzar && sMostrado === pintadoS && lazoT === pintadoL) return;
+  pintadoS = sMostrado; pintadoL = lazoT;
+  for (let k = 0; k < N_TIRAS; k++) {
+    const t = tiras[k], st = estados[k], cd = capas.delante.paths[k], ct = capas.atras.paths[k];
+    let punta = VACIO;
+    if (t && st) {
+      let lim;
+      if (k === 0) lim = sMostrado;
+      else {
+        // el lazo se ata cuando la banda llega al nudo: colas, lazadas y, al final, el nudo
+        const orden = k - 1, retraso = [.0, .0, .22, .22][orden] || 0, dur = [.62, .62, .66, .66][orden] || .6;
+        lim = t.total * enOut(clamp((lazoT - retraso) / dur, 0, 1));
+      }
+      punta = avanzar(t, st, lim);
+      for (const key of st.sucio) {
+        const cl = key.slice(0, 2), z = +key.slice(2), capaP = cl[0] === 'd' ? cd : ct;
+        const elz = (cl[1] === 'a' ? capaP.ha : capaP.hr)[z];
+        if (elz) poner(elz, st.hecho[cl][z] || '');
+      }
+      st.sucio.clear();
+    }
+    poner(cd.pa, punta.da); poner(cd.pr, punta.dr); poner(ct.pa, punta.ta); poner(ct.pr, punta.tr);
+  }
+  for (const b of banners) if (sMostrado >= b.s) b.el.classList.add('con-cinta');
+  if (rotulo && sMostrado >= sRotulo) rotulo.classList.add('visible');
+  const gn = capas.atras.svg.querySelector('.nudo');
+  if (gn && gn.dataset.x) {
+    const u = clamp((lazoT - .56) / .44, 0, 1), c = 1.70158;
+    const e = u === 0 ? 0 : 1 + (c + 1) * Math.pow(u - 1, 3) + c * Math.pow(u - 1, 2);   // se aprieta con un pequeño rebote
+    const k = .4 + .6 * e, x = +gn.dataset.x, y = +gn.dataset.y;
+    gn.setAttribute('opacity', u > 0 ? 1 : 0);
+    gn.setAttribute('transform', `translate(${x},${y}) scale(${k.toFixed(3)}) translate(${-x},${-y})`);
+  }
+}
+let estados = [];
+// El nudo del lazo: un reloj de arena (más alto que ancho, pellizcado en medio, cantos curvos).
+// Como en su logo, lo separa de lo que tiene debajo un hueco del color del campo; dentro de sus
+// costados asoma el revés, rayado.
+function pintarNudo() {
+  const g = capas && capas.atras.svg.querySelector('.nudo');
+  if (!g) return;
+  if (!nudo) { g.innerHTML = ''; return; }
+  const U = W, x = nudo.x, y = nudo.y, a = .35 * U, b = .23 * U, h = .64 * U, cb = .15 * U, r = n => n.toFixed(1);
+  const forma = `M${r(x - a)},${r(y - h)} Q${r(x)},${r(y - h - cb)} ${r(x + a)},${r(y - h)} `
+    + `C${r(x + b)},${r(y - h * .32)} ${r(x + b)},${r(y + h * .32)} ${r(x + a)},${r(y + h)} `
+    + `Q${r(x)},${r(y + h + cb)} ${r(x - a)},${r(y + h)} `
+    + `C${r(x - b)},${r(y + h * .32)} ${r(x - b)},${r(y - h * .32)} ${r(x - a)},${r(y - h)} Z`;
+  const vuelta = s => {                 // el revés que asoma dentro de cada costado
+    const xa = x + s * a, xi = x + s * (b - .13 * U);
+    return `M${r(xa)},${r(y - h)} C${r(x + s * b)},${r(y - h * .32)} ${r(x + s * b)},${r(y + h * .32)} ${r(xa)},${r(y + h)} `
+      + `C${r(xi)},${r(y + h * .3)} ${r(xi)},${r(y - h * .3)} ${r(xa)},${r(y - h)} Z`;
+  };
+  g.innerHTML = `<path d="${forma}" fill="#fff" stroke="#c50457" stroke-width="${r(Math.max(3, U / 26))}" stroke-linejoin="round" paint-order="stroke"/>`
+    + `<path d="${vuelta(-1)} ${vuelta(1)}" fill="url(#ca-rayb)"/>`;
+  g.dataset.x = x; g.dataset.y = y;
+}
+
+/* ── desenrollar con el scroll ─────────────────────────────── */
+function sEnY(y) {
+  const n = prefY.length;
+  if (!n) return 0;
+  if (y >= prefY[n - 1]) return prin.total;
+  let lo = 0, hi = n - 1;
+  while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (prefY[mid] <= y) lo = mid; else hi = mid - 1; }
+  return prin.s[lo];
+}
+function vEnS(s) {
+  const t = prin, n = t.s.length;
+  if (s >= t.total) return t.v[n - 1];
+  let lo = 0, hi = n - 1;
+  while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (t.s[mid] <= s) lo = mid; else hi = mid - 1; }
+  const u = lo < n - 1 ? (s - t.s[lo]) / ((t.s[lo + 1] - t.s[lo]) || 1) : 0;
+  return lo < n - 1 ? lerp(t.v[lo], t.v[lo + 1], u) : t.v[lo];
+}
+function sEnV(v) {
+  const t = prin, n = t.v.length;
+  if (v >= t.v[n - 1]) return t.total;
+  let lo = 0, hi = n - 1;
+  while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (t.v[mid] <= v) lo = mid; else hi = mid - 1; }
+  // dentro de un tramo invisible, se salta al final del tramo
+  let k = lo;
+  while (k < n - 1 && t.v[k + 1] === t.v[k]) k++;
+  if (k > lo) return t.s[k];
+  const u = lo < n - 1 ? (v - t.v[lo]) / ((t.v[lo + 1] - t.v[lo]) || 1) : 0;
+  return lo < n - 1 ? lerp(t.s[lo], t.s[lo + 1], u) : t.s[lo];
+}
+let haBajado = false;
+function objetivo() {
+  // mientras dura la entrada y nadie ha bajado, manda la entrada: la cinta sale del ojo de la aguja
+  if (!haBajado && scrollY > 2) haBajado = true;
+  if (!reducir && entrada < 1 && !haBajado) { sObjetivo = entrada * sHero; return; }
+  const fondo = scrollY + innerHeight >= d.body.scrollHeight - 4;
+  yAlcanzado = Math.max(yAlcanzado, fondo ? Infinity : scrollY + innerHeight * .86);
+  // con movimiento reducido la cinta está entera desde el principio: nada se desenrolla
+  sObjetivo = reducir ? prin.total : Math.max(sEnY(yAlcanzado), entrada * sHero);
+}
+let ultimo = 0;
+function bucle(ahora) {
+  girando = false;
+  if (!prin) return;
+  const dt = Math.min(.05, ((ahora - ultimo) || 16) / 1000); ultimo = ahora;
+  if (!reducir && entrada < 1) {
+    entrada = clamp((ahora - t0) / 2600, 0, 1);
+    entrada = enInOut(entrada);
+    if ((ahora - t0) >= 2600) entrada = 1;
+  }
+  objetivo();
+  let seguir = false;
+  if (reducir) { sMostrado = sObjetivo; vMostrado = vEnS(sMostrado); }
+  else if (entrada < 1 && !haBajado) { sMostrado = Math.max(sMostrado, sObjetivo); vMostrado = vEnS(sMostrado); }
+  else {
+    const vObj = vEnS(sObjetivo);
+    if (vMostrado < vObj) {
+      const resto = vObj - vMostrado;
+      const paso = Math.max(resto * (1 - Math.exp(-dt * 3.2)), Math.min(resto, 900 * dt));
+      vMostrado = Math.min(vObj, vMostrado + paso);
+      sMostrado = Math.max(sMostrado, Math.min(sObjetivo, sEnV(vMostrado)));
+      if (vObj - vMostrado < .5) { vMostrado = vObj; sMostrado = sObjetivo; }
+      seguir = true;
+    } else sMostrado = Math.max(sMostrado, sObjetivo);
+  }
+  if (nudo && sMostrado >= nudo.s && lazoT < 1) {
+    if (reducir) lazoT = 1;
+    else {
+      if (!lazoInicio) lazoInicio = ahora;
+      lazoT = clamp((ahora - lazoInicio) / 1500, 0, 1);
+      if (lazoT >= .62 && botonLazo && !botonLazo.classList.contains('atado')) botonLazo.classList.add('atado');
+      seguir = true;
+    }
+  }
+  pintar();
+  if (seguir || entrada < 1) pedir();
+}
+function pedir() { if (!girando) { girando = true; requestAnimationFrame(bucle); } }
+addEventListener('scroll', pedir, { passive: true });
+mqReducir.addEventListener('change', e => { reducir = e.matches; if (reducir) { entrada = 1; lazoT = 1; } pedir(); });
+
+/* ── montar y rehacer cuando cambia la maqueta ──────────────── */
+let espera = 0;
+function rehacer() {
+  clearTimeout(espera);
+  espera = setTimeout(() => {
+    if (capas) { capas.atras.svg.remove(); capas.delante.svg.remove(); capas = null; }
+    construir();
+    objetivo();
+    if (reducir) { sMostrado = sObjetivo; } else sMostrado = Math.min(sMostrado, prin.total);
+    vMostrado = vEnS(sMostrado);
+    pedir();
+  }, 140);
+}
+function montar() {
+  if (listo) return;
+  listo = true;
+  html.classList.add('cinta-lista');
+  construir();
+  t0 = performance.now();
+  objetivo();
+  if (reducir) { sMostrado = sObjetivo; vMostrado = vEnS(sMostrado); }
+  pedir();
+  let ancho = innerWidth;
+  new ResizeObserver(() => rehacer()).observe(d.body);
+  addEventListener('resize', () => { if (innerWidth !== ancho) { ancho = innerWidth; rehacer(); } });
+}
+const fuentes = d.fonts && d.fonts.ready ? d.fonts.ready : Promise.resolve();
+Promise.race([fuentes, new Promise(r => setTimeout(r, 1200))]).then(() => {
+  const img = portada.querySelector('img');
+  if (img.complete) montar(); else { img.addEventListener('load', montar, { once: true }); img.addEventListener('error', montar, { once: true }); setTimeout(montar, 2500); }
+});
+})();
+</script>
+</body>
+</html>

@@ -9,6 +9,17 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ---
 
+## 2026-10-06
+
+> [!check]+ 🗓️ 2026-10-06 — Schleife Studio: web v1 «La cinta y la aguja», para la tatuadora Leonor
+> - **Proyecto nuevo:** [[Schleife Studio/Schleife Studio|Schleife Studio]], web para **Leonor** (@schleifestudio, Gran Canaria), amiga de Alejandro, al nivel de La Brega. Citas por **mensaje privado de Instagram**.
+> - **Su material, de su Instagram** (sin iniciar sesión, por Chrome): 19 fotos a tamaño completo de sus 12 últimas publicaciones, con sus textos, en `material/originales-instagram/`. Marca: magenta **#C50457** (el píxel del logo), S enlazada con un lazo y atravesada por una aguja (*Schleife* = lazo) y destacadas en gótica.
+> - **La idea (skill *impeccable*, elegida por Alejandro):** la web es la cinta de su logo. Sale del ojo de una aguja, rodea el brazo del tigre (recortado de su propio negro), se desenrolla al bajar, hace de banderín en cada sección y se anuda en un lazo sobre el botón de cita. Referencias de Awwwards: una sola interacción de firma, como las premiadas.
+> - **Segunda tanda, pedida por Alejandro:** las fotos con **revelado suave**, una miniatura desenfocada desde el primer instante y la foto cargada con antelación. Además, **móvil primero**: tigre a todo el ancho, «Escríbeme» siempre en la cabecera y piezas grandes de lado a lado.
+> - **Revisión independiente:** primero «fix» con 6 arreglos (lazo, ojo de la aguja, giros, Cerezo pequeña, bufón, texto alternativo); tras tres rondas, **«ship»**.
+> - **Verificado:** 10 tamaños de 320 a 1920, sin JS, con movimiento reducido y a doble clic. 0 errores, 0 solapes de la cinta con texto; móvil con CPU ×4, 12 tirones de 745.
+> - **Falta de Leonor:** validar los textos, el logo original, las fotos originales y confirmar que la foto del bote de tinta es ella. Después, dominio y Netlify (carpeta `sitio/`).
+
 ## 2026-10-03
 
 > [!check]+ 🗓️ 2026-10-03 — La Brega v5: repaso y arreglos antes de publicar

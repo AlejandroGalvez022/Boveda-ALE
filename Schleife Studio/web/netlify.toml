@@ -1,0 +1,4 @@
+# Netlify publica SOLO la carpeta sitio/ (lo demas son notas, originales y el taller de diseño).
+# Con Netlify Drop: arrastrar la carpeta "sitio", no "web". Cabeceras y reglas van dentro de sitio/ (_headers, _redirects).
+[build]
+  publish = "sitio"
