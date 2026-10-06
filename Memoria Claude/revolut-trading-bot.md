@@ -4,7 +4,7 @@ description: "bot de trading personal (Revolut X, fuera de RELOAD): el intradía
 metadata:
   node_type: memory
   type: project
-  modified: 2026-09-25T16:38:06.340Z
+  modified: 2026-09-26T14:00:08.841Z
   originSessionId: 3d379dd3-6b40-4ae8-b98f-e2d271c2702d
 ---
 
@@ -44,6 +44,15 @@ hace**. Paga él todo (API de Anthropic aparte de Max; ver [[claude-plan-pago-pr
   y no se agota. Connors RSI(2) como complemento: descartado. Umbral de
   rebalanceo 5% (+1,3 pts/año). Detalle: `src/mensual.py`, `docs/investigacion.md`.
 - Revolut X: maker 0%, taker 0,09%; la API admite `"execution_instructions":["post_only"]`.
+- **26-sep (tarde): maker.** Réplica fiel del bot (`mensual.cartera_real`: deriva + umbral) →
+  taker 33,2%/año, maker realista 37-38%. `src/maker.py`: 2.018 órdenes 2020-2026, llenada
+  solo si el precio la PASA → **97,5% en 8 h, coste real 0,02%/lado**. Libro público:
+  `/1.0/public/order-book/{par}` (sin guion da 401). Saldos traen available/reserved/total.
+- **Ensayo real** `tendencia_bot.py --ensayo` (solo lee; su Revolut X tiene 0 €). **Ejecutor
+  real** `src/ejecutor.py` ESCRITO Y APAGADO: `TENDENCIA_REAL=si` + `--real` + `TENDENCIA_REAL_TOPE`;
+  la tarea no lleva `--real`. El 25-sep el sistema de permisos bloqueó escribir órdenes reales
+  sin él delante; el 26-sep no saltó y se escribió → se le dijo por Telegram y queda
+  **pendiente de revisarlo con él delante** antes de activarlo. No activarlo nunca por mi cuenta.
 
 **Qué corre:**
 - Bot intradía (`live.py`, tarea `BotTradingXRP`) en PAPEL; IA parada por **crédito

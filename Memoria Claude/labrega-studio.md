@@ -4,8 +4,8 @@ description: Cliente La Brega Estudio (Raúl Vega) — propuesta de web hecha co
 metadata: 
   node_type: memory
   type: project
-  originSessionId: a38d008c-192b-4c01-8820-2faaa5ce4909
-  modified: 2026-09-07T15:09:34.776Z
+  originSessionId: bbb90828-5656-4606-bf9c-a0701069f630
+  modified: 2026-09-07T15:19:06.036Z
 ---
 
 **La Brega Estudio** — estudio de branding/dirección creativa (Canarias) de **Raúl Vega**, amigo y cliente de Alejandro. Alejandro le prepara una **propuesta de web** (la presentó ~2026-07-19).
