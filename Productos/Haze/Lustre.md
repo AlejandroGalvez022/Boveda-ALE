@@ -73,6 +73,17 @@ Alejandro: *«trátalo como producto estrella, investiga y haz todo lo posible»
 
 **Verificado:** `pruebas/pruebas.ps1` → **64 comprobaciones, 0 fallos** (una más que antes: la de la escala en móvil).
 
+## 🧭 13-oct-2026 — ¿Dónde se vende de verdad?
+
+Alejandro: *«quiero usar aplicaciones que de verdad me ayuden a vender; si no vendo, no tiene sentido lo que hemos hecho»*.
+
+| | |
+|---|---|
+| 💳 **Lemon Squeezy, Gumroad…** | Son **la caja registradora**: cobran, entregan y pagan impuestos. **No traen compradores** (salvo Gumroad Discover, que se queda el 30 %). Elegir entre ellas cambia la comisión, no las ventas |
+| 🛒 **Los compradores** | Están donde ya buscan: el **Framer Marketplace** (gente que hace webs con Framer y busca piezas). Ahí no se lleva nada |
+| 📊 **Lo que dicen los datos** | En Framer lo que vende son las **PLANTILLAS**: primera plantilla, 500-2.000 $ en total; con 5-10, 2.000-7.000 $/mes. Además cobran el **50 % de la suscripción de Framer durante 12 meses** de cada cliente que entra por ellas. De **componentes no hay datos públicos de ventas** (se venden a 10-50 $). Lo que funciona: un nicho con demanda real o un **estilo muy reconocible** ([allaboutframer.com](https://allaboutframer.com/how-much-can-you-actually-earn-with-framer-in-2026-(real-numbers))) |
+| 💡 **Propuesta** | Que Lustre no sea solo un componente suelto: que sea **la firma de una plantilla de Framer** (una landing para un nicho concreto con la piscina, la seda o el metal de fondo). La plantilla es lo que vende y da comisiones; el componente va dentro y también suelto. **Pendiente de él:** si se hace y para qué nicho (antes, investigar qué nichos de plantilla tienen demanda) |
+
 ## ⚠️ Por qué NO es un eclipse
 
 **Porque el eclipse es de [[La Brega Studio/La Brega Studio|La Brega]], y La Brega
