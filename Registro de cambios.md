@@ -16,6 +16,11 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 > - **Hecho:** las tareas programadas **BotTendencia** (al iniciar sesión y cada hora) y **BotTradingXRP** (al iniciar sesión), **desactivadas**, no borradas; los dos `live.py` que corrían, parados. Comprobado: nada más del bot arranca con Windows (carpeta Inicio y registro). [[Bot de trading/Bot de trading|Bot de trading]] → «en pausa».
 > - **Para retomarlo:** `Enable-ScheduledTask BotTendencia`, `Enable-ScheduledTask BotTradingXRP` y `Start-ScheduledTask BotTendencia` (PowerShell). El estado en papel (`tendencia_estado.json`) sigue donde estaba.
 
+> [!check]+ 🗓️ 2026-10-13 — Lustre: Framer listo; Lemon Squeezy, atascada en revisión
+> - **Framer (lo hizo Alejandro, guiado):** proyecto Lustre con el componente pegado, página de vista previa publicada (https://pink-whoever-169999.framer.app/, comprobada: WebGL a pantalla completa, 0 errores) y URL del componente para el Marketplace.
+> - **Comprobado en la ayuda de Framer:** no hay revisión, el anuncio se publica al enviarlo; vale cualquier enlace directo de pago, con el mismo precio y política de reembolso. Apuntado en la [[Productos/Haze/venta/Ficha de venta|Ficha de venta]].
+> - **Lemon Squeezy:** sigue en revisión desde el 27-sep (lo normal son 2-3 días laborables) con todo el Setup completo. Escrito a su soporte por el formulario. **El anuncio de Framer espera** al pago real; si el 20-oct no contestan, se pasa a Gumroad. [[Productos/Haze/Lustre|Lustre]]
+
 ## 2026-10-06
 
 > [!check]+ 🗓️ 2026-10-06 — Schleife Studio: web v1 «La cinta y la aguja», para la tatuadora Leonor
