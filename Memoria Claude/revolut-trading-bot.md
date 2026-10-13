@@ -1,6 +1,6 @@
 ---
 name: revolut-trading-bot
-description: "bot de trading personal (Revolut X, fuera de RELOAD): el intradía NO tiene ventaja probada; la cartera de TENDENCIA BTC+ETH+XRP sí aguantó (papel, tarea BotTendencia); Telegram bidireccional"
+description: "⏸️ APAGADO desde el 13-oct (tareas desactivadas). Bot de trading personal (Revolut X, fuera de RELOAD): el intradía NO tiene ventaja probada; la cartera de TENDENCIA BTC+ETH+XRP sí aguantó (papel, tarea BotTendencia); Telegram bidireccional"
 metadata:
   node_type: memory
   type: project
@@ -54,7 +54,9 @@ hace**. Paga él todo (API de Anthropic aparte de Max; ver [[claude-plan-pago-pr
   sin él delante; el 26-sep no saltó y se escribió → se le dijo por Telegram y queda
   **pendiente de revisarlo con él delante** antes de activarlo. No activarlo nunca por mi cuenta.
 
-**Qué corre:**
+**⏸️ 13-oct-2026: APAGADO hasta que él lo retome** (le llegaban avisos de Telegram al encender el PC). Tareas `BotTendencia` y `BotTradingXRP` **desactivadas** (no borradas) y procesos parados. Para retomarlo: `Enable-ScheduledTask` de las dos + `Start-ScheduledTask BotTendencia`. No reactivarlo por mi cuenta.
+
+**Qué corría (hasta el 13-oct):**
 - Bot intradía (`live.py`, tarea `BotTradingXRP`) en PAPEL; IA parada por **crédito
   de la API agotado** (él lo renovará). No tiene ventaja probada: no pasarlo a real.
 - **Bot de tendencia** `src/tendencia_bot.py`, tarea **`BotTendencia`** (al iniciar

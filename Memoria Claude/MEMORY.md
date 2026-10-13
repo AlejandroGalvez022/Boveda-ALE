@@ -10,7 +10,7 @@ El **resto** de la memoria —las reglas generales de trabajo— está en `Boved
 - [Web Calma + Aura](web-calma-preview.md) — la web y el chatbot de la psicóloga
 - [Laboratorio web](laboratorio-web-demos.md) — las demos guardadas y para qué sirve cada una
 - [Lustre (antes Haze)](lustre-producto.md) — primer producto de **ingresos pasivos** (fondos WebGL caustics/silk/chrome); 27-sep: silk rehecho, vídeo y renombrado a Lustre; Framer + Lemon Squeezy 24/59 $
-- [Bot de trading Revolut X](revolut-trading-bot.md) — el intradía NO tiene ventaja probada; la cartera de TENDENCIA BTC+ETH+XRP sí (papel, tarea BotTendencia); Telegram bidireccional
+- [Bot de trading Revolut X](revolut-trading-bot.md) — ⏸️ APAGADO desde el 13-oct (tareas desactivadas; no reactivar sin él); el intradía NO tiene ventaja probada; la cartera de TENDENCIA BTC+ETH+XRP sí (papel, tarea BotTendencia); Telegram bidireccional
 
 > Al arrancar en un ordenador nuevo: leer **las dos** carpetas `Memoria Claude/` (la de `Boveda-RELOAD` y esta) y aplicarlas como memoria propia.
 - [Webs con anuncios](webs-con-anuncios.md) — idea personal 27-sep: blog+AdSense no sale; solo herramienta interactiva en inglés, experimento de 90 días

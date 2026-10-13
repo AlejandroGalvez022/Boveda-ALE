@@ -2,8 +2,8 @@
 titulo: Bot de trading
 tipo: proyecto
 categoria: Experimentos
-estado: activo
-siguiente: "Dejar correr la cartera de TENDENCIA en papel (tarea BotTendencia, resumen diario por Telegram) al menos 4-8 semanas y compararla con 'aguantar las 3'. 26-sep: ejecutor maker para dinero real ESCRITO y APAGADO (doble seguro): revisarlo con Alejandro delante antes de activarlo. El bot intradía NO tiene ventaja probada: no pasarlo a real. Renovar el crédito de la API solo si se quiere seguir probando la IA."
+estado: en pausa
+siguiente: "13-OCT: APAGADO, a petición de Alejandro, hasta que lo retome (le llegaban avisos de Telegram cada vez que encendía el PC). Las dos tareas, BotTendencia y BotTradingXRP, están DESACTIVADAS (no borradas) y los procesos, parados; nada más del bot arranca con Windows. PARA RETOMARLO (PowerShell): Enable-ScheduledTask BotTendencia; Enable-ScheduledTask BotTradingXRP; Start-ScheduledTask BotTendencia. Lo que quedaba pendiente antes de pararlo: Dejar correr la cartera de TENDENCIA en papel (tarea BotTendencia, resumen diario por Telegram) al menos 4-8 semanas y compararla con 'aguantar las 3'. 26-sep: ejecutor maker para dinero real ESCRITO y APAGADO (doble seguro): revisarlo con Alejandro delante antes de activarlo. El bot intradía NO tiene ventaja probada: no pasarlo a real. Renovar el crédito de la API solo si se quiere seguir probando la IA."
 conversaciones: 1
 tags: [proyecto, trading, python]
 ---

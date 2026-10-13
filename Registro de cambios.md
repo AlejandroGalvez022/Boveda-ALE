@@ -9,6 +9,13 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ---
 
+## 2026-10-13
+
+> [!check]+ 🗓️ 2026-10-13 — Bot de trading apagado hasta que lo retome
+> - **Por qué:** le llegaban avisos de Telegram cada vez que encendía el PC (Alejandro, de baja).
+> - **Hecho:** las tareas programadas **BotTendencia** (al iniciar sesión y cada hora) y **BotTradingXRP** (al iniciar sesión), **desactivadas**, no borradas; los dos `live.py` que corrían, parados. Comprobado: nada más del bot arranca con Windows (carpeta Inicio y registro). [[Bot de trading/Bot de trading|Bot de trading]] → «en pausa».
+> - **Para retomarlo:** `Enable-ScheduledTask BotTendencia`, `Enable-ScheduledTask BotTradingXRP` y `Start-ScheduledTask BotTendencia` (PowerShell). El estado en papel (`tendencia_estado.json`) sigue donde estaba.
+
 ## 2026-10-06
 
 > [!check]+ 🗓️ 2026-10-06 — Schleife Studio: web v1 «La cinta y la aguja», para la tatuadora Leonor
