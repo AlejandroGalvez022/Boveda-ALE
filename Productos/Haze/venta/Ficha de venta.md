@@ -34,7 +34,7 @@ Volver a [[Productos/Haze/Lustre|Lustre]]
 | `lustre-video-1920x1080.mp4` | **El vídeo de la ficha** (18,5 s): caustics → silk → chrome con la energía subiendo, y cierre con los tres y el nombre. Se regenera con `video.ps1` (necesita `pip install imageio-ffmpeg`) |
 | `video.html` | El guion del vídeo. Pinta cada fotograma en un instante exacto, así que sale sin tirones aunque la captura sea lenta |
 
-> [!todo] Verificar: el tamaño exacto que pide Framer para las imágenes de la ficha. Las he hecho a 1600×1200 y a 1920×1080 porque es lo habitual, pero no está comprobado en su documentación.
+> [!check] Comprobado (13-oct) en la ayuda oficial de Framer: no fija un tamaño para las imágenes, pero la **vista previa en vivo del Marketplace es 4:3**, así que las de 1600×1200 (4:3) encajan. La vista previa carga **una página pública de Framer tuya**, con el componente centrado en un contenedor de **100vh** y el body con altura **Fit**. ([Cómo enviar un componente](https://www.framer.com/help/articles/how-to-submit-a-component-to-the-marketplace))
 
 ---
 
@@ -102,4 +102,9 @@ Volver a [[Productos/Haze/Lustre|Lustre]]
 8. **Framer Marketplace:** darte de alta como creador y publicar el componente con las imágenes de `venta/portadas/`, los textos de arriba, el enlace a la demo (paso 7) y el botón «Buy» apuntando a Lemon Squeezy (paso 5).
 9. **Y la regla que acordamos: 60 días sin tocar nada.** Luego se mira cuánto ha vendido, y ese número decide si se hace la pieza 2.
 
-> [!todo] Verificar: los requisitos para darse de alta como creador en Framer (si revisan a mano o piden algo desde España). No aparecieron en la investigación.
+> [!check] Comprobado (13-oct) en la ayuda oficial de Framer:
+> - **No hay revisión:** el componente se publica **en cuanto se envía**. Por eso el botón de compra tiene que llevar ya al pago **real**, no al de prueba.
+> - Publicar en el Marketplace te mete solo en el **Creator Program**; no hay alta aparte.
+> - **Pago:** Framer no cobra ni procesa nada. Vale «cualquier plataforma con enlace directo de pago»: nombra Contra, Stripe y Gumroad, y **no nombra Lemon Squeezy**, pero su enlace de compra cumple. El pago tiene que ir directo, sin pasos de más; enseñar el producto y el precio, el **mismo** del anuncio; ser público, sin iniciar sesión, y tener una **política de reembolso** clara.
+> - **Entrega:** la haces tú, con la URL del componente o un enlace de *remix* y las instrucciones. Ya estaba previsto: el enlace de Framer va en los Links del producto de Lemon Squeezy.
+> - Fuentes: [Cobrar en la Community](https://www.framer.com/help/articles/accept-payments-in-the-community/) · [Creator Program](https://www.framer.com/help/articles/how-the-creator-program-works/)
