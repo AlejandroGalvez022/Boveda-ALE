@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The houses — Isla Blanca</title>
+<meta name="description" content="Six whitewashed villas with private pools in Ibiza, Formentera, Mallorca and Menorca: who they sleep, what they cost by season, how far the sea is.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/site.css">
+<style>
+/* the island filter: a floating capsule, the language of the menu */
+.filtro{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px;padding:6px;border-radius:999px;background:var(--azulejo);
+  box-shadow:0 18px 40px -24px rgba(27,36,64,.45),inset 0 0 0 1px rgba(30,63,143,.1);align-self:flex-start}
+.filtro button{display:inline-flex;align-items:baseline;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;border:0;
+  background:transparent;color:var(--anil);font-weight:600;cursor:pointer;transition:background-color .5s var(--peso),color .5s var(--peso)}
+.filtro button:hover{background:var(--cal-plano)}
+.filtro button[aria-pressed="true"]{background:var(--anil);color:#fff}
+.filtro button span{font-weight:500;font-size:.85rem;opacity:.75}
+.filtro-fila{display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px}
+.filtro-cuenta{color:var(--tinta-suave);font-size:1rem}
+
+/* one house, one screen: the photo to every edge with the name across it,
+   and under it, written on the wall, the same facts in the same places */
+.villa{display:flex;flex-direction:column;min-height:100svh}
+.villa-foto{position:relative;flex:1 1 auto;min-height:68svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;color:#fff}
+.villa-foto>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.6s var(--curva)}
+.villa-foto:hover>img{transform:scale(1.025)}
+/* the shade sits only behind the name, in the lower-left corner */
+.villa-foto::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(9,20,48,0) 46%,rgba(9,20,48,.62) 70%,rgba(9,20,48,.86) 100%);
+  -webkit-mask-image:linear-gradient(90deg,#000 0,#000 54%,transparent 94%);mask-image:linear-gradient(90deg,#000 0,#000 54%,transparent 94%)}
+.villa-titulo{position:relative;z-index:2;padding-top:140px;padding-bottom:clamp(28px,3.4vw,48px)}
+.villa-titulo h2{color:#fff;font-size:clamp(3.4rem,10vw,11rem);line-height:.88;letter-spacing:-.03em;white-space:nowrap}
+.villa-lugar{margin-top:14px;font-size:clamp(1.05rem,1.3vw,1.25rem);font-weight:500;color:#fff}
+.villa-datos{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px 48px;align-items:center;
+  padding-top:clamp(24px,2.4vw,36px);padding-bottom:clamp(24px,2.4vw,36px)}
+.villa-desc{max-width:36em;font-size:clamp(1.05rem,1.2vw,1.18rem);color:var(--tinta-suave)}
+.villa-acciones{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:14px 28px}
+
+.duda{min-height:100svh}
+
+@media (max-width:1199px){
+  .villa-datos{grid-template-columns:1fr}
+  .villa-acciones{justify-content:flex-start}
+}
+@media (max-width:809px){
+  .villa{min-height:0}
+  .villa-foto{min-height:82svh}
+  .villa-titulo{padding-top:120px}
+  .villa-titulo h2{font-size:15vw;white-space:normal}
+  .villa-foto::before{background:linear-gradient(180deg,rgba(9,20,48,0) 56%,rgba(9,20,48,.64) 74%,rgba(9,20,48,.86) 100%);
+    -webkit-mask-image:none;mask-image:none}
+  /* the island filter: one capsule that scrolls sideways, never a heap of chips */
+  .filtro{flex-wrap:nowrap;max-width:100%;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity;overscroll-behavior-x:contain}
+  .filtro::-webkit-scrollbar{display:none}
+  .filtro button{flex:none;white-space:nowrap;scroll-snap-align:start}
+  .filtro-fila{flex-direction:column;align-items:flex-start;gap:14px}
+}
+</style>
+</head>
+<body>
+<!--CABECERA:villas-->
+
+<main id="principal">
+  <section class="pared" aria-labelledby="titulo">
+    <img class="sombra-pergola" src="assets/img/pergola.png" alt="" aria-hidden="true">
+    <div class="envoltorio cab-pagina">
+      <h1 id="titulo">The houses</h1>
+      <p class="entrada">Six family houses with their own pools. Every one is shown with the same facts in the same places, so you can compare them at a glance.</p>
+      <div class="filtro-fila">
+        <div class="filtro" role="group" aria-label="Island">
+          <button type="button" data-isla-filtro="todas" aria-pressed="true">All islands <span>6</span></button>
+          <button type="button" data-isla-filtro="ibiza" aria-pressed="false">Ibiza <span>1</span></button>
+          <button type="button" data-isla-filtro="formentera" aria-pressed="false">Formentera <span>1</span></button>
+          <button type="button" data-isla-filtro="mallorca" aria-pressed="false">Mallorca <span>3</span></button>
+          <button type="button" data-isla-filtro="menorca" aria-pressed="false">Menorca <span>1</span></button>
+        </div>
+        <p class="filtro-cuenta" id="cuenta-villas" role="status">6 houses</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="listado">
+
+    <article class="villa" data-isla="ibiza" aria-labelledby="v1">
+      <div class="villa-foto">
+        <img src="assets/photos/can-sal-blanca.jpg" alt="" loading="lazy" width="2000" height="2500">
+        <div class="envoltorio villa-titulo">
+          <h2 id="v1">Can Sal Blanca</h2>
+          <p class="villa-lugar">Ibiza · Sant Josep</p>
+        </div>
+      </div>
+      <div class="envoltorio villa-datos">
+        <p class="villa-desc">An old farmhouse turned family house, with arched windows onto a fourteen-metre pool and the cliffs of Cala d’Hort below.</p>
+        <div class="villa-acciones">
+          <a class="boton boton--anil" href="villa.html">See the house</a>
+          <a class="enlace" href="contact.html?villa=can-sal-blanca">Request to book</a>
+        </div>
+        <div class="creditos">
+          <div><span class="cifra">10</span><span class="rotulo">guests</span></div>
+          <div><span class="cifra">5</span><span class="rotulo">bedrooms</span></div>
+          <div><span class="cifra">14 m</span><span class="rotulo">pool</span></div>
+          <div><span class="cifra">600 m</span><span class="rotulo">to the beach</span></div>
+        </div>
+        <div class="temporadas">
+          <div><span class="meses">May &amp; Oct</span><span class="precio">€650 <small>a night</small></span></div>
+          <div><span class="meses">Jun &amp; Sep</span><span class="precio">€950 <small>a night</small></span></div>
+          <div class="alta"><span class="meses">Jul &amp; Aug</span><span class="precio">€1,450 <small>a night</small></span></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="villa" data-isla="mallorca" aria-labelledby="v2">
+      <div class="villa-foto">
+        <img src="assets/photos/sa-corba.jpg" alt="" loading="lazy" width="1800" height="970">
+        <div class="envoltorio villa-titulo">
+          <h2 id="v2">Sa Corba</h2>
+          <p class="villa-lugar">Mallorca · Andratx</p>
+        </div>
+      </div>
+      <div class="envoltorio villa-datos">
+        <p class="villa-desc">Curved white walls, a garden of cacti and the Tramuntana at its back. Every bedroom opens straight onto the terrace.</p>
+        <div class="villa-acciones">
+          <a class="boton boton--anil" href="villa.html">See the house</a>
+          <a class="enlace" href="contact.html?villa=sa-corba">Request to book</a>
+        </div>
+        <div class="creditos">
+          <div><span class="cifra">8</span><span class="rotulo">guests</span></div>
+          <div><span class="cifra">4</span><span class="rotulo">bedrooms</span></div>
+          <div><span class="cifra">11 m</span><span class="rotulo">pool</span></div>
+          <div><span class="cifra">1.2 km</span><span class="rotulo">to the beach</span></div>
+        </div>
+        <div class="temporadas">
+          <div><span class="meses">May &amp; Oct</span><span class="precio">€720 <small>a night</small></span></div>
+          <div><span class="meses">Jun &amp; Sep</span><span class="precio">€1,050 <small>a night</small></span></div>
+          <div class="alta"><span class="meses">Jul &amp; Aug</span><span class="precio">€1,600 <small>a night</small></span></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="villa" data-isla="formentera" aria-labelledby="v3">
+      <div class="villa-foto">
+        <img src="assets/photos/can-terrassa.jpg" alt="" loading="lazy" width="1600" height="2000">
+        <div class="envoltorio villa-titulo">
+          <h2 id="v3">Can Terrassa</h2>
+          <p class="villa-lugar">Formentera · Es Caló</p>
+        </div>
+      </div>
+      <div class="envoltorio villa-datos">
+        <p class="villa-desc">Whitewashed terraces stepping down to the water, a low house in the old style and a pool that looks straight out to sea.</p>
+        <div class="villa-acciones">
+          <a class="boton boton--anil" href="villa.html">See the house</a>
+          <a class="enlace" href="contact.html?villa=can-terrassa">Request to book</a>
+        </div>
+        <div class="creditos">
+          <div><span class="cifra">6</span><span class="rotulo">guests</span></div>
+          <div><span class="cifra">3</span><span class="rotulo">bedrooms</span></div>
+          <div><span class="cifra">9 m</span><span class="rotulo">pool</span></div>
+          <div><span class="cifra">300 m</span><span class="rotulo">to the beach</span></div>
+        </div>
+        <div class="temporadas">
+          <div><span class="meses">May &amp; Oct</span><span class="precio">€540 <small>a night</small></span></div>
+          <div><span class="meses">Jun &amp; Sep</span><span class="precio">€820 <small>a night</small></span></div>
+          <div class="alta"><span class="meses">Jul &amp; Aug</span><span class="precio">€1,250 <small>a night</small></span></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="villa" data-isla="mallorca" aria-labelledby="v4">
+      <div class="villa-foto">
+        <img src="assets/photos/es-penyal.jpg" alt="" loading="lazy" width="1600" height="2372">
+        <div class="envoltorio villa-titulo">
+          <h2 id="v4">Es Penyal</h2>
+          <p class="villa-lugar">Mallorca · Cala Sant Vicenç</p>
+        </div>
+      </div>
+      <div class="envoltorio villa-datos">
+        <p class="villa-desc">On the rock above a turquoise cove, with a path down to its own swimming ladder and the boats moored below.</p>
+        <div class="villa-acciones">
+          <a class="boton boton--anil" href="villa.html">See the house</a>
+          <a class="enlace" href="contact.html?villa=es-penyal">Request to book</a>
+        </div>
+        <div class="creditos">
+          <div><span class="cifra">8</span><span class="rotulo">guests</span></div>
+          <div><span class="cifra">4</span><span class="rotulo">bedrooms</span></div>
+          <div><span class="cifra">10 m</span><span class="rotulo">pool</span></div>
+          <div><span class="cifra">150 m</span><span class="rotulo">to the beach</span></div>
+        </div>
+        <div class="temporadas">
+          <div><span class="meses">May &amp; Oct</span><span class="precio">€690 <small>a night</small></span></div>
+          <div><span class="meses">Jun &amp; Sep</span><span class="precio">€990 <small>a night</small></span></div>
+          <div class="alta"><span class="meses">Jul &amp; Aug</span><span class="precio">€1,520 <small>a night</small></span></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="villa" data-isla="menorca" aria-labelledby="v5">
+      <div class="villa-foto">
+        <img src="assets/photos/sa-cala.jpg" alt="" loading="lazy" width="1600" height="2391">
+        <div class="envoltorio villa-titulo">
+          <h2 id="v5">Sa Cala</h2>
+          <p class="villa-lugar">Menorca · Cala Morell</p>
+        </div>
+      </div>
+      <div class="envoltorio villa-datos">
+        <p class="villa-desc">A Menorcan white house over the cove, with deep windows, a small pool on the rocks and the sound of the boats at night.</p>
+        <div class="villa-acciones">
+          <a class="boton boton--anil" href="villa.html">See the house</a>
+          <a class="enlace" href="contact.html?villa=sa-cala">Request to book</a>
+        </div>
+        <div class="creditos">
+          <div><span class="cifra">6</span><span class="rotulo">guests</span></div>
+          <div><span class="cifra">3</span><span class="rotulo">bedrooms</span></div>
+          <div><span class="cifra">8 m</span><span class="rotulo">pool</span></div>
+          <div><span class="cifra">200 m</span><span class="rotulo">to the beach</span></div>
+        </div>
+        <div class="temporadas">
+          <div><span class="meses">May &amp; Oct</span><span class="precio">€480 <small>a night</small></span></div>
+          <div><span class="meses">Jun &amp; Sep</span><span class="precio">€760 <small>a night</small></span></div>
+          <div class="alta"><span class="meses">Jul &amp; Aug</span><span class="precio">€1,180 <small>a night</small></span></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="villa" data-isla="mallorca" aria-labelledby="v6">
+      <div class="villa-foto">
+        <img src="assets/photos/can-olivera.jpg" alt="" loading="lazy" width="1800" height="1013">
+        <div class="envoltorio villa-titulo">
+          <h2 id="v6">Can Olivera</h2>
+          <p class="villa-lugar">Mallorca · Pollença</p>
+        </div>
+      </div>
+      <div class="envoltorio villa-datos">
+        <p class="villa-desc">Among the olive trees of the valley, the biggest of the six: a sixteen-metre pool, long tables outside and room for two families.</p>
+        <div class="villa-acciones">
+          <a class="boton boton--anil" href="villa.html">See the house</a>
+          <a class="enlace" href="contact.html?villa=can-olivera">Request to book</a>
+        </div>
+        <div class="creditos">
+          <div><span class="cifra">12</span><span class="rotulo">guests</span></div>
+          <div><span class="cifra">6</span><span class="rotulo">bedrooms</span></div>
+          <div><span class="cifra">16 m</span><span class="rotulo">pool</span></div>
+          <div><span class="cifra">4 km</span><span class="rotulo">to the beach</span></div>
+        </div>
+        <div class="temporadas">
+          <div><span class="meses">May &amp; Oct</span><span class="precio">€780 <small>a night</small></span></div>
+          <div><span class="meses">Jun &amp; Sep</span><span class="precio">€1,150 <small>a night</small></span></div>
+          <div class="alta"><span class="meses">Jul &amp; Aug</span><span class="precio">€1,750 <small>a night</small></span></div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <section class="borde duda" aria-labelledby="t-duda">
+    <div class="borde-pared pared">
+      <img class="sombra-pergola" src="assets/img/pergola.png" alt="" aria-hidden="true">
+      <h2 id="t-duda">Not sure which house?</h2>
+      <p class="entrada">Tell us your dates and who is coming. We will suggest the one that fits, and say why.</p>
+      <div class="borde-acciones">
+        <a class="boton boton--buganvilla" href="contact.html">Request to book</a>
+        <a class="enlace" href="tel:+34971000000">Or call +34 971 000 000</a>
+      </div>
+    </div>
+    <div class="canto" aria-hidden="true"></div>
+    <div class="piscina" aria-hidden="true"><div class="piscina-agua" data-piscina data-escala="0.9"></div></div>
+  </section>
+</main>
+
+<!--PIE-->
+<script src="assets/js/lustre.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

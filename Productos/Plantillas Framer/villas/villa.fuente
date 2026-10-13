@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Can Sal Blanca, Ibiza — Isla Blanca</title>
+<meta name="description" content="Can Sal Blanca, Ibiza: a whitewashed family house for ten with a fourteen-metre pool, 600 metres above Cala d’Hort. From €650 a night.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/site.css">
+<style>
+/* inside the house: the photo owns the screen, the name runs edge to edge */
+.dentro{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;color:#fff}
+.dentro>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 64%}
+.dentro::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(9,20,48,.46) 0,rgba(9,20,48,0) 22%,rgba(9,20,48,.1) 36%,rgba(9,20,48,.66) 58%,rgba(9,20,48,.86) 100%)}
+.dentro-texto{position:relative;z-index:2;padding-bottom:clamp(36px,5vw,72px)}
+.migas{display:inline-flex;flex-wrap:wrap;gap:10px;font-size:.98rem;color:#fff;margin-bottom:22px;padding:9px 18px;border-radius:999px;
+  background:rgba(9,20,48,.62)}
+.migas a{color:#fff;font-weight:600;text-decoration:underline;text-decoration-color:rgba(255,255,255,.5);text-underline-offset:5px}
+.dentro h1{color:#fff;font-size:clamp(3.6rem,12.4vw,14rem);line-height:.86;letter-spacing:-.03em;white-space:nowrap}
+.dentro-pie{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px 40px;margin-top:24px}
+.dentro-pie p{font-size:clamp(1.1rem,1.4vw,1.35rem);color:#fff;max-width:34em}
+
+.presenta{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,6vw,112px);align-items:end;padding:var(--tramo) var(--margen) clamp(56px,6vw,96px)}
+.presenta .entrada{font-size:clamp(1.3rem,2vw,1.9rem);line-height:1.45;color:var(--tinta)}
+
+.galeria{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-rows:clamp(150px,15vw,260px);gap:clamp(8px,1vw,16px);padding:0 var(--margen)}
+.galeria figure{margin:0;overflow:hidden;border-radius:12px;background:var(--cal-plano)}
+.galeria img{width:100%;height:100%;object-fit:cover}
+.galeria .g1{grid-column:1/5;grid-row:1/4;border-radius:999px 999px 12px 12px}
+.galeria .g2{grid-column:5/13;grid-row:1/3}
+.galeria .g3{grid-column:5/9;grid-row:3/5}
+.galeria .g4{grid-column:9/13;grid-row:3/5}
+.galeria .g5{grid-column:1/5;grid-row:4/5}
+
+.ficha-cuerpo{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:clamp(56px,7vw,128px);align-items:start;padding:var(--tramo) var(--margen)}
+.bloque+.bloque{margin-top:clamp(64px,7vw,104px)}
+.bloque h2{font-size:clamp(2.2rem,3.6vw,3.6rem);margin-bottom:24px}
+.bloque>p{color:var(--tinta-suave);max-width:40em;font-size:1.1rem}
+.bloque>p+p{margin-top:16px}
+.lista{list-style:none;margin:28px 0 0;padding:0;border-top:1.5px solid var(--anil);max-width:52em}
+.lista li{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:18px;padding:18px 0;border-bottom:1px solid var(--anil-claro)}
+.lista b{font-weight:600}
+.lista span{color:var(--tinta-suave)}
+.distancias{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:28px;border-top:1.5px solid var(--anil);border-bottom:1.5px solid var(--anil)}
+.distancias div{padding:18px 18px 16px;display:flex;flex-direction:column;gap:4px}
+.distancias div+div{border-left:1px solid var(--anil-claro)}
+.distancias .cifra{font-size:clamp(1.8rem,2.6vw,2.6rem);color:var(--anil);line-height:1}
+.distancias span:last-child{font-size:.9rem;color:var(--tinta-suave)}
+
+.panel-reserva{position:sticky;top:104px;background:var(--azulejo);border:1.5px solid var(--anil-claro);border-radius:16px;
+  padding:32px;display:flex;flex-direction:column;gap:18px}
+.panel-reserva .desde{font-size:1rem;color:var(--tinta-suave)}
+.panel-reserva .desde b{font-family:var(--serif);font-weight:400;font-size:2.8rem;color:var(--anil);line-height:1;margin:0 6px}
+.panel-reserva .temporadas>div{padding:12px 14px}
+.panel-reserva .temporadas .precio{font-size:1.2rem}
+.panel-fechas{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.panel-reserva .boton{width:100%}
+.panel-nota{font-size:.9rem;color:var(--tinta-suave);text-align:center}
+
+.otras-casas{padding:var(--tramo) 0;background:var(--cal-plano)}
+.otras{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,2.6vw,48px)}
+.otra{display:flex;flex-direction:column;text-decoration:none;color:inherit}
+.otra:nth-child(2){margin-top:clamp(0px,8vw,140px)}
+.otra .arco{aspect-ratio:3/4}
+.otra .arco img{transition:transform 1.4s var(--curva)}
+.otra:hover .arco img{transform:scale(1.04)}
+.otra .placa{align-self:flex-start;margin:-36px 0 0 24px;position:relative;z-index:1}
+
+@media (max-width:1199px){
+  .ficha-cuerpo{grid-template-columns:minmax(0,1fr)}
+  .panel-reserva{position:static;order:-1;max-width:640px}
+  .distancias{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .distancias div:nth-child(3){border-left:0}
+  .distancias div:nth-child(n+3){border-top:1px solid var(--anil-claro)}
+}
+@media (max-width:809px){
+  .dentro{min-height:88svh}
+  .dentro h1{white-space:normal;font-size:19vw}
+  .presenta{grid-template-columns:1fr}
+  .galeria{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:180px}
+  .galeria .g1{grid-column:1/2;grid-row:1/3}
+  .galeria .g2{grid-column:2/3;grid-row:1/2}
+  .galeria .g3{grid-column:2/3;grid-row:2/3}
+  .galeria .g4{grid-column:1/3;grid-row:3/4}
+  .galeria .g5{grid-column:1/3;grid-row:4/5}
+  .lista li{grid-template-columns:1fr;gap:4px}
+  .otras{grid-template-columns:1fr}
+  .otra:nth-child(2){margin-top:0}
+}
+</style>
+</head>
+<body class="sobre-foto">
+<!--CABECERA:villa-->
+
+<main id="principal">
+  <section class="dentro" aria-labelledby="titulo">
+    <img src="assets/photos/can-sal-blanca.jpg" alt="Can Sal Blanca from the end of the pool: white walls, arched windows and loungers on the terrace" width="2000" height="2500" fetchpriority="high">
+    <div class="envoltorio dentro-texto">
+      <nav class="migas" aria-label="Breadcrumb"><a href="villas.html">The houses</a><span aria-hidden="true">/</span><span>Ibiza</span></nav>
+      <h1 id="titulo">Can Sal Blanca</h1>
+      <div class="dentro-pie">
+        <p>Sant Josep de sa Talaia, Ibiza. A two-hundred-year-old farmhouse above the cliffs of Cala d’Hort.</p>
+        <a class="boton boton--buganvilla" href="#reserva">Request to book</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="albardilla">
+    <div class="envoltorio albardilla-fila">
+      <p class="albardilla-datos">
+        <span>From <b class="cifra">€650</b>a night</span>
+        <span>Minimum seven nights in July and August</span>
+        <span>Arrivals on Saturday</span>
+        <span>Salt-water pool, heated in May and October</span>
+      </p>
+    </div>
+  </div>
+  <section class="piscina piscina--honda" aria-labelledby="t-piscina">
+    <div class="piscina-agua" data-piscina data-escala="1.2" aria-hidden="true"></div>
+    <div class="envoltorio piscina-texto">
+      <h2 class="palabra" id="t-piscina" style="--ancho:10.511;--ancho-movil:5.497"><span>A fourteen-</span><span>metre pool</span></h2>
+    </div>
+  </section>
+
+  <section class="presenta" aria-label="The house in brief">
+    <p class="entrada">An old farmhouse turned family house, with arched windows onto a fourteen-metre pool and the cliffs of Cala d’Hort below.</p>
+    <div class="creditos">
+      <div><span class="cifra">10</span><span class="rotulo">guests</span></div>
+      <div><span class="cifra">5</span><span class="rotulo">bedrooms</span></div>
+      <div><span class="cifra">14 m</span><span class="rotulo">pool</span></div>
+      <div><span class="cifra">600 m</span><span class="rotulo">to the beach</span></div>
+    </div>
+  </section>
+
+  <div class="galeria" aria-label="Photographs of the house">
+    <figure class="g1"><img src="assets/photos/pasillo-arcos.jpg" alt="A whitewashed corridor of arches with steps leading up" loading="lazy" width="1400" height="1866"></figure>
+    <figure class="g2"><img src="assets/photos/salon-finca.jpg" alt="The sitting room: thick lime-washed walls, a stone column and a long wooden table" loading="lazy" width="1600" height="2400" style="object-position:center 58%"></figure>
+    <figure class="g3"><img src="assets/photos/dormitorio-azul.jpg" alt="Bedroom with a blue headboard, patterned tiles and white linen" loading="lazy" width="1400" height="933"></figure>
+    <figure class="g4"><img src="assets/photos/puerta-piscina.jpg" alt="Shutters open onto the pool and the sea" loading="lazy" width="1400" height="2100"></figure>
+    <figure class="g5"><img src="assets/photos/patio-blanco.jpg" alt="Whitewashed courtyard with green shutters and outside steps" loading="lazy" width="1600" height="1064"></figure>
+  </div>
+
+  <section class="ficha-cuerpo">
+    <div>
+      <div class="bloque">
+        <h2>The house</h2>
+        <p>Can Sal Blanca was a farmhouse for two hundred years before it became a family house. The walls are half a metre thick, so the rooms stay cool at midday without anyone touching the air conditioning.</p>
+        <p>Everything faces the pool and, past it, the sea and the rock of Es Vedrà. Breakfast happens under the pergola; dinner happens wherever the evening light is.</p>
+      </div>
+      <div class="bloque">
+        <h2>Rooms</h2>
+        <ul class="lista">
+          <li><b>Main bedroom</b><span>King-size bed, bathroom with a rain shower, doors onto the pool</span></li>
+          <li><b>Sea bedroom</b><span>King-size bed, bathroom, window towards Es Vedrà</span></li>
+          <li><b>Garden bedroom</b><span>Two single beds that join, bathroom</span></li>
+          <li><b>Tower bedroom</b><span>Double bed, bathroom, its own small terrace</span></li>
+          <li><b>Children’s room</b><span>Two single beds, shares the garden bathroom</span></li>
+        </ul>
+      </div>
+      <div class="bloque">
+        <h2>Outside</h2>
+        <ul class="lista">
+          <li><b>Pool</b><span>Fourteen by five metres, salt water, heated in May and October</span></li>
+          <li><b>Pergola</b><span>A table for twelve in the shade of the vine</span></li>
+          <li><b>Garden</b><span>Old olive and carob trees, an outdoor shower</span></li>
+          <li><b>Parking</b><span>Two cars, in the shade</span></li>
+        </ul>
+      </div>
+      <div class="bloque">
+        <h2>Getting there</h2>
+        <div class="distancias">
+          <div><span class="cifra">600 m</span><span>Cala d’Hort beach</span></div>
+          <div><span class="cifra">5 min</span><span>Es Vedrà lookout</span></div>
+          <div><span class="cifra">25 min</span><span>Ibiza town</span></div>
+          <div><span class="cifra">20 min</span><span>Ibiza airport</span></div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="panel-reserva" id="reserva" aria-labelledby="t-panel">
+      <h2 id="t-panel" class="solo-lector">Request to book Can Sal Blanca</h2>
+      <p class="desde">From <b class="cifra">€650</b>a night</p>
+      <div class="temporadas">
+        <div><span class="meses">May &amp; Oct</span><span class="precio">€650</span></div>
+        <div><span class="meses">Jun &amp; Sep</span><span class="precio">€950</span></div>
+        <div class="alta"><span class="meses">Jul &amp; Aug</span><span class="precio">€1,450</span></div>
+      </div>
+      <form class="panel-fechas" action="contact.html" method="get">
+        <input type="hidden" name="villa" value="can-sal-blanca">
+        <div class="campo"><label for="p-llegada">Arrival</label><input id="p-llegada" name="llegada" type="date"></div>
+        <div class="campo"><label for="p-salida">Departure</label><input id="p-salida" name="salida" type="date"></div>
+        <div class="campo"><label for="p-huespedes">Guests</label><input id="p-huespedes" name="huespedes" type="number" min="1" max="10" value="6"></div>
+        <button class="boton boton--buganvilla" type="submit">Request to book</button>
+      </form>
+      <p class="panel-nota">Nothing is charged yet. We reply within a day.</p>
+    </aside>
+  </section>
+
+  <section class="otras-casas" aria-labelledby="t-otras">
+    <div class="envoltorio">
+      <div class="cabeza">
+        <h2 id="t-otras">Other houses</h2>
+        <a class="enlace" href="villas.html">All six houses
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="otras">
+        <a class="otra" href="villa.html">
+          <div class="arco"><img src="assets/photos/can-terrassa.jpg" alt="Can Terrassa, Formentera" loading="lazy" width="1600" height="2000"></div>
+          <span class="placa"><span class="placa-nombre">Can Terrassa</span><span class="placa-lugar">Formentera · from €540</span></span>
+        </a>
+        <a class="otra" href="villa.html">
+          <div class="arco"><img src="assets/photos/sa-cala.jpg" alt="Sa Cala, Menorca" loading="lazy" width="1600" height="2391"></div>
+          <span class="placa"><span class="placa-nombre">Sa Cala</span><span class="placa-lugar">Menorca · from €480</span></span>
+        </a>
+        <a class="otra" href="villa.html">
+          <div class="arco"><img src="assets/photos/es-penyal.jpg" alt="Es Penyal, Mallorca" loading="lazy" width="1600" height="2372"></div>
+          <span class="placa"><span class="placa-nombre">Es Penyal</span><span class="placa-lugar">Mallorca · from €690</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!--PIE-->
+<script src="assets/js/lustre.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

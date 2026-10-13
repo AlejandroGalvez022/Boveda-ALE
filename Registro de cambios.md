@@ -11,6 +11,11 @@ Bitácora de esta bóveda. **Lo más reciente, arriba.**
 
 ## 2026-10-13
 
+> [!check]+ 🗓️ 2026-10-13 — Plantilla Framer «Isla Blanca»: rediseño a nivel de premio
+> - **Por qué:** Alejandro vio la primera versión «súper fácil» y pidió algo espectacular, mirando webs premiadas (Faith Ibiza, White Desert y Tengile, en Awwwards). Eligió «entrar por el arco» y «todo a pantalla completa» para las cuatro páginas.
+> - **Hecho:** las 4 páginas rehechas en `Productos/Plantillas Framer/villas/`. En el inicio, el arco se abre al bajar hasta llenar la pantalla; la palabra va de borde a borde en el agua; el listado es una casa por pantalla; la petición va una sola vez, la pared junto a la piscina; el nombre del pie, de margen a margen. Revisión con agente en 2 pasadas: **8 de 8 arreglos resueltos**. `web-check`: 0 fallos en 5 anchos; el peor contraste en el agua, 3,22:1.
+> - **Pendiente:** 3 regresiones de la 2.ª revisión (velo del listado, lugar debajo del nombre, agua vacía en móvil), el visto bueno final, `DESIGN.md` y la guía de Framer. [[Productos/Plantillas Framer/2026-10-13 - Isla Blanca, rediseño a nivel de premio|Conversación]] · [[Productos/Plantillas Framer/Plantillas Framer|Plantillas Framer]]
+
 > [!check]+ 🗓️ 2026-10-13 — Bot de trading apagado hasta que lo retome
 > - **Por qué:** le llegaban avisos de Telegram cada vez que encendía el PC (Alejandro, de baja).
 > - **Hecho:** las tareas programadas **BotTendencia** (al iniciar sesión y cada hora) y **BotTradingXRP** (al iniciar sesión), **desactivadas**, no borradas; los dos `live.py` que corrían, parados. Comprobado: nada más del bot arranca con Windows (carpeta Inicio y registro). [[Bot de trading/Bot de trading|Bot de trading]] → «en pausa».

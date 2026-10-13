@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Isla Blanca — Whitewashed villas with private pools in the Balearics</title>
+<meta name="description" content="Six whitewashed holiday villas with private pools in Ibiza, Formentera, Mallorca and Menorca. Booked by request, looked after by people who live on the islands.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/site.css">
+<style>
+/* ── Stepping in through the arch ─────────────────────────────────────────
+   The track is three screens tall; the scene sticks while it scrolls past.
+   --p opens the arch to the whole screen, --q brings in the house's name.
+   Both are driven by the scroll itself (CSS scroll timelines). */
+@property --p{syntax:'<number>';inherits:true;initial-value:0}
+@property --q{syntax:'<number>';inherits:true;initial-value:0}
+.entrada-arco{position:relative;height:300svh;view-timeline-name:--arco;background:var(--cal)}
+.escena{position:sticky;top:0;height:100svh;overflow:hidden;background:var(--cal);
+  --aw:clamp(260px,25vw,420px);
+  --ah:min(47svh,500px);
+  --tx:calc((100% - var(--aw)) / 2);
+  --ty:calc(50% - var(--ah) / 2 + 3%);
+  --by:calc(100% - var(--ty) - var(--ah));
+  --r:calc(var(--aw) / 2);
+  --s0:.42;
+  animation:abrir linear both,rotulo linear both;
+  animation-timeline:--arco,--arco;
+  animation-range:contain 8% contain 70%,contain 66% contain 92%}
+@keyframes abrir{from{--p:0}to{--p:1}}
+@keyframes rotulo{from{--q:0}to{--q:1}}
+.escena{animation-timing-function:cubic-bezier(.65,0,.35,1),linear}
+@supports not (animation-timeline:view()){.escena{animation:none}}
+
+.escena .sombra-pergola{opacity:calc(1 - var(--p) * 1.6)}
+.ventana{position:absolute;inset:0;z-index:2;
+  clip-path:inset(calc(var(--ty) * (1 - var(--p))) calc(var(--tx) * (1 - var(--p))) calc(var(--by) * (1 - var(--p))) calc(var(--tx) * (1 - var(--p)))
+    round calc(var(--r) * (1 - var(--p))) calc(var(--r) * (1 - var(--p))) calc(12px * (1 - var(--p))) calc(12px * (1 - var(--p))))}
+/* the photo is pinned by its focal point (the house, 58% down) to the
+   centre of the arch, and scales from --s0 to cover as the arch opens */
+.ventana img{position:absolute;left:50%;top:53%;width:max(100%,100svh);max-width:none;height:auto;aspect-ratio:4/5;object-fit:cover;
+  transform:translate(-50%,-58%) scale(calc(var(--s0) + (1 - var(--s0)) * var(--p)));transform-origin:50% 58%}
+.ventana::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:var(--q);
+  background:linear-gradient(180deg,rgba(9,20,48,0) 40%,rgba(9,20,48,.55) 66%,rgba(9,20,48,.84) 100%)}
+
+.titular{position:absolute;inset:0;z-index:3;pointer-events:none;margin:0;font-size:clamp(3.2rem,7vw,8rem);line-height:.92}
+.titular span{position:absolute;display:block;white-space:nowrap}
+.titular .l1{left:var(--margen);top:calc(96px + 2svh);transform:translateX(calc(var(--p) * -42vw));opacity:calc(1 - var(--p) * 1.8)}
+.titular .l2{right:var(--margen);bottom:5svh;text-align:right;transform:translateX(calc(var(--p) * 42vw));opacity:calc(1 - var(--p) * 1.8)}
+
+.escena-lema{position:absolute;z-index:3;left:var(--margen);top:50%;max-width:17em;transform:translate(calc(var(--p) * -12vw),-50%);
+  opacity:calc(1 - var(--p) * 2.2);font-size:1.12rem;line-height:1.55;color:var(--tinta-suave)}
+
+/* the name tile travels with you: from the foot of the arch to the corner */
+.escena .placa{position:absolute;z-index:4;
+  left:calc((var(--tx) - 28px) * (1 - var(--p)) + var(--margen) * var(--p));
+  bottom:calc((var(--by) + 72px) * (1 - var(--p)) + 56px * var(--p));
+  transform:scale(calc(1 + .32 * var(--p)));transform-origin:0 100%}
+.escena-entrar{position:absolute;z-index:4;right:var(--margen);bottom:64px;opacity:var(--q);transform:translateY(calc((1 - var(--q)) * 24px));
+  display:flex;align-items:center;gap:24px}
+.escena-entrar p{color:#fff;font-size:1.05rem;max-width:22em;text-align:right}
+.entrada-arco:not(.abierta) .escena-entrar{pointer-events:none}
+.entrada-arco.abierta .escena-lema{pointer-events:none;visibility:hidden}
+.escena-entrar:focus-within{opacity:1}
+
+@media (prefers-reduced-motion:reduce){
+  .entrada-arco{height:auto}
+  .escena{position:relative;animation:none}
+  .escena-entrar{display:none}
+}
+
+/* ── The pool at the foot of the house ────────────────────────────────── */
+.piscina--portada .piscina-texto{display:flex;flex-direction:column;align-items:flex-start}
+
+/* ── The houses: a full-width arcade, its middle column set back ──────── */
+.casas{padding:var(--tramo) 0}
+.arcada{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(56px,6vw,104px) clamp(10px,1.1vw,18px)}
+.casa{display:flex;flex-direction:column;text-decoration:none;color:inherit}
+.casa .arco{aspect-ratio:3/4.1;border-radius:999px 999px 0 0}
+.casa .arco img{transition:transform 1.4s var(--curva)}
+.casa:hover .arco img{transform:scale(1.04)}
+.casa .placa{align-self:flex-start;margin:-36px 0 0 24px;position:relative;z-index:1}
+.casa-datos{display:flex;flex-wrap:wrap;gap:4px 20px;margin:18px 24px 0 26px;color:var(--tinta-suave);font-size:1rem}
+.casa-datos b{color:var(--anil);font-weight:600}
+.casas-pie{display:flex;justify-content:center;margin-top:clamp(64px,8vw,120px);padding:0 var(--margen)}
+
+/* ── A house, not a hotel: the photo takes half the screen, to the edge ─ */
+.casa-hotel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:100svh;background:var(--cal-plano)}
+.casa-hotel-foto{position:relative;min-height:100svh}
+.casa-hotel-foto>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.casa-hotel-foto .arco{position:absolute;right:-12%;bottom:12%;width:38%;aspect-ratio:3/4;border:12px solid var(--cal-plano);z-index:2}
+.casa-hotel-texto{display:flex;flex-direction:column;justify-content:center;padding:var(--tramo) var(--margen) var(--tramo) calc(12% + var(--margen))}
+.incluye{list-style:none;margin:40px 0 0;padding:0;border-top:1.5px solid var(--anil);max-width:38em}
+.incluye li{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;padding:20px 0;border-bottom:1px solid var(--anil-claro)}
+.incluye svg{width:28px;height:28px;color:var(--anil);margin-top:2px}
+.incluye b{display:block;font-weight:600;font-size:1.08rem;color:var(--tinta)}
+.incluye span{color:var(--tinta-suave)}
+
+/* ── When to come: the season as a row of doorways ────────────────────── */
+.cuando{display:flex;flex-direction:column;justify-content:center;min-height:100svh;padding:var(--tramo) 0}
+.calendario{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(6px,.8vw,14px)}
+.mes{display:flex;flex-direction:column;gap:12px}
+.mes .barra{height:clamp(120px,24svh,260px);border-radius:999px 999px 8px 8px;background:var(--cal-plano);border:1px solid #DCDFE8}
+.mes.baja .barra{background:var(--anil-claro);border-color:var(--anil-claro)}
+.mes.media .barra{background:#6F86C6;border-color:#6F86C6}
+.mes.alta .barra{background:var(--anil);border-color:var(--anil)}
+.mes span{font-size:.92rem;text-align:center;color:var(--tinta-suave)}
+.mes.alta span,.mes.media span,.mes.baja span{color:var(--tinta);font-weight:600}
+.leyenda{display:flex;flex-wrap:wrap;gap:16px 56px;margin-top:48px}
+.leyenda div{display:flex;align-items:center;gap:14px}
+.leyenda i{width:34px;height:18px;border-radius:9px 9px 3px 3px;display:block}
+.leyenda b{font-family:var(--serif);font-weight:400;font-size:1.6rem;color:var(--anil)}
+.leyenda small{display:block;color:var(--tinta-suave);font-size:.92rem}
+
+/* ── How booking works: the indigo field ──────────────────────────────── */
+.reservar{display:flex;flex-direction:column;justify-content:center;min-height:100svh;padding:var(--tramo) 0}
+.pasos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(32px,4vw,72px);margin:clamp(56px,7vw,104px) 0 0;padding:0;list-style:none}
+.paso{display:flex;flex-direction:column;gap:16px;padding-top:28px;border-top:1.5px solid rgba(201,211,236,.45)}
+.paso .cifra{font-size:clamp(5rem,9vw,9rem);line-height:.85;color:#fff}
+.paso h3{color:#fff;font-size:clamp(1.6rem,2.2vw,2.1rem)}
+.paso p{color:var(--anil-claro);max-width:24em;font-size:1.08rem}
+.reservar-nota{margin-top:clamp(48px,6vw,80px);color:var(--anil-claro);font-size:1.05rem}
+
+
+@media (max-width:1199px){
+  .escena-lema{display:none}
+  .arcada{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:809px){
+  .entrada-arco{height:240svh}
+  .escena{--aw:64vw;--ah:44svh;--s0:.5}
+  .titular{font-size:15vw}
+  .titular .l1{top:96px;white-space:normal}
+  .titular .l2{bottom:4svh;white-space:normal}
+  .titular span{white-space:normal;max-width:calc(100% - 2 * var(--margen))}
+  .escena .placa{bottom:calc((var(--by) + 40px) * (1 - var(--p)) + 120px * var(--p))}
+  .escena-entrar p{display:none}
+  .escena-entrar{left:var(--margen);right:var(--margen);bottom:40px;flex-direction:column;align-items:flex-start;gap:16px}
+  .escena-entrar p{text-align:left}
+  .arcada{grid-template-columns:1fr}
+  .casa-hotel{grid-template-columns:1fr}
+  .casa-hotel-foto{min-height:70svh}
+  .casa-hotel-foto .arco{right:var(--margen);bottom:-48px;width:44%}
+  .casa-hotel-texto{padding:calc(var(--tramo) + 24px) var(--margen) var(--tramo)}
+  .calendario{grid-template-columns:repeat(6,minmax(0,1fr));row-gap:20px}
+  .mes .barra{height:110px}
+  .pasos{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<a class="saltar" href="#principal">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-sombra" aria-hidden="true"><div class="nav-fondo"></div></div>
+  <div class="nav-capsula">
+    <a class="marca" href="index.html" aria-label="Isla Blanca, home">Isla Blanca</a>
+    <nav class="nav-enlaces" aria-label="Main">
+      <a href="villas.html">The houses</a>
+      <a href="index.html#cuando">When to come</a>
+      <a href="index.html#reservar">How booking works</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-acciones">
+      <a class="boton boton--buganvilla" href="contact.html">Request to book</a>
+      <button class="nav-menu" type="button" aria-expanded="false" aria-controls="panel-movil" aria-label="Open the menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="panel-movil" id="panel-movil">
+    <a href="villas.html">The houses</a>
+    <a href="index.html#cuando">When to come</a>
+    <a href="index.html#reservar">How booking works</a>
+    <a href="contact.html">Contact</a>
+    <a class="boton boton--buganvilla" href="contact.html">Request to book</a>
+  </div>
+</header>
+
+<main id="principal">
+
+  <!-- The white wall at noon. Scroll, and the arch opens: you step into the house. -->
+  <section class="entrada-arco" aria-labelledby="titulo">
+    <div class="escena">
+      <img class="sombra-pergola" src="assets/img/pergola.png" alt="" aria-hidden="true">
+      <h1 class="titular" id="titulo"><span class="l1">Six white houses</span> <span class="l2">by the Balearic sea.</span></h1>
+      <p class="escena-lema">Whitewashed villas with private pools, booked by request and looked after by people who live on the islands.</p>
+      <div class="ventana">
+        <img src="assets/photos/can-sal-blanca.jpg" alt="Can Sal Blanca: a whitewashed house with arched windows behind a long swimming pool" width="2000" height="2500" fetchpriority="high">
+      </div>
+      <a class="placa placa--grande" href="villa.html"><span class="placa-nombre">Can Sal Blanca</span><span class="placa-lugar">Ibiza · Sant Josep</span></a>
+      <div class="escena-entrar">
+        <p>A two-hundred-year-old farmhouse, ten guests, a fourteen-metre pool above Cala d’Hort.</p>
+        <a class="boton boton--buganvilla" href="villa.html">Step inside
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <div class="albardilla">
+    <div class="envoltorio albardilla-fila">
+      <p class="albardilla-datos">
+        <span>From <b class="cifra">€480</b>a night</span>
+        <span><b class="cifra">6</b>houses</span>
+        <span><b class="cifra">4</b>islands</span>
+        <span>Open May to October</span>
+      </p>
+      <a class="enlace" href="villas.html">All the houses
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+  <section class="piscina piscina--honda piscina--portada" aria-labelledby="t-piscina">
+    <div class="piscina-agua" data-piscina data-escala="1.15" aria-hidden="true"></div>
+    <div class="envoltorio piscina-texto">
+      <h2 class="palabra" id="t-piscina" style="--ancho:8.749;--ancho-movil:5.572"><span>A pool</span> <span>of your own</span></h2>
+    </div>
+  </section>
+
+  <!-- The houses -->
+  <section class="casas" aria-labelledby="t-casas">
+    <div class="envoltorio">
+      <div class="cabeza">
+        <h2 id="t-casas">Six houses, four islands</h2>
+        <p class="entrada">Whitewashed villas with private pools in Ibiza, Formentera, Mallorca and Menorca. Each one a family house with its own garden and view of the sea: no shared walls, no reception desk.</p>
+      </div>
+    </div>
+    <div class="arcada">
+        <a class="casa" href="villa.html">
+          <div class="arco"><img src="assets/photos/can-sal-blanca.jpg" alt="Can Sal Blanca, Ibiza" loading="lazy" width="2000" height="2500"></div>
+          <span class="placa"><span class="placa-nombre">Can Sal Blanca</span><span class="placa-lugar">Ibiza · Sant Josep</span></span>
+          <span class="casa-datos"><span><b>10</b> guests</span><span><b>5</b> bedrooms</span><span>from <b>€650</b> a night</span></span>
+        </a>
+        <a class="casa" href="villa.html">
+          <div class="arco"><img src="assets/photos/sa-corba.jpg" alt="Sa Corba, Mallorca" loading="lazy" width="1800" height="970"></div>
+          <span class="placa"><span class="placa-nombre">Sa Corba</span><span class="placa-lugar">Mallorca · Andratx</span></span>
+          <span class="casa-datos"><span><b>8</b> guests</span><span><b>4</b> bedrooms</span><span>from <b>€720</b> a night</span></span>
+        </a>
+        <a class="casa" href="villa.html">
+          <div class="arco"><img src="assets/photos/can-terrassa.jpg" alt="Can Terrassa, Formentera" loading="lazy" width="1600" height="2000"></div>
+          <span class="placa"><span class="placa-nombre">Can Terrassa</span><span class="placa-lugar">Formentera · Es Caló</span></span>
+          <span class="casa-datos"><span><b>6</b> guests</span><span><b>3</b> bedrooms</span><span>from <b>€540</b> a night</span></span>
+        </a>
+        <a class="casa" href="villa.html">
+          <div class="arco"><img src="assets/photos/es-penyal.jpg" alt="Es Penyal, Mallorca" loading="lazy" width="1600" height="2372"></div>
+          <span class="placa"><span class="placa-nombre">Es Penyal</span><span class="placa-lugar">Mallorca · Cala Sant Vicenç</span></span>
+          <span class="casa-datos"><span><b>8</b> guests</span><span><b>4</b> bedrooms</span><span>from <b>€690</b> a night</span></span>
+        </a>
+        <a class="casa" href="villa.html">
+          <div class="arco"><img src="assets/photos/sa-cala.jpg" alt="Sa Cala, Menorca" loading="lazy" width="1600" height="2391"></div>
+          <span class="placa"><span class="placa-nombre">Sa Cala</span><span class="placa-lugar">Menorca · Cala Morell</span></span>
+          <span class="casa-datos"><span><b>6</b> guests</span><span><b>3</b> bedrooms</span><span>from <b>€480</b> a night</span></span>
+        </a>
+        <a class="casa" href="villa.html">
+          <div class="arco"><img src="assets/photos/can-olivera.jpg" alt="Can Olivera, Mallorca" loading="lazy" width="1800" height="1013"></div>
+          <span class="placa"><span class="placa-nombre">Can Olivera</span><span class="placa-lugar">Mallorca · Pollença</span></span>
+          <span class="casa-datos"><span><b>12</b> guests</span><span><b>6</b> bedrooms</span><span>from <b>€780</b> a night</span></span>
+        </a>
+    </div>
+    <div class="casas-pie"><a class="boton boton--linea" href="villas.html">Compare the houses</a></div>
+  </section>
+
+  <!-- A house, not a hotel -->
+  <section class="casa-hotel" aria-labelledby="t-casa">
+    <div class="casa-hotel-foto">
+      <img src="assets/photos/palmera-cal.jpg" alt="A palm tree over a whitewashed wall against a turquoise sky" loading="lazy" width="1400" height="2100">
+      <div class="arco"><img src="assets/photos/buganvilla-puerta.jpg" alt="Bougainvillea over a white doorway" loading="lazy" width="1400" height="2105"></div>
+    </div>
+    <div class="casa-hotel-texto">
+      <h2 id="t-casa">A house, not a hotel</h2>
+      <p class="entrada" style="margin-top:24px">You get the keys to the whole place and a host who lives twenty minutes away. Everything else is there if you want it, and out of sight if you don’t.</p>
+      <ul class="incluye">
+        <li><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22V11l9-7 9 7v11"/><path d="M10 22v-6h6v6"/></svg>
+          <div><b>Housekeeping every morning</b><span>Fresh linen and towels twice a week.</span></div></li>
+        <li><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19.5 6.5 15A8 8 0 1 1 10 18.6Z"/><path d="M10 11h6M10 14h4"/></svg>
+          <div><b>A host on the island</b><span>One person, one phone number, from arrival to goodbye.</span></div></li>
+        <li><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 12a7 7 0 0 1 14 0Z"/><path d="M4 12h18M8 16h10l-1 6H9Z"/></svg>
+          <div><b>Private chef on request</b><span>Breakfast, a long lunch or dinner by the pool.</span></div></li>
+        <li><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18h20l-3 4H6Z"/><path d="M13 3v15M13 4l7 11h-7"/></svg>
+          <div><b>Boat days to the coves</b><span>A skipper and a day you plan together.</span></div></li>
+        <li><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 15l20-6-3 9-7-2-3 5-1-6Z"/></svg>
+          <div><b>Airport transfer both ways</b><span>Someone waiting at arrivals with your name.</span></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- When to come -->
+  <section class="cuando" id="cuando" aria-labelledby="t-cuando">
+    <div class="envoltorio">
+      <div class="cabeza">
+        <h2 id="t-cuando">When to come</h2>
+        <p class="entrada">The houses open from May to October. Prices follow the sea: warm and quiet at either end, full and bright in July and August.</p>
+      </div>
+      <div class="calendario" role="list" aria-label="Season by month">
+        <div class="mes" role="listitem"><div class="barra"></div><span>Jan</span></div>
+        <div class="mes" role="listitem"><div class="barra"></div><span>Feb</span></div>
+        <div class="mes" role="listitem"><div class="barra"></div><span>Mar</span></div>
+        <div class="mes" role="listitem"><div class="barra"></div><span>Apr</span></div>
+        <div class="mes baja" role="listitem"><div class="barra"></div><span>May</span></div>
+        <div class="mes media" role="listitem"><div class="barra"></div><span>Jun</span></div>
+        <div class="mes alta" role="listitem"><div class="barra"></div><span>Jul</span></div>
+        <div class="mes alta" role="listitem"><div class="barra"></div><span>Aug</span></div>
+        <div class="mes media" role="listitem"><div class="barra"></div><span>Sep</span></div>
+        <div class="mes baja" role="listitem"><div class="barra"></div><span>Oct</span></div>
+        <div class="mes" role="listitem"><div class="barra"></div><span>Nov</span></div>
+        <div class="mes" role="listitem"><div class="barra"></div><span>Dec</span></div>
+      </div>
+      <div class="leyenda">
+        <div><i style="background:var(--anil-claro)"></i><p><b>Low</b><small>May and October · from €480 a night</small></p></div>
+        <div><i style="background:#6F86C6"></i><p><b>Mid</b><small>June and September · from €760 a night</small></p></div>
+        <div><i style="background:var(--anil)"></i><p><b>High</b><small>July and August · from €1,180 a night</small></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How booking works -->
+  <section class="reservar tramo--anil" id="reservar" aria-labelledby="t-reservar">
+    <div class="envoltorio">
+      <div>
+        <h2 id="t-reservar">How booking works</h2>
+        <p class="entrada" style="margin-top:22px">No calendar to fight with. Tell us when and who, and a person answers.</p>
+      </div>
+      <ol class="pasos">
+        <li class="paso"><span class="cifra">1</span><h3>Send a request</h3><p>The house, your dates and how many of you. It takes a minute and commits you to nothing.</p></li>
+        <li class="paso"><span class="cifra">2</span><h3>We reply within a day</h3><p>Availability, the price for your dates and anything the house needs you to know.</p></li>
+        <li class="paso"><span class="cifra">3</span><h3>Confirm with a deposit</h3><p>30% to hold the dates, the rest thirty days before you arrive.</p></li>
+      </ol>
+      <p class="reservar-nota">Free cancellation up to 60 days before arrival.</p>
+    </div>
+  </section>
+
+  <!-- The ask, once: where the wall meets the pool -->
+  <section class="borde" aria-labelledby="t-fechas">
+    <div class="borde-pared pared">
+      <img class="sombra-pergola" src="assets/img/pergola.png" alt="" aria-hidden="true">
+      <h2 id="t-fechas">Your dates, answered by a person</h2>
+      <p class="entrada">Tell us the house, the nights and who is coming. We reply within a day with availability and the price.</p>
+      <div class="borde-acciones">
+        <a class="boton boton--buganvilla" href="contact.html">Request to book</a>
+        <a class="enlace" href="tel:+34971000000">Or call +34 971 000 000</a>
+        <a class="enlace" href="https://wa.me/34971000000">WhatsApp</a>
+      </div>
+    </div>
+    <div class="canto" aria-hidden="true"></div>
+    <div class="piscina" aria-hidden="true"><div class="piscina-agua" data-piscina data-escala="0.9"></div></div>
+  </section>
+
+</main>
+
+<footer class="pie">
+  <div class="envoltorio">
+    <div class="pie-rej">
+      <div>
+        <p style="margin-top:0">Whitewashed holiday villas with private pools in the Balearic Islands.</p>
+      </div>
+      <div>
+        <h3>The houses</h3>
+        <ul>
+          <li><a href="villas.html?isla=ibiza">Ibiza</a></li>
+          <li><a href="villas.html?isla=formentera">Formentera</a></li>
+          <li><a href="villas.html?isla=mallorca">Mallorca</a></li>
+          <li><a href="villas.html?isla=menorca">Menorca</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Staying</h3>
+        <ul>
+          <li><a href="index.html#cuando">When to come</a></li>
+          <li><a href="index.html#reservar">How booking works</a></li>
+          <li><a href="contact.html">Request to book</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Talk to us</h3>
+        <ul>
+          <li><a href="mailto:hello@islablanca.example">hello@islablanca.example</a></li>
+          <li><a href="tel:+34971000000">+34 971 000 000</a></li>
+          <li>Passeig des Molí 4, Ibiza</li>
+        </ul>
+      </div>
+    </div>
+    <p class="pie-nombre" aria-hidden="true">Isla Blanca</p>
+    <div class="pie-base">
+      <span>© 2026 Isla Blanca Villas</span>
+      <span>Photography: Unsplash</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/lustre.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

@@ -3,8 +3,8 @@ titulo: Plantillas Framer
 tipo: proyecto
 categoria: Producto
 estado: activo
-siguiente: "13-oct: DECIDIDO hacer UNA plantilla de prueba: villas de lujo y alquiler vacacional, con la luz de piscina de Lustre como seña (en el Marketplace hay solo 27 de inmobiliaria y ninguna de villas con piscina). Paso 1 (Claude): la plantilla en HTML, comprobada en todos los anchos. Paso 2 (Alejandro): pasarla a Framer con la extensión oficial HTML to Framer, sección a sección. Paso 3: móvil, catálogo de villas (CMS) y Lustre de fondo en Framer. Paso 4: vista previa publicada y anuncio (necesita el cobro de Lemon Squeezy). Después, medir 4-6 semanas: si vende, 5-10 más en otros nichos con demanda."
-conversaciones: 0
+siguiente: "13-oct: plantilla «Isla Blanca» rediseñada a nivel de premio (arco que se abre, todo a pantalla completa) en villas/; los 8 arreglos del revisor, resueltos. FALTA: 3 regresiones de la 2.ª revisión (velo del listado solo tras el nombre; el lugar debajo del nombre; quitar el agua vacía bajo la petición en móvil), visto bueno final, DESIGN.md y la guía para pasarla a Framer (Alejandro)."
+conversaciones: 1
 tags: [proyecto, producto, pasivo, framer, plantillas]
 ---
 
@@ -34,6 +34,17 @@ Detalle y fuentes en [[Productos/Haze/Lustre|Lustre]] → «¿Dónde se vende de
 - **Páginas (v1):** Inicio · Villas (listado) · Ficha de villa · Contacto y reserva.
 - **Precio pensado:** 69-79 $.
 - **Nombre:** por decidir.
+
+## Estado (13-oct-2026)
+
+- Carpeta: `Productos/Plantillas Framer/villas/` (4 páginas HTML; se abren con Live Server o `python -m http.server`). Nombre de trabajo: **Isla Blanca**.
+- Rediseño a nivel de premio hecho y revisado: [[Productos/Plantillas Framer/2026-10-13 - Isla Blanca, rediseño a nivel de premio|conversación del 13-oct]].
+- Pendiente: 3 regresiones (A-C, en la conversación), visto bueno final, `DESIGN.md` y la guía de Framer.
+- Las capturas de revisión (`villas/.impeccable/review/`, ~45 MB) no se suben: se regeneran con `web-check.mjs`.
+
+## Conversaciones
+
+- [[Productos/Plantillas Framer/2026-10-13 - Isla Blanca, rediseño a nivel de premio|2026-10-13 — Isla Blanca, rediseño a nivel de premio]]
 
 ## Cómo se hace
 

@@ -1,0 +1,289 @@
+/* Isla Blanca — holiday villa template
+   One system for the four pages. Full screen and full width: sections own
+   the viewport, media runs edge to edge, text keeps a readable measure.
+   Plain flex and grid only, so every block imports into Framer as stacks
+   and frames. Breakpoints follow Framer: desktop ≥1200, tablet 810–1199,
+   phone <810. */
+
+:root{
+  /* lime-wash, never cream */
+  --cal:#F6F6F1;
+  --cal-plano:#EDEEE7;
+  --azulejo:#FBFBF8;
+  /* noon shadow on white walls */
+  --sombra:#7C88B8;
+  /* Ibiza indigo of doors and shutters */
+  --anil:#1E3F8F;
+  --anil-hondo:#14296A;
+  --anil-claro:#C9D3EC;
+  /* text */
+  --tinta:#1B2440;
+  --tinta-suave:#465074;
+  /* bougainvillea: the one action colour */
+  --buganvilla:#C42B76;
+  --buganvilla-hondo:#A51F61;
+  /* coping stone */
+  --piedra:#DDD3C1;
+  --piedra-linea:#BFB29A;
+  --agua:#1B7FA6;
+
+  --serif:"Young Serif",Georgia,serif;
+  --sans:"Hanken Grotesk",system-ui,sans-serif;
+
+  --margen:clamp(20px,4vw,72px);
+  --tramo:clamp(96px,12vw,184px);
+  --curva:cubic-bezier(.16,1,.3,1);
+  --peso:cubic-bezier(.65,0,.35,1);
+  --alto-albardilla:64px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+/* hidden always wins: the island filter and the sent state rely on it */
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cal);color:var(--tinta);font:400 1.0625rem/1.6 var(--sans);
+  font-feature-settings:"kern","liga";-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+::selection{background:var(--anil);color:#fff}
+:focus-visible{outline:2px solid var(--buganvilla);outline-offset:3px;border-radius:4px}
+html{scrollbar-color:var(--anil-claro) var(--cal)}
+input,select,textarea,button{font:inherit;color:inherit}
+input,textarea{caret-color:var(--buganvilla)}
+
+/* Full width: the margin is the only frame. Text measures are set per element. */
+.envoltorio{width:100%;padding-left:var(--margen);padding-right:var(--margen)}
+.solo-lector{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.saltar{position:fixed;left:12px;top:-60px;background:var(--anil);color:#fff;padding:10px 16px;border-radius:8px;z-index:60;text-decoration:none}
+.saltar:focus{top:12px}
+
+/* ── Type: the scale is the statement ─────────────────────────────────── */
+h1,h2,h3{font-family:var(--serif);font-weight:400;color:var(--anil);margin:0;letter-spacing:-.02em}
+h1{font-size:clamp(3.4rem,8.4vw,9.25rem);line-height:.96}
+h2{font-size:clamp(2.6rem,5.6vw,6rem);line-height:1}
+h3{font-size:clamp(1.5rem,2.1vw,2rem);line-height:1.15}
+p{margin:0}
+.entrada{font-size:clamp(1.15rem,1.5vw,1.42rem);line-height:1.55;color:var(--tinta-suave);max-width:40em}
+.cifra{font-family:var(--serif);font-variant-numeric:tabular-nums lining-nums}
+
+/* ── Buttons: door-shaped, rounded at the top like the island doorways ─── */
+.boton{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:0 30px;
+  border-radius:28px 28px 8px 8px;border:1.5px solid transparent;font-weight:600;font-size:1.02rem;letter-spacing:.005em;
+  text-decoration:none;cursor:pointer;transition:background-color .45s var(--curva),color .45s var(--curva),border-color .45s var(--curva),transform .45s var(--curva)}
+.boton svg{width:18px;height:18px;flex:none}
+.boton--buganvilla{background:var(--buganvilla);color:#fff}
+.boton--buganvilla:hover{background:var(--buganvilla-hondo)}
+.boton--anil{background:var(--anil);color:#fff}
+.boton--anil:hover{background:var(--anil-hondo)}
+.boton--linea{border-color:var(--anil);color:var(--anil);background:transparent}
+.boton--linea:hover{background:var(--anil);color:#fff}
+.boton:active{transform:translateY(1px)}
+.boton[disabled]{opacity:.55;cursor:not-allowed}
+
+.enlace{display:inline-flex;align-items:center;gap:8px;color:var(--anil);font-weight:600;text-decoration:underline;
+  text-decoration-thickness:1.5px;text-underline-offset:6px;text-decoration-color:var(--anil-claro);transition:text-decoration-color .3s}
+.enlace:hover{text-decoration-color:var(--buganvilla)}
+.enlace svg{width:16px;height:16px}
+.enlace--claro{color:#fff;text-decoration-color:rgba(201,211,236,.6)}
+.enlace--claro:hover{text-decoration-color:#fff}
+
+/* ── Navigation: a floating capsule ───────────────────────────────────────
+   At the top it is the page's own row. Once the page moves, a capsule of
+   lime-wash closes in around it, slowly and with a little weight. Only the
+   capsule's clip, its shadow and the content's position move: nothing that
+   makes the browser lay the page out again. */
+.nav{position:fixed;top:0;left:0;right:0;z-index:40;height:84px}
+.nav-sombra{position:absolute;inset:0;filter:drop-shadow(0 0 0 rgba(27,36,64,0));transition:filter 1.1s var(--peso) .06s}
+.nav-fondo{position:absolute;inset:0;background:rgba(246,246,241,.94);opacity:0;
+  clip-path:inset(0 0 0 0 round 0);transition:clip-path 1.1s var(--peso) .06s,opacity .7s var(--peso) .06s}
+.nav-capsula{position:relative;display:flex;align-items:center;justify-content:space-between;gap:24px;height:100%;padding:0 var(--margen)}
+.nav-capsula>*{transition:transform 1.1s var(--peso) .06s}
+.nav.flotando .nav-sombra{filter:drop-shadow(0 14px 22px rgba(27,36,64,.2))}
+.nav.flotando .nav-fondo{opacity:1;clip-path:inset(12px var(--margen) 2px var(--margen) round 999px)}
+.nav.flotando .marca{transform:translate(26px,5px)}
+.nav.flotando .nav-enlaces{transform:translateY(5px)}
+.nav.flotando .nav-acciones{transform:translate(-8px,5px)}
+@media (hover:hover) and (pointer:fine){
+  .nav-fondo{background:rgba(246,246,241,.82);-webkit-backdrop-filter:saturate(1.2) blur(14px);backdrop-filter:saturate(1.2) blur(14px)}
+}
+.marca{font-family:var(--serif);font-size:1.65rem;color:var(--anil);text-decoration:none;letter-spacing:-.01em;white-space:nowrap}
+.nav-enlaces{display:flex;align-items:center;gap:36px}
+.nav-enlaces a{text-decoration:none;font-weight:500;font-size:1rem;color:var(--tinta);padding:6px 0;
+  border-bottom:1.5px solid transparent;transition:border-color .3s,color .3s}
+.nav-enlaces a:hover{color:var(--anil);border-color:var(--anil-claro)}
+.nav-enlaces a[aria-current="page"]{color:var(--anil);border-color:var(--buganvilla)}
+.nav-acciones{display:flex;align-items:center;gap:12px}
+.nav-acciones .boton{min-height:48px;padding:0 24px;font-size:.98rem;border-radius:999px}
+.nav-menu{display:none;width:48px;height:48px;align-items:center;justify-content:center;border:1.5px solid var(--anil);
+  border-radius:999px;background:var(--azulejo);color:var(--anil);cursor:pointer}
+.nav-menu svg{width:22px;height:22px}
+.panel-movil{display:none}
+/* over a full-screen photo the bar starts in white, until it lifts into the capsule */
+.sobre-foto .nav:not(.flotando) .marca,.sobre-foto .nav:not(.flotando) .nav-enlaces a{color:#fff}
+.sobre-foto .nav:not(.flotando) .nav-enlaces a:hover{border-color:rgba(255,255,255,.6)}
+.sobre-foto .nav:not(.flotando) .nav-menu{background:transparent;border-color:#fff;color:#fff}
+
+/* ── Arched openings (photos set into the wall) ───────────────────────── */
+.arco{position:relative;overflow:hidden;border-radius:999px 999px 10px 10px;background:var(--cal-plano)}
+.arco img{width:100%;height:100%;object-fit:cover}
+
+/* ── Ceramic name tiles (Balearic house-name plaques) ───────────────────
+   Glazed white, one blue line painted a few millimetres in from the edge,
+   the light catching the glaze at the top. Set into the wall, not framed. */
+.placa{text-decoration:none;display:inline-flex;flex-direction:column;gap:3px;padding:15px 24px 14px;border-radius:7px;
+  background:linear-gradient(168deg,#fff 0%,var(--azulejo) 45%);
+  box-shadow:inset 0 0 0 6px var(--azulejo),inset 0 0 0 7.5px var(--anil),0 0 0 1px rgba(30,63,143,.14),0 10px 16px -12px rgba(27,36,64,.5)}
+.placa-nombre{font-family:var(--serif);font-size:1.4rem;line-height:1.1;color:var(--anil);white-space:nowrap}
+.placa-lugar{font-size:.85rem;font-weight:500;color:var(--tinta-suave);white-space:nowrap}
+.placa--grande{padding:20px 32px 18px}
+.placa--grande .placa-nombre{font-size:clamp(1.7rem,2.6vw,2.6rem)}
+.placa--grande .placa-lugar{font-size:.95rem}
+
+/* ── Facts strip: the villa's credits, always in the same places ──────── */
+.creditos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1.5px solid var(--anil);border-bottom:1.5px solid var(--anil)}
+.creditos>div{padding:18px 18px 16px;display:flex;flex-direction:column;gap:4px}
+.creditos>div+div{border-left:1px solid var(--anil-claro)}
+.creditos .cifra{font-size:clamp(1.6rem,2.3vw,2.4rem);line-height:1;color:var(--anil);white-space:nowrap}
+.creditos .rotulo{font-size:.88rem;color:var(--tinta-suave)}
+
+/* ── Season band: price a night, low / mid / high ─────────────────────── */
+.temporadas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:10px;overflow:hidden;
+  background:var(--azulejo);border:1.5px solid var(--anil-claro)}
+.temporadas>div{padding:14px 18px;display:flex;flex-direction:column;gap:2px}
+.temporadas>div+div{border-left:1px solid var(--anil-claro)}
+.temporadas .meses{font-size:.82rem;color:var(--tinta-suave)}
+.temporadas .precio{font-family:var(--serif);font-size:1.5rem;color:var(--anil);font-variant-numeric:tabular-nums lining-nums;white-space:nowrap}
+.temporadas .precio small{font-family:var(--sans);font-size:.78rem;color:var(--tinta-suave)}
+.temporadas .alta{background:var(--anil)}
+.temporadas .alta .meses,.temporadas .alta .precio small{color:var(--anil-claro)}
+.temporadas .alta .precio{color:#fff}
+
+/* ── The pool: Lustre caustics, under a stone coping ──────────────────── */
+.piscina{position:relative;background:var(--agua);overflow:hidden}
+.piscina-agua{position:absolute;inset:0}
+.albardilla{position:relative;z-index:2;border-top:1px solid var(--piedra-linea);
+  background:linear-gradient(to bottom,var(--piedra) calc(100% - 3px),#C9BDA6 calc(100% - 3px))}
+.albardilla-fila{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 28px;
+  min-height:var(--alto-albardilla);padding-top:10px;padding-bottom:10px;font-size:1rem}
+.albardilla-fila b{font-family:var(--serif);font-weight:400;font-size:1.35rem;color:var(--anil);margin-right:4px}
+.albardilla-datos{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 30px}
+
+/* a word set in the water, edge to edge. --ancho is the word's width in
+   ems (measured in Young Serif), so the size fits the line exactly.
+   The deep end: a blue laid over the light in multiply, so the brightest
+   glint of the caustics stays a pale blue and white type keeps 3:1 on it */
+.piscina--honda::after{content:"";position:absolute;inset:0;background:#6E96B4;mix-blend-mode:multiply;pointer-events:none}
+.piscina-texto{position:relative;z-index:1;container-type:inline-size;color:#fff;
+  padding-top:clamp(64px,8vw,128px);padding-bottom:clamp(64px,8vw,128px)}
+.palabra{color:#fff;font-size:calc(100cqi / var(--ancho));line-height:.88;letter-spacing:-.03em;white-space:nowrap;
+  text-shadow:0 2px 36px rgba(6,38,70,.32)}
+
+/* ── The edge: where the wall meets the pool. The ask, once per page ───── */
+.borde{display:grid;grid-template-columns:minmax(0,1fr) clamp(14px,1.3vw,22px) minmax(0,1fr);min-height:100svh}
+.borde-pared{display:flex;flex-direction:column;justify-content:center;padding:var(--tramo) clamp(40px,6vw,112px) var(--tramo) var(--margen)}
+.borde-pared h2{font-size:clamp(2.8rem,5.4vw,6rem);max-width:9em}
+.borde-pared .entrada{margin-top:24px;max-width:28em;color:var(--tinta)}
+.borde-acciones{display:flex;flex-wrap:wrap;align-items:center;gap:18px 32px;margin-top:44px}
+.canto{background:linear-gradient(to right,var(--piedra) calc(100% - 3px),#C9BDA6 calc(100% - 3px));border-left:1px solid var(--piedra-linea)}
+
+/* ── Pergola shadow on the wall ───────────────────────────────────────── */
+.pared{position:relative;overflow:hidden;background:var(--cal)}
+.sombra-pergola{position:absolute;top:-6%;left:-8%;width:118%;height:118%;max-width:none;object-fit:cover;
+  pointer-events:none;user-select:none;animation:pergola 46s var(--curva) infinite alternate}
+@keyframes pergola{from{transform:translate3d(0,0,0)}to{transform:translate3d(-4%,2.5%,0)}}
+.pared>*:not(.sombra-pergola){position:relative;z-index:1}
+
+/* ── Sections own the screen ──────────────────────────────────────────── */
+.pantalla{min-height:100svh}
+.tramo{padding:var(--tramo) 0}
+.tramo--plano{background:var(--cal-plano)}
+.tramo--anil{background:var(--anil);color:#fff}
+.tramo--anil h2,.tramo--anil h3{color:#fff}
+.tramo--anil .entrada{color:var(--anil-claro)}
+.cabeza{display:flex;align-items:flex-end;justify-content:space-between;gap:48px;margin-bottom:clamp(48px,6vw,96px)}
+.cabeza h2{max-width:12em}
+.cabeza .entrada{max-width:30em}
+
+/* header of an inner page: the wall, the shadow and a title at full scale */
+.cab-pagina{display:flex;flex-direction:column;justify-content:flex-end;gap:28px;min-height:min(100svh,980px);
+  padding-top:160px;padding-bottom:clamp(56px,8vw,112px)}
+.cab-pagina h1{max-width:10em}
+
+/* ── Forms ────────────────────────────────────────────────────────────── */
+.campo{display:flex;flex-direction:column;gap:8px}
+.campo label{font-size:.9rem;font-weight:600;color:var(--tinta)}
+.campo input:not([type=checkbox]),.campo select,.campo textarea{width:100%;min-width:0;padding:0 16px;border-radius:10px;border:1.5px solid #CDD3E3;
+  background:#fff;transition:border-color .25s,box-shadow .25s}
+.campo input:not([type=checkbox]),.campo select{height:54px}
+.campo textarea{min-height:136px;padding:14px 16px;resize:vertical;line-height:1.5}
+.campo input:not([type=checkbox]):hover,.campo select:hover,.campo textarea:hover{border-color:var(--anil-claro)}
+.campo input:not([type=checkbox]):focus,.campo select:focus,.campo textarea:focus{outline:none;border-color:var(--anil);box-shadow:0 0 0 4px rgba(30,63,143,.12)}
+.campo input::placeholder,.campo textarea::placeholder{color:#6B7392}
+.campo[data-error] input,.campo[data-error] select{border-color:var(--buganvilla)}
+.campo .error{display:none;font-size:.88rem;color:var(--buganvilla-hondo);font-weight:500}
+.campo[data-error] .error{display:block}
+.campo .ayuda{font-size:.88rem;color:var(--tinta-suave)}
+/* the native date picker glyph, in indigo */
+.campo input[type=date]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:1;width:18px;height:18px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E3F8F' stroke-width='1.75' stroke-linecap='round'%3E%3Crect x='3.5' y='5' width='17' height='15.5' rx='2.5'/%3E%3Cpath d='M3.5 10h17M8 3v4M16 3v4'/%3E%3C/svg%3E") center/18px no-repeat}
+/* checkbox drawn in the system: a 22 px indigo square that fills with a tick */
+input[type=checkbox]{appearance:none;-webkit-appearance:none;width:22px;height:22px;min-height:0;padding:0;flex:none;margin:2px 0 0;
+  border:1.5px solid var(--anil);border-radius:5px;background:#fff center/14px no-repeat;cursor:pointer;transition:background-color .2s}
+input[type=checkbox]:checked{background-color:var(--anil);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8.5l3.2 3L13 4.5'/%3E%3C/svg%3E")}
+.campo[data-error] input[type=checkbox]{border-color:var(--buganvilla)}
+
+/* ── Footer: the name across the whole width ──────────────────────────── */
+.pie{background:var(--anil-hondo);color:var(--anil-claro);padding:clamp(72px,9vw,128px) 0 32px;overflow:hidden}
+.pie>.envoltorio{container-type:inline-size}
+.pie-rej{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
+.pie p{color:var(--anil-claro);max-width:24em}
+.pie h3{font-family:var(--sans);font-size:.92rem;font-weight:600;color:#fff;letter-spacing:0;margin-bottom:14px}
+.pie ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.pie a{text-decoration:none;color:var(--anil-claro);transition:color .25s}
+.pie a:hover{color:#fff}
+/* 5.104 = the width of «Isla Blanca» in ems: the name runs margin to margin */
+.pie-nombre{font-family:var(--serif);color:#fff;font-size:calc(100cqi / 5.104);line-height:.8;letter-spacing:-.04em;white-space:nowrap;
+  margin:clamp(56px,8vw,112px) 0 0;opacity:.96}
+.pie-base{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:28px;padding-top:22px;
+  border-top:1px solid rgba(201,211,236,.25);font-size:.9rem}
+
+/* ── Motion: the page has one authored movement, stepping in through the
+   arch (home). Content is never hidden waiting for an animation: it has to
+   be there for anyone, and for the HTML to Framer import. */
+@media (prefers-reduced-motion:reduce){
+  .sombra-pergola{animation:none}
+  .nav-sombra,.nav-fondo,.nav-capsula>*{transition:none}
+}
+
+/* ── Tablet ───────────────────────────────────────────────────────────── */
+@media (max-width:1199px){
+  .nav-enlaces{gap:24px}
+  .temporadas .precio small{display:block}
+  .pie-rej{grid-template-columns:1fr 1fr;row-gap:48px}
+}
+/* ── Phone ────────────────────────────────────────────────────────────── */
+@media (max-width:809px){
+  .nav{height:76px}
+  .nav.flotando .nav-fondo{clip-path:inset(10px 12px 2px 12px round 999px)}
+  .nav.flotando .marca{transform:translate(8px,4px)}
+  .nav.flotando .nav-acciones{transform:translate(-6px,4px)}
+  .nav-enlaces,.nav-acciones .boton{display:none}
+  .nav-menu{display:inline-flex}
+  .panel-movil{position:fixed;inset:0;z-index:-1;background:var(--cal);padding:112px var(--margen) 32px;flex-direction:column;gap:2px}
+  .panel-movil.abierto{display:flex}
+  .panel-movil a:not(.boton){padding:14px 0;font-family:var(--serif);font-size:2rem;color:var(--anil);text-decoration:none;border-bottom:1px solid var(--cal-plano)}
+  .panel-movil .boton{margin-top:24px}
+  .cabeza{flex-direction:column;align-items:flex-start;gap:20px}
+  .creditos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .creditos>div:nth-child(3){border-left:0}
+  .creditos>div:nth-child(n+3){border-top:1px solid var(--anil-claro)}
+  .temporadas .precio{font-size:1.2rem}
+  .pie-rej{grid-template-columns:1fr}
+  .cab-pagina{min-height:auto;padding-top:128px}
+  .palabra{font-size:calc(100cqi / var(--ancho-movil))}
+  .palabra span{display:block}
+  .borde{grid-template-columns:1fr;min-height:0}
+  .borde-pared{padding:var(--tramo) var(--margen)}
+  .borde>.canto,.borde>.piscina{display:none}
+}

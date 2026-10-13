@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Request to book — Isla Blanca</title>
+<meta name="description" content="Tell us the house, the dates and who is coming. A person replies within a day with availability and the price for your nights.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/site.css">
+<style>
+/* half the screen is the door, held still; the other half is the letter */
+.contacto{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);min-height:100svh}
+.contacto-foto{position:relative}
+.contacto-foto-fija{position:sticky;top:0;height:100svh;overflow:hidden}
+.contacto-foto-fija img{width:100%;height:100%;object-fit:cover;object-position:center 60%}
+.contacto-foto-fija .placa{position:absolute;left:var(--margen);bottom:48px}
+.contacto-texto{padding:160px var(--margen) var(--tramo) clamp(40px,6vw,112px)}
+.contacto-texto h1{font-size:clamp(3.2rem,7vw,8rem)}
+.contacto-texto>.entrada{margin-top:24px;max-width:30em}
+
+.formulario{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 20px;margin-top:clamp(48px,6vw,80px)}
+.formulario .ancho{grid-column:1/-1}
+.formulario fieldset{border:0;margin:0;padding:0;display:contents}
+.formulario legend{grid-column:1/-1;font-family:var(--serif);font-size:clamp(1.6rem,2.2vw,2.2rem);color:var(--anil);padding:0;margin-top:16px}
+.formulario legend:first-child{margin-top:0}
+.consentimiento{display:flex;gap:14px;align-items:flex-start;font-size:1rem;color:var(--tinta-suave)}
+.formulario .boton{justify-self:start;min-width:240px}
+.enviada{display:flex;flex-direction:column;gap:18px;align-items:flex-start;margin-top:clamp(48px,6vw,80px);padding:clamp(32px,4vw,52px);
+  background:var(--azulejo);border:1.5px solid var(--anil-claro);border-radius:16px}
+.enviada:focus{outline:none}
+.enviada h2{font-size:clamp(2.2rem,3.6vw,3.4rem)}
+.enviada p{color:var(--tinta-suave);max-width:32em;font-size:1.08rem}
+
+.vias-rej{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,4vw,64px);margin-top:clamp(72px,8vw,120px);
+  padding-top:clamp(40px,4vw,56px);border-top:1.5px solid var(--anil)}
+.vias-rej h2{font-size:clamp(1.7rem,2.4vw,2.3rem);margin-bottom:18px}
+.vias{list-style:none;margin:0;padding:0}
+.vias li{padding:14px 0;border-bottom:1px solid var(--anil-claro);display:flex;flex-direction:column;gap:2px}
+.vias span{font-size:.88rem;color:var(--tinta-suave)}
+.vias a{color:var(--anil);font-weight:600;text-decoration:none;font-size:1.1rem}
+.vias a:hover{text-decoration:underline;text-underline-offset:4px}
+.despues{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px}
+.despues li{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;color:var(--tinta-suave)}
+.despues .cifra{font-size:2rem;color:var(--anil);line-height:1}
+
+@media (max-width:1199px){
+  .vias-rej{grid-template-columns:1fr}
+}
+@media (max-width:809px){
+  .contacto{grid-template-columns:1fr}
+  .contacto-foto-fija{position:relative;height:62svh}
+  .contacto-texto{padding:clamp(56px,10vw,80px) var(--margen) var(--tramo)}
+  .formulario{grid-template-columns:1fr}
+  .formulario .boton{justify-self:stretch}
+}
+</style>
+</head>
+<body class="siempre-flota">
+<!--CABECERA:contact-->
+
+<main id="principal">
+  <div class="contacto">
+    <div class="contacto-foto">
+      <div class="contacto-foto-fija">
+        <img src="assets/photos/puerta-azul.jpg" alt="A blue wooden door in a stone wall with bougainvillea" width="1400" height="2100" fetchpriority="high">
+        <span class="placa"><span class="placa-nombre">Isla Blanca</span><span class="placa-lugar">Passeig des Molí 4, Ibiza</span></span>
+      </div>
+    </div>
+
+    <div class="contacto-texto">
+      <h1 id="titulo">Request to book</h1>
+      <p class="entrada">Tell us the house, the dates and who is coming. A person replies within a day, usually the same afternoon, with availability and the price for your nights.</p>
+
+      <form class="formulario" id="form-reserva" novalidate aria-labelledby="titulo">
+        <fieldset>
+          <legend>Your stay</legend>
+          <div class="campo ancho">
+            <label for="villa">House</label>
+            <select id="villa" name="villa" required data-falta="Choose a house, or “Any house” if you are not sure.">
+              <option value="">Choose a house</option>
+              <option value="cualquiera">Any house, suggest one</option>
+              <option value="can-sal-blanca">Can Sal Blanca · Ibiza · 10 guests</option>
+              <option value="sa-corba">Sa Corba · Mallorca · 8 guests</option>
+              <option value="can-terrassa">Can Terrassa · Formentera · 6 guests</option>
+              <option value="es-penyal">Es Penyal · Mallorca · 8 guests</option>
+              <option value="sa-cala">Sa Cala · Menorca · 6 guests</option>
+              <option value="can-olivera">Can Olivera · Mallorca · 12 guests</option>
+            </select>
+            <span class="error" aria-live="polite"></span>
+          </div>
+          <div class="campo">
+            <label for="llegada">Arrival</label>
+            <input id="llegada" name="llegada" type="date" required data-falta="Add the day you arrive.">
+            <span class="error" aria-live="polite"></span>
+          </div>
+          <div class="campo">
+            <label for="salida">Departure</label>
+            <input id="salida" name="salida" type="date" required data-falta="Add the day you leave.">
+            <span class="error" aria-live="polite"></span>
+          </div>
+          <div class="campo">
+            <label for="huespedes">Guests</label>
+            <input id="huespedes" name="huespedes" type="number" min="1" max="16" required data-falta="How many of you are coming?">
+            <span class="ayuda">Adults and children together.</span>
+            <span class="error" aria-live="polite"></span>
+          </div>
+          <div class="campo">
+            <label for="ninos">Of which children</label>
+            <input id="ninos" name="ninos" type="number" min="0" max="12" value="0">
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>About you</legend>
+          <div class="campo">
+            <label for="nombre">Name</label>
+            <input id="nombre" name="nombre" type="text" autocomplete="name" required data-falta="Tell us who to write to.">
+            <span class="error" aria-live="polite"></span>
+          </div>
+          <div class="campo">
+            <label for="correo">Email</label>
+            <input id="correo" name="correo" type="email" autocomplete="email" required data-falta="We need an email to reply." placeholder="name@example.com">
+            <span class="error" aria-live="polite"></span>
+          </div>
+          <div class="campo ancho">
+            <label for="telefono">Phone <span class="ayuda" style="font-weight:400">· optional, for WhatsApp</span></label>
+            <input id="telefono" name="telefono" type="tel" autocomplete="tel">
+          </div>
+          <div class="campo ancho">
+            <label for="mensaje">Anything we should know <span class="ayuda" style="font-weight:400">· optional</span></label>
+            <textarea id="mensaje" name="mensaje" placeholder="A birthday, a cot for the baby, a chef on the first night…"></textarea>
+          </div>
+        </fieldset>
+        <div class="campo ancho">
+          <label class="consentimiento"><input type="checkbox" id="acepto" name="acepto" required data-falta="Please accept so we can answer you.">
+            <span>We will only use these details to answer your request. <a class="enlace" href="#" style="font-weight:500">Privacy policy</a></span></label>
+          <span class="error" aria-live="polite"></span>
+        </div>
+        <button class="boton boton--buganvilla ancho" type="submit">Send request</button>
+      </form>
+
+      <div class="enviada" id="reserva-enviada" tabindex="-1" hidden>
+        <h2>Request sent</h2>
+        <p>Thank you. We are checking the house for your dates and will write to you within a day with availability and the price.</p>
+        <a class="boton boton--linea" href="villas.html">Back to the houses</a>
+      </div>
+
+      <div class="vias-rej">
+        <div>
+          <h2>Prefer to talk?</h2>
+          <ul class="vias">
+            <li><span>Phone and WhatsApp</span><a href="tel:+34971000000">+34 971 000 000</a></li>
+            <li><span>Email</span><a href="mailto:hello@islablanca.example">hello@islablanca.example</a></li>
+            <li><span>Office</span><span style="font-size:1.05rem;color:var(--tinta)">Passeig des Molí 4, Ibiza · Mon–Sat, 9:00–19:00</span></li>
+          </ul>
+        </div>
+        <div>
+          <h2>What happens next</h2>
+          <ol class="despues">
+            <li><span class="cifra">1</span><span>We check the house for your dates.</span></li>
+            <li><span class="cifra">2</span><span>You get the price and anything you should know, within a day.</span></li>
+            <li><span class="cifra">3</span><span>A 30% deposit holds the dates. The rest is due thirty days before you arrive.</span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!--PIE-->
+<script src="assets/js/lustre.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>
