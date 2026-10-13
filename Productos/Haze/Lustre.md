@@ -84,6 +84,15 @@ Alejandro: *«quiero usar aplicaciones que de verdad me ayuden a vender; si no v
 | 📊 **Lo que dicen los datos** | En Framer lo que vende son las **PLANTILLAS**: primera plantilla, 500-2.000 $ en total; con 5-10, 2.000-7.000 $/mes. Además cobran el **50 % de la suscripción de Framer durante 12 meses** de cada cliente que entra por ellas. De **componentes no hay datos públicos de ventas** (se venden a 10-50 $). Lo que funciona: un nicho con demanda real o un **estilo muy reconocible** ([allaboutframer.com](https://allaboutframer.com/how-much-can-you-actually-earn-with-framer-in-2026-(real-numbers))) |
 | 💡 **Propuesta** | Que Lustre no sea solo un componente suelto: que sea **la firma de una plantilla de Framer** (una landing para un nicho concreto con la piscina, la seda o el metal de fondo). La plantilla es lo que vende y da comisiones; el componente va dentro y también suelto. **Pendiente de él:** si se hace y para qué nicho (antes, investigar qué nichos de plantilla tienen demanda) |
 
+### ¿Hay negocio en las plantillas? (13-oct, pregunta de Alejandro: «plantillas podemos hacer cinco mil»)
+
+- **Sí hay modelo de negocio**, a diferencia del componente suelto. Casos publicados: 20.000 $ en 6 meses con 2 plantillas y sin hacer marketing; 1.000 $ en 10 días (21 ventas). Y el caso más realista de quien empieza: **6 copias** con unos 500 visitantes en su primera plantilla. Ojo: son datos de quien escribe porque le fue bien.
+- **Desde 2026 Framer ya no revisa las plantillas**: se publican al enviarlas. Hay más competencia de baja calidad, así que la calidad y el nicho pesan más.
+- **Saturados:** SaaS genérico, portfolios, agencias y cripto. **Con demanda y poca oferta:** ecommerce (~138 plantillas para ~2.900 búsquedas al mes), inmobiliarias, startups de IA, SaaS de un sector concreto, creadores y newsletters, pódcast y servicios profesionales.
+- **«Hacer cinco mil» no funciona**; lo que funciona es tener **5-10 buenas en nichos con demanda**. Tarda meses en arrancar.
+- **Propuesta:** una prueba barata. **Una** plantilla en un nicho con demanda (ecommerce o inmobiliaria), con el estilo de Lustre como seña, y medir visitas y ventas 4-6 semanas. Si vende, escalar a 5-10. **Pendiente de él.**
+- Fuentes: [Framer University · nichos](https://framer.university/blog/the-most-profitable-framer-template-niches) · [All About Framer · ganancias](https://allaboutframer.com/how-much-can-you-actually-earn-with-framer-in-2026-(real-numbers)) · [tmpl.digital · sin revisión](https://tmpl.digital/blog/are-framer-templates-good) · [Julien Vier · primera plantilla](https://julienvier.substack.com/p/my-first-with-a-digital-product-the)
+
 ## ⚠️ Por qué NO es un eclipse
 
 **Porque el eclipse es de [[La Brega Studio/La Brega Studio|La Brega]], y La Brega
